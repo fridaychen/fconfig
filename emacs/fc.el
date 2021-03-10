@@ -8,7 +8,8 @@
 (require 'eieio)
 (require 'iso-transl)
 
-(when (boundp 'package-native-compile)
+(when (and (featurep 'nativecomp)
+           (native-comp-available-p))
   (setf package-native-compile t))
 
 (setf enable-local-variables :all

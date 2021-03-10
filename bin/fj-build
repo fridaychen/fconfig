@@ -1,0 +1,9 @@
+#!/bin/bash
+
+. $FCHOME/bin/Fcommon.sh
+. $FCHOME/bin/Fansi.sh
+. $FCHOME/bin/Falias.sh
+. $FCHOME/bin/Fproject.sh
+
+echo $*
+build-project $*

@@ -1,0 +1,22 @@
+{
+    "segments": [
+	"virtual_env",
+	"username",
+	"hostname",
+	"ssh",
+	"cwd",
+	"git",
+	"git_stash",
+	"jobs",
+	"root",
+	"exit_code"
+    ],
+    "mode": "compatible",
+    "term_truecolor": true,
+    "cwd": {
+	"mode": "plain",
+	"max_depth": 2,
+	"colorize" : true
+    },
+    "theme" : "gruvbox"
+}

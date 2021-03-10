@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+
+import fc
+
+
+def main():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "-v", dest="verbose", action="store_true", help="verbose mode"
+    )
+    parser.add_argument(
+        "-f",
+        dest="font",
+        choices=["small", "medium", "big", "huge"],
+        default=None,
+        help="font size",
+    )
+
+    args = parser.parse_args()
+
+    fc.verbose = args.verbose
+
+    if args.font:
+        font_def = {
+            "small": "Uni3-Terminus16.psf.gz",
+            "medium": "Uni3-Terminus24x12.psf.gz",
+            "big": "Uni3-Terminus32x16.psf.gz",
+            "huge": "Uni3-TerminusBold32x16.psf.gz",
+        }
+
+        fc.log(f"setup font to {font_def[args.font]}")
+        os.system(f"sudo setfont /usr/share/consolefonts/{font_def[args.font]}")
+
+
+if __name__ == "__main__":
+    main()

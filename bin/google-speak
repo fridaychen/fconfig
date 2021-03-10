@@ -1,0 +1,32 @@
+#!/bin/bash
+
+function play-quietly() {
+    if [[ $(which mpv) ]]; then
+        mpv --really-quiet "$@" 1</dev/null
+    else
+        mplayer -nolirc -really-quiet "$@" 1</dev/null
+    fi
+}
+
+function gspeak() {
+    local lang=en
+
+    if [[ $1 =~ en|ja|zh ]]; then
+        lang=$1
+        shift 1
+    fi
+
+    local IFS=+
+
+    play-quietly "http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=$*&tl=${lang}"
+}
+
+if [[ $# == 0 ]]; then
+    DONE=false
+    until $DONE; do
+        read line || DONE=true
+        gspeak $line
+    done
+else
+    gspeak $*
+fi

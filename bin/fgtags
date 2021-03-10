@@ -1,0 +1,37 @@
+#!/bin/bash
+
+. $FCHOME/bin/Fansi.sh
+. $FCHOME/bin/Fproject.sh
+
+OLDPWD_BAK=$OLDPWD
+CURPWD=$(pwd)
+
+if ! chtop; then
+    return 1
+fi
+
+cmd=$1
+shift
+
+case $cmd in
+    --create)
+        if [[ ! -f GRTAGS || $(find . -newer GRTAGS -print -quit | wc -l) != "0" ]]; then
+            hl-msg "Updating ... "
+
+            rm -f GPATH GTAGS GRTAGS
+            ff "$@" "*.[hc]" | gtags -f -
+
+            hl-msg "done"
+        else
+            hl-msg "Do nothing"
+        fi
+        ;;
+    --update)
+        for i in "$@"; do
+            gtags --single-update "$i"
+        done
+        ;;
+esac
+
+cd $CURPWD
+OLDPWD=$OLDPWD_BAK

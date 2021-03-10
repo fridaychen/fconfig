@@ -1,0 +1,18 @@
+* Introduction
+
+So far, the most suitable way for me is using Pygments and exuberant-ctags.
+
+* Installation
+
+** First copy config file,
+
+cp gtags.conf ~/.globalrc
+
+** then change it to use pygments
+
+default:\
+	:tc=pygments-parser:tc=htags:
+
+** pip install Pygments
+
+** install exuberant-ctags

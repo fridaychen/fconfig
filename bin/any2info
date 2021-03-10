@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for x in "$*"; do
+    base=${x%.*}
+    pandoc $x -o ${base}.texinfo
+    makeinfo ${base}.texinfo -o ${base}.info
+done

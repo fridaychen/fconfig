@@ -1,0 +1,79 @@
+org-mode study note -*- mode: org -*-
+
+* org-mode study
+
+** Style
+
+*bold* _underscore_ /italic/ =verbatim= ~code~
+
+** Comment
+
+# single line comment
+
+#+BEGIN_COMMENT
+I am multiple line commments.
+I am multiple line commments.
+I am multiple line commments.
+#+END_COMMENT
+
+** List
+
+unordered list
+
+- item 1
+- item 2
+- item 3
+
++ item 1
++ item 2
++ item 3
+
+ordered list
+
+1. item 1
+2. item 2
+3. item 3
+
+** Links
+
+[[http://www.google.com][hello]]
+
+C-c C-l edit link
+C-c C-o open link
+
+# sharp plus NAME define anchor
+
+#+NAME: my target
+   If no dedicated target exists, the link tries to match the exact name
+of an element within the buffer.  Naming is done, unsurprisingly, with
+the ‘NAME’ keyword, which has to be put in the line before the element
+it refers to, as in the following example
+
+[[my target]]
+
+radio link: triple angular brackets
+C-c C-c refresh the target list
+
+<<<link>>>
+
+** Drawer
+
+C-c C-x d add drawer
+‘C-c C-z’
+     Add a time-stamped note to the ‘LOGBOOK’ drawer.
+
+:DRAWERNAME:
+This is inside the drawer.
+:END:
+
+:hello:
+hello world
+:END:
+
+** Table
+
+| title1 | title2 |
+|--------+--------|
+| 100    | 200    |
+| yes    | no     |
+| dong   | ding   |

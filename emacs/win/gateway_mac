@@ -1,0 +1,10 @@
+#!/usr/bin/python3
+
+import os
+
+s = os.popen("route PRINT | grep 0\.0\.0\.0").read()
+
+if len(s) > 0 :
+    gw_ip = s.split()[2]
+
+    print(os.popen("arp -a | grep " + gw_ip).read().split()[5].replace("-", ":"), end="")

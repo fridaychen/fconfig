@@ -1,5 +1,28 @@
 # Compiled
 *.elc
+*.pyc
+__pycache__
+*.egg-info
 
 # Packaging
 .cask
+
+GRTAGS
+GTAGS
+GPATH
+*~
+*.bak
+*.old
+*.elc
+site-lisp
+notes
+.dir-locals.el
+.clang_complete
+dist/
+site/
+tmp
+.DS_Store
+
+go/pkg
+bin/fbook
+bin/ff

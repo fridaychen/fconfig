@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: api
+# key: api
+# --
+/* @brief
+
+   @param
+
+   @return
+*/
+${1:void} ${2:name}(${3:args})
+{
+	$0
+}

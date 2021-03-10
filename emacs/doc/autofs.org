@@ -1,0 +1,21 @@
+* debug
+
+sudo automount -f -v
+
+* config
+
+** /etc/auto.master.d/persimmon.autofs
+#+begin_quote
+/- /etc/auto.master.d/persimmon.auto
+#+end_quote
+
+** /etc/auto.master.d/persimmon.auto
+#+begin_quote
+/opt/persimmon -fstype=cifs,rw,uid=1000,credentials=/home/friday/.smbpasswd ://persimmon.local/home
+#+end_quote
+
+** ~/.smbpasswd
+#+begin_quote
+username=USER
+password=PASS
+#+end_quote

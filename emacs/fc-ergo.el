@@ -47,29 +47,29 @@
   "Create file info."
   `(("Name" ,buffer-file-name)
     ("Basic" ,(format "%d bytes, %d lines, %s, point %d, %d"
-		      (buffer-size)
-		      (if (buffer-file-name)
-			  (string-to-number
-			   (shell-command-to-string
-			    (format "wc -l '%s'"  buffer-file-name)))
-			(count-lines (point-min) (point-max)))
-		      buffer-file-coding-system
-		      (point)
-		      (point-max)))))
+                      (buffer-size)
+                      (if (buffer-file-name)
+                          (string-to-number
+                           (shell-command-to-string
+                            (format "wc -l '%s'"  buffer-file-name)))
+                        (count-lines (point-min) (point-max)))
+                      buffer-file-coding-system
+                      (point)
+                      (point-max)))))
 
 (defun fc-buffer-info ()
   "Create buffer info."
   `(("Major" ,major-mode)
     ("Tag/Xref" ,(format "%s %s"
-			 (if (boundp 'fc-proj-tag) fc-proj-tag nil)
-			 xref-backend-functions))
+                         (if (boundp 'fc-proj-tag) fc-proj-tag nil)
+                         xref-backend-functions))
     ("Company" ,(s-join " "
-			(--map
-			 (s-chop-prefix "company-" (symbol-name it))
-			 company-backends)))
+                        (--map
+                         (s-chop-prefix "company-" (symbol-name it))
+                         company-backends)))
     ("Format" ,(format "IndentTab %S, Auto %S"
-		       indent-tabs-mode
-		       *fc-format-at-save*))))
+                       indent-tabs-mode
+                       *fc-format-at-save*))))
 
 (defun fc-match-paren ()
   "Jump to another bracket."
@@ -88,9 +88,9 @@
     (backward-char 1)
 
     (if (looking-at "\\s\)")
-	(progn
-	  (forward-char 1)
-	  (backward-list 1))
+        (progn
+          (forward-char 1)
+          (backward-list 1))
       (forward-char 1)))))
 
 (defun fc-toggle-window-maximize ()
@@ -99,18 +99,18 @@
 
   (unless (one-window-p)
     (if (and (> (window-width) (* 0.8 (frame-width)))
-	     (> (window-height) (* 0.8 (frame-height))))
-	(balance-windows)
+             (> (window-height) (* 0.8 (frame-height))))
+        (balance-windows)
       (maximize-window))))
 
 (defun fc--query-replace (&optional backward)
   "Replace forward.
 BACKWARD: direction."
   (let* ((prefix *fc-ergo-prefix*)
-	 (from-str (read-string "Regex Query replace from : "
-				(regexp-quote (fc-current-thing t t t))))
-	 (to-str (read-string (format "Regex Query replace from %s to : "
-				      from-str))))
+         (from-str (read-string "Regex Query replace from : "
+                                (regexp-quote (fc-current-thing t t t))))
+         (to-str (read-string (format "Regex Query replace from %s to : "
+                                      from-str))))
     (cond
      (prefix
       (goto-char (point-min)))
@@ -126,10 +126,10 @@ BACKWARD: direction."
 (defun fc-info-func ()
   "Mode-line info func."
   (concat (if fc-modal-mode (if *is-colorful* "" "M") "-")
-	  (if *fc-ergo-prefix* "P" "-")
-	  (if *fc-dev-mode* "D" "-")
-	  (if buffer-read-only "%%" "-")
-	  (if (buffer-modified-p)  "*" "-")))
+          (if *fc-ergo-prefix* "P" "-")
+          (if *fc-dev-mode* "D" "-")
+          (if buffer-read-only "%%" "-")
+          (if (buffer-modified-p)  "*" "-")))
 
 (defun fc-ergo-restore ()
   "Restore ergo state."
@@ -156,7 +156,7 @@ BACKWARD: direction."
 (fc-load 'avy
   :autoload t
   :after (progn
-	   (setf avy-background t)))
+           (setf avy-background t)))
 
 (defun fc-switch-layout ()
   "Switch layout."
@@ -181,21 +181,21 @@ BACKWARD: direction."
 
   (cond
    ((and (not *fc-ergo-prefix*)
-	 *fc-ergo-prefix-timer*)
+         *fc-ergo-prefix-timer*)
     (cancel-timer *fc-ergo-prefix-timer*)
     (setf *fc-ergo-prefix-timer* nil))
 
    (*fc-ergo-prefix*
     (setf *fc-ergo-prefix-timer*
-	  (fc-idle-delay-task 'fc-ergo-prefix-off
-			      *ergo-prefix-timeout*)))))
+          (fc-idle-delay-task 'fc-ergo-prefix-off
+                              *ergo-prefix-timeout*)))))
 
 (defun fc-ergo-prefix-off (&rest _rest)
   "Ergo prefix mode off."
   (when *fc-ergo-prefix*
     (cancel-timer *fc-ergo-prefix-timer*)
     (setf *fc-ergo-prefix* nil
-	  *fc-ergo-prefix-timer* nil)
+          *fc-ergo-prefix-timer* nil)
     (fc-ergo-prefix-visual-feedback)
     (force-mode-line-update)))
 
@@ -229,20 +229,40 @@ INDENT-FUNC: function for indent."
 
   (cond
    ((and (buffer-modified-p)
-	 (not fc-modal-global-mode)
-	 (looking-back "y$" (- (point) 10)))
+         (not fc-modal-global-mode)
+         (looking-back "y$" (- (point) 10)))
     (backward-delete-char-untabify 1)
     (unless (yas-expand)
       (insert "y")))
 
    ((or fc-modal-global-mode
-	(not *fc-dev-mode*)
-	(not (looking-at "$")))
+        (not *fc-dev-mode*)
+        (not (looking-at "$")))
     (fc-funcall indent-func))
 
    ;; only do company when <tab> at the end of the line
    ((looking-at ".?$")
     (company-complete))))
+
+(cl-defun fc-basic-key ()
+  "Basic key function."
+  (interactive)
+
+  (cond
+   (*fc-ergo-prefix*
+    (message "prefix mode")
+    (fc-modal-head-key "Basic function" '*ergo-basic-function-map*))
+
+   ((region-active-p)
+    (fc-region (region-beginning) (region-end)
+      (goto-char (point-min))
+      (fc-modal-head-key
+       "Basic function"
+       '*ergo-basic-function-map*
+       *ergo-head-key-timeout*)))
+
+   (t
+    (scroll-down-command))))
 
 (cl-defun fc-ctrl-enter-key ()
   "Ctrl-Enter key function."
@@ -256,9 +276,9 @@ INDENT-FUNC: function for indent."
 
 ;; shell
 (defalias 'fc-show-hide-term (fc-manual (fc-show-hide-buffer "*ansi-term*"
-							     (lambda () (ansi-term "/bin/bash")))))
+                                                             (lambda () (ansi-term "/bin/bash")))))
 (defalias 'fc-show-hide-eshell (fc-manual (fc-show-hide-buffer "*eshell*"
-							       #'eshell)))
+                                                               #'eshell)))
 
 ;; movement
 (defun fc-beginning-of-line ()
@@ -266,8 +286,8 @@ INDENT-FUNC: function for indent."
   (interactive)
 
   (fc-funcall (if (zerop (current-column))
-		  'beginning-of-line-text
-		'beginning-of-line)))
+                  'beginning-of-line-text
+                'beginning-of-line)))
 
 (defun fc-begin-of-func ()
   "Jump to begin of func."
@@ -280,8 +300,8 @@ INDENT-FUNC: function for indent."
     ((or 'org-mode 'markdown-mode) (outline-next-visible-heading -1))
     ('diff-mode (diff-file-prev))
     (_ (if outline-minor-mode
-	   (outline-previous-heading)
-	 (backward-sentence)))))
+           (outline-previous-heading)
+         (backward-sentence)))))
 
 (defun fc-end-of-func ()
   "Jump to end of func."
@@ -294,8 +314,8 @@ INDENT-FUNC: function for indent."
     ((or 'org-mode 'markdown-mode) (outline-next-visible-heading 1))
     ('diff-mode (diff-file-next))
     (_ (if outline-minor-mode
-	   (outline-next-heading)
-	 (forward-sentence)))))
+           (outline-next-heading)
+         (forward-sentence)))))
 
 (defun fc-begin-of-semantic ()
   "Jump to begin of semantic."
@@ -307,7 +327,7 @@ INDENT-FUNC: function for indent."
     ('python-mode (python-nav-beginning-of-block))
     ('org-mode (outline-next-visible-heading -1))
     (_ (if outline-minor-mode
-	   (outline-previous-heading))
+           (outline-previous-heading))
        (backward-sentence))))
 
 (defun fc-end-of-semantic ()
@@ -320,57 +340,57 @@ INDENT-FUNC: function for indent."
     ('python-mode (python-nav-end-of-block))
     ('org-mode (outline-next-visible-heading 1))
     (_ (if outline-minor-mode
-	   (outline-next-heading))
+           (outline-next-heading))
        (forward-sentence))))
 
 (defconst *fc-navi-buffer-names* '("*ggtags-global*"
-				   "*Flycheck errors*"
-				   "*grep*"
-				   "*Occur*"
-				   "*compilation*"
-				   "*xref*"
-				   "*bookmarks*"))
+                                   "*Flycheck errors*"
+                                   "*grep*"
+                                   "*Occur*"
+                                   "*compilation*"
+                                   "*xref*"
+                                   "*bookmarks*"))
 (defconst *fc-navi-buffer-prefixs* '("*fc text retrieve"))
 
 (defun fc-navi-error-next-prev-p ()
   "If navi window exists."
   (or (-any? #'fc-buffer-visible-p *fc-navi-buffer-names*)
       (-first (lambda (x)
-		(let ((name (buffer-name x)))
-		  (--first (string-prefix-p it name)
-			   *fc-navi-buffer-prefixs*)))
-	      (mapcar 'window-buffer (window-list)))))
+                (let ((name (buffer-name x)))
+                  (--first (string-prefix-p it name)
+                           *fc-navi-buffer-prefixs*)))
+              (mapcar 'window-buffer (window-list)))))
 
 (defun fc-select-navi-buffer ()
   "List all navi buffers."
   (fc-switch-to-buffer
    "Navi buffer"
    (fc-list-buffer :not-file t
-		   :filter
-		   (lambda ()
-		     (or
-		      (member (buffer-name) *fc-navi-buffer-names*)
-		      (let ((name (buffer-name)))
-			(-any (lambda (x)
-				(string-prefix-p x name))
-			      *fc-navi-buffer-prefixs*)))))
+                   :filter
+                   (lambda ()
+                     (or
+                      (member (buffer-name) *fc-navi-buffer-names*)
+                      (let ((name (buffer-name)))
+                        (-any (lambda (x)
+                                (string-prefix-p x name))
+                              *fc-navi-buffer-prefixs*)))))
    :error-msg "No navigatable buffer found."
    :pop t))
 
 (defun fc-show-navi-buffer ()
   "Find last navi window."
   (let* ((bufs (fc-list-buffer :not-file t))
-	 (buf (or
-	       (--first (member (buffer-name it) *fc-navi-buffer-names*)
-			bufs)
-	       (-first (lambda (x)
-			 (let ((bufname (buffer-name x)))
-			   (--first (string-prefix-p it bufname)
-				    *fc-navi-buffer-prefixs*)))
-		       bufs))))
+         (buf (or
+               (--first (member (buffer-name it) *fc-navi-buffer-names*)
+                        bufs)
+               (-first (lambda (x)
+                         (let ((bufname (buffer-name x)))
+                           (--first (string-prefix-p it bufname)
+                                    *fc-navi-buffer-prefixs*)))
+                       bufs))))
     (when buf
       (save-excursion
-	(fc-pop-buf buf)))
+        (fc-pop-buf buf)))
 
     buf))
 
@@ -452,14 +472,14 @@ INDENT-FUNC: function for indent."
   (interactive)
 
   (let ((start (line-beginning-position))
-	(end (line-end-position)))
+        (end (line-end-position)))
     (save-excursion
       (when (re-search-backward "[“”\"'‘’（）()]" start t)
-	(setf start (point))))
+        (setf start (point))))
 
     (save-excursion
       (when (re-search-forward "[“”\"'‘’（）()]" end t)
-	(setf end (point))))
+        (setf end (point))))
 
     (set-mark start)
     (goto-char end)
@@ -500,7 +520,7 @@ CHAR: target character."
   (let ((direction (if (>= arg 0) 1 -1)))
     (forward-char direction)
     (unwind-protect
-	(search-forward (char-to-string char) nil nil arg)
+        (search-forward (char-to-string char) nil nil arg)
       (backward-char direction))))
 
 (defun fc-mark-point-to-end-of-line (&optional arg)
@@ -587,7 +607,7 @@ DEV: dev mode."
 
       (,fold
        (let ((f (fc-funcall ,fold)))
-	 (fc-funcall f)))
+         (fc-funcall f)))
 
       (,normal
        (fc-funcall ,normal)))))
@@ -600,15 +620,15 @@ MODE-FUNC: mode and function definitions."
 
      (cl-block find-mode
        (--each ,mode-func
-	 (let ((mode (car it))
-	       (func (cdr it)))
-	   (when (or (and (cl-typep mode 'symbol)
-			  (or (eq major-mode mode)
-			      (eq mode '_)))
-		     (and (cl-typep mode 'list)
-			  (member major-mode mode)))
-	     (fc-funcall func)
-	     (cl-return-from find-mode)))))))
+         (let ((mode (car it))
+               (func (cdr it)))
+           (when (or (and (cl-typep mode 'symbol)
+                          (or (eq major-mode mode)
+                              (eq mode '_)))
+                     (and (cl-typep mode 'list)
+                          (member major-mode mode)))
+             (fc-funcall func)
+             (cl-return-from find-mode)))))))
 
 (defmacro fc-delete-key (&optional mark-func not-save)
   "Delete region.
@@ -619,8 +639,8 @@ NOT-SAVE: save to KILL-RING or not."
 
      (fc-funcall ,mark-func)
      (fc-funcall (if ,not-save
-		     'delete-region
-		   'kill-region))))
+                     'delete-region
+                   'kill-region))))
 
 (defmacro fc-change-key (&optional mark-func not-save)
   "Change region.
@@ -631,8 +651,8 @@ NOT-SAVE: save to KILL-RING or nor."
 
      (fc-funcall ,mark-func)
      (fc-funcall (if ,not-save
-		     'delete-region
-		   'kill-region))
+                     'delete-region
+                   'kill-region))
      (save-excursion
        (indent-for-tab-command))
      (fc-modal-global-mode -1)))
@@ -673,41 +693,41 @@ N: number."
 (defun fc-sys-info ()
   "Create sys info."
   (let ((user (format "%s@%s" user-login-name (system-name)))
-	(loc (cond
-	      (*fc-location-work* "work")
-	      (*fc-location-home* "home")
-	      (t "unknown"))))
+        (loc (cond
+              (*fc-location-work* "work")
+              (*fc-location-home* "home")
+              (t "unknown"))))
     (if *is-gui*
-	`(
-	  ("Emacs" ,(format "%s, DPI %d, fringe %d"
-			    emacs-version
-			    (fc-display-ppi) *fc-fringe-width*))
-	  ("User" ,user)
-	  ("Loc" ,loc)
-	  ("Font" ,(format "%s, %d" *fc-default-font* *fc-font-height*))
-	  ("Theme" ,(format "%s, %s" *fc-current-theme* (symbol-name powerline-default-separator))))
+        `(
+          ("Emacs" ,(format "%s, DPI %d, fringe %d"
+                            emacs-version
+                            (fc-display-ppi) *fc-fringe-width*))
+          ("User" ,user)
+          ("Loc" ,loc)
+          ("Font" ,(format "%s, %d" *fc-default-font* *fc-font-height*))
+          ("Theme" ,(format "%s, %s" *fc-current-theme* (symbol-name powerline-default-separator))))
       `(
-	("Emacs" ,(format "%s, colorful %S" emacs-version *is-colorful*))
-	("User" ,user)
-	("Loc" ,loc)
-	("Theme" ,*fc-current-theme*)))))
+        ("Emacs" ,(format "%s, colorful %S" emacs-version *is-colorful*))
+        ("User" ,user)
+        ("Loc" ,loc)
+        ("Theme" ,*fc-current-theme*)))))
 
 (defun fc-convert-info (info)
   "Convert info to string.
 INFO: info obj."
   (--reduce-from (concat acc
-			 (format "|%11s : %s\n"
-				 (cl-first it)
-				 (cl-second it)))
-		 ""
-		 info))
+                         (format "|%11s : %s\n"
+                                 (cl-first it)
+                                 (cl-second it)))
+                 ""
+                 info))
 
 (defun fc-show-info (&rest args)
   "Show info.
 ARGS: list of infos."
   (--reduce-from (concat acc (fc-convert-info it))
-		 ""
-		 args))
+                 ""
+                 args))
 
 (defun fc-open-my-index-org ()
   "Open index org file."
@@ -746,15 +766,15 @@ ARGS: list of infos."
   (if (eq major-mode 'hexl-mode)
       (hexl-mode-exit)
     (when (or (not (fc-big-buffer-p))
-	      (fc-user-confirm "Hexlify" nil))
+              (fc-user-confirm "Hexlify" nil))
       (hexl-mode))))
 
 (defun fc-rename-buffer-and-file ()
   "Rename current file and buffer name."
   (let ((name buffer-file-name)
-	(new-name (read-file-name "Move to : ")))
+        (new-name (read-file-name "Move to : ")))
     (if (vc-backend name)
-	(vc-rename-file name new-name)
+        (vc-rename-file name new-name)
       (rename-file name new-name)
       (set-visited-file-name new-name))))
 
@@ -762,15 +782,15 @@ ARGS: list of infos."
 (fc-unbind-keys '("C-x C-c"))
 
 (fc-bind-keys `(("RET" newline-and-indent)
-		("<escape>" fc-escape-key)
-		("TAB" fc-tab-key)
-		("C-<return>" fc-ctrl-enter-key)
-		("C-x b" ivy-switch-buffer)
-		("C-@" fc-escape-key)
-		("C-<SPC>" fc-escape-key)
-		("C-." ,(fc-manual (fc-find-definitions :confirm t)))
-		("C-_" fc-fast-switch-window) ;; it is C-/ in the console
-		("C-;" fc-fast-switch-window)))
+                ("<escape>" fc-escape-key)
+                ("TAB" fc-tab-key)
+                ("C-<return>" fc-ctrl-enter-key)
+                ("C-x b" ivy-switch-buffer)
+                ("C-@" fc-escape-key)
+                ("C-<SPC>" fc-escape-key)
+                ("C-." ,(fc-manual (fc-find-definitions :confirm t)))
+                ("C-_" fc-fast-switch-window) ;; it is C-/ in the console
+                ("C-;" fc-fast-switch-window)))
 
 (defmacro fc-head-key (prompt keymap)
   "Run head key.
@@ -833,56 +853,56 @@ KEYMAP: keymap to run."
     (setf function-keys (-rotate 1 function-keys))))
 
 (fc-bind-keys `(("M-1" fc-split-unsplit-window)
-		("M-2" fc-split-window)
-		("M-3" fc-show-hide-eshell)
-		("M-4" ivy-switch-buffer)
-		("M-5" toggle-frame-fullscreen)
-		("M-6" fc-flycheck)
-		("M-7" compile)
-		("M-8" fc-proj-find-file)
-		("M-9" fc-previous-bookmark)
-		("M-0" fc-next-bookmark)))
+                ("M-2" fc-split-window)
+                ("M-3" fc-show-hide-eshell)
+                ("M-4" ivy-switch-buffer)
+                ("M-5" toggle-frame-fullscreen)
+                ("M-6" fc-flycheck)
+                ("M-7" compile)
+                ("M-8" fc-proj-find-file)
+                ("M-9" fc-previous-bookmark)
+                ("M-0" fc-next-bookmark)))
 
 ;; movement
 (fc-bind-keys '(("M-i" previous-line)
-		("M-k" next-line)
-		("M-j" backward-char)
-		("M-l" forward-char)
+                ("M-k" next-line)
+                ("M-j" backward-char)
+                ("M-l" forward-char)
 
-		("C-M-j" backward-word)
-		("M-u" backward-word)
-		("C-M-l" forward-word)
-		("M-o" forward-word)
+                ("C-M-j" backward-word)
+                ("M-u" backward-word)
+                ("C-M-l" forward-word)
+                ("M-o" forward-word)
 
-		("C-M-i" scroll-down-command)
-		("C-M-k" scroll-up-command)
+                ("C-M-i" scroll-down-command)
+                ("C-M-k" scroll-up-command)
 
-		("<home>" fc-beginning-of-line)
-		("C-a" fc-beginning-of-line)
-		("<end>" end-of-line)
-		("C-e" end-of-line)
+                ("<home>" fc-beginning-of-line)
+                ("C-a" fc-beginning-of-line)
+                ("<end>" end-of-line)
+                ("C-e" end-of-line)
 
-		("M-g" goto-line)
-		("M-p" fc-match-paren)))
+                ("M-g" goto-line)
+                ("M-p" fc-match-paren)))
 
 ;; misc
 (fc-bind-keys `(("C-M-s" fc-toggle-hide-show-all)
-		("M-s" fc-toggle-hide-show)
+                ("M-s" fc-toggle-hide-show)
 
-		("M-b" pop-tag-mark)
-		("C-<tab>" fc-fast-switch-window)
-		("<backtab>" fc-buffers-list)
-		("<S-C-iso-lefttab>" previous-buffer)
-		("C-z" undo)
+                ("M-b" pop-tag-mark)
+                ("C-<tab>" fc-fast-switch-window)
+                ("<backtab>" fc-buffers-list)
+                ("<S-C-iso-lefttab>" previous-buffer)
+                ("C-z" undo)
 
-		;; ("M-[" fc-navi-prev)
-		;; ("M-]" fc-navi-next)
+                ;; ("M-[" fc-navi-prev)
+                ;; ("M-]" fc-navi-next)
 
-		("M-h" backward-delete-char)
-		("C-|" fc-next-input-method)
+                ("M-h" backward-delete-char)
+                ("C-|" fc-next-input-method)
 
-		("M-." fc-find-definitions)
-		("M-," fc-find-references)))
+                ("M-." fc-find-definitions)
+                ("M-," fc-find-references)))
 
 (defconst *ergo-player-map*
   (fc-make-keymap
@@ -963,8 +983,8 @@ KEYMAP: keymap to run."
      ("l" downcase-word)
      ("m" fc-merge-short-line)
      ("p" ,(fc-manual
-	    (when buffer-file-name
-	      (kill-new buffer-file-name))))
+            (when buffer-file-name
+              (kill-new buffer-file-name))))
      ("u" upcase-word)
      ("D" unix2dos)
      ("M" fc-merge-all-line)
@@ -978,14 +998,14 @@ KEYMAP: keymap to run."
    `(("<SPC>" counsel-imenu)
 
      ("a" ,(fc-mode-key
-	    `((image-mode . image-bob)
-	      (_ . beginning-of-buffer))))
+            `((image-mode . image-bob)
+              (_ . beginning-of-buffer))))
      ("b" ,(fc-cond-key :normal 'fc-goto-favorite-buffer
-			:prefix 'fc-add-remove-favorite-buffer))
+                        :prefix 'fc-add-remove-favorite-buffer))
      ("c" ,(fc-manual (recenter (/ (window-height) 2))))
      ("e" ,(fc-mode-key
-	    `((image-mode . image-eob)
-	      (_ . end-of-buffer))))
+            `((image-mode . image-eob)
+              (_ . end-of-buffer))))
      ("g" ,(fc-manual (fc-switch-to-buffer-re "\\.c$\\|\\.el$|\\.go$\\|\\.py$")))
 
      ("i" windmove-up)
@@ -994,19 +1014,19 @@ KEYMAP: keymap to run."
      ("l" windmove-right)
 
      ("n" ,(fc-cond-key :normal 'fc-show-navi-buffer
-			:prefix 'fc-select-navi-buffer))
+                        :prefix 'fc-select-navi-buffer))
      ("m" fc-switch-layout)
      ("o" next-buffer)
      ("p" ,(fc-manual (goto-char (read-number "Point : "))))
      ("q" ,(fc-manual (fc-switch-to-buffer
-		       "Modified buffers"
-		       (fc-list-buffer :modified t))))
+                       "Modified buffers"
+                       (fc-list-buffer :modified t))))
      ("r" fc-recentf)
      ("s" ace-swap-window)
      ("t" fc-gtags-select)
      ("u" previous-buffer)
      ("x" ,(fc-manual (fc-switch-to-buffer "Select view"
-					   (fc-rm-current-buf (fc-viewer-list)))))
+                                           (fc-rm-current-buf (fc-viewer-list)))))
      ("w" fc-buffers-list)
 
      ("[" ,(fc-manual (recenter 1)))
@@ -1042,7 +1062,7 @@ KEYMAP: keymap to run."
   (interactive)
 
   (message "Current: %s"
-	   (which-function)))
+           (which-function)))
 
 (defconst *ergo-help-map*
   (fc-make-keymap
@@ -1050,14 +1070,14 @@ KEYMAP: keymap to run."
      ("`" ,(fc-manual (fc-play-sound 'cheerup)))
      ("a" apropos)
      ("b" ,(fc-manual (fc-show-info (fc-file-info)
-				    (fc-buffer-info))))
+                                    (fc-buffer-info))))
      ("c" describe-char)
      ("f" ,(fc-mode-key
-	    `((emacs-lisp-mode . describe-function)
-	      (go-mode . godef-describe)
-	      (python-mode . python-eldoc-function)
-	      ((latex-mode markdown-mode org-mode) . fc-ergo-which-function)
-	      (_ . describe-function))))
+            `((emacs-lisp-mode . describe-function)
+              (go-mode . godef-describe)
+              (python-mode . python-eldoc-function)
+              ((latex-mode markdown-mode org-mode) . fc-ergo-which-function)
+              (_ . describe-function))))
      ("h" fc-modal-input)
      ("i" info)
      ("k" describe-key)
@@ -1108,9 +1128,9 @@ KEYMAP: keymap to run."
      ("H" global-highlight-changes-mode)
      ("L" global-display-line-numbers-mode)
      ("S" ,(fc-manual (fc-toggle-var '*fc-enable-sound*)
-		      (message (if *fc-enable-sound*
-				   "Sound enabled"
-				 "Sound disabled"))))
+                      (message (if *fc-enable-sound*
+                                   "Sound enabled"
+                                 "Sound disabled"))))
      ("T" tabbar-mode)
      ("V" global-visual-line-mode)
      )
@@ -1123,10 +1143,10 @@ KEYMAP: keymap to run."
      ("a" align)
      ("b" compile)
      ("c" ,(fc-cond-key :normal 'quick-calc
-			:region (fc-manual (message (calc-eval (fc-current-thing t t t))))))
+                        :region (fc-manual (message (calc-eval (fc-current-thing t t t))))))
      ("d" fc-dev-mode-toggle)
      ("f" ,(fc-cond-key :normal 'fc-find-files
-			:proj (fc-manual (fc-proj-find-file default-directory))))
+                        :proj (fc-manual (fc-proj-find-file default-directory))))
      ("h" fc-toggle-hex-mode)
 
      ("i" insert-file)
@@ -1136,19 +1156,19 @@ KEYMAP: keymap to run."
 
      ("m" fc-select-multi-buffer-func)
      ("n" ,(fc-manual (switch-to-buffer (generate-new-buffer "Untitled"))
-		      (text-mode)))
+                      (text-mode)))
      ("o" fc-occur-dwim)
      ("p" fc-switch-function-keys)
      ("q" ,(fc-cond-key :normal 'fc-proj-open
-			:region 'fc-proj-query-rename
-			:proj 'fc-select-proj-func))
+                        :region 'fc-proj-query-rename
+                        :proj 'fc-select-proj-func))
      ("r" fc-recover-revert-buffer)
      ("s" save-buffer)
      ("t" ,(fc-cond-key :normal 'fc-show-time
-			:region (fc-manual
-				 (fc-speak (buffer-substring
-					    (region-beginning)
-					    (region-end))))))
+                        :region (fc-manual
+                                 (fc-speak (buffer-substring
+                                            (region-beginning)
+                                            (region-end))))))
      ("u" fc-toggle-window-maximize)
      ("v" fc-tomato)
      ("w" write-file)
@@ -1171,9 +1191,9 @@ KEYMAP: keymap to run."
      (";" fc-open-in-system)
      (":" isearch-forward)
      ("'" ,(fc-cond-key :normal 'fc-show-hide-note
-			:region (fc-manual
-				 (fc-insert-note
-				  (fc-current-thing nil nil t)))))
+                        :region (fc-manual
+                                 (fc-insert-note
+                                  (fc-current-thing nil nil t)))))
      )
    "ergo-quick-map")
   "KEYS a: align  b: compile  c: calc  d: dev mode  f: find file  h: hex mode  i: insert file  k: flycheck  l: imenu list  m: multiple  n: new buffer  o: occur  r: recover buffer  s: save  t: time  u: (un)maximize  w: save as  x: reading  B: none  C: calendar  D: open dir  F: format  I: insert signature  L: screen saver  M: rename file  R: readonly  S: save buffers  W: forecast  X: reading.")
@@ -1186,7 +1206,7 @@ STEP: pixels."
      (interactive)
 
      (if ,horizontally
-	 (enlarge-window-horizontally ,step))
+         (enlarge-window-horizontally ,step))
      (enlarge-window ,step)))
 
 (defconst fc--fast-enlarge-v (fc--adjust-window-size nil 5))
@@ -1222,11 +1242,11 @@ STEP: pixels."
      ("l" fc--fast-enlarge-h)
 
      ("q" ,(fc-manual (when (fc-user-confirm "Quit Emacs")
-			(fc-save-desktop)
-			(save-buffers-kill-emacs))))
+                        (fc-save-desktop)
+                        (save-buffers-kill-emacs))))
      ("r" ,(fc-manual (when (fc-user-confirm "Restart Emacs")
-			(fc-save-desktop)
-			(restart-emacs))))
+                        (fc-save-desktop)
+                        (restart-emacs))))
      ("t" fc-dark-theme)
      ("w" ,(fc-manual (fc-auto-select-theme *fc-work-themes*)))
      ("z" suspend-emacs)
@@ -1265,11 +1285,11 @@ STEP: pixels."
 (defconst *ergo-layout-map*
   (fc-make-keymap
    `(("l" ,(fc-manual (let ((name (read-char "Load layout : " nil *ergo-head-key-timeout*)))
-			(if name (fc-layout-load name) (message "")))))
+                        (if name (fc-layout-load name) (message "")))))
      ("q" fc-layout-push)
      ("p" fc-layout-pop)
      ("s" ,(fc-manual (let ((name (read-char "Save layout : " nil *ergo-head-key-timeout*)))
-			(if name (fc-layout-save name) (message ""))))))
+                        (if name (fc-layout-save name) (message ""))))))
    "ergo-layout-map")
   "KEYS l: load  p: pop  q: push  s: save.")
 
@@ -1277,25 +1297,25 @@ STEP: pixels."
   "Run function base on mode."
   (interactive)
   (let ((f (intern (format "fc-%s-func"
-			   (symbol-name major-mode)))))
+                           (symbol-name major-mode)))))
     (fc-funcall f :default 'fc-common-mode-func)))
 
 (defun fc-jump-word-in-line ()
   "Jump to a word in current line."
   (interactive)
   (avy-goto-word-0 nil
-		   (line-beginning-position)
-		   (line-end-position)))
+                   (line-beginning-position)
+                   (line-end-position)))
 
 (defconst fc--player-func (fc-head-key-repeat
-			   (concat "Player::"
-				   (fc-string *fc-player*))
-			   '*ergo-player-map*))
+                           (concat "Player::"
+                                   (fc-string *fc-player*))
+                           '*ergo-player-map*))
 
 (defun fc-player-func ()
   "Run player commands."
   (when (and (not *fc-player*)
-	     (fboundp #'fc-player-auto-select))
+             (fboundp #'fc-player-auto-select))
     (fc-player-auto-select))
 
   (if *fc-player*
@@ -1306,7 +1326,7 @@ STEP: pixels."
   "Test if REGEX is highlighting.
 REGEX: target regular expression."
   (--first (string= regex (car it))
-	   hi-lock-interactive-patterns))
+           hi-lock-interactive-patterns))
 
 (cl-defun fc-hi-lock-toggle (regex &key auto)
   "Toggle REGEX highlight state.
@@ -1317,66 +1337,59 @@ AUTO: auto select face."
 
     (let ((hi-lock-auto-select-face auto))
       (highlight-regexp regex
-			(hi-lock-read-face-name)))))
+                        (hi-lock-read-face-name)))))
 
 ;; normal mode
 (fc-modal-keys
  `(
    ("1" ,(fc-cond-key :normal 'delete-other-windows
-		      :prefix 'ace-delete-other-windows
-		      :one 'fc-split-window))
+                      :prefix 'ace-delete-other-windows
+                      :one 'fc-split-window))
    ("2" ,(fc-cond-key :normal (fc-manual
-			       (fc-split-window)
-			       (other-window 1)
-			       (fc-switch-to-recent-buffer))))
+                               (fc-split-window)
+                               (other-window 1)
+                               (fc-switch-to-recent-buffer))))
    ("3" ,(fc-cond-key :normal (fc-head-key "GTD" '*ergo-gtd-map*)))
    ("4" ,(fc-cond-key :normal 'ivy-switch-buffer
-		      :region 'comment-dwim))
+                      :region 'comment-dwim))
    ("5" toggle-frame-fullscreen)
    ("6" fc-toggle-window-maximize)
    ("7" ,(fc-cond-key :normal 'compile
-		      :work 'fc-proj-build))
+                      :work 'fc-proj-build))
    ("8" ,(fc-cond-key :normal 'fc-proj-open
-		      :work 'fc-proj-find-file))
+                      :work 'fc-proj-find-file))
    ("9" ,(fc-manual (set-mark-command 0)))
    ("0" fc-ergo-prefix-on)
 
    ("a" ,(fc-mode-key
-	  `((image-mode . image-bol)
-	    (_ . fc-beginning-of-line))))
+          `((image-mode . image-bol)
+            (_ . fc-beginning-of-line))))
    ("b" ,(fc-cond-key :normal 'fc-backward
-		      :region 'comment-dwim))
+                      :region 'comment-dwim))
    ("C-b" scroll-down-command)
 
    ;; c := Change
    ("c" ,(fc-cond-key :normal (fc-head-key "Change" '*ergo-change-map*)
-		      :region (fc-change-key)))
+                      :region (fc-change-key)))
 
    ;; d := Delete
    ("d" ,(fc-cond-key :normal (fc-head-key "Delete" '*ergo-delete-map*)
-		      :region 'kill-region))
+                      :region 'kill-region))
 
    ("e" ,(fc-mode-key
-	  `((image-mode . image-eol)
-	    (_ . end-of-line))))
-   ("f" ,(fc-cond-key :normal 'scroll-down-command
-		      :prefix (fc-head-key "Basic function" '*ergo-basic-function-map*)
-		      :region (fc-manual (fc-region (region-beginning) (region-end)
-					   (goto-char (point-min))
-					   (fc-modal-head-key
-					    "Basic function"
-					    '*ergo-basic-function-map*
-					    *ergo-head-key-timeout*)))))
+          `((image-mode . image-eol)
+            (_ . end-of-line))))
+   ("f" fc-basic-key)
 
    ;; g := Go/Global
    ("g" ,(fc-cond-key :normal (fc-head-key "Goto" '*ergo-goto-map*)
-		      :region (fc-head-key "Goto" '*ergo-goto-region-map*)))
+                      :region (fc-head-key "Goto" '*ergo-goto-region-map*)))
 
    ;; h := Help
    ("h" ,(fc-cond-key :normal (fc-head-key "Help" '*ergo-help-map*)
-		      :region (fc-manual
-			       (fc-hi-lock-toggle (fc-current-thing t t t)
-						  :auto t))))
+                      :region (fc-manual
+                               (fc-hi-lock-toggle (fc-current-thing t t t)
+                                                  :auto t))))
 
    ("i" previous-line)
    ("j" backward-char)
@@ -1385,118 +1398,118 @@ AUTO: auto select face."
 
    ;; m := Mark
    ("m" ,(fc-cond-key :normal (fc-head-key "Mark" '*ergo-mark-map*)
-		      :region 'deactivate-mark
-		      :prefix (fc-head-key "Mode" '*ergo-mode-map*)))
+                      :region 'deactivate-mark
+                      :prefix (fc-head-key "Mode" '*ergo-mode-map*)))
 
    ("n" fc-escape-key)
    ("o" ,(fc-cond-key :normal (fc-manual
-			       (end-of-line)
-			       (newline-and-indent)
-			       (fc-modal-global-mode -1))
-		      :region 'fc-occur-dwim))
+                               (end-of-line)
+                               (newline-and-indent)
+                               (fc-modal-global-mode -1))
+                      :region 'fc-occur-dwim))
 
    ;; p := Player
    ("p" ,(fc-cond-key :normal 'fc-match-paren
-		      :prefix 'fc-player-func))
+                      :prefix 'fc-player-func))
 
    ;; q := Quick/Quest
    ("q" ,(fc-cond-key :normal (fc-head-key "Quick" '*ergo-quick-map*)
-		      :prefix (fc-head-key "Prefix Quick" '*ergo-prefix-quick-map*)))
+                      :prefix (fc-head-key "Prefix Quick" '*ergo-prefix-quick-map*)))
 
    ("r" ,(fc-cond-key :normal 'fc-proj-recentf
-		      :region (fc-manual (fc--query-replace))
-		      :prefix (fc-manual (fc--query-replace))))
+                      :region (fc-manual (fc--query-replace))
+                      :prefix (fc-manual (fc--query-replace))))
    ("s" ,(fc-cond-key :normal 'fc-toggle-hide-show
-		      :region 'fc-isearch-dwim
-		      :prefix 'fc-search-next))
+                      :region 'fc-isearch-dwim
+                      :prefix 'fc-search-next))
    ("t" fc-translate-word)
    ("u" ,(fc-cond-key :normal 'fc-mode-func-key))
    ("v" ,(fc-cond-key :normal 'set-mark-command
-		      :region (fc-manual (er/expand-region 1))))
+                      :region (fc-manual (er/expand-region 1))))
    ("C-v" ,(fc-cond-key :normal 'er/mark-symbol
-			:region (fc-manual (er/expand-region -1))))
+                        :region (fc-manual (er/expand-region -1))))
    ("w" ,(fc-cond-key :normal 'fc-buffers-list
-		      :region 'delete-region
-		      :proj 'fc-switch-within-project))
+                      :region 'delete-region
+                      :proj 'fc-switch-within-project))
    ("x" ,(fc-cond-key :normal 'fc-delete-char
-		      :region 'exchange-point-and-mark))
+                      :region 'exchange-point-and-mark))
    ("y" ,(fc-cond-key :normal 'yank
-		      :prefix 'counsel-yank-pop
-		      :region (fc-manual
-			       (call-interactively #'delete-region)
-			       (if *fc-ergo-prefix*
-				   (fc-funcall 'counsel-yank-pop)
-				 (call-interactively #'yank)))))
+                      :prefix 'counsel-yank-pop
+                      :region (fc-manual
+                               (call-interactively #'delete-region)
+                               (if *fc-ergo-prefix*
+                                   (fc-funcall 'counsel-yank-pop)
+                                 (call-interactively #'yank)))))
 
    ("z" ,(fc-manual (push-mark (point))
-		    (undo)))
+                    (undo)))
 
    ("A" fc-begin-of-semantic)
    ("B" ,(fc-cond-key :normal 'fc-bookmark
-		      :prefix (fc-manual
-			       (let ((bm (fc-user-select "Select bookmark"
-							 (-map #'car bookmark-alist))))
-				 (when (and bm
-					    (fc-user-confirm (format
-							      "Delete bootmark '%s'"
-							      bm)))
-				   (bookmark-delete bm))))))
+                      :prefix (fc-manual
+                               (let ((bm (fc-user-select "Select bookmark"
+                                                         (-map #'car bookmark-alist))))
+                                 (when (and bm
+                                            (fc-user-confirm (format
+                                                              "Delete bootmark '%s'"
+                                                              bm)))
+                                   (bookmark-delete bm))))))
 
    ;; C := VC
    ("C" ,(fc-head-key "VC" '*ergo-vc-map*))
 
    ("D" ,(fc-cond-key :normal 'kill-this-buffer
-		      :region 'kill-rectangle))
+                      :region 'kill-rectangle))
    ("E" fc-end-of-semantic)
    ("F" ,(fc-cond-key :normal 'fc-find-files
-		      :region (fc-manual (call-interactively 'iedit-mode)
-					 (fc-modal-global-mode -1))))
+                      :region (fc-manual (call-interactively 'iedit-mode)
+                                         (fc-modal-global-mode -1))))
    ("G" ,(fc-cond-key :normal (fc-manual (fc-text-retrieve default-directory))
-		      :proj (fc-manual (fc-text-retrieve (fc-proj-root)))
-		      :prefix (fc-manual (fc-text-retrieve default-directory))))
+                      :proj (fc-manual (fc-text-retrieve (fc-proj-root)))
+                      :prefix (fc-manual (fc-text-retrieve default-directory))))
    ("H" ,(fc-cond-key :normal 'swiper
-		      :region (fc-manual
-			       (swiper (fc-current-thing nil nil t)))))
+                      :region (fc-manual
+                               (swiper (fc-current-thing nil nil t)))))
    ("I" fc-begin-of-func)
    ("J" backward-word)
    ("K" fc-end-of-func)
    ("L" forward-word)
    ("M" ,(fc-cond-key :normal (fc-head-key "Layout" '*ergo-layout-map*)
-		      :region (fc-manual
-			       (fc-insert-note
-				(fc-current-thing nil nil t)))))
+                      :region (fc-manual
+                               (fc-insert-note
+                                (fc-current-thing nil nil t)))))
    ("N" fc-narrow-widen)
    ("O" ,(fc-manual (beginning-of-line)
-		    (newline-and-indent)
-		    (forward-line -1)
-		    (indent-for-tab-command)
-		    (fc-modal-global-mode -1)))
+                    (newline-and-indent)
+                    (forward-line -1)
+                    (indent-for-tab-command)
+                    (fc-modal-global-mode -1)))
    ("P" fc-match-paren)
    ("Q" ,(fc-cond-key :normal 'delete-window
-		      :prefix 'ace-delete-window
-		      :one 'bury-buffer))
+                      :prefix 'ace-delete-window
+                      :one 'bury-buffer))
    ("R" ,(fc-cond-key :normal 'fc-recentf
-		      :region (fc-manual (fc--query-replace t))))
+                      :region (fc-manual (fc--query-replace t))))
    ("S" fc-toggle-hide-show-all)
    ("T" fc-translate-input-word)
    ("U" ,(fc-cond-key :normal (fc-manual
-			       (fc-search-next nil t))
-		      :prefix (fc-manual
-			       (fc-search-next (read-string "Search : ")))))
+                               (fc-search-next nil t))
+                      :prefix (fc-manual
+                               (fc-search-next (read-string "Search : ")))))
 
    ("V" fc-select-files-to-show)
    ("W" ,(fc-cond-key :normal 'fc-buffers-list
-		      :region 'delete-rectangle))
+                      :region 'delete-rectangle))
    ("X" zap-to-char)
    ("Y" ,(fc-cond-key :normal 'yank-rectangle
-		      :region (fc-manual
-			       (let ((text (fc-user-select "Kill ring" kill-ring)))
-				 (call-interactively #'delete-region)
-				 (insert text)))))
+                      :region (fc-manual
+                               (let ((text (fc-user-select "Kill ring" kill-ring)))
+                                 (call-interactively #'delete-region)
+                                 (insert text)))))
    ("Z" neotree-toggle)
 
    ("!" ,(fc-cond-key :normal 'shell-command
-		      :region 'shell-command-on-region))
+                      :region 'shell-command-on-region))
    ("@" ,(fc-manual (push-mark (point))))
    ("#" comment-dwim)
    ("$" fc-app-portal)
@@ -1505,71 +1518,71 @@ AUTO: auto select face."
    ("&" ,(fc-manual (fc-set-window-width :percent 66)))
    ("*" google-this-search)
    ("(" ,(fc-cond-key :normal 'fc-previous-bookmark
-		      :region (fc-decorate-region "(" ")")))
+                      :region (fc-decorate-region "(" ")")))
    (")" fc-next-bookmark)
    ("`" ,(fc-cond-key :normal 'fc-ergo-restore
-		      :region (fc-decorate-region "`" "`")))
+                      :region (fc-decorate-region "`" "`")))
    ("C-`" ,(fc-manual (fc-layout-pop)))
    ("~" ,(fc-manual (fc-player--app *fc-player*)))
    (":" fc-M-x)
    ("=" ,(fc-cond-key :normal (fc-mode-key
-			       `((image-mode . image-increase-size)
-				 (_ . text-scale-increase)))
-		      :prefix *fc-increase-volume*))
+                               `((image-mode . image-increase-size)
+                                 (_ . text-scale-increase)))
+                      :prefix *fc-increase-volume*))
    ("-" ,(fc-cond-key :normal  (fc-mode-key
-				`((image-mode . image-decrease-size)
-				  (_ . text-scale-decrease)))
-		      :prefix *fc-decrease-volume*))
+                                `((image-mode . image-decrease-size)
+                                  (_ . text-scale-decrease)))
+                      :prefix *fc-decrease-volume*))
    ("+" ,(fc-cond-key :normal  (fc-mode-key
-				`((image-mode . ,(fc-manual (image-transform-set-scale 1)))
-				  (_ . ,(fc-manual (text-scale-set 0)))))))
+                                `((image-mode . ,(fc-manual (image-transform-set-scale 1)))
+                                  (_ . ,(fc-manual (text-scale-set 0)))))))
    ("_" ,(fc-cond-key :normal 'fc-list-bookmark
-		      :prefix 'fc-edit-bookmark-annotation))
+                      :prefix 'fc-edit-bookmark-annotation))
    ("." ,(fc-cond-key :normal 'fc-find-definitions
-		      :region 'move-text-up))
+                      :region 'move-text-up))
    ("," ,(fc-cond-key :normal 'fc-find-references
-		      :region 'move-text-down))
+                      :region 'move-text-down))
    (";" ,(fc-cond-key :normal 'fc-fast-switch-window
-		      :region 'comment-dwim))
+                      :region 'comment-dwim))
    ("'" ,(fc-cond-key :normal 'avy-goto-char-timer
-		      :region (fc-mode-key
-			       `(((latex-mode markdown-mode). ,*fc-book-zh-single-quote*)
-				 (_ . ,(fc-decorate-region "'" "'"))))))
+                      :region (fc-mode-key
+                               `(((latex-mode markdown-mode). ,*fc-book-zh-single-quote*)
+                                 (_ . ,(fc-decorate-region "'" "'"))))))
    ("\"" ,(fc-cond-key :normal nil
-		       :region (fc-mode-key
-				`(((latex-mode markdown-mode) . ,*fc-book-zh-quote*)
-				  (_ . ,(fc-decorate-region "\"" "\""))))))
+                       :region (fc-mode-key
+                                `(((latex-mode markdown-mode) . ,*fc-book-zh-quote*)
+                                  (_ . ,(fc-decorate-region "\"" "\""))))))
    ("[" ,(fc-cond-key :normal 'fc-navi-prev
-		      :prefix *fc-decrease-display-brightness*
-		      :region (fc-decorate-region "[" "]")))
+                      :prefix *fc-decrease-display-brightness*
+                      :region (fc-decorate-region "[" "]")))
    ("]" ,(fc-cond-key :normal 'fc-navi-next
-		      :prefix *fc-increase-display-brightness*
-		      :region *fc-undef-key*))
+                      :prefix *fc-increase-display-brightness*
+                      :region *fc-undef-key*))
    ("{" ,(fc-cond-key :normal 'previous-error
-		      :region (fc-decorate-region "{" "}")))
+                      :region (fc-decorate-region "{" "}")))
    ("}" next-error)
    ("<" ,(fc-cond-key :normal 'previous-buffer
-		      :region 'python-indent-shift-left))
+                      :region 'python-indent-shift-left))
    (">" ,(fc-cond-key :normal 'next-buffer
-		      :region 'python-indent-shift-right))
+                      :region 'python-indent-shift-right))
    ("?" ,(fc-cond-key :normal 'fc-run-key-seq
-		      :prefix 'fc-set-key-seq))
+                      :prefix 'fc-set-key-seq))
    ("/" ,(fc-cond-key :normal 'isearch-forward-regexp
-		      :prefix 'fc-isearch-dwim))
+                      :prefix 'fc-isearch-dwim))
    ("\\" ,(fc-cond-key :normal 'query-replace-regexp
-		       :region 'fc-query-replace
-		       :prefix 'query-replace))
+                       :region 'fc-query-replace
+                       :prefix 'query-replace))
    ("|" ,(fc-cond-key :normal 'make-frame
-		      :prefix 'delete-frame))
+                      :prefix 'delete-frame))
    ("S-<SPC>" ,(fc-cond-key :normal 'scroll-down-command
-			    :prefix *fc-undef-key*
-			    :region 'copy-rectangle-as-kill))
+                            :prefix *fc-undef-key*
+                            :region 'copy-rectangle-as-kill))
    ("M-<SPC>" ,(fc-cond-key :normal 'scroll-down-command
-			    :prefix *fc-undef-key*
-			    :region 'copy-rectangle-as-kill))
+                            :prefix *fc-undef-key*
+                            :region 'copy-rectangle-as-kill))
    ("SPC" ,(fc-cond-key :normal 'scroll-up-command
-			:region 'kill-ring-save
-			:prefix 'just-one-space))
+                        :region 'kill-ring-save
+                        :prefix 'just-one-space))
    ("<escape>" fc-escape-key)))
 
 (cl-defun fc-ergo-search-next ()
@@ -1582,8 +1595,8 @@ AUTO: auto select face."
   (fc-search-next))
 
 (fc-bind-keys `(("C-o" fc-modal-run)
-		("C-S-o" fc-modal-run)
-		("C-f" fc-ergo-search-next)))
+                ("C-S-o" fc-modal-run)
+                ("C-f" fc-ergo-search-next)))
 
 (defun fc-ergo-repeat-func (func)
   "Set ergo repeat func.
@@ -1598,37 +1611,37 @@ FUNC: new repeat func."
   (advice-add it :before #'fc-modal-global-mode-off))
 
 (--each '(fc-edit-bookmark-annotation
-	  fc-toggle-bookmark
-	  fc-add-favorite-buffer
-	  fc-modal-head-key
-	  fc-set-key-seq
-	  fc-search-next
-	  just-one-space)
+          fc-toggle-bookmark
+          fc-add-favorite-buffer
+          fc-modal-head-key
+          fc-set-key-seq
+          fc-search-next
+          just-one-space)
   (advice-add it :after #'fc-ergo-prefix-off))
 
 (--each '(fc-ergo-simple-grep
-	  fc-ergo-grep
-	  ggtags-find-tag-dwim
-	  fc-lisp-find-tag
-	  compile
-	  fc-proj-build
-	  delete-window
-	  delete-other-window
-	  ace-delete-window
-	  fc-split-window
-	  split-window-vertically
-	  split-window-horizontally)
+          fc-ergo-grep
+          ggtags-find-tag-dwim
+          fc-lisp-find-tag
+          compile
+          fc-proj-build
+          delete-window
+          delete-other-window
+          ace-delete-window
+          fc-split-window
+          split-window-vertically
+          split-window-horizontally)
   (advice-add it :before #'fc-layout-push))
 
 (--each '(fc-find-definitions
-	  fc-find-references)
+          fc-find-references)
   (advice-add it :after #'fc-layout-push))
 
 (fc-add-to-hook '*fc-ergo-restore-hook*
-		#'fc-ergo-prefix-off
-		#'(lambda ()
-		    (fc-ergo-repeat-func *fc-repeat-orignal-func*))
-		#'fc-search-stop)
+                #'fc-ergo-prefix-off
+                #'(lambda ()
+                    (fc-ergo-repeat-func *fc-repeat-orignal-func*))
+                #'fc-search-stop)
 
 (provide 'fc-ergo)
 

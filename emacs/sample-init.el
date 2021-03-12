@@ -20,8 +20,6 @@
  '(sml/line-number ((t (:inherit sml/global :weight normal)))))
 
 (defun fc-user-config ()
-  (setenv "FCHOME" "${FCHOME}")
-
   (setf *fc-font-mode-line-delta* 0)
   (fc-require 'fc-modeline)
 
@@ -38,6 +36,8 @@
     (setf *fc-enable-nyan* nil))
 
   (defconst *fc-work-gateway-mac* '("00:25:36:b7:5c:09")))
+
+(setenv "FCHOME" "${FCHOME}")
 
 (add-to-list 'load-path "~/.emacs.d/fconfig")
 (require 'fc)

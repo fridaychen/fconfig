@@ -504,9 +504,10 @@ DIR: dir to search."
      (fc-eshell-pwd)
      (if branch
          (fc-text
-          (format "\n %s %s"
+          (format "\n %s %s%s"
                   (if *is-colorful* "" "^")
-                  branch)
+                  branch
+                  (shell-command-to-string "git status -s | awk -f ${FCHOME}/bin/ps-fit.awk"))
           :face '(:foreground "OrangeRed" :inherit bold)))
      "\n"
      (if *is-colorful* "╍❱ " "-> "))))

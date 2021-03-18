@@ -1325,8 +1325,7 @@ STEP: pixels."
 (cl-defun fc-hi-lock-p (regex)
   "Test if REGEX is highlighting.
 REGEX: target regular expression."
-  (--first (string= regex (car it))
-           hi-lock-interactive-patterns))
+  (assoc regex hi-lock-interactive-lighters))
 
 (cl-defun fc-hi-lock-toggle (regex &key auto)
   "Toggle REGEX highlight state.
@@ -1335,7 +1334,7 @@ AUTO: auto select face."
   (if (fc-hi-lock-p regex)
       (unhighlight-regexp regex)
 
-    (let ((hi-lock-auto-select-face auto))
+    (let ((hi-lock-auto-select-face t))
       (highlight-regexp regex
                         (hi-lock-read-face-name)))))
 

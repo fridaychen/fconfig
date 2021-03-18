@@ -74,13 +74,13 @@
 
 ;; sounds
 (defconst *fc-sounds* '((welcome "startrek.mp3")
-			(incoming "incomingmsg.mp3")
-			(sweep "sweep.mp3")
-			(ringtong "ctu24.mp3")
-			(intercom "intercom.mp3")
-			(cheerup "mission_impossible_theme.mp3"
-				 "the_imperial_march.mp3"
-				 "terminator.mp3")))
+                        (incoming "incomingmsg.mp3")
+                        (sweep "sweep.mp3")
+                        (ringtong "ctu24.mp3")
+                        (intercom "intercom.mp3")
+                        (cheerup "mission_impossible_theme.mp3"
+                                 "the_imperial_march.mp3"
+                                 "terminator.mp3")))
 
 ;; completion
 (if *is-mac*
@@ -92,51 +92,51 @@
 
 ;; theme
 (setf *fc-light-theme* '(
-			 (gruvbox-light-hard . gruvbox-theme)
-			 (material-light . material-theme)
-			 (sanityinc-tomorrow-day . color-theme-sanityinc-tomorrow)
-			 tango
-			 )
+                         (gruvbox-light-hard . gruvbox-theme)
+                         (material-light . material-theme)
+                         (sanityinc-tomorrow-day . color-theme-sanityinc-tomorrow)
+                         tango
+                         )
       *fc-dark-theme* (if *is-gui*
-			  '(
-			    (fantom . fantom-theme)
-			    (gruvbox-dark-hard . gruvbox-theme)
-			    (material . material-theme)
-			    (monokai-pro-octagon . monokai-pro-theme)
-			    (sanityinc-tomorrow-eighties . color-theme-sanityinc-tomorrow)
-			    (srcery . srcery-theme)
-			    )
-			'(
-			  (gruvbox-dark-soft . gruvbox-theme)
-			  (monokai-pro . monokai-pro-theme)
-			  (srcery . srcery-theme)
-			  )
-			)
+                          '(
+                            (fantom . fantom-theme)
+                            (gruvbox-dark-hard . gruvbox-theme)
+                            (material . material-theme)
+                            (monokai-pro . monokai-pro-theme)
+                            (sanityinc-tomorrow-eighties . color-theme-sanityinc-tomorrow)
+                            (srcery . srcery-theme)
+                            )
+                        '(
+                          (gruvbox-dark-soft . gruvbox-theme)
+                          (monokai-pro . monokai-pro-theme)
+                          (srcery . srcery-theme)
+                          )
+                        )
       *fc-deep-dark-theme* (if *is-gui*
-			       '(
-				 (danneskjold . danneskjold-theme)
-				 (hybrid-reverse . hybrid-reverse-theme)
-				 (jazz . jazz-theme)
-				 (mlso . mlso-theme)
-				 (nord . nord-theme)
-				 )
-			     '(
-			       (danneskjold . danneskjold-theme)
-			       (jazz . jazz-theme)
-			       (nord . nord-theme)
-			       ))
+                               '(
+                                 (danneskjold . danneskjold-theme)
+                                 (hybrid-reverse . hybrid-reverse-theme)
+                                 (jazz . jazz-theme)
+                                 (mlso . mlso-theme)
+                                 (nord . nord-theme)
+                                 )
+                             '(
+                               (danneskjold . danneskjold-theme)
+                               (jazz . jazz-theme)
+                               (nord . nord-theme)
+                               ))
       ;; fringe width 2.5mm for laptop, otherwise 3mm
       *fc-fringe-width* (if *is-gui*
-			    (truncate (* (fc-display-ppi)
-					 (/ (if *is-laptop* 2.5 3) 24.5)))
-			  0)
+                            (truncate (* (fc-display-ppi)
+                                         (/ (if *is-laptop* 2.5 3) 24.5)))
+                          0)
       ;; font height 145 for laptop, otherwiseo 160
       *fc-font-height* (if *is-laptop* 145
-			 (cond
-			  (*is-mac* 180)
-			  (*is-linux* 142)
-			  (*is-cygwin* 142)
-			  (*is-windows* 142)))
+                         (cond
+                          (*is-mac* 180)
+                          (*is-linux* 142)
+                          (*is-cygwin* 142)
+                          (*is-windows* 142)))
       *fc-font-mode-line-delta* -12)
 
 (require 'classic-theme)
@@ -146,21 +146,21 @@
 PERCENT: produce background color by darken this percent.
 COLOR: background color."
   (--each '(font-lock-keyword-face
-	    font-lock-function-name-face
-	    font-lock-variable-name-face
-	    font-lock-type-face
-	    font-lock-constant-face)
+            font-lock-function-name-face
+            font-lock-variable-name-face
+            font-lock-type-face
+            font-lock-constant-face)
     (let* ((new-bg (if color color
-		     (color-darken-name
-		      (fc-get-face-attribute it :background)
-		      percent))))
+                     (color-darken-name
+                      (fc-get-face-attribute it :background)
+                      percent))))
       (fc-set-face-attribute it nil :background new-bg))))
 
 (defvar *fc-soothe-percent* -4)
 (defconst *fc-soothe-color* (make-hash-table))
 (--each '((material "gray20")
-	  (mlso "gray16")
-	  (tango-dark "gray23"))
+          (mlso "gray16")
+          (tango-dark "gray23"))
   (puthash (cl-first it) (cl-second it) *fc-soothe-color*))
 
 (defun fc-patch-theme ()
@@ -170,50 +170,50 @@ COLOR: background color."
       ('classic
        (setf soothe-percent -2)
        (fc-set-face-attribute 'default nil
-			      :background (color-darken-name
-					   (fc-get-face-attribute 'default :background)
-					   2)))
+                              :background (color-darken-name
+                                           (fc-get-face-attribute 'default :background)
+                                           2)))
 
       ('material
        (fc-set-face-attribute 'default nil
-			      :foreground "#dfdfdf"
-			      :background "#102a20")
+                              :foreground "#dfdfdf"
+                              :background "#102a20")
        (fc-set-face-attribute 'markdown-header-face-1 nil
-			      :height 1.2)
+                              :height 1.2)
        (fc-set-face-attribute 'org-level-1 nil
-			      :height 1.2)
+                              :height 1.2)
        (fc-set-face-attribute 'org-level-2 nil
-			      :height 1.1))
+                              :height 1.1))
 
       ('mlso
        (fc-set-face-attribute 'whitespace-trailing nil
-			      :background "red4")
+                              :background "red4")
        (fc-set-face-attribute 'hl-line nil
-			      :foreground (cond (*is-gui* "LightPink4")
-						(*is-colorful* "#505050")
-						(t "white"))))
+                              :foreground (cond (*is-gui* "LightPink4")
+                                                (*is-colorful* "#505050")
+                                                (t "white"))))
 
       ('tango-dark
        (fc-set-face-attribute 'default nil
-			      :background "#203420")
+                              :background "#203420")
        (fc-set-face-attribute 'hl-line nil
-			      :foreground "LightPink2"
-			      :background "gray30"))
+                              :foreground "LightPink2"
+                              :background "gray30"))
 
       ('zenburn
        (fc-set-face-attribute 'default nil
-			      :background "#383838")
+                              :background "#383838")
        (fc-set-face-attribute 'hl-line nil
-			      :background (cond (*is-gui* "#1E3124")
-						(*is-colorful* "#505050")
-						(t "white")))))
+                              :background (cond (*is-gui* "#1E3124")
+                                                (*is-colorful* "#505050")
+                                                (t "white")))))
 
     (fc-soothe-theme soothe-percent
-		     (gethash *fc-current-theme*
-			      *fc-soothe-color*))
+                     (gethash *fc-current-theme*
+                              *fc-soothe-color*))
 
     (fc-set-face-attribute 'hi-yellow nil
-			   :background "yellow3")))
+                           :background "yellow3")))
 
 ;; players
 (cl-defun fc-init-user-player ()
@@ -222,16 +222,16 @@ COLOR: background color."
     (cl-return-from fc-init-user-player))
 
   (setf *fc-players* (cond
-		      (*is-linux*
-		       (list (fc-player-mpris :name "Lollypop")
-			     (fc-player-mpris :name "quodlibet")
-			     (fc-player-mpris :name "rhythmbox")))
+                      (*is-linux*
+                       (list (fc-player-mpris :name "Lollypop")
+                             (fc-player-mpris :name "quodlibet")
+                             (fc-player-mpris :name "rhythmbox")))
 
-		      (*is-cygwin*
-		       (list (fc-player-foobar :name "foobar")))
+                      (*is-cygwin*
+                       (list (fc-player-foobar :name "foobar")))
 
-		      (*is-mac*
-		       (list (fc-player-itunes :name "iTunes")))))
+                      (*is-mac*
+                       (list (fc-player-itunes :name "iTunes")))))
 
   (when (fboundp #'fc-player-auto-select)
     (fc-idle-delay
@@ -242,11 +242,11 @@ COLOR: background color."
 (defconst *fc-ignore-file* '("TOP" "GRTAGS" "GTAGS" "GPATH" "\\.DS_Store" "\\.o\$" "\\.pyc\$" "\\.mobi\$" "\\.azw3\$" "\\.pdf\$" "\\.bin\$" "\\.d\$" "\\.elc\$" "\\.old\$" "\\.bak\$" "~\$" "#\$"))
 
 (fc-add-to-list 'completion-ignored-extensions
-		".DS_Store"
-		".mobi" ".azw3" ".epub" ".pdf"
-		".bin" ".d" ".pyc" ".o" ".elc"
-		".old" ".bak"
-		"TOP" "GRTAGS" "GTAGS" "GPATH")
+                ".DS_Store"
+                ".mobi" ".azw3" ".epub" ".pdf"
+                ".bin" ".d" ".pyc" ".o" ".elc"
+                ".old" ".bak"
+                "TOP" "GRTAGS" "GTAGS" "GPATH")
 
 ;; environment
 (cond
@@ -262,21 +262,21 @@ COLOR: background color."
 
 ;; hide-show modes setting
 (defconst *fc-prog-modes* '(c-mode
-			    c++-mode
-			    emacs-lisp-mode
-			    go-mode
-			    haskell-mode
-			    lisp-mode
-			    ocaml-mode
-			    sh-mode
-			    python-mode))
+                            c++-mode
+                            emacs-lisp-mode
+                            go-mode
+                            haskell-mode
+                            lisp-mode
+                            ocaml-mode
+                            sh-mode
+                            python-mode))
 
 (defconst *fc-doc-modes* '(html-mode
-			   latex-mode
-			   markdown-mode
-			   org-mode
-			   yaml-mode
-			   xml-mode))
+                           latex-mode
+                           markdown-mode
+                           org-mode
+                           yaml-mode
+                           xml-mode))
 
 (provide 'fc-common)
 

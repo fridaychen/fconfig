@@ -12,6 +12,7 @@
   :after
   (progn
     (setf org-hide-emphasis-markers t
+          org-log-done t
           )
 
     (require 'ob-gnuplot)
@@ -98,7 +99,10 @@
      ("E" org-edit-special)
      ("C i" org-clock-in)
      ("C o" org-clock-out)
+     ("S" org-schedule)
      ("T" org-set-tags-command)
+     ("-" org-ctrl-c-minus)
+     ("^" org-sort)
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-punctuation-map*)

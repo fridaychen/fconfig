@@ -22,5 +22,5 @@ END {
 		printf(" %d", total);
 
 	if (conflicted)
-		printf("💥");
+	    printf(" 💥%d", conflicted);
 }

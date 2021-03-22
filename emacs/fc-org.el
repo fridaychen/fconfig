@@ -6,6 +6,15 @@
 ;;; Code:
 (require 'cl-lib)
 
+(defvar *fc-org-dir* "~/org/")
+(defvar *fc-org-captrue-template*
+  `(
+    ("t" "Todo" "remind.org" "Incoming"
+     "* TODO %? (wrote on %U)")
+    ("k" "Knowledge" "knowledge.org" "Incoming"
+     "* %?\n  # Wrote on %U")
+    ))
+
 (fc-install 'org-superstar)
 
 (fc-load 'org
@@ -15,6 +24,8 @@
           org-log-done t
           )
 
+    (require 'org-agenda)
+    (require 'org-capture)
     (require 'ob-gnuplot)
     (require 'ob-octave)
 
@@ -115,40 +126,27 @@
 (cl-defun fc-org-agenda-mode-func ()
   (fc-modal-head-key "Org" '*fc-org-map*))
 
-(let* ((org-dir "~/org/")
-       (remind-file (concat org-dir "remind.org"))
-       (knowledge-file (concat org-dir "knowledge.org")))
+(cl-defun fc--org-init-dir ()
+  (unless (fc-dir-exists-p *fc-org-dir*)
+    (make-directory *fc-org-dir*)))
 
-  (cl-defun fc--org-init-dir ()
-    (unless (fc-dir-exists-p org-dir)
-      (make-directory org-dir))
+(cl-defun fc-org-autoconfig ()
+  (fc--org-init-dir)
 
-    (fc-create-file-if-not-exists remind-file
-                                  "# remind file\n")
+  (setf org-agenda-files (directory-files *fc-org-dir* t "org$")
+        org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
+                                      "|"
+                                      "DONE(d)" "SOMEDAY(s)")))
 
-    (fc-create-file-if-not-exists knowledge-file
-                                  "# knowledge file\n"))
-
-  (cl-defun fc-org-autoconfig ()
-    (fc--org-init-dir)
-
-    (setf org-agenda-files
-          (directory-files "~/org" t "org$"))
-
-    (setf org-todo-keywords
-          '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
-                      "|"
-                      "DONE(d)" "SOMEDAY(s)")))
-
-    (setf org-capture-templates
-          `(("t" "Todo" entry (file+headline
-                               ,remind-file
-                               "Capture")
-             "* TODO %? (wrote on %U)")
-            ("k" "Knowledge" entry (file+headline
-                                    ,knowledge-file
-                                    "TOP")
-             "* %?\n  # Wrote on %U")))))
+  (--each *fc-org-captrue-template*
+    (add-to-list 'org-capture-templates
+                 `(,(cl-first it)
+                   ,(cl-second it)
+                   entry
+                   (file+headline
+                    ,(concat *fc-org-dir* (cl-third it))
+                    ,(cl-fourth it))
+                   ,(cl-fifth it)))))
 
 (when (eq major-mode 'org-mode)
   (fc--setup-org-mode))

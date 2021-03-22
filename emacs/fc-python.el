@@ -8,6 +8,7 @@
 
 (fc-load 'python-mode
   :after (progn
+           (require 'python)
            (fc-add-fmt 'python-mode
                        `("black" "-l" ,(fc-string py-comment-fill-column) "-")
                        nil)))

@@ -88,17 +88,18 @@
   (fc-make-keymap
    `(
      ("c" org-ctrl-c-ctrl-c)
-     ("d" org-insert-drawer)
-     ("i T" org-time-stamp)
+     ("i d" org-insert-drawer)
+     ("i t" org-time-stamp)
      ("l" org-insert-link)
      ("o" org-open-at-point)
      ("s" fc-org-add-source-block)
      ("t" org-todo)
      ("v t" ,(fc-manual (org-tags-view t)))
      ("v T" org-tags-view)
-     ("E" org-edit-special)
      ("C i" org-clock-in)
      ("C o" org-clock-out)
+     ("D" org-deadline)
+     ("E" org-edit-special)
      ("S" org-schedule)
      ("T" org-set-tags-command)
      ("-" org-ctrl-c-minus)
@@ -106,7 +107,7 @@
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-punctuation-map*)
-  "KEYS c: C-c C-c  d: drawer  e: edit special  l: link  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  C i: clock in  C o:clock out  T: set tag.")
+  "KEYS c: C-c C-c  i d: drawer  i t: timestamp  l: link  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  C i: clock in  C o: clock out  D: deadline  E: edit special  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()
   (fc-modal-head-key "Org" '*fc-org-map*))

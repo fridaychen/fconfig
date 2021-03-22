@@ -76,6 +76,9 @@
 
 (autoload #'mark-ifdef "ifdef")
 
+;; org
+(autoload #'org-agenda "fc-org")
+
 ;; extra
 (autoload #'2048-game "fc-extra")
 

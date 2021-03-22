@@ -109,21 +109,20 @@
                         '(
                           (gruvbox-dark-soft . gruvbox-theme)
                           (monokai-pro . monokai-pro-theme)
-                          (srcery . srcery-theme)
                           )
                         )
       *fc-deep-dark-theme* (if *is-gui*
                                '(
-                                 (danneskjold . danneskjold-theme)
+                                 (gotham . gotham-theme)
                                  (hybrid-reverse . hybrid-reverse-theme)
                                  (jazz . jazz-theme)
                                  (mlso . mlso-theme)
                                  (nord . nord-theme)
                                  )
                              '(
-                               (danneskjold . danneskjold-theme)
                                (jazz . jazz-theme)
                                (nord . nord-theme)
+                               (sanityinc-tomorrow-night . color-theme-sanityinc-tomorrow)
                                ))
       ;; fringe width 2.5mm for laptop, otherwise 3mm
       *fc-fringe-width* (if *is-gui*

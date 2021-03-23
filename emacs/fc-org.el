@@ -66,6 +66,7 @@
     (add-hook 'org-mode-hook #'fc--setup-org-mode)))
 
 (cl-defun fc-org-add-header ()
+  "Add header."
   (goto-char (point-min))
 
   (insert "#+auther: " (read-string "Author : ") "\n"
@@ -73,6 +74,7 @@
           "#+title " (read-string "Title : ")  "\n"))
 
 (cl-defun fc-org-add-var ()
+  "Add var."
   (save-excursion
     (goto-char (point-max))
 
@@ -90,6 +92,9 @@
 ")))
 
 (cl-defun fc-org-add-block (type param)
+  "Add block.
+TYPE: type of block.
+PARAM: parameter of block."
   (when (and (not (region-active-p))
              (/= (current-column) 0))
     (end-of-line)
@@ -111,6 +116,7 @@
       (goto-char point-of-content))))
 
 (cl-defun fc-org-add-source-block ()
+  "Add source block."
   (let ((lang (read-string "Programming language : ")))
     (fc-org-add-block "SRC" lang)))
 
@@ -141,6 +147,7 @@
      ("C o" org-clock-out)
      ("D" org-deadline)
      ("E" org-edit-special)
+     ("M" org-agenda-month-view)
      ("S" org-schedule)
      ("T" org-set-tags-command)
      ("-" org-ctrl-c-minus)
@@ -151,16 +158,20 @@
   "KEYS c: C-c C-c  i d: drawer  i t: timestamp  l: link  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  C i: clock in  C o: clock out  D: deadline  E: edit special  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()
+  "FC org-mode func."
   (fc-modal-head-key "Org" '*fc-org-map*))
 
 (cl-defun fc-org-agenda-mode-func ()
+  "FC org-agenda-mode func."
   (fc-modal-head-key "Org" '*fc-org-map*))
 
 (cl-defun fc--org-init-dir ()
+  "Init org directory."
   (unless (fc-dir-exists-p *fc-org-dir*)
     (make-directory *fc-org-dir*)))
 
 (cl-defun fc-org-autoconfig ()
+  "Auto config org."
   (fc--org-init-dir)
 
   (setf org-agenda-files (directory-files *fc-org-dir* t "org$")

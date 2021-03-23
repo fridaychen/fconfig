@@ -10,7 +10,7 @@
 (defvar *fc-org-captrue-template*
   `(
     ("t" "Todo" "remind.org" "Incoming"
-     "* TODO %? (wrote on %U)")
+     "* TODO %?\n  # Wrote on %U)")
     ("k" "Knowledge" "knowledge.org" "Incoming"
      "* %?\n  # Wrote on %U")
     ))
@@ -62,6 +62,8 @@
     (add-hook 'org-capture-mode-hook #'fc--capture-copy-region)
     (add-hook 'org-capture-mode-hook #'org-align-all-tags)
     (add-hook 'org-capture-mode-hook #'fc--capture-tag)
+
+    (add-hook 'org-capture-after-finalize-hook #'fc-modal-global-mode)
 
     (add-hook 'org-mode-hook #'fc--setup-org-mode)))
 
@@ -175,6 +177,7 @@ PARAM: parameter of block."
   (fc--org-init-dir)
 
   (setf org-agenda-files (directory-files *fc-org-dir* t "org$")
+        org-capture-templates nil
         org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
                                       "|"
                                       "DONE(d)" "SOMEDAY(s)")))

@@ -33,6 +33,20 @@
       (org-superstar-mode 1)
       (visual-line-mode 1))
 
+    (cl-defun fc--capture-copy-region ()
+      (save-excursion
+        (let ((data nil))
+          (with-current-buffer (plist-get org-capture-plist :original-buffer)
+            (when (region-active-p)
+              (setf data (buffer-substring (region-beginning)
+                                           (region-end)))
+              (deactivate-mark)))
+          (when data
+            (goto-char (point-max))
+            (when (/= (current-column) 0)
+              (insert "\n"))
+            (insert data)))))
+
     (cl-defun fc--capture-tag ()
       (let ((tags
              (with-current-buffer (plist-get org-capture-plist :original-buffer)
@@ -40,8 +54,15 @@
                  fc-capture-tags))))
         (org-set-tags (fc-string tags))))
 
-    (add-hook 'org-capture-mode-hook #'fc--capture-tag)
+    (cl-defun fc--capture-edit ()
+      (insert " ")
+      (fc-modal-global-mode -1))
+
+    (add-hook 'org-capture-mode-hook #'fc--capture-edit)
+    (add-hook 'org-capture-mode-hook #'fc--capture-copy-region)
     (add-hook 'org-capture-mode-hook #'org-align-all-tags)
+    (add-hook 'org-capture-mode-hook #'fc--capture-tag)
+
     (add-hook 'org-mode-hook #'fc--setup-org-mode)))
 
 (cl-defun fc-org-add-header ()

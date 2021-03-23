@@ -21,8 +21,8 @@
   :after
   (progn
     (setf org-hide-emphasis-markers t
-	  org-log-done t
-	  )
+          org-log-done t
+          )
 
     (require 'org-agenda)
     (require 'org-capture)
@@ -33,14 +33,23 @@
       (org-superstar-mode 1)
       (visual-line-mode 1))
 
+    (cl-defun fc--capture-tag ()
+      (let ((tags
+             (with-current-buffer (plist-get org-capture-plist :original-buffer)
+               (when (boundp 'fc-capture-tags)
+                 fc-capture-tags))))
+        (org-set-tags (fc-string tags))))
+
+    (add-hook 'org-capture-mode-hook #'fc--capture-tag)
+    (add-hook 'org-capture-mode-hook #'org-align-all-tags)
     (add-hook 'org-mode-hook #'fc--setup-org-mode)))
 
 (cl-defun fc-org-add-header ()
   (goto-char (point-min))
 
   (insert "#+auther: " (read-string "Author : ") "\n"
-	  "#+date <" (read-string "Date : ") ">\n"
-	  "#+title " (read-string "Title : ")  "\n"))
+          "#+date <" (read-string "Date : ") ">\n"
+          "#+title " (read-string "Title : ")  "\n"))
 
 (cl-defun fc-org-add-var ()
   (save-excursion
@@ -61,18 +70,18 @@
 
 (cl-defun fc-org-add-block (type param)
   (when (and (not (region-active-p))
-	     (/= (current-column) 0))
+             (/= (current-column) 0))
     (end-of-line)
     (insert "\n\n"))
 
   (let ((content (when (region-active-p)
-		   (kill-region (region-beginning)
-				(region-end))
-		   t))
-	(point-of-content nil))
+                   (kill-region (region-beginning)
+                                (region-end))
+                   t))
+        (point-of-content nil))
     (insert "#+BEGIN_" type " " param "\n")
     (if content
-	(yank)
+        (yank)
       (setf point-of-content (point))
       (insert "\n"))
     (insert "#+END_" type "\n")
@@ -134,19 +143,19 @@
   (fc--org-init-dir)
 
   (setf org-agenda-files (directory-files *fc-org-dir* t "org$")
-	org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
-				      "|"
-				      "DONE(d)" "SOMEDAY(s)")))
+        org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
+                                      "|"
+                                      "DONE(d)" "SOMEDAY(s)")))
 
   (--each *fc-org-captrue-template*
     (add-to-list 'org-capture-templates
-		 `(,(cl-first it)
-		   ,(cl-second it)
-		   entry
-		   (file+headline
-		    ,(concat *fc-org-dir* (cl-third it))
-		    ,(cl-fourth it))
-		   ,(cl-fifth it)))))
+                 `(,(cl-first it)
+                   ,(cl-second it)
+                   entry
+                   (file+headline
+                    ,(concat *fc-org-dir* (cl-third it))
+                    ,(cl-fourth it))
+                   ,(cl-fifth it)))))
 
 (cl-defun fc--before-agenda (&rest _rest)
   "Wrapper function."

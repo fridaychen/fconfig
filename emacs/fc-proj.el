@@ -115,6 +115,7 @@ TARGET: make target."
       (with-current-buffer (get-buffer-create (find-file var-filename))
         (add-dir-local-variable nil 'fc-proj-name (fc-proj--get x :name))
         (add-dir-local-variable nil 'fc-proj-tag (fc-proj--get x :tag))
+        (add-dir-local-variable nil 'fc-capture-tags (fc-proj--get x :capture-tags))
 
         ;; company-clang
         (let ((clang-args (append (--map (concat "-D" it) define)
@@ -156,6 +157,7 @@ DIR: project path."
     (fc-conf-put conf nil :env)
     (fc-conf-put conf nil :path)
     (fc-conf-put conf nil :local)
+    (fc-conf-put conf nil :capture-tags)
     (fc-conf-put conf
                  (make-symbol
                   (fc-user-select "Select tag system"
@@ -233,6 +235,7 @@ DIR: project path."
    "Project properties"
    `(
      (":build-args"     .       ,(fc-edit-property-fn :build-args))
+     (":capture-tags"   .       ,(fc-edit-property-fn :capture-tags))
      (":define"         .       ,(fc-edit-property-fn :define))
      (":env"            .       ,(fc-edit-property-fn :env))
      (":include"        .       ,(fc-edit-property-fn :include))

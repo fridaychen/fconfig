@@ -460,6 +460,9 @@ INDENT-FUNC: function for indent."
     ((or 'lisp-mode 'emacs-lisp-mode 'sh-mode 'go-mode)
      (mark-defun))
 
+    ('org-mode
+     (org-mark-subtree))
+
     ('python-mode
      (python-mark-defun))
 

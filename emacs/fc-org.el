@@ -145,6 +145,7 @@ PARAM: parameter of block."
      ("t" org-todo)
      ("v t" ,(fc-manual (org-tags-view t)))
      ("v T" org-tags-view)
+     ("A" org-archive-subtree)
      ("C i" org-clock-in)
      ("C o" org-clock-out)
      ("D" org-deadline)
@@ -157,7 +158,7 @@ PARAM: parameter of block."
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-punctuation-map*)
-  "KEYS c: C-c C-c  i d: drawer  i t: timestamp  l: link  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  C i: clock in  C o: clock out  D: deadline  E: edit special  S: schedule  T: set tag  -: C-c minus  ^: sort.")
+  "KEYS c: C-c C-c  i d: drawer  i t: timestamp  l: link  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  C i: clock in  C o: clock out  A: archive  D: deadline  E: edit special  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()
   "FC org-mode func."

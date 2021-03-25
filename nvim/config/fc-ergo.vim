@@ -20,6 +20,7 @@ map qx :x<cr>
 map q<Space> <C-z>
 
 map <tab> :buffer<Space>
+map f <PageUp>
 map <Space> <PageDown>
 map m <PageUp>
 map D :bd<CR>

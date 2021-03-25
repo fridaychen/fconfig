@@ -1,5 +1,6 @@
 set exrc
 set number
+set linebreak
 
 source $HOME/.config/nvim/config/fc-line.vim
 source $HOME/.config/nvim/config/fc-theme.vim

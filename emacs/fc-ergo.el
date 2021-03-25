@@ -1052,6 +1052,7 @@ KEYMAP: keymap to run."
 (defconst *ergo-gtd-map*
   (fc-make-keymap
    `(
+     ("3" org-agenda-list)
      ("a" org-agenda)
      ("c" org-capture)
      ("l" org-store-link)

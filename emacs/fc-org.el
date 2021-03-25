@@ -133,6 +133,34 @@ PARAM: parameter of block."
      ("Publish to markdownad"   .       org-md-export-to-markdown)
      )))
 
+(cl-defun fc--org-action ()
+  "Execute action according to current context."
+  (let* ((context (org-context))
+	 (1st-elt (caar context))
+	 (2nd-elt (caadr context))
+	 (elt (cond
+	       ((null 1st-elt) nil)
+	       ((and (eq 1st-elt :item-bullet)
+		     (eq 2nd-elt :item))
+		:item-bullet)
+	       ((null 2nd-elt) 1st-elt)
+	       (t 2nd-elt))))
+    (when (null elt)
+      (message "nil %s" context)
+      (cl-return-from fc--org-action))
+
+    (pcase elt
+      (:checkbox (org-ctrl-c-ctrl-c))
+      (:headline (org-insert-heading-respect-content))
+      (:item (org-meta-return))
+      (:item-bullet (org-ctrl-c-minus))
+      (:link (org-open-at-point))
+      (:src-block (org-ctrl-c-ctrl-c))
+      (:tags (org-set-tags-command))
+      (:timestamp (fc-funcall #'org-time-stamp))
+      (:todo-keyword (org-todo))
+      (_ (message "context: %s" context)))))
+
 (defconst *fc-org-map*
   (fc-make-keymap
    `(
@@ -143,6 +171,7 @@ PARAM: parameter of block."
      ("o" org-open-at-point)
      ("s" fc-org-add-source-block)
      ("t" org-todo)
+     ("u" fc--org-action)
      ("v t" ,(fc-manual (org-tags-view t)))
      ("v T" org-tags-view)
      ("A" org-archive-subtree)
@@ -150,6 +179,7 @@ PARAM: parameter of block."
      ("C o" org-clock-out)
      ("D" org-deadline)
      ("E" org-edit-special)
+     ("L" org-todo-list)
      ("M" org-agenda-month-view)
      ("S" org-schedule)
      ("T" org-set-tags-command)

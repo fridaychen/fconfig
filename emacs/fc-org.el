@@ -146,7 +146,6 @@ PARAM: parameter of block."
 	       ((null 2nd-elt) 1st-elt)
 	       (t 2nd-elt))))
     (when (null elt)
-      (message "nil %s" context)
       (cl-return-from fc--org-action))
 
     (pcase elt

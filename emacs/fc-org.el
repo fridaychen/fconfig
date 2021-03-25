@@ -9,9 +9,9 @@
 (defvar *fc-org-dir* "~/org/")
 (defvar *fc-org-captrue-template*
   `(
-    ("t" "Todo" "remind.org" "Incoming"
-     "* TODO %?\n  # Wrote on %U)")
-    ("k" "Knowledge" "knowledge.org" "Incoming"
+    ("t" "Todo" "remind.org" "Inbox"
+     "* TODO %?\n  %T")
+    ("k" "Knowledge" "knowledge.org" "Inbox"
      "* %?\n  # Wrote on %U")
     ))
 
@@ -21,8 +21,8 @@
   :after
   (progn
     (setf org-hide-emphasis-markers t
-          org-log-done t
-          )
+	  org-log-done t
+	  )
 
     (require 'org-agenda)
     (require 'org-capture)
@@ -35,24 +35,24 @@
 
     (cl-defun fc--capture-copy-region ()
       (save-excursion
-        (let ((data nil))
-          (with-current-buffer (plist-get org-capture-plist :original-buffer)
-            (when (region-active-p)
-              (setf data (buffer-substring (region-beginning)
-                                           (region-end)))
-              (deactivate-mark)))
-          (when data
-            (goto-char (point-max))
-            (when (/= (current-column) 0)
-              (insert "\n"))
-            (insert data)))))
+	(let ((data nil))
+	  (with-current-buffer (plist-get org-capture-plist :original-buffer)
+	    (when (region-active-p)
+	      (setf data (buffer-substring (region-beginning)
+					   (region-end)))
+	      (deactivate-mark)))
+	  (when data
+	    (goto-char (point-max))
+	    (when (/= (current-column) 0)
+	      (insert "\n"))
+	    (insert data)))))
 
     (cl-defun fc--capture-tag ()
       (let ((tags
-             (with-current-buffer (plist-get org-capture-plist :original-buffer)
-               (when (boundp 'fc-capture-tags)
-                 fc-capture-tags))))
-        (org-set-tags (fc-string tags))))
+	     (with-current-buffer (plist-get org-capture-plist :original-buffer)
+	       (when (boundp 'fc-capture-tags)
+		 fc-capture-tags))))
+	(org-set-tags (fc-string tags))))
 
     (cl-defun fc--capture-edit ()
       (insert " ")
@@ -72,8 +72,8 @@
   (goto-char (point-min))
 
   (insert "#+auther: " (read-string "Author : ") "\n"
-          "#+date <" (read-string "Date : ") ">\n"
-          "#+title " (read-string "Title : ")  "\n"))
+	  "#+date <" (read-string "Date : ") ">\n"
+	  "#+title " (read-string "Title : ")  "\n"))
 
 (cl-defun fc-org-add-var ()
   "Add var."
@@ -98,18 +98,18 @@
 TYPE: type of block.
 PARAM: parameter of block."
   (when (and (not (region-active-p))
-             (/= (current-column) 0))
+	     (/= (current-column) 0))
     (end-of-line)
     (insert "\n\n"))
 
   (let ((content (when (region-active-p)
-                   (kill-region (region-beginning)
-                                (region-end))
-                   t))
-        (point-of-content nil))
+		   (kill-region (region-beginning)
+				(region-end))
+		   t))
+	(point-of-content nil))
     (insert "#+BEGIN_" type " " param "\n")
     (if content
-        (yank)
+	(yank)
       (setf point-of-content (point))
       (insert "\n"))
     (insert "#+END_" type "\n")
@@ -178,20 +178,20 @@ PARAM: parameter of block."
   (fc--org-init-dir)
 
   (setf org-agenda-files (directory-files *fc-org-dir* t "org$")
-        org-capture-templates nil
-        org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
-                                      "|"
-                                      "DONE(d)" "SOMEDAY(s)")))
+	org-capture-templates nil
+	org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
+				      "|"
+				      "DONE(d)" "SOMEDAY(s)")))
 
   (--each *fc-org-captrue-template*
     (add-to-list 'org-capture-templates
-                 `(,(cl-first it)
-                   ,(cl-second it)
-                   entry
-                   (file+headline
-                    ,(concat *fc-org-dir* (cl-third it))
-                    ,(cl-fourth it))
-                   ,(cl-fifth it)))))
+		 `(,(cl-first it)
+		   ,(cl-second it)
+		   entry
+		   (file+headline
+		    ,(concat *fc-org-dir* (cl-third it))
+		    ,(cl-fourth it))
+		   ,(cl-fifth it)))))
 
 (cl-defun fc--before-agenda (&rest _rest)
   "Wrapper function."

@@ -133,6 +133,16 @@ PARAM: parameter of block."
      ("Publish to markdownad"   .       org-md-export-to-markdown)
      )))
 
+(cl-defun fc--org-ctrl-c-ctrl-c ()
+  "Org ctrl-c ctrl-c wrapper."
+  (cond
+   ((and (boundp 'org-agenda-mode)
+	 org-agenda-mode)
+    (org-agenda-ctrl-c-ctrl-c))
+
+   (t
+    (org-ctrl-c-ctrl-c))))
+
 (cl-defun fc--org-action ()
   "Execute action according to current context."
   (let* ((context (org-context))
@@ -163,7 +173,7 @@ PARAM: parameter of block."
 (defconst *fc-org-map*
   (fc-make-keymap
    `(
-     ("c" org-ctrl-c-ctrl-c)
+     ("c" fc--org-ctrl-c-ctrl-c)
      ("i d" org-insert-drawer)
      ("i t" org-time-stamp)
      ("l" org-insert-link)
@@ -179,7 +189,6 @@ PARAM: parameter of block."
      ("D" org-deadline)
      ("E" org-edit-special)
      ("L" org-todo-list)
-     ("M" org-agenda-month-view)
      ("S" org-schedule)
      ("T" org-set-tags-command)
      ("-" org-ctrl-c-minus)
@@ -193,9 +202,18 @@ PARAM: parameter of block."
   "FC org-mode func."
   (fc-modal-head-key "Org" '*fc-org-map*))
 
+(defconst *fc-org-agenda-map*
+  (fc-make-keymap
+   `(
+     ("M" org-agenda-month-view)
+     )
+   "fc-org-agenda-map"
+   *fc-org-map*)
+  "KEYS M: month.")
+
 (cl-defun fc-org-agenda-mode-func ()
   "FC org-agenda-mode func."
-  (fc-modal-head-key "Org" '*fc-org-map*))
+  (fc-modal-head-key "Org Agenda" '*fc-org-agenda-map*))
 
 (cl-defun fc--org-init-dir ()
   "Init org directory."
@@ -224,7 +242,7 @@ PARAM: parameter of block."
 
 (cl-defun fc--before-agenda (&rest _rest)
   "Wrapper function."
-  (setf org-agenda-files (directory-files *fc-org-dir* t "org$")))
+  (setf org-agenda-files (directory-files *fc-org-dir* t "^[^#].+org$")))
 
 (advice-add #'org-agenda :before #'fc--before-agenda)
 

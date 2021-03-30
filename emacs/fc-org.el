@@ -140,10 +140,24 @@ PARAM: parameter of block."
 	 org-agenda-mode)
     (org-agenda-ctrl-c-ctrl-c))
 
+   ((and (boundp 'org-capture-mode)
+	 org-capture-mode)
+    (org-capture-finalize))
+
    (t
     (org-ctrl-c-ctrl-c))))
 
-(cl-defun fc--org-action ()
+(cl-defun fc--org-do-intert-item ()
+  "Insert item."
+  (if (save-excursion
+	(beginning-of-line)
+	(looking-at-p " +- \\[[ X]\\]"))
+      (org-insert-item t)
+    (org-insert-item))
+
+  (fc-modal-global-mode-off))
+
+(cl-defun fc--org-do ()
   "Execute action according to current context."
   (let* ((context (org-context))
 	 (1st-elt (caar context))
@@ -156,12 +170,13 @@ PARAM: parameter of block."
 	       ((null 2nd-elt) 1st-elt)
 	       (t 2nd-elt))))
     (when (null elt)
-      (cl-return-from fc--org-action))
+      (cl-return-from fc--org-do))
 
+    (message "context: %s  elt: %s" context elt)
     (pcase elt
       (:checkbox (org-ctrl-c-ctrl-c))
       (:headline (org-insert-heading-respect-content))
-      (:item (org-meta-return))
+      (:item (fc--org-do-intert-item))
       (:item-bullet (org-ctrl-c-minus))
       (:link (org-open-at-point))
       (:src-block (org-ctrl-c-ctrl-c))
@@ -180,7 +195,7 @@ PARAM: parameter of block."
      ("o" org-open-at-point)
      ("s" fc-org-add-source-block)
      ("t" org-todo)
-     ("u" fc--org-action)
+     ("u" fc--org-do)
      ("v t" ,(fc-manual (org-tags-view t)))
      ("v T" org-tags-view)
      ("A" org-archive-subtree)

@@ -19,6 +19,13 @@
 
 (fc-install 'yasnippet-snippets)
 
+(defun fc-expand-snippet (name)
+  (interactive)
+
+  (insert name)
+  (fc-modal-global-mode -1)
+  (yas-expand))
+
 (provide 'fc-yasnippet)
 
 ;; Local Variables:

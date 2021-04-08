@@ -4,12 +4,12 @@
 ;;
 
 ;;; Code:
-(defun fc-c-conv-string-to-hex ()
+(defun fc-c-string2hex ()
   "Convert string to hex and insert."
   (--each (append (fc-current-thing t t t) nil)
     (insert (format "0x%02x, " it))))
 
-(defun fc-c-conv-hex-to-string (start end)
+(defun fc-c-hex2string (start end)
   "Convert hex to string.
 START: source of region.
 END: end of region."
@@ -35,19 +35,25 @@ END: end of region."
   (fc-user-select-func
    "C"
    `(
-     ("Conv string to hex" . fc-c-conv-string-to-hex)
-     ("Conv hex to string" . fc-c-conv-hex-to-string)
+     ("string2hex" . fc-c-string2hex)
+     ("hex2string" . fc-c-hex2string)
+     ("mark ifdef" . mark-ifdef)
      )))
 
 (defconst *fc-c-map*
   (fc-make-keymap
-   `(("m" mark-ifdef)
+   `(
+     ("i d" ,(fc-manual (fc-expand-snippet "do")))
+     ("i f" ,(fc-manual (fc-expand-snippet "f")))
+     ("i i" ,(fc-manual (fc-expand-snippet "if")))
+     ("i s" ,(fc-manual (fc-expand-snippet "switch")))
+     ("i w" ,(fc-manual (fc-expand-snippet "while")))
      ("C" fc--clang-format-off-region)
      ("SPC" fc-c-portal)
      )
    "fc-c-map"
    *fc-func-mode-map*)
-  "KEYS m: mark ifdef  C: clang-format off  E: org exit edit.")
+  "KEYS i d: insert do  i f: insert func  i i: insert if  i w: insert switch  i w: insert while  C: clang-format off  E: org exit edit.")
 
 (defun fc-c-mode-func ()
   "Mode func."
@@ -81,8 +87,10 @@ END: end of region."
   :local t
 
   :after (progn
-           (setq-default c-default-style "linux"
-                         indent-tabs-mode t)
+           (setf c-default-style '((java-mode . "java")
+                                   (awk-mode . "awk")
+                                   (other . "linux")))
+           (setq-default indent-tabs-mode t)
 
            (--each (list c-mode-map c++-mode-map objc-mode-map java-mode-map)
              (fc-unbind-keys '("M-i" "M-j" "M-k" "M-l" "M-C-i" "M-C-j" "M-C-k" "M-C-l") it)

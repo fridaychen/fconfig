@@ -4,7 +4,7 @@ function build-project() {
     local old_dir=$(pwd)
 
     if ! chtop; then
-        return 1
+        hl-msg "NO TOP, try to do it at here."
     fi
 
     hl-msg "TOP at $(pwd)"
@@ -23,6 +23,8 @@ function build-project() {
         time scons $*
     elif [[ -f GNUmakefile || -f Makefile || -f makefile ]]; then
         time make $*
+    elif [[ -f PKGBUILD ]]; then
+        makepkg -si
     else
         error-msg "DO NOT know how to build\n"
     fi

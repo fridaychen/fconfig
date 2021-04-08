@@ -142,7 +142,9 @@
 (fc-require 'fc-math t)
 
 (fc-require 'fc-flycheck)
-(fc-require 'fc-company)
+(fc-load 'fc-company
+  :local t
+  :after (fc--company-enable))
 
 (setf *fc-booting* nil)
 

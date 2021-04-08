@@ -13,16 +13,14 @@
                  company-minimum-prefix-length 3
                  company-auto-complete t)
 
-           (defun fc--company-enable-dev ()
+           (defun fc--company-enable ()
              (global-company-mode)
              (setf company-idle-delay 0.8))
 
-           (defun fc--company-disable-dev ()
+           (defun fc--company-disable ()
              (global-company-mode -1)
-             (setf company-idle-delay 600))
+             (setf company-idle-delay 600)))
 
-           (add-hook '*fc-enable-dev-hook* #'fc--company-enable-dev)
-           (add-hook '*fc-disable-dev-hook* #'fc--company-disable-dev))
   :bind '((nil
            ("M-/" company-complete))
           (company-active-map

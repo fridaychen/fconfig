@@ -51,6 +51,8 @@ function fj-title() {
 function fj-speak() {
     if app-exists say; then
         say "$*"
+    elif fc-net-connected; then
+        google-speak "$*"
     elif app-exists pico-tts; then
         echo "$*" | pico-tts -l en-US | aplay -q -f S16_LE -r 16 -
     elif app-exists espeak-ng; then

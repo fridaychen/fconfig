@@ -12,3 +12,7 @@ function app-exists() {
 function make-string() {
     head -c $1 </dev/zero | tr '\0' $2
 }
+
+function fc-net-connected() {
+    [[ $(nmcli networking conn) = "full" ]]
+}

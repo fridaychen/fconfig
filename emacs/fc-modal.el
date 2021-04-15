@@ -126,10 +126,11 @@ KEYDEFS: new key definitions for modal."
   (with-temp-buffer
     (insert (documentation-property keymap 'variable-documentation))
 
-    (goto-char (point-min))
-    (mark-word)
-    (kill-region (region-beginning) (region-end))
-    (goto-char (point-max))
+    (save-excursion
+      (goto-char (point-min))
+      (when (looking-at "KEYS")
+        (mark-word)
+        (kill-region (region-beginning) (region-end))))
 
     (fc-replace-regexp "\\([^ \n:]+\\): +"
                        #'(lambda ()

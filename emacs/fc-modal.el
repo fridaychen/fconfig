@@ -153,13 +153,13 @@ KEYDEFS: new key definitions for modal."
                  (cl-loop for j from 1 to width
                           do (let ((item (nth (- j 1) items)))
                                (when item
-                                 (insert "| ")
                                  (let ((info (split-string item "→")))
-                                   (insert (format "%-20s"
-                                                   (concat
-                                                    (propertize (cl-first info) 'face '(:foreground "tomato"))
-                                                    (propertize "→" 'face '(:foreground "tomato"))
-                                                    (cl-second info))))))))
+                                   (insert
+                                    (format "%4s"
+                                            (propertize (cl-first info) 'face '(:foreground "tomato")))
+                                    (propertize " | " 'face '(:foreground "tomato"))
+                                    (format "%-20s"
+                                            (cl-second info)))))))
                  (insert "\n")
                  (when (> (length items) width)
                    (setf items (cl-subseq items width))))))

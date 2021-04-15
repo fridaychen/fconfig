@@ -134,33 +134,24 @@ KEYDEFS: new key definitions for modal."
 
     (fc-replace-regexp "\\([^ \n:]+\\): +" "\\1→" :from-start t)
 
-    (let* ((items (split-string (buffer-string)
-                                "  +" t " +"))
-           (width (/ (frame-width) 26))
-           (lines (+ (/ (length items) width)
-                     (if (zerop (% (length items) width))
-                         0
-                       1))))
-      (erase-buffer)
-
-      (cl-loop for i from 1 to lines
-               do
-               (progn
-                 (cl-loop for j from 1 to width
-                          do (let ((item (nth (- j 1) items)))
-                               (when item
-                                 (let ((info (split-string item "→")))
-                                   (insert
-                                    (format "%4s"
-                                            (propertize (cl-first info) 'face '(:foreground "tomato")))
-                                    (propertize " | " 'face '(:foreground "tomato"))
-                                    (format "%-20s"
-                                            (cl-second info)))))))
-                 (insert "\n")
-                 (when (> (length items) width)
-                   (setf items (cl-subseq items width))))))
-
-    (buffer-string)))
+    (cl-loop
+     with items = (split-string (buffer-string) "  +" t " +")
+     with end = (length items)
+     with width = (/ (frame-width) 26)
+     for i from 0 to end by width
+     initially (erase-buffer)
+     do
+     (progn
+       (--each (cl-subseq items i (min (+ i width) end))
+         (let ((info (split-string it "→")))
+           (insert
+            (format "%4s"
+                    (propertize (cl-first info) 'face '(:foreground "tomato")))
+            (propertize " | " 'face '(:foreground "tomato"))
+            (format "%-20s"
+                    (cl-second info)))))
+       (insert "\n"))
+     finally return (buffer-string))))
 
 (cl-defun fc-modal-head-key (prompt keymap &optional (timeout 3) (repeat nil))
   "Wait user input then run keymap.

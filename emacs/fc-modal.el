@@ -132,12 +132,7 @@ KEYDEFS: new key definitions for modal."
         (mark-word)
         (kill-region (region-beginning) (region-end))))
 
-    (fc-replace-regexp "\\([^ \n:]+\\): +"
-                       #'(lambda ()
-                           (replace-match
-                            (concat (match-string 1)
-                                    "→")))
-                       :from-start t)
+    (fc-replace-regexp "\\([^ \n:]+\\): +" "\\1→" :from-start t)
 
     (let* ((items (split-string (buffer-string)
                                 "  +" t " +"))

@@ -17,7 +17,7 @@
      )
    "fc-emacs-lisp-map"
    *fc-func-mode-map*)
-  "KEYS e: eval  f: eval fun  E: org edit exit H: add header  L: load current file.")
+  "KEYS e: eval  f: eval fun  E: org edit exit  H: add header  L: load current file.")
 
 (defun fc-add-elisp-header-footer ()
   "Add elisp header and footer."

@@ -126,14 +126,44 @@ KEYDEFS: new key definitions for modal."
   (with-temp-buffer
     (insert (documentation-property keymap 'variable-documentation))
 
+    (goto-char (point-min))
+    (mark-word)
+    (kill-region (region-beginning) (region-end))
+    (goto-char (point-max))
+
     (fc-replace-regexp "\\([^ \n:]+\\): +"
                        #'(lambda ()
                            (replace-match
-                            (concat (propertize (match-string 1)
-                                                'face
-                                                '(:foreground "tomato"))
+                            (concat (match-string 1)
                                     "→")))
                        :from-start t)
+
+    (let* ((items (split-string (buffer-string)
+                                "  +" t " +"))
+           (width (/ (frame-width) 26))
+           (lines (+ (/ (length items) width)
+                     (if (zerop (% (length items) width))
+                         0
+                       1))))
+      (erase-buffer)
+
+      (cl-loop for i from 1 to lines
+               do
+               (progn
+                 (cl-loop for j from 1 to width
+                          do (let ((item (nth (- j 1) items)))
+                               (when item
+                                 (insert "| ")
+                                 (let ((info (split-string item "→")))
+                                   (insert (format "%-20s"
+                                                   (concat
+                                                    (propertize (cl-first info) 'face '(:foreground "tomato"))
+                                                    (propertize "→" 'face '(:foreground "tomato"))
+                                                    (cl-second info))))))))
+                 (insert "\n")
+                 (when (> (length items) width)
+                   (setf items (cl-subseq items width))))))
+
     (buffer-string)))
 
 (cl-defun fc-modal-head-key (prompt keymap &optional (timeout 3) (repeat nil))
@@ -164,7 +194,7 @@ REPEAT: run once or repeat."
 
        (if (equal key 13)
            (unless showing-doc
-             (setf cur-prompt (concat (fc-parse-head-key-doc keymap) "\n" cur-prompt)
+             (setf cur-prompt (concat (fc-parse-head-key-doc keymap) cur-prompt)
                    timeout 20
                    showing-doc t))
          (setf keys (concat keys (char-to-string key))

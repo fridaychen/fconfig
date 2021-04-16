@@ -168,62 +168,68 @@ PROMPT: user prompt.
 KEYMAP: target keymap.
 TIMEOUT: input timeout in seconds.
 REPEAT: run once or repeat."
-  (let ((keys "")
-        (showing-doc nil)
-        (cur-prompt (fc-prompt prompt)))
-    (unless fc-modal-global-mode
-      (fc-modal-set-cursor-color *fc-modal-command-cursor-color*))
+  (cl-loop
+   with keys = ""
+   with showing-doc = nil
+   with cur-prompt = (fc-prompt prompt)
+   with key = nil
+   with repeat-prop = nil
+   with ret = nil
+   initially (unless fc-modal-global-mode
+               (fc-modal-set-cursor-color *fc-modal-command-cursor-color*))
 
-    (cl-loop
-     (let ((key (read-char cur-prompt
-                           nil
-                           timeout))
-           (repeat-prop nil)
-           (ret nil))
-       (when (or (null key)                     ; read timeout
-                 (eql key 27)                   ; escape key
-                 (eql key 9))                   ; tab key
-         (message "")
-         (unless fc-modal-global-mode
-           (fc-modal-set-cursor-color *fc-modal-edit-cursor-color*))
-         (cl-return-from fc-modal-head-key))
+   do
+   (setf key (read-char cur-prompt
+                        nil
+                        timeout))
 
-       (if (equal key 13)
-           (unless showing-doc
-             (setf cur-prompt (concat (fc-parse-head-key-doc keymap) cur-prompt)
-                   timeout 20
-                   showing-doc t))
-         (setf keys (concat keys (char-to-string key))
-               ret (lookup-key (symbol-value keymap) keys))
+   (cond ((or (null key)                     ; read timeout
+              (eql key 27)                   ; escape key
+              (eql key 9))                   ; tab key
 
-         (cond
-          (;; undefined key
-           (null ret)
-           (message "%s %s" prompt "undefined key")
-           (unless fc-modal-global-mode
-             (fc-modal-set-cursor-color *fc-modal-edit-cursor-color*))
-           (cl-return-from fc-modal-head-key))
+          (message "")
+          (unless fc-modal-global-mode
+            (fc-modal-set-cursor-color *fc-modal-edit-cursor-color*))
+          (cl-return))
 
-          ;; function or closure
-          ((or (cl-typep ret 'byte-code-function)
-               (cl-typep ret 'symbol)
-               (and (consp ret)
-                    (equal (car ret)
-                           'closure)))
-           (fc-funcall ret)
+         ((equal key 13)                     ; return
+          (unless showing-doc
+            (setf cur-prompt (concat (fc-parse-head-key-doc keymap) cur-prompt)
+                  timeout 20
+                  showing-doc t)))
 
-           (when (cl-typep ret 'symbol)
-             (setq repeat-prop (get ret 'fc-repeat)))
+         (t                                  ; other keys
+          (setf keys (concat keys (char-to-string key))
+                ret (lookup-key (symbol-value keymap) keys))
 
-           (if (or repeat repeat-prop)
-               (let ((m (current-message)))
-                 (when m
-                   (setf cur-prompt (format "%s [%s] :" prompt m)))
-                 (setf keys ""
-                       repeat-prop nil))
-             (unless fc-modal-global-mode
-               (fc-modal-set-cursor-color *fc-modal-edit-cursor-color*))
-             (cl-return-from fc-modal-head-key)))))))))
+          (cond
+           (;; undefined key
+            (null ret)
+            (message "%s %s" prompt "undefined key")
+            (unless fc-modal-global-mode
+              (fc-modal-set-cursor-color *fc-modal-edit-cursor-color*))
+            (cl-return))
+
+           ;; function or closure
+           ((or (cl-typep ret 'byte-code-function)
+                (cl-typep ret 'symbol)
+                (and (consp ret)
+                     (equal (car ret)
+                            'closure)))
+            (fc-funcall ret)
+
+            (when (cl-typep ret 'symbol)
+              (setq repeat-prop (get ret 'fc-repeat)))
+
+            (if (or repeat repeat-prop)
+                (let ((m (current-message)))
+                  (when m
+                    (setf cur-prompt (format "%s [%s] :" prompt m)))
+                  (setf keys ""
+                        repeat-prop nil))
+              (unless fc-modal-global-mode
+                (fc-modal-set-cursor-color *fc-modal-edit-cursor-color*))
+              (cl-return))))))))
 
 (cl-defun fc-modal-mark-repeat (&rest rest)
   "Mark function repeatable.

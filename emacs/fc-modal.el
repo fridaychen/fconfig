@@ -141,16 +141,15 @@ KEYDEFS: new key definitions for modal."
      for i from 0 to end by width
      initially (erase-buffer)
      do
-     (progn
-       (--each (cl-subseq items i (min (+ i width) end))
-         (let ((info (split-string it "→")))
-           (insert
-            (format "%4s"
-                    (propertize (cl-first info) 'face '(:foreground "tomato")))
-            (propertize " | " 'face '(:foreground "tomato"))
-            (format "%-20s"
-                    (cl-second info)))))
-       (insert "\n"))
+     (--each (cl-subseq items i (min (+ i width) end))
+       (let ((info (split-string it "→")))
+         (insert
+          (format "%4s"
+                  (propertize (cl-first info) 'face '(:foreground "tomato")))
+          (propertize " | " 'face '(:foreground "tomato"))
+          (format "%-20s"
+                  (cl-second info)))))
+     (insert "\n")
      finally return (buffer-string))))
 
 (cl-defun fc-modal-head-key (prompt keymap &optional (timeout 3) (repeat nil))

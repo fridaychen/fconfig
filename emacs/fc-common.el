@@ -116,7 +116,6 @@
                                  (gotham . gotham-theme)
                                  (hybrid-reverse . hybrid-reverse-theme)
                                  (jazz . jazz-theme)
-                                 (mlso . mlso-theme)
                                  (nord . nord-theme)
                                  )
                              '(
@@ -158,7 +157,6 @@ COLOR: background color."
 (defvar *fc-soothe-percent* -4)
 (defconst *fc-soothe-color* (make-hash-table))
 (--each '((material "gray20")
-          (mlso "gray16")
           (tango-dark "gray23"))
   (puthash (cl-first it) (cl-second it) *fc-soothe-color*))
 
@@ -183,14 +181,6 @@ COLOR: background color."
                               :height 1.2)
        (fc-set-face-attribute 'org-level-2 nil
                               :height 1.1))
-
-      ('mlso
-       (fc-set-face-attribute 'whitespace-trailing nil
-                              :background "red4")
-       (fc-set-face-attribute 'hl-line nil
-                              :foreground (cond (*is-gui* "LightPink4")
-                                                (*is-colorful* "#505050")
-                                                (t "white"))))
 
       ('tango-dark
        (fc-set-face-attribute 'default nil

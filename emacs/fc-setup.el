@@ -47,7 +47,6 @@
          magit
          markdown-mode
          material-theme
-         mlso-theme
          mode-icons
          monokai-theme
          monokai-pro-theme

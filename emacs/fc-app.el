@@ -525,20 +525,16 @@ ARGS: args for autojump."
 
 (defun r ()
   "Jump to project root."
-  (let ((dir default-directory))
-    (cl-loop
-     (cond ((string-equal dir "/")
-            (cl-return))
+  (cl-loop
+   with dir = default-directory
+   do
+   (when (--first (file-exists-p (concat dir it)) '("TOP" ".TOP"))
+     (cd dir)
+     (cl-return))
 
-           ((or
-             (file-exists-p (concat dir "TOP"))
-             (file-exists-p (concat dir ".TOP")))
-            (cd dir)
-            (cl-return))
-
-           (t
-            (setf dir
-                  (file-name-directory (substring dir 0 -1))))))))
+   (setf dir
+         (file-name-directory (substring dir 0 -1)))
+   while (> (length dir) 1)))
 
 (defun lsd (&rest args)
   "List directory only.

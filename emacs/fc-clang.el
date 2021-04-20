@@ -16,19 +16,16 @@ END: end of region."
   (interactive "r")
 
   (fc-region start end
-    (goto-char start)
-
-    (let* ((numbers (cl-loop
-                     while (re-search-forward "[0-9a-fA-F]\\{2\\}" nil t)
-                     collect (string-to-number (match-string 0) 16)))
-           (result (when numbers
-                     (apply #'string numbers))))
-      (if result
-          (progn
-            (message "string is %s" result)
-            (kill-new result))
-        (message "hex number not found !"))))
-  (deactivate-mark))
+    (cl-loop
+     initially (goto-char 0)
+     while (re-search-forward "[0-9a-fA-F]\\{2\\}" nil t)
+     collect (string-to-number (match-string 0) 16) into numbers
+     finally do
+     (if (null numbers)
+         (message "Hex number is not found !")
+       (message "string is %s"
+                (kill-new (apply #'string numbers))))
+     (deactivate-mark))))
 
 (defun fc-c-portal ()
   "Show c portal."

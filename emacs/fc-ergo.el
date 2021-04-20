@@ -1268,7 +1268,8 @@ STEP: pixels."
 
 (defconst *ergo-vc-map*
   (fc-make-keymap
-   `(("c" vc-next-action)
+   `(("a" fc-git-amend)
+     ("c" vc-next-action)
      ("h" git-messenger:popup-message)
      ("j" ,(fc-manual (shell-command-to-string "fit -s")))
      ("k" fc-git-commit)
@@ -1284,7 +1285,7 @@ STEP: pixels."
      ("V" fc-git-diff-repo)
      )
    "ergo-vc-map")
-  "KEYS c: commit  h: popup history  j: repo status  k: commit  l: log  p: pull  q: push  r: rename  s: stage  u: revert  v: diff  x: magit  H: magit blame  V: diff repo.")
+  "KEYS a: amend  c: commit  h: popup history  j: repo status  k: commit  l: log  p: pull  q: push  r: rename  s: stage  u: revert  v: diff  x: magit  H: magit blame  V: diff repo.")
 
 (defconst *ergo-layout-map*
   (fc-make-keymap

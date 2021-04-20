@@ -405,17 +405,17 @@ y -> t
 n -> nil
 Enter -> default-ans
 Escape -> nil"
-  (let ((s (format "%s ? (%s or %s)"
-                   prompt
-                   (if default-ans "Y" "y")
-                   (if default-ans "n" "N"))))
-    (cl-loop
-     (let ((ans (read-char s)))
-       (pcase ans
-         (?y (cl-return t))
-         (?n (cl-return nil))
-         (13 (cl-return default-ans))
-         (27 (keyboard-quit)))))))
+  (cl-loop
+   with s = (format "%s ? (%s or %s)"
+                    prompt
+                    (if default-ans "Y" "y")
+                    (if default-ans "n" "N"))
+   do
+   (pcase (read-char s)
+     (?y (cl-return t))
+     (?n (cl-return nil))
+     (13 (cl-return default-ans))
+     (27 (keyboard-quit)))))
 
 (defun launch-separate-emacs-in-terminal ()
   "Launch Emacs in terminal."

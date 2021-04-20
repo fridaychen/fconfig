@@ -994,7 +994,7 @@ KEYMAP: keymap to run."
      ("U" dos2unix)
      )
    "ergo-basic-function-map")
-  "BASIC c: capitalize  l: downcase  m: merge  p: copy path  u: upcase  D: to-dos  U: to-unix.")
+  "KEYS c: capitalize  l: downcase  m: merge  p: copy path  u: upcase  D: to-dos  U: to-unix.")
 
 (defconst *ergo-goto-map*
   (fc-make-keymap
@@ -1252,7 +1252,7 @@ STEP: pixels."
                         (fc-save-desktop)
                         (restart-emacs))))
      ("t" fc-dark-theme)
-     ("w" ,(fc-manual (fc-auto-select-theme *fc-work-themes*)))
+     ("w" ,(fc-manual (fc-theme-auto-select *fc-work-themes*)))
      ("z" suspend-emacs)
 
      ("I" fc--enlarge-v)

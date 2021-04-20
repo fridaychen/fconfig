@@ -301,7 +301,7 @@ POWERLINE-SEPERATOR: new seperator for powerline."
    (t
     (fc-setup-term-mode-line))))
 
-(defun fc-auto-select-theme (themes)
+(defun fc-theme-auto-select (themes)
   "Auto select and load theme from THEMES.
 THEMES: list of themes."
   (fc-load-theme
@@ -319,19 +319,19 @@ THEMES: list of themes."
   "Randomly select a light theme."
   (interactive)
 
-  (fc-auto-select-theme *fc-light-theme*))
+  (fc-theme-auto-select *fc-light-theme*))
 
 (defun fc-dark-theme ()
   "Randomly select a dark theme."
   (interactive)
 
-  (fc-auto-select-theme *fc-dark-theme*))
+  (fc-theme-auto-select *fc-dark-theme*))
 
 (defun fc-deep-dark-theme ()
   "Randomly select a deep dark theme."
   (interactive)
 
-  (fc-auto-select-theme *fc-deep-dark-theme*))
+  (fc-theme-auto-select *fc-deep-dark-theme*))
 
 (when *is-mac*
   (setf ns-use-srgb-colorspace nil))

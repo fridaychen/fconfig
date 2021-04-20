@@ -21,8 +21,8 @@
   :after
   (progn
     (setf org-hide-emphasis-markers t
-	  org-log-done t
-	  )
+          org-log-done t
+          )
 
     (require 'org-agenda)
     (require 'org-capture)
@@ -35,24 +35,24 @@
 
     (cl-defun fc--capture-copy-region ()
       (save-excursion
-	(let ((data nil))
-	  (with-current-buffer (plist-get org-capture-plist :original-buffer)
-	    (when (region-active-p)
-	      (setf data (buffer-substring (region-beginning)
-					   (region-end)))
-	      (deactivate-mark)))
-	  (when data
-	    (goto-char (point-max))
-	    (when (/= (current-column) 0)
-	      (insert "\n"))
-	    (insert data)))))
+        (let ((data nil))
+          (with-current-buffer (plist-get org-capture-plist :original-buffer)
+            (when (region-active-p)
+              (setf data (buffer-substring (region-beginning)
+                                           (region-end)))
+              (deactivate-mark)))
+          (when data
+            (goto-char (point-max))
+            (when (/= (current-column) 0)
+              (insert "\n"))
+            (insert data)))))
 
     (cl-defun fc--capture-tag ()
       (let ((tags
-	     (with-current-buffer (plist-get org-capture-plist :original-buffer)
-	       (when (boundp 'fc-capture-tags)
-		 fc-capture-tags))))
-	(org-set-tags (fc-string tags))))
+             (with-current-buffer (plist-get org-capture-plist :original-buffer)
+               (when (boundp 'fc-capture-tags)
+                 fc-capture-tags))))
+        (org-set-tags (fc-string tags))))
 
     (cl-defun fc--capture-edit ()
       (insert " ")
@@ -72,8 +72,8 @@
   (goto-char (point-min))
 
   (insert "#+auther: " (read-string "Author : ") "\n"
-	  "#+date <" (read-string "Date : ") ">\n"
-	  "#+title " (read-string "Title : ")  "\n"))
+          "#+date <" (read-string "Date : ") ">\n"
+          "#+title " (read-string "Title : ")  "\n"))
 
 (cl-defun fc-org-add-var ()
   "Add var."
@@ -98,18 +98,18 @@
 TYPE: type of block.
 PARAM: parameter of block."
   (when (and (not (region-active-p))
-	     (/= (current-column) 0))
+             (/= (current-column) 0))
     (end-of-line)
     (insert "\n\n"))
 
   (let ((content (when (region-active-p)
-		   (kill-region (region-beginning)
-				(region-end))
-		   t))
-	(point-of-content nil))
+                   (kill-region (region-beginning)
+                                (region-end))
+                   t))
+        (point-of-content nil))
     (insert "#+BEGIN_" type " " param "\n")
     (if content
-	(yank)
+        (yank)
       (setf point-of-content (point))
       (insert "\n"))
     (insert "#+END_" type "\n")
@@ -137,11 +137,11 @@ PARAM: parameter of block."
   "Org ctrl-c ctrl-c wrapper."
   (cond
    ((and (boundp 'org-agenda-mode)
-	 org-agenda-mode)
+         org-agenda-mode)
     (org-agenda-ctrl-c-ctrl-c))
 
    ((and (boundp 'org-capture-mode)
-	 org-capture-mode)
+         org-capture-mode)
     (org-capture-finalize))
 
    (t
@@ -150,8 +150,8 @@ PARAM: parameter of block."
 (cl-defun fc--org-do-intert-item ()
   "Insert item."
   (if (save-excursion
-	(beginning-of-line)
-	(looking-at-p " +- \\[[ X]\\]"))
+        (beginning-of-line)
+        (looking-at-p " +- \\[[ X]\\]"))
       (org-insert-item t)
     (org-insert-item))
 
@@ -160,15 +160,15 @@ PARAM: parameter of block."
 (cl-defun fc--org-do ()
   "Execute action according to current context."
   (let* ((context (org-context))
-	 (1st-elt (caar context))
-	 (2nd-elt (caadr context))
-	 (elt (cond
-	       ((null 1st-elt) nil)
-	       ((and (eq 1st-elt :item-bullet)
-		     (eq 2nd-elt :item))
-		:item-bullet)
-	       ((null 2nd-elt) 1st-elt)
-	       (t 2nd-elt))))
+         (1st-elt (caar context))
+         (2nd-elt (caadr context))
+         (elt (cond
+               ((null 1st-elt) nil)
+               ((and (eq 1st-elt :item-bullet)
+                     (eq 2nd-elt :item))
+                :item-bullet)
+               ((null 2nd-elt) 1st-elt)
+               (t 2nd-elt))))
     (when (null elt)
       (cl-return-from fc--org-do))
 
@@ -239,27 +239,29 @@ PARAM: parameter of block."
   "Auto config org."
   (fc--org-init-dir)
 
+  (--each '(org-agenda
+            org-agenda-list)
+    (advice-add it :before #'fc--before-agenda))
+
   (setf org-agenda-files (directory-files *fc-org-dir* t "org$")
-	org-capture-templates nil
-	org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
-				      "|"
-				      "DONE(d)" "SOMEDAY(s)")))
+        org-capture-templates nil
+        org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
+                                      "|"
+                                      "DONE(d)" "SOMEDAY(s)")))
 
   (--each *fc-org-captrue-template*
     (add-to-list 'org-capture-templates
-		 `(,(cl-first it)
-		   ,(cl-second it)
-		   entry
-		   (file+headline
-		    ,(concat *fc-org-dir* (cl-third it))
-		    ,(cl-fourth it))
-		   ,(cl-fifth it)))))
+                 `(,(cl-first it)
+                   ,(cl-second it)
+                   entry
+                   (file+headline
+                    ,(concat *fc-org-dir* (cl-third it))
+                    ,(cl-fourth it))
+                   ,(cl-fifth it)))))
 
 (cl-defun fc--before-agenda (&rest _rest)
   "Wrapper function."
   (setf org-agenda-files (directory-files *fc-org-dir* t "^[^#].+org$")))
-
-(advice-add #'org-agenda :before #'fc--before-agenda)
 
 (when (eq major-mode 'org-mode)
   (fc--setup-org-mode))

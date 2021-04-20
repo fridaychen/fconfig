@@ -77,26 +77,33 @@ MODES: modes to be excluded."
      (format "\033[%d q"
              (gethash shape *ansi-cursor-map* 5)))))
 
+(defun fc--modal-visual-feedback-enter ()
+  "Enter modal mode."
+  (hl-line-mode -1)
+  (blink-cursor-mode -1)
+  (fc-modal-set-cursor-color *fc-modal-command-cursor-color*)
+  (fc-modal-set-cursor-shape *fc-modal-command-cursor-shape*)
+  (set-face-attribute 'fringe nil
+                      :background
+                      *fc-modal-command-fringe-color*))
+
+(defun fc--modal-visual-feedback-leave ()
+  "Leave modal mode."
+  (hl-line-mode 1)
+  (blink-cursor-mode 1)
+  (fc-modal-set-cursor-color *fc-modal-edit-cursor-color*)
+  (fc-modal-set-cursor-shape *fc-modal-edit-cursor-shape*)
+  (set-face-attribute 'fringe nil
+                      :background
+                      *fc-modal-edit-fringe-color*))
+
 (defun fc-modal-visual-feedback ()
   "Setup modal mode ui on GUI."
   (interactive)
 
   (if fc-modal-mode
-      (progn
-        (hl-line-mode -1)
-        (blink-cursor-mode -1)
-        (fc-modal-set-cursor-color *fc-modal-command-cursor-color*)
-        (fc-modal-set-cursor-shape *fc-modal-command-cursor-shape*)
-        (set-face-attribute 'fringe nil
-                            :background
-                            *fc-modal-command-fringe-color*))
-    (hl-line-mode 1)
-    (blink-cursor-mode 1)
-    (fc-modal-set-cursor-color *fc-modal-edit-cursor-color*)
-    (fc-modal-set-cursor-shape *fc-modal-edit-cursor-shape*)
-    (set-face-attribute 'fringe nil
-                        :background
-                        *fc-modal-edit-fringe-color*)))
+      (fc--modal-visual-feedback-enter)
+    (fc--modal-visual-feedback-leave)))
 
 (defun fc-modal-advice (orig-fun &rest args)
   "Setup modal advice.

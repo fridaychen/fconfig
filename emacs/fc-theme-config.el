@@ -305,18 +305,15 @@ POWERLINE-SEPERATOR: new seperator for powerline."
   "Auto select and load theme from THEMES.
 THEMES: list of themes."
   (fc-load-theme
-   (cond
-    ((eq (length themes) 1)
-     (car themes))
-
-    (t
-     (let ((theme))
-       (cl-loop
-        do (setf theme (seq-random-elt themes))
-        while (if (consp theme)
-                  (eq (car theme) *fc-current-theme*)
-                (eq theme *fc-current-theme*)))
-       theme)))))
+   (cl-loop
+    with theme = nil
+    do
+    (setf theme (seq-random-elt themes))
+    while (and (> (length themes) 1)
+               (if (consp theme)
+                   (eq (car theme) *fc-current-theme*)
+                 (eq theme *fc-current-theme*)))
+    finally return theme)))
 
 (defun fc-light-theme ()
   "Randomly select a light theme."

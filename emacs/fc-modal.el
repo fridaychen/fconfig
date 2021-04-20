@@ -241,18 +241,21 @@ TIMEOUT: user input timeout in seconds."
   "Simple input function under modal."
   (interactive)
 
-  (let ((c) (end nil))
-    (fc-modal-set-cursor-shape 'hbar)
-    (cl-loop do
-             (setf c (read-char)
-                   end (eql c 13))
-             (unless end
-               (cond
-                ((= 127 c)
-                 (delete-char -1))
-                (t (insert c))))
-             while (not end))
-    (fc-modal-set-cursor-shape *fc-modal-command-cursor-shape*)))
+  (cl-loop
+   with c = nil
+   initially (fc-modal-set-cursor-shape 'hbar)
+   do
+   (setf c (read-char))
+   (message "c=%d" c)
+
+   (when (member c '(13 27))
+     (fc-modal-set-cursor-shape *fc-modal-command-cursor-shape*)
+     (cl-return))
+
+   (cond
+    ((member c '(8 127))
+     (delete-char -1))
+    (t (insert c)))))
 
 (defun fc--modal-handle-space-timeout ()
   "Handle space timeout."

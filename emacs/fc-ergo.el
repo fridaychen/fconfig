@@ -1264,7 +1264,7 @@ STEP: pixels."
      ("W" fc-dark-theme)
      )
    "ergo-prefix-quick-map")
-  "KEYS c: rpn calc  d: load desktop  e: open buffer with template  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: dark theme  w: zenburn  z: suspend  T: deep dark theme  W: dark theme.")
+  "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: dark theme  w: zenburn  z: suspend  T: deep dark theme  W: dark theme.")
 
 (defconst *ergo-vc-map*
   (fc-make-keymap

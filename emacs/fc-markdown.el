@@ -303,8 +303,6 @@ END: end point."
   (search-forward-regexp "^[^，。]\\{5,7\\}，[^，。]\\{5,7\\}。
 "))
 
-(define-key *fc-md-map* (kbd "a") markdown-mode-style-map)
-
 (cl-defun fc-md-style ()
   "Apply MD style."
   (minibuffer-message (keymap-prompt markdown-mode-style-map))

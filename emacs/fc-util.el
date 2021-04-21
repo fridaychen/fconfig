@@ -615,6 +615,12 @@ NAME: name of environment."
                 (concat path seperator current-path)
               (concat current-path seperator path)))))
 
+(cl-defun fc--full-prompt-p (prompt)
+  "Test PROMPT is full PROMPT.
+PROMT: user prompt."
+  (--first (string-suffix-p it prompt)
+           '(": " "? " ") ")))
+
 (cl-defun fc-add-env-paths (paths)
   "Add multiple compoments to path style environment variable.
 PATHS: components."
@@ -625,7 +631,28 @@ PATHS: components."
 (cl-defun fc-prompt (prompt)
   "Produce a prompt string.
 PROMPT: user prompt string."
-  (concat (fc-string prompt) " : "))
+  (propertize
+   (if (fc--full-prompt-p prompt)
+       prompt
+     (concat (fc-string prompt) " : "))
+   'face '(:foreground "light green" :inherit bold)))
+
+(cl-defun fc--before-read-obj (&rest rest)
+  "Wrapper function.
+REST: args."
+  (let* ((args (car rest))
+         (lines (split-string (car args) "\n")))
+    (setf (car (last lines)) (fc-prompt (car (last lines))))
+    (setf (car args)
+          (string-join lines "\n"))
+    args))
+
+(--each '(read-char
+          read-directory-name
+          read-from-minibuffer
+          read-number
+          read-string)
+  (advice-add it :filter-args #'fc--before-read-obj))
 
 ;; unicode utility
 (cl-defun fc-unicode-square-string (str)

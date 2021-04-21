@@ -152,8 +152,8 @@ KEYDEFS: new key definitions for modal."
        (let ((info (split-string it "→")))
          (insert
           (format "%4s"
-                  (propertize (cl-first info) 'face '(:foreground "tomato")))
-          (propertize " | " 'face '(:foreground "tomato"))
+                  (propertize (cl-first info) 'face '(:foreground "tomato" :inherit bold)))
+          (propertize " | " 'face '(:foreground "tomato" :inherit bold))
           (format "%-20s"
                   (cl-second info)))))
      (insert "\n")

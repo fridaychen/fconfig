@@ -153,7 +153,7 @@ KEYDEFS: new key definitions for modal."
          (insert
           (format "%4s"
                   (propertize (cl-first info) 'face '(:foreground "tomato" :inherit bold)))
-          (propertize " | " 'face '(:foreground "tomato" :inherit bold))
+          (propertize " │ " 'face '(:foreground "tomato" :inherit bold))
           (format "%-20s"
                   (cl-second info)))))
      (insert "\n")

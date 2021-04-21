@@ -303,6 +303,13 @@ END: end point."
   (search-forward-regexp "^[^，。]\\{5,7\\}，[^，。]\\{5,7\\}。
 "))
 
+(define-key *fc-md-map* (kbd "a") markdown-mode-style-map)
+
+(cl-defun fc-md-style ()
+  "Apply MD style."
+  (minibuffer-message (keymap-prompt markdown-mode-style-map))
+  (set-transient-map markdown-mode-style-map))
+
 (defconst *fc-md-map*
   (fc-make-keymap
    `(
@@ -311,10 +318,9 @@ END: end point."
      ("3" ,(fc-decorate-region "### " ""))
      ("4" ,(fc-decorate-region "#### " ""))
 
-     ("e" ,(fc-decorate-region "_" "_" :mark-func #'fc-mark-word))
+     ("a" fc-md-style)
      ("f" fc-md-insert-footnote)
      ("l" fc-md-make-list)
-     ("m" ,(fc-decorate-region "`" "`"))
 
      ("q" fc-md-quote)
      ("s" fc-md-insert-scene-break)
@@ -324,14 +330,12 @@ END: end point."
      ("v" fc-md-add-verse)
      ("u" markdown-do)
 
-     ("E" ,(fc-decorate-region "__" "__" :mark-func #'fc-mark-word))
-
      ("L" markdown-changelog-new)
      ("T" markdown-toc-generate-or-refresh-toc)
      ("SPC" fc-md-portal))
    "fc-md-map"
    *fc-func-mode-map*)
-  "KEYS e: emphasize  i: italic  m: monospace  x: reading  E: strong emphasis  SPC: portal.")
+  "KEYS a: apply style  f: footnote  l: make list  q: quote  t: search verse  v:add verse  u: do  SPC: portal.")
 
 (defun fc-markdown-mode-func ()
   "Run markdown mode func."

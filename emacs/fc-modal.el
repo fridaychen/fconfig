@@ -32,7 +32,7 @@
 
 ;; modal minor mode, make it easy
 (define-minor-mode fc-modal-mode
-  "Modalnomic kyeboard mode"
+  "Modalnomic kyeboard mode."
   :global nil
   :lighter " Modal"
   :keymap *fc-modal-keymap*)

@@ -144,7 +144,7 @@ KEYDEFS: new key definitions for modal."
     (cl-loop
      with items = (split-string (buffer-string) "  +" t " +")
      with end = (length items)
-     with width = (/ (frame-width) 26)
+     with width = (/ (frame-width) 28)
      for i from 0 to end by width
      initially (erase-buffer)
      do

@@ -15,7 +15,7 @@
 (setf enable-local-variables :all
       warning-minimum-level :error
       inhibit-startup-message t
-      gc-cons-threshold 104857600
+      gc-cons-threshold (* 128 1024 1024)
       *fc-booting* t)
 
 (defconst *fc-home* (getenv "FCHOME"))

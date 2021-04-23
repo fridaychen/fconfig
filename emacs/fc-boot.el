@@ -146,7 +146,8 @@
   :local t
   :after (fc--company-enable))
 
-(setf *fc-booting* nil)
+(setf *fc-booting* nil
+      gc-cons-threshold (* 20 1024 1024))
 
 (provide 'fc-boot)
 

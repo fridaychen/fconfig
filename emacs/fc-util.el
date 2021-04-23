@@ -635,11 +635,14 @@ PROMPT: user prompt string."
    (if (fc--full-prompt-p prompt)
        prompt
      (concat (fc-string prompt) " : "))
-   'face '(:foreground "light green" :inherit bold)))
+   'face 'minibuffer-prompt))
 
 (cl-defun fc--before-read-obj (&rest rest)
   "Wrapper function.
 REST: args."
+  (when (null (car rest))
+    (cl-return))
+
   (let* ((args (car rest))
          (lines (split-string (car args) "\n")))
     (setf (car (last lines)) (fc-prompt (car (last lines))))
@@ -647,8 +650,7 @@ REST: args."
           (string-join lines "\n"))
     args))
 
-(--each '(read-char
-          read-directory-name
+(--each '(read-directory-name
           read-from-minibuffer
           read-number
           read-string)

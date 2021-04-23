@@ -719,9 +719,10 @@ N: number."
   "Convert info to string.
 INFO: info obj."
   (--reduce-from (concat acc
-                         (format "|%11s : %s\n"
-                                 (cl-first it)
-                                 (cl-second it)))
+                         "│"
+                         (fc-text (format "%11s" (cl-first it))
+                                  :face '(:foreground "tomato"))
+                         (format " : %s\n" (fc-string (cl-second it))))
                  ""
                  info))
 

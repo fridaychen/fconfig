@@ -640,6 +640,9 @@ PROMPT: user prompt string."
 (cl-defun fc--before-read-obj (&rest rest)
   "Wrapper function.
 REST: args."
+  (when (null (car rest))
+    (cl-return))
+
   (let* ((args (car rest))
          (lines (split-string (car args) "\n")))
     (setf (car (last lines)) (fc-prompt (car (last lines))))
@@ -647,8 +650,7 @@ REST: args."
           (string-join lines "\n"))
     args))
 
-(--each '(read-char
-          read-directory-name
+(--each '(read-directory-name
           read-from-minibuffer
           read-number
           read-string)

@@ -635,7 +635,7 @@ PROMPT: user prompt string."
    (if (fc--full-prompt-p prompt)
        prompt
      (concat (fc-string prompt) " : "))
-   'face '(:foreground "light green" :inherit bold)))
+   'face 'minibuffer-prompt))
 
 (cl-defun fc--before-read-obj (&rest rest)
   "Wrapper function.

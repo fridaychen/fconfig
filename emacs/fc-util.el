@@ -619,7 +619,7 @@ NAME: name of environment."
   "Test PROMPT is full PROMPT.
 PROMT: user prompt."
   (--first (string-suffix-p it prompt)
-           '(": " "? " ") ")))
+           '(": " "? " ") " "-x ")))
 
 (cl-defun fc-add-env-paths (paths)
   "Add multiple compoments to path style environment variable.

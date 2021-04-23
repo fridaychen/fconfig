@@ -253,7 +253,6 @@ TIMEOUT: user input timeout in seconds."
    initially (fc-modal-set-cursor-shape 'hbar)
    do
    (setf c (read-char))
-   (message "c=%d" c)
 
    (when (member c '(13 27))
      (fc-modal-set-cursor-shape *fc-modal-command-cursor-shape*)

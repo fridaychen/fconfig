@@ -923,6 +923,9 @@ KEYMAP: keymap to run."
    "ergo-player-map")
   "KEYS i: vol up  k: vol down  j: prev  l: next  o: meta  p: pp  SPC: select player.")
 
+(defconst *fc-common-key-doc*
+  "KEYS a: to beginning  b: whole buffer  c: to char  e: to end  f: func  l: line  m: symbil  p: paragraph  q: quote  w: word  ^: to beginnning of buf  $: to end of buf.")
+
 (defconst *ergo-change-map*
   (fc-make-keymap
    `(("a" ,(fc-change-key 'fc-mark-point-to-beginning-of-line))
@@ -949,7 +952,7 @@ KEYMAP: keymap to run."
      ("$" ,(fc-change-key 'fc-mark-point-to-end-of-buffer))
      )
    "ergo-change-map")
-  "Common Mark Keys.")
+  *fc-common-key-doc*)
 
 (defconst *ergo-delete-map*
   (fc-make-keymap
@@ -979,7 +982,7 @@ KEYMAP: keymap to run."
      ("$" ,(fc-delete-key 'fc-mark-point-to-end-of-buffer))
      )
    "ergo-delete-map")
-  "Common Mark Keys.")
+  *fc-common-key-doc*)
 
 (defconst *ergo-basic-function-map*
   (fc-make-keymap
@@ -1095,7 +1098,7 @@ KEYMAP: keymap to run."
      ("F" describe-face)
      ("M" describe-mode))
    "ergo-help-map")
-  "KEYS SPC: portal  a: apropros  b: buffer info  c: char  f: func  i: info  k: key  o: org info  r: show *Help*  s: sys info  v: var  y: yas  m: manual  F: face  M: mode.")
+  "KEYS SPC: portal  a: apropros  b: buffer info  c: char  f: func  i: info  k: key  m: manul  o: org info  r: show *Help*  s: sys info  v: var  y: yas  F: face  M: mode.")
 
 (defconst *ergo-mark-map*
   (fc-make-keymap
@@ -1113,7 +1116,7 @@ KEYMAP: keymap to run."
      ("^" fc-mark-point-to-beginning-of-buffer)
      ("$" fc-mark-point-to-end-of-buffer))
    "ergo-mark-map")
-  "Common Mark Keys.")
+  *fc-common-key-doc*)
 
 (defconst *ergo-mode-map*
   (fc-make-keymap

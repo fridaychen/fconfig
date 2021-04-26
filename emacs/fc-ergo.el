@@ -715,6 +715,13 @@ N: number."
         ("Loc" ,loc)
         ("Theme" ,*fc-current-theme*)))))
 
+(defun fc-process-info ()
+  (cl-loop for i in (and (fboundp 'process-list)
+                         (process-list))
+           for j from 1
+           collect (list (format "Process %d" j)
+                         (process-name i))))
+
 (defun fc-convert-info (info)
   "Convert info to string.
 INFO: info obj."
@@ -1092,7 +1099,8 @@ KEYMAP: keymap to run."
      ("m" man)
      ("o" org-info)
      ("r" ,(fc-manual (fc-pop-buf "*Help*")))
-     ("s" ,(fc-manual (fc-show-info (fc-sys-info))))
+     ("s" ,(fc-manual (fc-show-info (fc-sys-info)
+                                    (fc-process-info))))
      ("v" describe-variable)
      ("y" yas-describe-tables)
      ("F" describe-face)

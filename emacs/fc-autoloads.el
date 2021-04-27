@@ -82,6 +82,10 @@
 ;; extra
 (autoload #'2048-game "fc-extra")
 
+;; yas
+(autoload #'yas-expand "yasnippet")
+(autoload #'yas-describe-tables "yasnippet")
+
 (provide 'fc-autoload)
 
 ;; Local Variables:

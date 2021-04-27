@@ -605,8 +605,8 @@ NAME: name of environment."
 
   (let* ((current-path (getenv name))
          (seperator (if *is-windows* ";" ":"))
-         (offset (string-search (concat seperator path seperator)
-                                (concat seperator current-path seperator))))
+         (offset (cl-search (concat seperator path seperator)
+                            (concat seperator current-path seperator))))
     (when offset
       (cl-return-from fc-add-env-path))
 

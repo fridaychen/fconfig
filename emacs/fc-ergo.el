@@ -716,6 +716,7 @@ N: number."
         ("Theme" ,*fc-current-theme*)))))
 
 (defun fc-process-info ()
+  "Return list of process info."
   (cl-loop for i in (and (fboundp 'process-list)
                          (process-list))
            for j from 1
@@ -1351,7 +1352,7 @@ AUTO: auto select face."
   (if (fc-hi-lock-p regex)
       (unhighlight-regexp regex)
 
-    (let ((hi-lock-auto-select-face t))
+    (let ((hi-lock-auto-select-face auto))
       (highlight-regexp regex
                         (hi-lock-read-face-name)))))
 

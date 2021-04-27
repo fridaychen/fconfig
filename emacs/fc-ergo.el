@@ -792,7 +792,8 @@ ARGS: list of infos."
       (set-visited-file-name new-name))))
 
 ;; global mode
-(fc-unbind-keys '("C-x C-c"))
+(fc-unbind-keys '("C-x C-c"
+                  "C-M-i"))
 
 (fc-bind-keys `(("RET" newline-and-indent)
                 ("<escape>" fc-escape-key)

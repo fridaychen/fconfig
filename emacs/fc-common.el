@@ -102,13 +102,12 @@
                             (fantom . fantom-theme)
                             (gruvbox-dark-hard . gruvbox-theme)
                             (material . material-theme)
-                            (monokai-pro . monokai-pro-theme)
                             (sanityinc-tomorrow-eighties . color-theme-sanityinc-tomorrow)
                             (srcery . srcery-theme)
                             )
                         '(
                           (gruvbox-dark-soft . gruvbox-theme)
-                          (monokai-pro . monokai-pro-theme)
+                          (sanityinc-tomorrow-eighties . color-theme-sanityinc-tomorrow)
                           )
                         )
       *fc-deep-dark-theme* (if *is-gui*
@@ -135,7 +134,7 @@
                           (*is-linux* 142)
                           (*is-cygwin* 142)
                           (*is-windows* 142)))
-      *fc-font-mode-line-delta* -12)
+      *fc-font-mode-line-delta* 0)
 
 (require 'classic-theme)
 

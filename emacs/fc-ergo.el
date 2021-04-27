@@ -1345,7 +1345,7 @@ STEP: pixels."
 REGEX: target regular expression."
   (assoc regex hi-lock-interactive-lighters))
 
-(cl-defun fc-hi-lock-toggle (regex &key auto)
+(cl-defun fc-hi-lock-toggle (regex &key (auto t))
   "Toggle REGEX highlight state.
 REGEX: target regular expression.
 AUTO: auto select face."
@@ -1405,8 +1405,7 @@ AUTO: auto select face."
    ;; h := Help
    ("h" ,(fc-cond-key :normal (fc-head-key "Help" '*ergo-help-map*)
                       :region (fc-manual
-                               (fc-hi-lock-toggle (fc-current-thing t t t)
-                                                  :auto t))))
+                               (fc-hi-lock-toggle (fc-current-thing t t t)))))
 
    ("i" previous-line)
    ("j" backward-char)

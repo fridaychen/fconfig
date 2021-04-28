@@ -32,7 +32,10 @@ case $(uname) in
 
         ;;
     Linux)
-        export FC_DISTRO=$(grep ^ID= /etc/os-release 2>/dev/null | cut -d= -f2)
+        export FC_DISTRO=$(
+            . /etc/os-release
+            echo $ID
+        )
 
         export LANG="en_US.UTF-8"
         export LC_ALL="en_US.UTF-8"

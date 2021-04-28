@@ -55,6 +55,8 @@ def sys_update(_):
         elif distro in ("arch", "manjaro", "manjaro-arm"):
             fc.info("@Linux update by pacman")
             os.system("sudo pacman -Syu")
+        else:
+            print("Unknown Linux distro : ", distro)
     elif sys.platform == "darwin":
         fc.info("@MacOS update homebrew")
         os.system("brew update;brew upgrade;brew cleanup;")

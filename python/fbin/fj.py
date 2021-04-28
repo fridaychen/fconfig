@@ -26,7 +26,7 @@ def sys_install(args):
         if distro in ("ubuntu", "raspbian"):
             cmd = "sudo apt install %s"
         elif distro in ("arch", "manjaro", "manjaro-arm"):
-            cmd = "sudo pacman -S %s"
+            cmd = "sudo pacman -S --needed %s"
         else:
             cmd = None
 

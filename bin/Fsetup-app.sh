@@ -34,7 +34,7 @@ case $(uname) in
                 ;;
 
             arch | manjaro*)
-                sudo pacman -S --needed alacritty base-devel bat cowsay cmake espeak-ng figlet ffmpeg go graphviz htop lolcat meld most mpg123 mpv neovim p7zip scons shfmt ripgrep tidy
+                sudo pacman -S --needed alacritty avahi base-devel bat cowsay cmake espeak-ng figlet ffmpeg go graphviz htop lolcat meld most mpg123 mpv neovim nss-mdns p7zip scons shfmt ripgrep tidy
                 ;;
         esac
         ;;

@@ -184,6 +184,8 @@ COLOR: background color."
       ('monokai-pro-octagon
        (fc-set-face-attribute 'font-lock-comment-face nil
                               :foreground "gray80")
+       (fc-set-face-attribute 'font-lock-doc-face nil
+                              :foreground "gray80")
        )
 
       ('tango-dark

@@ -12,12 +12,12 @@ case $(uname) in
 
         case $ID in
             debian)
-                sudo apt install autojump cowsay bear cmake espeak-ng figlet ffmpeg graphviz htop lolcat mbrola mbrola-us2 meld most mpg123 mpv neovim pandoc python3-pip ripgrep scons silversearcher-ag tidy
+                sudo apt install autojump build-essential cowsay bear cmake espeak-ng figlet ffmpeg graphviz htop lolcat mbrola mbrola-us2 meld most mpg123 mpv neovim pandoc python3-pip ripgrep scons silversearcher-ag tidy
                 ;;
 
             ubuntu)
                 sudo add-apt-repository ppa:mmstick76/alacritty
-                sudo apt install alacritty autojump bat cowsay bear cmake espeak-ng figlet ffmpeg graphviz htop lolcat mbrola mbrola-us2 meld most mpg123 mpv neovim pandoc ripgrep scons silversearcher-ag tidy
+                sudo apt install alacritty autojump bat build-essential cowsay bear cmake espeak-ng figlet ffmpeg graphviz htop lolcat mbrola mbrola-us2 meld most mpg123 mpv neovim pandoc ripgrep scons silversearcher-ag tidy
 
                 for x in lsd shfmt; do
                     sudo snap install $x

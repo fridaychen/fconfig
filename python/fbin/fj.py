@@ -25,7 +25,7 @@ def sys_install(args):
         distro = os.getenv("FC_DISTRO")
         if distro in ("ubuntu", "raspbian"):
             cmd = "sudo apt install %s"
-        elif distro == "arch":
+        elif distro in ("arch", "manjaro", "manjaro-arm"):
             cmd = "sudo pacman -S %s"
         else:
             cmd = None
@@ -52,7 +52,7 @@ def sys_update(_):
         if distro in ("debian", "raspbian", "ubuntu"):
             fc.info("@Linux update by apt")
             os.system("sudo apt update;sudo apt upgrade")
-        elif distro == "arch":
+        elif distro in ("arch", "manjaro", "manjaro-arm"):
             fc.info("@Linux update by pacman")
             os.system("sudo pacman -Syu")
     elif sys.platform == "darwin":

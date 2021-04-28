@@ -181,12 +181,15 @@ COLOR: background color."
        (fc-set-face-attribute 'org-level-2 nil
                               :height 1.1))
 
+      ('monokai-pro
+       (fc-set-face-attribute 'vertical-border nil
+                              :foreground "gray50"))
+
       ('monokai-pro-octagon
        (fc-set-face-attribute 'font-lock-comment-face nil
                               :foreground "gray80")
        (fc-set-face-attribute 'font-lock-doc-face nil
-                              :foreground "gray80")
-       )
+                              :foreground "gray80"))
 
       ('tango-dark
        (fc-set-face-attribute 'default nil

@@ -13,6 +13,10 @@ if [[ -f /usr/share/autojump/autojump.bash || -f \
 elif [[ -f /usr/share/z/z.sh ]]; then
     fc-include /usr/share/z/z.sh
     alias j=z
+elif app-exists fasd; then
+    eval "$(fasd --init auto)"
+    export _FASD_FUZZY=16
+    alias j='fasd_cd -d'
 fi
 
 # init fzf

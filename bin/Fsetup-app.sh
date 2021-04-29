@@ -12,7 +12,7 @@ case $(uname) in
 
         case $ID in
             debian)
-                sudo apt install autojump build-essential cowsay bear cmake espeak-ng figlet ffmpeg graphviz htop lolcat mbrola mbrola-us2 meld most mpg123 mpv neovim pandoc python3-pip ripgrep scons silversearcher-ag tidy
+                sudo apt install autojump build-essential cowsay bear cmake espeak-ng figlet ffmpeg fortunes graphviz htop lolcat mbrola mbrola-us2 meld most mpg123 mpv neovim pandoc python3-pip ripgrep scons silversearcher-ag tidy
                 ;;
 
             ubuntu)

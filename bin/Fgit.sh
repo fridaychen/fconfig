@@ -9,7 +9,7 @@ function fit-amend() {
     if [[ $# == 0 ]]; then
         git commit --amend --no-edit
     else
-        git commit --amend -m "$@"
+        git commit --amend -m "$*"
     fi
 }
 

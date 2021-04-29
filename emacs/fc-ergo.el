@@ -56,7 +56,8 @@
                         (count-lines (point-min) (point-max)))
                       buffer-file-coding-system
                       (point)
-                      (point-max)))))
+                      (point-max)))
+    ("Branch" ,(magit-get-current-branch))))
 
 (defun fc-buffer-info ()
   "Create buffer info."

@@ -44,7 +44,7 @@
           (,tomato-restbar-interval "█" "#ccff66")
           (nil
            ,(cond
-             (*is-gui* "⎈")
+             (*is-colorful* "⌘")
              (t "P"))
            "#cf6a4c"))))
 

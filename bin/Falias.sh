@@ -102,12 +102,6 @@ alias cdtr='cd "`find . -type d | sed -e 1d | fzf`"'
 
 alias tree="tree -N"
 
-# git
-alias gp='git pull'
-alias gq='git push'
-alias gcancel="git reset @~"
-alias gamend="git commit --amend --no-edit"
-
 alias b=build-project
 alias r=chtop
 alias p='fzf --ansi'

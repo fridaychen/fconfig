@@ -1,5 +1,18 @@
 #!/bin/bash
 
+alias gp='git pull'
+alias gq='git push'
+
+alias fit-cancel="git reset @~"
+
+function fit-amend() {
+    if [[ $# == 0 ]]; then
+        git commit --amend --no-edit
+    else
+        git commit --amend -m "$@"
+    fi
+}
+
 function fit-current-branch() {
     git branch 2>/dev/null |
         sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'

@@ -292,7 +292,7 @@ def main():
         "-l", dest="log", nargs="*", default=None, help="show log"
     )
     parser.add_argument(
-        "-p", dest="portal", action="store_true", help="status"
+        "-p", dest="portal", action="store_true", help="portal"
     )
     parser.add_argument(
         "-s", dest="status", action="store_true", help="status"

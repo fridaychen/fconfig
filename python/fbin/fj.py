@@ -18,19 +18,24 @@ def action(**kwargs):
     return _decorate
 
 
+def use_apt():
+    return os.getenv("FC_DISTRO") in ("debian", "ubuntu", "raspbian")
+
+
+def use_pacman():
+    return os.getenv("FC_DISTRO") in ("arch", "manjaro", "manjaro-arm")
+
+
 @action(cmd="in")
 def sys_install(args):
     "install software"
     if sys.platform == "linux":
         distro = os.getenv("FC_DISTRO")
-        if distro in ("ubuntu", "raspbian"):
+        if use_apt():
             cmd = "sudo apt install %s"
-        elif distro in ("arch", "manjaro", "manjaro-arm"):
+        elif use_pacman():
             cmd = "sudo pacman -S --needed %s"
         else:
-            cmd = None
-
-        if cmd is None:
             print("Don't know how to install")
             return
 
@@ -49,14 +54,16 @@ def sys_update(_):
     if sys.platform == "linux":
         distro = os.getenv("FC_DISTRO")
 
-        if distro in ("debian", "raspbian", "ubuntu"):
+        if use_apt():
             fc.info("@Linux update by apt")
             os.system("sudo apt update;sudo apt upgrade")
-        elif distro in ("arch", "manjaro", "manjaro-arm"):
+        elif use_pacman():
             fc.info("@Linux update by pacman")
             os.system("sudo pacman -Syu")
         else:
-            print("Unknown Linux distro : ", distro)
+            print("Don't know how to update")
+            return
+
     elif sys.platform == "darwin":
         fc.info("@MacOS update homebrew")
         os.system("brew update;brew upgrade;brew cleanup;")

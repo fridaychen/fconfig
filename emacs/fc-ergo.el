@@ -19,8 +19,7 @@
 (defconst *fc-repeat-key* "t")
 (defconst *fc-repeat-orignal-func* #'fc-translate-word)
 
-(defvar *fc-work-themes* (if *is-gui* '(zenburn monokai-pro-octagon)
-                           '(zenburn monokai-pro)))
+(defvar *fc-work-themes* '(zenburn monokai))
 
 (defconst *fc-book-zh-single-quote*
   (fc-decorate-region

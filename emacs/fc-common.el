@@ -182,10 +182,20 @@ COLOR: background color."
                               :height 1.1))
 
       ('monokai-pro
+       (fc-set-face-attribute 'minibuffer-prompt
+                              nil
+                              :foreground (fc-get-face-attribute
+                                           'font-lock-keyword-face
+                                           :foreground))
        (fc-set-face-attribute 'vertical-border nil
                               :foreground "gray50"))
 
       ('monokai-pro-octagon
+       (fc-set-face-attribute 'minibuffer-prompt
+                              nil
+                              :foreground (fc-get-face-attribute
+                                           'font-lock-keyword-face
+                                           :foreground))
        (fc-set-face-attribute 'font-lock-comment-face nil
                               :foreground "gray80")
        (fc-set-face-attribute 'font-lock-doc-face nil

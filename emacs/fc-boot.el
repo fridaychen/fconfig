@@ -21,7 +21,6 @@
           (add-hook 'find-file-hook #'fc-hide-show-init)))
 
 (apply #'fc-install *fc-extra-packages*)
-(fc-install 'auctex 'go-mode 'haskell-mode 'markdown-mode 'tuareg 'org 'python-mode)
 
 (cl-defun fc-load-mode-config ()
   "Load config for current mode."

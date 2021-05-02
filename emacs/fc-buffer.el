@@ -24,32 +24,30 @@ FILE-REGEX: regex for match file name of buffer.
 SORT: sort the result.
 MODIFIED: test buf modified state.
 FILTER: func for filter."
-  (let* ((t-dir (if dir (expand-file-name dir) nil))
-         (result))
-    (setf result
-          (--filter (and (or (and not-file
-                                  (not dir)
-                                  (not file-regex)
-                                  (not modified))
-                             (buffer-file-name it))
-                         (or (not not-file)
-                             (not (buffer-file-name it)))
-                         (or (not dir)
-                             (string-prefix-p t-dir (buffer-file-name it)))
-                         (or (not regex)
-                             (string-match regex (buffer-name it)))
-                         (or (not file-regex)
-                             (string-match file-regex (buffer-file-name it)))
-                         (or (not modified)
-                             (buffer-modified-p it))
-                         (or (not filter)
-                             (with-current-buffer it
-                               (fc-funcall filter))))
-                    (buffer-list)))
-
-    (if sort
-        (--sort (string< (buffer-name it) (buffer-name other)) result)
-      result)))
+  (cl-loop with t-dir = (if dir (expand-file-name dir) nil)
+           for buf in (buffer-list)
+           if (and (or (and not-file
+                            (not dir)
+                            (not file-regex)
+                            (not modified))
+                       (buffer-file-name buf))
+                   (or (not not-file)
+                       (not (buffer-file-name buf)))
+                   (or (not dir)
+                       (string-prefix-p t-dir (buffer-file-name buf)))
+                   (or (not regex)
+                       (string-match regex (buffer-name buf)))
+                   (or (not file-regex)
+                       (string-match file-regex (buffer-file-name buf)))
+                   (or (not modified)
+                       (buffer-modified-p buf))
+                   (or (not filter)
+                       (with-current-buffer buf
+                         (fc-funcall filter))))
+           collect buf into result
+           finally return (if sort
+                              (--sort (string< (buffer-name it) (buffer-name other)) result)
+                            result)))
 
 (cl-defun fc-switch-to-buffer-re (regex &optional (n 0))
   "Switch to recent buffer which name match regex.

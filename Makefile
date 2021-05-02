@@ -4,7 +4,7 @@ all: init build
 
 build: bin/fbook bin/ff
 
-setup: setup-app setup-env
+setup: init setup-app setup-env setup-python setup-nvim setup-emacs setup-go
 	@bin/Fsetup.sh
 	@bin/Fsetup-emacs.sh
 

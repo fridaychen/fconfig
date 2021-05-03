@@ -800,6 +800,13 @@ REST: all arguments."
   (when (facep face)
     (apply 'set-face-attribute face rest)))
 
+(defun fc-color-difference (colora colorb)
+  "Calculate color difference."
+  (cl-loop for i in (color-values colora)
+           for j in (color-values colorb)
+           sum (+ (* i i) (* j j)) into x
+           finally return (sqrt x)))
+
 (provide 'fc-util)
 
 ;; Local Variables:

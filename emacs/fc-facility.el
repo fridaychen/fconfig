@@ -75,6 +75,12 @@ FUNC: the one to be deleted."
   (declare (indent 1))
   `(add-hook ,hook (lambda () ,@rest)))
 
+(cl-defun fc-add-hook-func (hook &rest rest)
+  (declare (indent 1))
+  (--each rest
+    (when it
+      (add-hook hook it))))
+
 (cl-defun fc-run-hook (hook &optional timeout)
   "Run hook.
 HOOK: hook var

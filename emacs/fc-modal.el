@@ -14,6 +14,8 @@
 (defvar *fc-modal-edit-cursor-shape* (if *is-colorful* 'box 'bar))
 (defvar *fc-modal-edit-fringe-color* "#8DD4E8")
 
+(defvar *fc-modal-cur-fringe-color* *fc-modal-command-fringe-color*)
+
 (defvar *fc-modal-idle-timeout* 60)
 (defvar *fc-modal-keymap* (fc-make-keymap nil "fc-modal") "Keymap of Modal mode.")
 
@@ -85,7 +87,7 @@ MODES: modes to be excluded."
   (fc-modal-set-cursor-shape *fc-modal-command-cursor-shape*)
   (set-face-attribute 'fringe nil
                       :background
-                      *fc-modal-command-fringe-color*))
+                      *fc-modal-cur-fringe-color*))
 
 (defun fc--modal-visual-feedback-leave ()
   "Leave modal mode."
@@ -95,7 +97,7 @@ MODES: modes to be excluded."
   (fc-modal-set-cursor-shape *fc-modal-edit-cursor-shape*)
   (set-face-attribute 'fringe nil
                       :background
-                      *fc-modal-edit-fringe-color*))
+                      (face-attribute 'default :background)))
 
 (defun fc-modal-visual-feedback ()
   "Setup modal mode ui on GUI."
@@ -104,6 +106,20 @@ MODES: modes to be excluded."
   (if fc-modal-mode
       (fc--modal-visual-feedback-enter)
     (fc--modal-visual-feedback-leave)))
+
+(defun fc-modal-after-theme-change ()
+  "Hook function for after theme change."
+  (let ((default-bg (face-attribute 'default :background))
+        (bg (or
+             (and (facep 'org-level-1)
+                  (face-attribute 'org-level-1 :foreground))
+             (fc-get-face-attribute 'highlight :foreground))))
+    (setf *fc-modal-cur-fringe-color*
+          (if (> (fc-color-difference default-bg bg) 30000)
+              bg
+            *fc-modal-command-fringe-color*)))
+
+  (fc-modal-visual-feedback))
 
 (defun fc-modal-advice (orig-fun &rest args)
   "Setup modal advice.

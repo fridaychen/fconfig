@@ -60,10 +60,10 @@
 (fc-require 'fc-screen)
 (fc-modal-global-mode)
 
-(add-hook '*fc-after-theme-hook* #'fc-modal-visual-feedback)
-(when *is-gui*
-  (add-hook '*fc-after-theme-hook* #'fc-setup-font))
-(add-hook '*fc-after-theme-hook* #'fc-patch-theme)
+(fc-add-hook-func '*fc-after-theme-hook*
+  #'fc-modal-after-theme-change
+  (when *is-gui* #'fc-setup-font)
+  #'fc-patch-theme)
 
 (unless *is-mac*
   (fc-dark-theme))

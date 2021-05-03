@@ -181,6 +181,13 @@ COLOR: background color."
        (fc-set-face-attribute 'org-level-2 nil
                               :height 1.1))
 
+      ('monokai
+       (when *is-gui*
+         (fc-set-face-attribute 'default nil
+                                :background
+                                "#282a3a"))
+       )
+
       ('monokai-pro
        (fc-set-face-attribute 'minibuffer-prompt
                               nil

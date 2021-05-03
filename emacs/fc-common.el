@@ -153,7 +153,9 @@ COLOR: background color."
                       percent))))
       (fc-set-face-attribute it nil :background new-bg))))
 
-(defvar *fc-soothe-percent* -4)
+(defvar *fc-soothe-dark-percent* -4)
+(defvar *fc-soothe-light-percent* 5)
+
 (defconst *fc-soothe-color* (make-hash-table))
 (--each '((material "gray20")
           (tango-dark "gray23"))
@@ -161,7 +163,9 @@ COLOR: background color."
 
 (defun fc-patch-theme ()
   "Patch theme."
-  (let ((soothe-percent *fc-soothe-percent*))
+  (let ((soothe-percent (if (fc-dark-theme-p)
+                            *fc-soothe-dark-percent*
+                          *fc-soothe-light-percent*)))
     (pcase *fc-current-theme*
       ('classic
        (setf soothe-percent -2)

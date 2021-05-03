@@ -333,6 +333,12 @@ THEMES: list of themes."
 
   (fc-theme-auto-select *fc-deep-dark-theme*))
 
+(defun fc-dark-theme-p ()
+  "Test if the current theme is dark."
+  (color-dark-p
+   (color-name-to-rgb
+    (face-attribute 'default :background))))
+
 (when *is-mac*
   (setf ns-use-srgb-colorspace nil))
 

@@ -801,7 +801,9 @@ REST: all arguments."
     (apply 'set-face-attribute face rest)))
 
 (defun fc-color-difference (colora colorb)
-  "Calculate color difference."
+  "Calculate color difference between two colors.
+COLORA: the one color.
+COLORB: another color."
   (cl-loop for i in (color-values colora)
            for j in (color-values colorb)
            sum (+ (* i i) (* j j)) into x

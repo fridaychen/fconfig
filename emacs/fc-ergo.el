@@ -1367,8 +1367,10 @@ AUTO: auto select face."
    ("2" ,(fc-cond-key :normal (fc-manual
                                (fc-split-window)
                                (other-window 1)
-                               (fc-switch-to-recent-buffer))))
-   ("3" ,(fc-cond-key :normal (fc-head-key "GTD" '*ergo-gtd-map*)))
+                               (fc-switch-to-recent-buffer))
+                      :prefix 'split-window-horizontally))
+   ("3" ,(fc-cond-key :normal (fc-head-key "GTD" '*ergo-gtd-map*)
+                      :prefix 'split-window-vertically))
    ("4" ,(fc-cond-key :normal 'ivy-switch-buffer
                       :region 'comment-dwim))
    ("5" toggle-frame-fullscreen)

@@ -738,7 +738,24 @@ REST: text to insert."
     (--each rest
       (insert it))
 
-    (funcall after-fun start (point))))
+    (when after-fun
+      (funcall after-fun start (point)))))
+
+(cl-defun fc-insert-space ()
+  "Insert space."
+  (when (/= (current-column) 0)
+    (end-of-line)
+    (newline))
+
+  (unless (looking-at "\n")
+    (insert "\n")))
+
+(cl-defun fc-insert-space-text (after-fun &rest rest)
+  "Insert text then run AFTER-FUN on the region.
+AFTER-FUN: fun to call.
+REST: text to insert."
+  (fc-insert-space)
+  (apply #'fc-insert-text (cons after-fun rest)))
 
 (cl-defun fc-multi-line-comment-region (start end)
   "Comment multi-line region.

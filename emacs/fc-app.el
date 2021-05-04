@@ -111,29 +111,24 @@ ORIG-MODE: original mode,
 S: note string."
   (goto-char (point-max))
 
-  (unless (looking-at "\n")
-    (insert "\n"))
-
-  (fc-funcall #'set-mark-command)
-
-  (insert s "\n")
-  (fc-org-add-block "SRC" (substring (fc-string orig-mode) 0 -5)))
+  (fc-insert-space-text nil
+                        "#+BEGIN_SRC " (substring (fc-string orig-mode) 0 -5)
+                        "\n"
+                        s
+                        "#+END_SRC\n"))
 
 (defun fc--insert-node (s)
   "Inset note into note buffer.
 S: note string."
   (goto-char (point-max))
 
-  (when (/= (current-column) 0)
-    (end-of-line)
-    (newline))
-
-  (insert "-------" (current-time-string) "-------\n"
-          s
-          "\n\n"))
+  (fc-insert-space-text nil
+                        "-------" (current-time-string) "-------\n"
+                        s
+                        "\n\n"))
 
 (defun fc-insert-note (s)
-  "Inset note into note buffer.
+  "Insett note into note buffer.
 S: note string."
   (let ((orig-mode major-mode))
     (with-current-buffer *fc-note*
@@ -149,24 +144,24 @@ S: note string."
   (fc-popup-tip
    " <<US-ASCII>>
 
-      2 3 4 5 6 7
-    -------------
-   0:   0 @ P ` p
-   1: ! 1 A Q a q
-   2: \" 2 B R b r
-   3: # 3 C S c s
-   4: $ 4 D T d t
-   5: % 5 E U e u
-   6: & 6 F V f v
-   7: ' 7 G W g w
-   8: ( 8 H X h x
-   9: ) 9 I Y i y
-   A: * : J Z j z
-   B: + ; K [ k {
-   C: , < L \ l |
-   D: - = M ] m }
-   E: . > N ^ n ~
-   F: / ? O _ o DEL"))
+                  2 3 4 5 6 7
+                  -------------
+                  0:   0 @ P ` p
+                  1: ! 1 A Q a q
+                  2: \" 2 B R b r
+                  3: # 3 C S c s
+                  4: $ 4 D T d t
+                  5: % 5 E U e u
+                  6: & 6 F V f v
+                  7: ' 7 G W g w
+                  8: ( 8 H X h x
+                       9: ) 9 I Y i y
+                  A: * : J Z j z
+                  B: + ; K [ k {
+                  C: , < L \ l |
+                  D: - = M ] m }
+  E: . > N ^ n ~
+  F: / ? O _ o DEL"))
 
 (defun fc-show-common-keys ()
   "Show functions of common keys."
@@ -175,32 +170,32 @@ S: note string."
   (fc-popup-tip
    " << Common Mark Keys >>
 
-    a: to begining of the line
-    b: whole buffer
-    c: to specific character
-    e: to end of the line
-    l: whole line
-    p: paragraph
-    q: quotation
-    w: current word
-    p: paragraph
-    f: semantic function
+  a: to begining of the line
+  b: whole buffer
+  c: to specific character
+  e: to end of the line
+  l: whole line
+  p: paragraph
+  q: quotation
+  w: current word
+  p: paragraph
+  f: semantic function
 
-    ^: to beginning of buffer
-    $: to end of buffer
+  ^: to beginning of buffer
+  $: to end of buffer
 
-    Upper-case means same region, but without touching kill-ring.
-    "))
+  Upper-case means same region, but without touching kill-ring.
+  "))
 
 ;; grep
 (cl-defun fc-grep (pattern root &key file recursion word regex)
   "Execute grep.
-PATTERN: regex pattern.
-ROOT: root path.
-FILE: file glob.
-RECURSION: bool.
-WORD: bool.
-REGEX: regex."
+  PATTERN: regex pattern.
+  ROOT: root path.
+  FILE: file glob.
+  RECURSION: bool.
+  WORD: bool.
+  REGEX: regex."
 
   (let ((l nil))
     (push (getenv "GREP") l)
@@ -224,7 +219,7 @@ REGEX: regex."
 
 (defun fc--ergo-grep-root (root)
   "Get root directory for grep.
-ROOT: directory."
+  ROOT: directory."
   (if (and buffer-file-name
            (equal (file-name-directory buffer-file-name)
                   (expand-file-name root)))
@@ -247,12 +242,12 @@ ROOT: directory."
 
 (defun fc-ergo-grep (regex pattern root file recursion word)
   "Execute grep.
-REGEX: enable regular exp or not.
-PATTERN: string or regexp.
-ROOT: directory.
-FILE: file name patterns.
-RECURSION: recursion or not.
-WORD: word boundary or not"
+  REGEX: enable regular exp or not.
+  PATTERN: string or regexp.
+  ROOT: directory.
+  FILE: file name patterns.
+  RECURSION: recursion or not.
+  WORD: word boundary or not"
   (interactive (list current-prefix-arg
                      (read-string "Grep Pattern : " (fc-current-thing t t t))
                      (read-directory-name "Root : " default-directory)
@@ -268,7 +263,7 @@ WORD: word boundary or not"
 
 (defun fc-ergo-simple-grep (pattern)
   "Simple grep.
-PATTERN: target pattern."
+  PATTERN: target pattern."
   (interactive (list (read-string "Simple pattern : " (fc-current-thing t t t))))
 
   (fc-grep pattern (fc--ergo-grep-root default-directory)
@@ -279,7 +274,7 @@ PATTERN: target pattern."
 
 (defun fc-ergo-simple-proj-grep (pattern)
   "Simple project grep.
-PATTERN: target pattern."
+  PATTERN: target pattern."
   (interactive (list (read-string "Project simple pattern : " (fc-current-thing t t t))))
 
   (fc-grep pattern (file-relative-name (fc-proj-root))
@@ -335,19 +330,19 @@ PATTERN: target pattern."
 
   (fc-insert-text #'fc-multi-line-comment-region
                   "
-    _____        ____
-    |  ___|      / ___|   fridaychen@gmail.com
-    | |_        | |
-    |  _|    _  | |___
-    |_|     (_)  \\____|
-    "))
+  _____        ____
+  |  ___|      / ___|   fridaychen@gmail.com
+  | |_        | |
+  |  _|    _  | |___
+  |_|     (_)  \\____|
+  "))
 
 (cl-defun fc-insert-todo-block ()
   "Insert ascii art todo list block."
   (interactive)
   (fc-insert-text #'fc-multi-line-comment-region
                   "
-   /)/)   ToDo:
+  /)/)   ToDo:
   ( ..\\   |. []-
   /'-._)  |. []-
  /#/      |. []-

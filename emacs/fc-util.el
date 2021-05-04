@@ -121,7 +121,7 @@ SYMBOL: symbol name to be togllged."
     (set symbol t)))
 
 (cl-defun fc-current-thing (&optional extension ask deactivate)
-  "Fetch current thing at the poing.
+  "Fetch current thing at the point.
 EXTENSION: extensional way.
 ASK: ask user to confirm.
 DEACTIVATE: deativeate region."

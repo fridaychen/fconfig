@@ -10,10 +10,7 @@
   (setf *fc-font-mode-line-delta* 0)
   (fc-require 'fc-modeline)
 
-  (setf *fc-extra-packages* '(vimrc-mode
-                              cmake-mode
-                              csv-mode
-                              yaml-mode)
+  (setf *fc-extra-packages* '()
         *fc-basic-line-spacing* 4
         *fc-reading-fill* 50
         *fc-reading-scale* 1.2)

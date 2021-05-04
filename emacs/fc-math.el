@@ -4,7 +4,7 @@
 ;;
 
 ;;; Code:
-(fc-install 'matlab-mode 'rpn-calc)
+(fc-install 'matlab-mode 'maxima 'rpn-calc)
 
 (setf calc-language 'c)
 

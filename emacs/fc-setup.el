@@ -27,6 +27,8 @@
          aggressive-indent
          auctex
          beacon
+         cmake-mode
+         csv-mode
          color-identifiers-mode
          color-theme-sanityinc-tomorrow
          company
@@ -63,8 +65,10 @@
          projectile
          python-mode
          spaceline
+         vimrc-mode
          yasnippet
          yasnippet-snippets
+         yaml-mode
          zenburn-theme))
 
 (provide 'fc-setup)

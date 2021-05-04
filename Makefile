@@ -4,11 +4,11 @@ all: init build
 
 build: bin/fbook bin/ff
 
-setup: init setup-app setup-env setup-python setup-nvim setup-emacs setup-go
+setup: init setup-app setup-env
 	@bin/Fsetup.sh
 	@bin/Fsetup-emacs.sh
 
-setup-env: setup-python setup-emacs
+setup-env: setup-emacs setup-go setup-nvim  setup-python
 
 clean :
 	@find . -type f \( -name "*~" -o -name "*.elc" \) -delete

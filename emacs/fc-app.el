@@ -105,19 +105,41 @@ NAME: name of new note buffer."
 
 (defalias 'fc-show-hide-note (fc-manual (fc-show-hide-buffer *fc-note*)))
 
+(defun fc--insert-org-note (orig-mode s)
+  "Insert note into ORG-MODE note buffer.
+ORIG-MODE: original mode,
+S: note string."
+  (goto-char (point-max))
+
+  (unless (looking-at "\n")
+    (insert "\n"))
+
+  (fc-funcall #'set-mark-command)
+
+  (insert s "\n")
+  (fc-org-add-block "SRC" (substring (fc-string orig-mode) 0 -5)))
+
+(defun fc--insert-node (s)
+  "Inset note into note buffer.
+S: note string."
+  (goto-char (point-max))
+
+  (when (/= (current-column) 0)
+    (end-of-line)
+    (newline))
+
+  (insert "-------" (current-time-string) "-------\n"
+          s
+          "\n\n"))
+
 (defun fc-insert-note (s)
   "Inset note into note buffer.
 S: note string."
-  (with-current-buffer *fc-note*
-    (goto-char (point-max))
-
-    (when (/= (current-column) 0)
-      (end-of-line)
-      (newline))
-
-    (insert "-------" (current-time-string) "-------\n"
-            s
-            "\n\n")))
+  (let ((orig-mode major-mode))
+    (with-current-buffer *fc-note*
+      (if (eq major-mode 'org-mode)
+          (fc--insert-org-note orig-mode s)
+        (fc--insert-note s)))))
 
 ;; help functions
 (defun fc-show-ascii-table ()

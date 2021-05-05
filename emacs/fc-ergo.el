@@ -224,7 +224,7 @@ FROM-BEGINNING: start from beginnning."
 
 (cl-defun fc-tab-key (&optional (indent-func #'indent-for-tab-command))
   "Tab key function.
-  INDENT-FUNC: function for indent."
+INDENT-FUNC: function for indent."
   (interactive)
 
   (cond
@@ -250,15 +250,14 @@ FROM-BEGINNING: start from beginnning."
 
   (cond
    (*fc-ergo-prefix*
-    (message "prefix mode")
-    (fc-modal-head-key "Basic function" '*ergo-basic-function-map*))
+    (fc-modal-head-key "Basic" '*ergo-basic-map*))
 
    ((region-active-p)
     (fc-region (region-beginning) (region-end)
       (goto-char (point-min))
       (fc-modal-head-key
-       "Basic function"
-       '*ergo-basic-function-map*
+       "Basic"
+       '*ergo-basic-map*
        *ergo-head-key-timeout*)))
 
    (t
@@ -808,7 +807,7 @@ KEYMAP: keymap to run."
   `(lambda ()
      (interactive)
 
-     (fc-modal-head-key ,prompt ,keymap *ergo-head-key-timeout*)))
+     (fc-modal-head-key ,prompt ,keymap :timeout *ergo-head-key-timeout*)))
 
 (defmacro fc-head-key-repeat (prompt keymap)
   "Run head key.
@@ -817,7 +816,7 @@ KEYMAP: keymap to run."
   `(lambda ()
      (interactive)
 
-     (fc-modal-head-key ,prompt ,keymap *ergo-head-key-timeout* t)))
+     (fc-modal-head-key ,prompt ,keymap :timeout *ergo-head-key-timeout* :repeat t)))
 
 (defconst *fc-common-function-keys*
   `(("<f1>"  neotree-toggle)
@@ -989,7 +988,7 @@ KEYMAP: keymap to run."
    "ergo-delete-map")
   *fc-common-key-doc*)
 
-(defconst *ergo-basic-function-map*
+(defconst *ergo-basic-map*
   (fc-make-keymap
    `(("c" capitalize-word)
      ("l" downcase-word)
@@ -997,12 +996,14 @@ KEYMAP: keymap to run."
      ("p" ,(fc-manual
             (when buffer-file-name
               (kill-new buffer-file-name))))
-     ("u" upcase-word)
+     ("u" ,(fc-cond-key :normal 'upcase-word
+                        :region 'upcase-region))
      ("D" unix2dos)
-     ("M" fc-merge-all-line)
+     ("M" ,(fc-cond-key :normal 'fc-merge-all-line
+                        :region 'fc-merge-all-line))
      ("U" dos2unix)
      )
-   "ergo-basic-function-map")
+   "ergo-basic-map")
   "KEYS c: capitalize  l: downcase  m: merge  p: copy path  u: upcase  D: to-dos  U: to-unix.")
 
 (defconst *ergo-goto-map*
@@ -1395,7 +1396,15 @@ AUTO: auto select face."
    ("e" ,(fc-mode-key
           `((image-mode . image-eol)
             (_ . end-of-line))))
-   ("f" fc-basic-key)
+   ("f" ,(fc-cond-key :normal 'scroll-down-command
+                      :region (fc-manual (fc-modal-head-key
+                                          "Basic" '*ergo-basic-map*
+                                          :around
+                                          (lambda (func)
+                                            (fc-region (region-beginning) (region-end)
+                                              (goto-char (point-min))
+                                              (fc-funcall func)))))
+                      :prefix (fc-manual (fc-modal-head-key "Basic prefix" '*ergo-basic-map*))))
 
    ;; g := Go/Global
    ("g" ,(fc-cond-key :normal (fc-head-key "Goto" '*ergo-goto-map*)

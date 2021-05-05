@@ -175,12 +175,13 @@ KEYDEFS: new key definitions for modal."
      (insert "\n")
      finally return (buffer-string))))
 
-(cl-defun fc-modal-head-key (prompt keymap &optional (timeout 3) (repeat nil))
+(cl-defun fc-modal-head-key (prompt keymap &key (timeout 3) (repeat nil) (around nil))
   "Wait user input then run keymap.
 PROMPT: user prompt.
 KEYMAP: target keymap.
 TIMEOUT: input timeout in seconds.
-REPEAT: run once or repeat."
+REPEAT: run once or repeat.
+AROUND: advice function."
   (cl-loop
    with keys = ""
    with showing-doc = nil
@@ -229,7 +230,9 @@ REPEAT: run once or repeat."
                 (and (consp ret)
                      (equal (car ret)
                             'closure)))
-            (fc-funcall ret)
+            (if around
+                (fc-funcall around :args (list ret))
+              (fc-funcall ret))
 
             (when (cl-typep ret 'symbol)
               (setq repeat-prop (get ret 'fc-repeat)))

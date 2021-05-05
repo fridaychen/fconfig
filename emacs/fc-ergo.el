@@ -104,14 +104,14 @@
         (balance-windows)
       (maximize-window))))
 
-(cl-defun fc--query-replace (&key backward from-beginning)
-  "Replace forward.
-BACKWARD: direction."
+(cl-defun fc--query-replace (&key backward)
+  "Replace.
+BACKWARD: backward direction."
   (let* ((from-str (fc-current-thing t t :regq t :prompt "Regex Query replace from"))
          (to-str (read-string (format "Regex Query replace from %s to : "
                                       from-str))))
     (cond
-     (from-beginning
+     (*fc-ergo-prefix*
       (goto-char (point-min)))
 
      (backward
@@ -223,7 +223,7 @@ BACKWARD: direction."
 
 (cl-defun fc-tab-key (&optional (indent-func #'indent-for-tab-command))
   "Tab key function.
-INDENT-FUNC: function for indent."
+  INDENT-FUNC: function for indent."
   (interactive)
 
   (cond
@@ -498,7 +498,7 @@ INDENT-FUNC: function for indent."
 
 (defun fc-mark-point-to-beginning-of-line (&optional arg)
   "Mark from current point to the line beginning.
-ARG: lines."
+  ARG: lines."
   (interactive "P")
 
   (set-mark (point))
@@ -506,8 +506,8 @@ ARG: lines."
 
 (defun fc-mark-point-up-to-char (arg char)
   "Mark from current point to char.
-ARG: direction.
-CHAR: target character."
+  ARG: direction.
+  CHAR: target character."
   (interactive "p\ncMark up to char: ")
 
   (set-mark (point))
@@ -519,7 +519,7 @@ CHAR: target character."
 
 (defun fc-mark-point-to-end-of-line (&optional arg)
   "Mark from current point to the end of line.
-ARG: lines."
+  ARG: lines."
   (interactive "P")
 
   (set-mark (point))
@@ -528,7 +528,7 @@ ARG: lines."
 
 (defun fc-mark-line (&optional arg)
   "Mark line.
-ARG: lines."
+  ARG: lines."
   (interactive "P")
 
   (set-mark (line-beginning-position))
@@ -539,7 +539,7 @@ ARG: lines."
 
 (defun fc-mark-word (&optional arg)
   "Makr word.
-ARG: words."
+  ARG: words."
   (interactive "P")
 
   (unless (looking-at "\\b")
@@ -569,14 +569,14 @@ ARG: words."
 
 (cl-defmacro fc-cond-key (&key normal region proj one work prefix fold dev)
   "Run operation conditionaly.
-NORMAL: normal mode.
-REGION: region mode.
-PROJ: project mode.
-ONE: one-window mode.
-WORK: work on project mode.
-PREFIX: fc prefix mode.
-FOLD: function return function.
-DEV: dev mode."
+  NORMAL: normal mode.
+  REGION: region mode.
+  PROJ: project mode.
+  ONE: one-window mode.
+  WORK: work on project mode.
+  PREFIX: fc prefix mode.
+  FOLD: function return function.
+  DEV: dev mode."
   `(lambda ()
      (interactive)
 
@@ -608,7 +608,7 @@ DEV: dev mode."
 
 (defmacro fc-mode-key (mode-func)
   "Run operation according to the major mode.
-MODE-FUNC: mode and function definitions."
+  MODE-FUNC: mode and function definitions."
   `(lambda ()
      (interactive)
 
@@ -626,8 +626,8 @@ MODE-FUNC: mode and function definitions."
 
 (defmacro fc-delete-key (&optional mark-func not-save)
   "Delete region.
-MARK-FUNC: mark the region to be deleted.
-NOT-SAVE: save to KILL-RING or not."
+  MARK-FUNC: mark the region to be deleted.
+  NOT-SAVE: save to KILL-RING or not."
   `(lambda ()
      (interactive)
 
@@ -638,8 +638,8 @@ NOT-SAVE: save to KILL-RING or not."
 
 (defmacro fc-change-key (&optional mark-func not-save)
   "Change region.
-MARK-FUNC: mark the region to be changed.
-NOT-SAVE: save to KILL-RING or nor."
+  MARK-FUNC: mark the region to be changed.
+  NOT-SAVE: save to KILL-RING or nor."
   `(lambda ()
      (interactive)
 
@@ -653,7 +653,7 @@ NOT-SAVE: save to KILL-RING or nor."
 
 (defun fc-narrow-widen (arg)
   "Narrow/widen automatically.
-ARG: paragraphs"
+  ARG: paragraphs"
   (interactive "P")
 
   (cond
@@ -677,7 +677,7 @@ ARG: paragraphs"
 
 (defun fc-delete-char (n)
   "Delete char.
-N: number."
+  N: number."
   (interactive "p")
 
   (if (eolp)
@@ -716,7 +716,7 @@ N: number."
 
 (defun fc-convert-info (info)
   "Convert info to string.
-INFO: info obj."
+  INFO: info obj."
   (--reduce-from (concat acc
                          "│"
                          (fc-text (format "%11s" (cl-first it))
@@ -727,7 +727,7 @@ INFO: info obj."
 
 (defun fc-show-info (&rest args)
   "Show info.
-ARGS: list of infos."
+  ARGS: list of infos."
   (--reduce-from (concat acc (fc-convert-info it))
                  ""
                  args))
@@ -1428,7 +1428,7 @@ AUTO: auto select face."
 
    ("r" ,(fc-cond-key :normal 'fc-proj-recentf
                       :region (fc-manual (fc--query-replace))
-                      :prefix (fc-manual (fc--query-replace :from-beginning t))))
+                      :prefix (fc-manual (fc--query-replace))))
    ("s" ,(fc-cond-key :normal 'fc-toggle-hide-show
                       :region 'fc-isearch-dwim
                       :prefix 'fc-toggle-hide-show-all))

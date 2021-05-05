@@ -7,6 +7,7 @@
 (cl-defun fc-funcall (func &key default args)
   "Call function.
 FUNC: function.
+DEFAULT: function used if func is nil.
 ARGS: argument for function."
   (when (and (symbolp func)
              (not (fboundp func)))
@@ -22,14 +23,16 @@ ARGS: argument for function."
     (apply func args))
 
    (t
-    (eval-expression func)
-    (--each args
-      (eval-expression it)))))
+    (let ((result (eval-expression func)))
+      (--each args
+        (eval-expression it))
+      result))))
 
 (cl-defun fc-replace-string (from to-string &key from-start)
   "String replacement.
 FROM: from-string.
-TO-STRING: to-string."
+TO-STRING: to-string.
+FROM-START: non-nil means starts from beginning."
   (when from-start
     (goto-char (point-min)))
 
@@ -42,7 +45,8 @@ TO-STRING: to-string."
 (cl-defun fc-replace-regexp (regex to &key from-start)
   "REGEXP String replacement.
 REGEX: regexp.
-TO-STRING: to-string."
+TO-STRING: to-string.
+FROM-START: non-nil means starts from beginning."
   (when from-start
     (goto-char (point-min)))
 

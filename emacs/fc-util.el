@@ -278,15 +278,11 @@ MARK-FUNC: call this func when region is not active."
      (fc-region start end
        (when ,suffix
          (goto-char (point-max))
-         (if (functionp ,suffix)
-             (fc-funcall ,suffix)
-           (insert ,suffix)))
+         (insert (fc-funcall ,suffix)))
 
        (when ,prefix
          (goto-char (point-min))
-         (if (functionp ,prefix)
-             (fc-funcall ,prefix)
-           (insert ,prefix))))))
+         (insert (fc-funcall ,prefix))))))
 
 (defun fc-buffer-visible-p (bufname)
   "Test if a buffer is visible.

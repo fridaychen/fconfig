@@ -338,7 +338,7 @@ ROOT: project path."
 (cl-defun fc-find-definitions (&key confirm)
   (interactive)
 
-  (let* ((sym (fc-current-thing t))
+  (let* ((sym (fc-current-thing t nil))
          (user-sym (and (or confirm (fc-void-p sym))
                         (read-string "Thing : " sym))))
     (cond
@@ -374,7 +374,7 @@ ROOT: project path."
          (from-prompt (format "Replace in {%s} from: " name))
          (to-prompt (format "Replace in {%s} to: " name)))
     (ggtags-query-replace
-     (read-string from-prompt (fc-current-thing t))
+     (read-string from-prompt (fc-current-thing t nil))
      (read-string to-prompt))))
 
 (cl-defun fc-proj-query-rename ()

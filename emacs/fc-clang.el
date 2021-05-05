@@ -6,7 +6,7 @@
 ;;; Code:
 (defun fc-c-string2hex ()
   "Convert string to hex and insert."
-  (--each (append (fc-current-thing t t t) nil)
+  (--each (append (fc-current-thing t t) nil)
     (insert (format "0x%02x, " it))))
 
 (defun fc-c-hex2string (start end)

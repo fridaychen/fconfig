@@ -104,16 +104,14 @@
         (balance-windows)
       (maximize-window))))
 
-(defun fc--query-replace (&optional backward)
+(cl-defun fc--query-replace (&key backward from-beginning)
   "Replace forward.
 BACKWARD: direction."
-  (let* ((prefix *fc-ergo-prefix*)
-         (from-str (read-string "Regex Query replace from : "
-                                (regexp-quote (fc-current-thing t t t))))
+  (let* ((from-str (fc-current-thing t t :regq t :prompt "Regex Query replace from"))
          (to-str (read-string (format "Regex Query replace from %s to : "
                                       from-str))))
     (cond
-     (prefix
+     (from-beginning
       (goto-char (point-min)))
 
      (backward
@@ -494,17 +492,9 @@ INDENT-FUNC: function for indent."
   "Translate word."
   (interactive)
 
-  (let ((words (fc-current-thing)))
+  (let ((words (fc-current-thing nil t)))
     (when (fc-not-void-p words)
       (fc-dict-lookup words))))
-
-(defun fc-translate-input-word (word)
-  "Translate input word.
-WORD: to be translated."
-  (interactive "MWord: ")
-
-  (when (fc-not-void-p word)
-    (fc-dict-lookup word)))
 
 (defun fc-mark-point-to-beginning-of-line (&optional arg)
   "Mark from current point to the line beginning.
@@ -674,7 +664,7 @@ ARG: paragraphs"
    ((buffer-narrowed-p)
     (widen))
 
-   ((member major-mode '(c-mode lisp-mode emacs-lisp-mode python-mode))
+   ((derived-mode-p 'prog-mode)
     (narrow-to-defun))
 
    ((eq major-mode 'diff-mode)
@@ -1162,7 +1152,7 @@ KEYMAP: keymap to run."
      ("a" align)
      ("b" compile)
      ("c" ,(fc-cond-key :normal 'quick-calc
-                        :region (fc-manual (message (calc-eval (fc-current-thing t t t))))))
+                        :region (fc-manual (message (calc-eval (fc-current-thing t t))))))
      ("d" fc-dev-mode-toggle)
      ("f" ,(fc-cond-key :normal 'fc-find-files
                         :proj (fc-manual (fc-proj-find-file default-directory))))
@@ -1212,7 +1202,7 @@ KEYMAP: keymap to run."
      ("'" ,(fc-cond-key :normal 'fc-show-hide-note
                         :region (fc-manual
                                  (fc-insert-note
-                                  (fc-current-thing nil nil t)))))
+                                  (fc-current-thing nil nil)))))
      )
    "ergo-quick-map")
   "KEYS a: align  b: compile  c: calc  d: dev mode  f: find file  h: hex mode  i: insert file  k: flycheck  l: imenu list  m: multiple  n: new buffer  o: occur  r: recover buffer  s: save  t: time  u: (un)maximize  w: save as  x: reading  B: none  C: calendar  D: open dir  F: format  I: insert signature  L: screen saver  M: rename file  R: readonly  S: save buffers  W: forecast  X: reading.")
@@ -1409,7 +1399,7 @@ AUTO: auto select face."
    ;; h := Help
    ("h" ,(fc-cond-key :normal (fc-head-key "Help" '*ergo-help-map*)
                       :region (fc-manual
-                               (fc-hi-lock-toggle (fc-current-thing t t t)))))
+                               (fc-hi-lock-toggle (fc-current-thing t t)))))
 
    ("i" previous-line)
    ("j" backward-char)
@@ -1438,10 +1428,10 @@ AUTO: auto select face."
 
    ("r" ,(fc-cond-key :normal 'fc-proj-recentf
                       :region (fc-manual (fc--query-replace))
-                      :prefix (fc-manual (fc--query-replace))))
+                      :prefix (fc-manual (fc--query-replace :from-beginning t))))
    ("s" ,(fc-cond-key :normal 'fc-toggle-hide-show
                       :region 'fc-isearch-dwim
-                      :prefix 'fc-search-next))
+                      :prefix 'fc-toggle-hide-show-all))
    ("t" fc-translate-word)
    ("u" ,(fc-cond-key :normal 'fc-mode-func-key))
    ("v" ,(fc-cond-key :normal 'set-mark-command
@@ -1489,7 +1479,7 @@ AUTO: auto select face."
                       :prefix (fc-manual (fc-text-retrieve default-directory))))
    ("H" ,(fc-cond-key :normal 'swiper
                       :region (fc-manual
-                               (swiper (fc-current-thing nil nil t)))))
+                               (swiper (fc-current-thing nil nil)))))
    ("I" fc-begin-of-func)
    ("J" backward-word)
    ("K" fc-end-of-func)
@@ -1497,21 +1487,21 @@ AUTO: auto select face."
    ("M" ,(fc-cond-key :normal (fc-head-key "Layout" '*ergo-layout-map*)
                       :region (fc-manual
                                (fc-insert-note
-                                (fc-current-thing nil nil t)))))
+                                (fc-current-thing nil nil)))))
    ("N" fc-narrow-widen)
    ("O" ,(fc-manual (beginning-of-line)
                     (newline-and-indent)
                     (forward-line -1)
                     (indent-for-tab-command)
                     (fc-modal-global-mode -1)))
-   ("P" fc-match-paren)
+   ("P" *fc-undef-key*)
    ("Q" ,(fc-cond-key :normal 'delete-window
                       :prefix 'ace-delete-window
                       :one 'bury-buffer))
    ("R" ,(fc-cond-key :normal 'fc-recentf
-                      :region (fc-manual (fc--query-replace t))))
+                      :region (fc-manual (fc--query-replace :backward t))))
    ("S" fc-toggle-hide-show-all)
-   ("T" fc-translate-input-word)
+   ("T" *fc-undef-key*)
    ("U" ,(fc-cond-key :normal (fc-manual
                                (fc-search-next nil t))
                       :prefix (fc-manual
@@ -1630,31 +1620,38 @@ FUNC: new repeat func."
 (--each '(rpn-calc)
   (advice-add it :before #'fc-modal-global-mode-off))
 
-(--each '(fc-edit-bookmark-annotation
-          fc-toggle-bookmark
+(--each '(
           fc-add-favorite-buffer
+          fc-edit-bookmark-annotation
           fc-modal-head-key
-          fc-set-key-seq
           fc-search-next
-          just-one-space)
+          fc-set-key-seq
+          fc-toggle-bookmark
+          fc-toggle-hide-show-all
+          just-one-space
+          )
   (advice-add it :after #'fc-ergo-prefix-off))
 
-(--each '(fc-ergo-simple-grep
-          fc-ergo-grep
-          ggtags-find-tag-dwim
-          fc-lisp-find-tag
-          compile
-          fc-proj-build
-          delete-window
-          delete-other-window
+(--each '(
           ace-delete-window
+          compile
+          delete-other-window
+          delete-window
+          fc-ergo-simple-grep
+          fc-ergo-grep
+          fc-lisp-find-tag
+          fc-proj-build
           fc-split-window
+          ggtags-find-tag-dwim
           split-window-vertically
-          split-window-horizontally)
+          split-window-horizontally
+          )
   (advice-add it :before #'fc-layout-push))
 
-(--each '(fc-find-definitions
-          fc-find-references)
+(--each '(
+          fc-find-definitions
+          fc-find-references
+          )
   (advice-add it :after #'fc-layout-push))
 
 (fc-add-to-hook '*fc-ergo-restore-hook*

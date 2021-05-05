@@ -120,19 +120,34 @@ SYMBOL: symbol name to be togllged."
       (set symbol nil)
     (set symbol t)))
 
-(cl-defun fc-current-thing (&optional extension ask deactivate)
+(cl-defun fc-current-thing (extension ask &key regq confirm prompt (deactivate t))
   "Fetch current thing at the point.
 EXTENSION: extensional way.
 ASK: ask user to confirm.
-DEACTIVATE: deativeate region."
-  (if (use-region-p)
-      (let ((thing (buffer-substring (region-beginning)
-                                     (region-end))))
-        (when deactivate
-          (deactivate-mark))
-        thing)
-    (or (thing-at-point (if extension 'symbol 'word))
-        (if ask (read-string "Thing : ") ""))))
+DEACTIVATE: deativeate region.
+REGQ: regex quote.
+CONFIRM: ask use to confirm.
+PROMPT: prompt for user input."
+  (let ((result))
+    (setf result
+          (if (use-region-p)
+              (buffer-substring (region-beginning)
+                                (region-end))
+            (thing-at-point (if extension 'symbol 'word))))
+
+    (when (and deactivate (use-region-p))
+      (deactivate-mark))
+
+    (if (or confirm
+            (and ask (null result)))
+        (setf result (read-string (or prompt "Thing")
+                                  (if (and regq result)
+                                      (regexp-quote result)
+                                    result)))
+      (when regq
+        (setf result (regexp-quote result))))
+
+    result))
 
 (defun fc-not-void-p (s)
   "Empty or not.

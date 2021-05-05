@@ -249,7 +249,7 @@ S: note string."
   RECURSION: recursion or not.
   WORD: word boundary or not"
   (interactive (list current-prefix-arg
-                     (read-string "Grep Pattern : " (fc-current-thing t t t))
+                     (fc-current-thing t t :prompt "Grep Pattern")
                      (read-directory-name "Root : " default-directory)
                      (read-string "File : " (fc--ergo-grep-file))
                      (fc-user-confirm "Recusion")
@@ -264,7 +264,7 @@ S: note string."
 (defun fc-ergo-simple-grep (pattern)
   "Simple grep.
   PATTERN: target pattern."
-  (interactive (list (read-string "Simple pattern : " (fc-current-thing t t t))))
+  (interactive (list (fc-current-thing t t :regq t :prompt "Simple pattern" )))
 
   (fc-grep pattern (fc--ergo-grep-root default-directory)
            :file (fc--ergo-grep-file)
@@ -275,7 +275,7 @@ S: note string."
 (defun fc-ergo-simple-proj-grep (pattern)
   "Simple project grep.
   PATTERN: target pattern."
-  (interactive (list (read-string "Project simple pattern : " (fc-current-thing t t t))))
+  (interactive (list (fc-current-thing t t :regq t :prompt "Project simple pattern")))
 
   (fc-grep pattern (file-relative-name (fc-proj-root))
            :file (fc--ergo-grep-file)
@@ -465,8 +465,7 @@ FILE-TYPES: target file types to be searched."
 (defun fc-text-retrieve (dir)
   "Text retrieve.
 DIR: dir to search."
-  (let* ((pattern (read-string "Regex pattern : "
-                               (regexp-quote (fc-current-thing t nil t))))
+  (let* ((pattern (fc-current-thing t nil :regq t :confirm t))
          (bufname (format "*fc text retrieve %s*" pattern))
          (buf (get-buffer-create bufname))
          (filename (when buffer-file-name
@@ -688,7 +687,7 @@ ARGS: args for ff."
              "Do search dwim."
              (interactive)
 
-             (let ((target (fc-current-thing nil t t)))
+             (let ((target (fc-current-thing nil t)))
                (isearch-resume target nil nil t target nil))))
   :bind '((isearch-mode-map
            ("C-j" isearch-repeat-forward)
@@ -721,11 +720,11 @@ BACKWARD: search direction."
          (fc--search-set-target regex))
 
         ((region-active-p)
-         (fc--search-set-target (regexp-quote (fc-current-thing t t t))))
+         (fc--search-set-target (fc-current-thing t t :regq t)))
 
         ((not *fc-app-search-regex*)
          (fc--search-set-target (read-string "Search regex: "
-                                             (regexp-quote (fc-current-thing))))))
+                                             (fc-current-thing nil nil :regq t)))))
 
   (if backward
       (re-search-backward *fc-app-search-regex* 0 t)
@@ -1099,9 +1098,7 @@ REST: commands."
   "Run occru dwim."
   (interactive)
 
-  (let ((s (if (use-region-p)
-               (regexp-quote (fc-current-thing t t t))
-             (read-string "Occur : " (regexp-quote (fc-current-thing t)))))
+  (let ((s (fc-current-thing t t :regq t :confirm t))
         (target (format-mode-line "%l:")))
     (occur s)
 

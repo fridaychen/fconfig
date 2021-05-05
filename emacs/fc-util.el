@@ -236,6 +236,15 @@ BODY: body."
                     (string-trim _ret)
                   "")))))
 
+(defmacro fc-manuals (&rest rest)
+  "Create a command.
+REST: list of commands."
+  `(lambda ()
+     (interactive)
+     (cl-loop for x in (list ,@rest)
+              do
+              (fc-funcall x))))
+
 (defmacro fc-region (start end &rest body)
   "Region wrapper.
 START: region start pos.

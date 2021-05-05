@@ -104,14 +104,15 @@
         (balance-windows)
       (maximize-window))))
 
-(cl-defun fc--query-replace (&key backward)
+(cl-defun fc--query-replace (&key backward from-beginning)
   "Replace.
-BACKWARD: backward direction."
+BACKWARD: backward direction.
+FROM-BEGINNING: start from beginnning."
   (let* ((from-str (fc-current-thing t t :regq t :prompt "Regex Query replace from"))
          (to-str (read-string (format "Regex Query replace from %s to : "
                                       from-str))))
     (cond
-     (*fc-ergo-prefix*
+     (from-beginning
       (goto-char (point-min)))
 
      (backward
@@ -567,20 +568,24 @@ BACKWARD: backward direction."
 
   (fc-popup-tip (current-time-string) :timeout 3))
 
-(cl-defmacro fc-cond-key (&key normal region proj one work prefix fold dev)
+(cl-defmacro fc-cond-key (&key normal region proj one work prefix fold dev preregion)
   "Run operation conditionaly.
-  NORMAL: normal mode.
-  REGION: region mode.
-  PROJ: project mode.
-  ONE: one-window mode.
-  WORK: work on project mode.
-  PREFIX: fc prefix mode.
-  FOLD: function return function.
-  DEV: dev mode."
+NORMAL: normal mode.
+REGION: region mode.
+PROJ: project mode.
+ONE: one-window mode.
+WORK: work on project mode.
+PREFIX: fc prefix mode.
+FOLD: function return function.
+DEV: dev mode.
+PREREGION: prefix and region mode"
   `(lambda ()
      (interactive)
 
      (cond
+      ((and ,preregion (region-active-p) *fc-ergo-prefix*)
+       (fc-funcall ,preregion))
+
       ((and ,region (region-active-p))
        (fc-funcall ,region))
 
@@ -1354,7 +1359,7 @@ AUTO: auto select face."
    ("1" ,(fc-cond-key :normal 'delete-other-windows
                       :prefix 'ace-delete-other-windows
                       :one 'fc-split-window))
-   ("2" ,(fc-cond-key :normal (fc-manual
+   ("2" ,(fc-cond-key :normal (fc-manuals
                                (fc-split-window)
                                (other-window 1)
                                (fc-switch-to-recent-buffer))
@@ -1428,7 +1433,7 @@ AUTO: auto select face."
 
    ("r" ,(fc-cond-key :normal 'fc-proj-recentf
                       :region (fc-manual (fc--query-replace))
-                      :prefix (fc-manual (fc--query-replace))))
+                      :preregion (fc-manual (fc--query-replace :from-beginning t))))
    ("s" ,(fc-cond-key :normal 'fc-toggle-hide-show
                       :region 'fc-isearch-dwim
                       :prefix 'fc-toggle-hide-show-all))
@@ -1445,12 +1450,10 @@ AUTO: auto select face."
                       :region 'exchange-point-and-mark))
    ("y" ,(fc-cond-key :normal 'yank
                       :prefix 'counsel-yank-pop
-                      :region (fc-manual
-                               (call-interactively #'delete-region)
-                               (if *fc-ergo-prefix*
-                                   (fc-funcall 'counsel-yank-pop)
-                                 (call-interactively #'yank)))))
-
+                      :region (fc-manuals #'delete-region
+                                          #'yank)
+                      :preregion (fc-manuals #'delete-region
+                                             #'counsel-yank-pop)))
    ("z" ,(fc-manual (push-mark (point))
                     (undo)))
 

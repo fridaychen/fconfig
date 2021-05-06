@@ -990,8 +990,10 @@ KEYMAP: keymap to run."
 
 (defconst *ergo-basic-map*
   (fc-make-keymap
-   `(("c" capitalize-word)
-     ("l" downcase-word)
+   `(("c" ,(fc-cond-key :normal 'capitalize-word
+                        :region 'capitalize-region))
+     ("l" ,(fc-cond-key :normal 'downcase-word
+                        :region 'downcase-region))
      ("m" fc-merge-short-line)
      ("p" ,(fc-manual
             (when buffer-file-name
@@ -999,8 +1001,7 @@ KEYMAP: keymap to run."
      ("u" ,(fc-cond-key :normal 'upcase-word
                         :region 'upcase-region))
      ("D" unix2dos)
-     ("M" ,(fc-cond-key :normal 'fc-merge-all-line
-                        :region 'fc-merge-all-line))
+     ("M" fc-merge-all-line)
      ("U" dos2unix)
      )
    "ergo-basic-map")
@@ -1397,14 +1398,18 @@ AUTO: auto select face."
           `((image-mode . image-eol)
             (_ . end-of-line))))
    ("f" ,(fc-cond-key :normal 'scroll-down-command
-                      :region (fc-manual (fc-modal-head-key
-                                          "Basic" '*ergo-basic-map*
-                                          :around
-                                          (lambda (func)
-                                            (fc-region (region-beginning) (region-end)
-                                              (goto-char (point-min))
-                                              (fc-funcall func)))))
-                      :prefix (fc-manual (fc-modal-head-key "Basic prefix" '*ergo-basic-map*))))
+                      :region (fc-manual
+                               (fc-modal-head-key
+                                "Basic" '*ergo-basic-map*
+                                :around
+                                (lambda (func)
+                                  (fc-region (region-beginning) (region-end)
+                                    (when (> (point) (mark))
+                                      (exchange-point-and-mark))
+                                    (fc-funcall func)))))
+                      :prefix (fc-manual
+                               (fc-modal-head-key
+                                "Basic prefix" '*ergo-basic-map*))))
 
    ;; g := Go/Global
    ("g" ,(fc-cond-key :normal (fc-head-key "Goto" '*ergo-goto-map*)

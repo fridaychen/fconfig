@@ -23,10 +23,9 @@ ARGS: argument for function."
     (apply func args))
 
    (t
-    (let ((result (eval-expression func)))
-      (--each args
-        (eval-expression it))
-      result))))
+    (--each args
+      (eval-expression it))
+    (eval-expression func))))
 
 (cl-defun fc-replace-string (from to-string &key from-start)
   "String replacement.

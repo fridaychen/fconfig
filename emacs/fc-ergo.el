@@ -1362,9 +1362,9 @@ AUTO: auto select face."
                       :prefix 'ace-delete-other-windows
                       :one 'fc-split-window))
    ("2" ,(fc-cond-key :normal (fc-manuals
-                               (fc-split-window)
-                               (other-window 1)
-                               (fc-switch-to-recent-buffer))
+                               #'fc-split-window
+                               #'other-window
+                               #'fc-switch-to-recent-buffer)
                       :prefix 'split-window-horizontally))
    ("3" ,(fc-cond-key :normal (fc-head-key "GTD" '*ergo-gtd-map*)
                       :prefix 'split-window-vertically))
@@ -1442,12 +1442,15 @@ AUTO: auto select face."
                       :prefix 'fc-player-func))
 
    ;; q := Quick/Quest
-   ("q" ,(fc-cond-key :normal (fc-head-key "Quick" '*ergo-quick-map*)
-                      :prefix (fc-head-key "Prefix Quick" '*ergo-prefix-quick-map*)))
+   ("q" ,(fc-cond-key :normal (fc-head-key "Quick"
+                                           '*ergo-quick-map*)
+                      :prefix (fc-head-key "Prefix Quick"
+                                           '*ergo-prefix-quick-map*)))
 
    ("r" ,(fc-cond-key :normal 'fc-proj-recentf
                       :region (fc-manual (fc--query-replace))
-                      :preregion (fc-manual (fc--query-replace :from-beginning t))))
+                      :preregion (fc-manual (fc--query-replace
+                                             :from-beginning t))))
    ("s" ,(fc-cond-key :normal 'fc-toggle-hide-show
                       :region 'fc-isearch-dwim
                       :prefix 'fc-toggle-hide-show-all))
@@ -1474,12 +1477,14 @@ AUTO: auto select face."
    ("A" fc-begin-of-semantic)
    ("B" ,(fc-cond-key :normal 'fc-bookmark
                       :prefix (fc-manual
-                               (let ((bm (fc-user-select "Select bookmark"
-                                                         (-map #'car bookmark-alist))))
+                               (let ((bm (fc-user-select
+                                          "Select bookmark"
+                                          (-map #'car bookmark-alist))))
                                  (when (and bm
-                                            (fc-user-confirm (format
-                                                              "Delete bootmark '%s'"
-                                                              bm)))
+                                            (fc-user-confirm
+                                             (format
+                                              "Delete bootmark '%s'"
+                                              bm)))
                                    (bookmark-delete bm))))))
 
    ;; C := VC
@@ -1511,14 +1516,14 @@ AUTO: auto select face."
                     (forward-line -1)
                     (indent-for-tab-command)
                     (fc-modal-global-mode -1)))
-   ("P" *fc-undef-key*)
+   ("P" ,*fc-undef-key*)
    ("Q" ,(fc-cond-key :normal 'delete-window
                       :prefix 'ace-delete-window
                       :one 'bury-buffer))
    ("R" ,(fc-cond-key :normal 'fc-recentf
                       :region (fc-manual (fc--query-replace :backward t))))
    ("S" fc-toggle-hide-show-all)
-   ("T" *fc-undef-key*)
+   ("T" ,*fc-undef-key*)
    ("U" ,(fc-cond-key :normal (fc-manual
                                (fc-search-next nil t))
                       :prefix (fc-manual
@@ -1530,7 +1535,8 @@ AUTO: auto select face."
    ("X" zap-to-char)
    ("Y" ,(fc-cond-key :normal 'yank-rectangle
                       :region (fc-manual
-                               (let ((text (fc-user-select "Kill ring" kill-ring)))
+                               (let ((text (fc-user-select
+                                            "Kill ring" kill-ring)))
                                  (call-interactively #'delete-region)
                                  (insert text)))))
    ("Z" neotree-toggle)
@@ -1561,7 +1567,8 @@ AUTO: auto select face."
                                   (_ . text-scale-decrease)))
                       :prefix *fc-decrease-volume*))
    ("+" ,(fc-cond-key :normal  (fc-mode-key
-                                `((image-mode . ,(fc-manual (image-transform-set-scale 1)))
+                                `((image-mode . ,(fc-manual
+                                                  (image-transform-set-scale 1)))
                                   (_ . ,(fc-manual (text-scale-set 0)))))))
    ("_" ,(fc-cond-key :normal 'fc-list-bookmark
                       :prefix 'fc-edit-bookmark-annotation))
@@ -1573,7 +1580,7 @@ AUTO: auto select face."
                       :region 'comment-dwim))
    ("'" ,(fc-cond-key :normal 'avy-goto-char-timer
                       :region (fc-mode-key
-                               `(((latex-mode markdown-mode). ,*fc-book-zh-single-quote*)
+                               `(((latex-mode markdown-mode) . ,*fc-book-zh-single-quote*)
                                  (_ . ,(fc-decorate-region "'" "'"))))))
    ("\"" ,(fc-cond-key :normal nil
                        :region (fc-mode-key

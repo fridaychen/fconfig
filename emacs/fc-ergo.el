@@ -703,7 +703,11 @@ PREREGION: prefix and region mode"
           ("User" ,user)
           ("Loc" ,loc)
           ("Font" ,(format "%s, %d" *fc-default-font* *fc-font-height*))
-          ("Theme" ,(format "%s, %s" *fc-current-theme* (symbol-name powerline-default-separator))))
+          ("Theme" ,(format "%s, %s"
+                            *fc-current-theme*
+                            (if (fboundp 'fc-modeline-mode)
+                                "fc-modeline"
+                              (symbol-name powerline-default-separator)))))
       `(
         ("Emacs" ,(format "%s, colorful %S" emacs-version *is-colorful*))
         ("User" ,user)

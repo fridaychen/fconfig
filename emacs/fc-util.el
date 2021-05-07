@@ -144,7 +144,7 @@ PROMPT: prompt for user input."
                                   (if (and regq result)
                                       (regexp-quote result)
                                     result)))
-      (when regq
+      (when (and regq result)
         (setf result (regexp-quote result))))
 
     result))

@@ -723,8 +723,9 @@ BACKWARD: search direction."
          (fc--search-set-target (fc-current-thing t t :regq t)))
 
         ((not *fc-app-search-regex*)
-         (fc--search-set-target (fc-current-thing t t
+         (fc--search-set-target (fc-current-thing t nil
                                                   :regq t
+                                                  :confirm t
                                                   :prompt "Search regex: "))))
 
   (if backward

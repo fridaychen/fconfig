@@ -12,12 +12,12 @@ case $(uname) in
 
         case $ID in
             debian)
-                sudo apt install autojump build-essential cowsay bear cmake espeak-ng figlet ffmpeg fortunes graphviz htop lolcat mbrola mbrola-us2 meld most mpg123 mpv neovim pandoc python3-pip ripgrep scons silversearcher-ag tidy
+                sudo apt install build-essential cowsay bear cmake espeak-ng fasd figlet ffmpeg fortunes graphviz htop lolcat mbrola mbrola-us2 meld most mpg123 mpv neovim pandoc python3-pip ripgrep scons silversearcher-ag tidy
                 ;;
 
             ubuntu)
                 sudo add-apt-repository ppa:mmstick76/alacritty
-                sudo apt install alacritty autojump bat build-essential cowsay bear cmake espeak-ng figlet ffmpeg graphviz htop lolcat mbrola mbrola-us2 meld most mpg123 mpv neovim pandoc ripgrep scons silversearcher-ag tidy
+                sudo apt install alacritty bat build-essential cowsay bear cmake espeak-ng fasd figlet ffmpeg graphviz htop lolcat mbrola mbrola-us2 meld most mpg123 mpv neovim pandoc ripgrep scons silversearcher-ag tidy
 
                 for x in lsd shfmt; do
                     sudo snap install $x
@@ -34,7 +34,7 @@ case $(uname) in
                 ;;
 
             arch | manjaro*)
-                sudo pacman -S --needed alacritty avahi base-devel bat cowsay cmake espeak-ng figlet ffmpeg go graphviz htop lolcat meld most mpg123 mpv neovim nss-mdns p7zip scons shfmt ripgrep tidy
+                sudo pacman -S --needed alacritty avahi base-devel bat cowsay cmake espeak-ng fasd figlet ffmpeg go graphviz htop lolcat meld most mpg123 mpv neovim nss-mdns p7zip scons shfmt ripgrep tidy
                 ;;
         esac
         ;;

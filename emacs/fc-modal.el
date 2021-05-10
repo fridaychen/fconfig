@@ -5,6 +5,7 @@
 
 ;;; Code:
 (require 'cl-lib)
+(require 'color)
 
 (defvar *fc-modal-command-cursor-color* "#ff71b5")
 (defvar *fc-modal-command-cursor-shape* 'box)

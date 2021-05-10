@@ -5,6 +5,7 @@
 
 ;;; Code:
 (require 'cl-lib)
+(require 'color)
 
 (defvar *fc-modal-command-cursor-color* "#ff71b5")
 (defvar *fc-modal-command-cursor-shape* 'box)
@@ -87,7 +88,10 @@ MODES: modes to be excluded."
   (fc-modal-set-cursor-shape *fc-modal-command-cursor-shape*)
   (set-face-attribute 'fringe nil
                       :background
-                      *fc-modal-cur-fringe-color*))
+                      *fc-modal-cur-fringe-color*
+                      :foreground
+                      (apply #'color-rgb-to-hex
+                             (color-complement *fc-modal-cur-fringe-color*))))
 
 (defun fc--modal-visual-feedback-leave ()
   "Leave modal mode."
@@ -97,7 +101,9 @@ MODES: modes to be excluded."
   (fc-modal-set-cursor-shape *fc-modal-edit-cursor-shape*)
   (set-face-attribute 'fringe nil
                       :background
-                      (face-attribute 'default :background)))
+                      (face-attribute 'default :background)
+                      :foreground
+                      (face-attribute 'default :foreground)))
 
 (defun fc-modal-visual-feedback ()
   "Setup modal mode ui on GUI."

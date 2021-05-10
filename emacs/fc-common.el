@@ -227,10 +227,7 @@ COLOR: background color."
 
     (fc-soothe-theme soothe-percent
                      (gethash *fc-current-theme*
-                              *fc-soothe-color*))
-
-    (fc-set-face-attribute 'hi-yellow nil
-                           :background "yellow3")))
+                              *fc-soothe-color*))))
 
 ;; players
 (cl-defun fc-init-user-player ()

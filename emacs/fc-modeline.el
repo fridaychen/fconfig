@@ -243,8 +243,9 @@
   (unless (facep 'fc-modeline-highlight-face)
     (make-face 'fc-modeline-highlight-face)
     (set-face-attribute 'fc-modeline-highlight-face nil
-                        :foreground "#3E3D31"
+                        :foreground "black"
                         :background "DarkGoldenrod2"
+                        :weight 'medium
                         :inherit 'mode-line))
 
   (mode-icons-mode -1)
@@ -252,8 +253,6 @@
                 '("%e"
                   (:eval
                    (fc--modeline-format-main)))))
-
-;;       
 
 (provide 'fc-modeline)
 

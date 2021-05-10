@@ -482,7 +482,7 @@ DIR: dir to search."
       (fc-pop-buf buf :automode t :read-only t :highlight (list pattern)))))
 
 ;; eshell extensions
-(setenv "AUTOJUMP_SOURCED" "1")
+(setenv "_FASD_FUZZY" "16")
 
 (defun fc-eshell-dirtrim (path n full-prefix short-prefix)
   (let* ((parts (-filter #'fc-not-void-p (split-string path "/"))))
@@ -531,12 +531,12 @@ DIR: dir to search."
 (setf eshell-prompt-function #'fc-eshell-prompt-function)
 
 (defun j (&rest args)
-  "Autojump.
-ARGS: args for autojump."
+  "Fast jump.
+ARGS: args for fast jump."
   (if (/= 1 (length args))
       "input one argument only !"
     (cd (string-trim (shell-command-to-string
-                      (concat "autojump " (car args)))))
+                      (concat "fasd -d " (car args)))))
     ""))
 
 (defun r ()

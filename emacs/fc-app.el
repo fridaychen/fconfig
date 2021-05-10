@@ -190,12 +190,12 @@ S: note string."
 ;; grep
 (cl-defun fc-grep (pattern root &key file recursion word regex)
   "Execute grep.
-  PATTERN: regex pattern.
-  ROOT: root path.
-  FILE: file glob.
-  RECURSION: bool.
-  WORD: bool.
-  REGEX: regex."
+PATTERN: regex pattern.
+ROOT: root path.
+FILE: file glob.
+RECURSION: bool.
+WORD: bool.
+REGEX: regex."
 
   (let ((l nil))
     (push (getenv "GREP") l)
@@ -219,7 +219,7 @@ S: note string."
 
 (defun fc--ergo-grep-root (root)
   "Get root directory for grep.
-  ROOT: directory."
+ROOT: directory."
   (if (and buffer-file-name
            (equal (file-name-directory buffer-file-name)
                   (expand-file-name root)))
@@ -242,12 +242,12 @@ S: note string."
 
 (defun fc-ergo-grep (regex pattern root file recursion word)
   "Execute grep.
-  REGEX: enable regular exp or not.
-  PATTERN: string or regexp.
-  ROOT: directory.
-  FILE: file name patterns.
-  RECURSION: recursion or not.
-  WORD: word boundary or not"
+REGEX: enable regular exp or not.
+PATTERN: string or regexp.
+ROOT: directory.
+FILE: file name patterns.
+RECURSION: recursion or not.
+WORD: word boundary or not"
   (interactive (list current-prefix-arg
                      (fc-current-thing t t :prompt "Grep Pattern")
                      (read-directory-name "Root : " default-directory)
@@ -263,7 +263,7 @@ S: note string."
 
 (defun fc-ergo-simple-grep (pattern)
   "Simple grep.
-  PATTERN: target pattern."
+PATTERN: target pattern."
   (interactive (list (fc-current-thing t t :regq t :prompt "Simple pattern" )))
 
   (fc-grep pattern (fc--ergo-grep-root default-directory)
@@ -274,7 +274,7 @@ S: note string."
 
 (defun fc-ergo-simple-proj-grep (pattern)
   "Simple project grep.
-  PATTERN: target pattern."
+PATTERN: target pattern."
   (interactive (list (fc-current-thing t t :regq t :prompt "Project simple pattern")))
 
   (fc-grep pattern (file-relative-name (fc-proj-root))
@@ -723,8 +723,9 @@ BACKWARD: search direction."
          (fc--search-set-target (fc-current-thing t t :regq t)))
 
         ((not *fc-app-search-regex*)
-         (fc--search-set-target (read-string "Search regex: "
-                                             (fc-current-thing nil nil :regq t)))))
+         (fc--search-set-target (fc-current-thing t t
+                                                  :regq t
+                                                  :prompt "Search regex: "))))
 
   (if backward
       (re-search-backward *fc-app-search-regex* 0 t)

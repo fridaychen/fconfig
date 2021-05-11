@@ -16,7 +16,8 @@ ARGS: argument for function."
   (cond
    ((not func))
 
-   ((commandp func t)
+   ((and (commandp func t)
+         (null args))
     (call-interactively func))
 
    ((functionp func)

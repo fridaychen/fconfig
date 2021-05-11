@@ -248,7 +248,7 @@
                         :weight 'medium
                         :inherit 'mode-line))
 
-  (mode-icons-mode -1)
+  (fc-funcall #'mode-icons-mode :args (list -1))
   (setq-default mode-line-format
                 '("%e"
                   (:eval

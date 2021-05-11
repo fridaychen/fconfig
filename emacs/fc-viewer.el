@@ -23,6 +23,24 @@
     (hl-line-mode 1)
     (-fc-viewer-adjust-width)))
 
+(defun fc-viewer-toggle ()
+  "Toggle viewer mode."
+  (interactive)
+
+  (setq-local *fc-viewer-mode* (not *fc-viewer-mode*))
+  (fc-run-hook '*fc-viewer-hook*))
+
+(cl-defun fc-viewer-list ()
+  "List viewer buffer."
+  (fc-list-buffer :filter
+                  (lambda ()
+                    *fc-viewer-mode*)))
+
+(cl-defun fc-viewer-mode-p ()
+  "Test if current buffer is under viewer mode."
+  (and (boundp '*fc-viewer-mode*)
+       *fc-viewer-mode*))
+
 (defun fc-viewer-enter ()
   "Enter reading mode."
   (interactive)
@@ -54,29 +72,13 @@
 
   (set-display-table-slot buffer-display-table 'wrap ?\\))
 
-(defun fc-viewer-toggle ()
-  "Toggle viewer mode."
-  (interactive)
-
+(defun fc--default-toggle-viewer ()
   (if *fc-viewer-mode*
-      (fc-viewer-quit)
-    (fc-viewer-enter))
-
-  (setq-local *fc-viewer-mode* (not *fc-viewer-mode*))
-  (fc-run-hook '*fc-viewer-hook*))
-
-(cl-defun fc-viewer-list ()
-  "List viewer buffer."
-  (fc-list-buffer :filter
-                  (lambda ()
-                    *fc-viewer-mode*)))
-
-(cl-defun fc-viewer-mode-p ()
-  "Test if current buffer is under viewer mode."
-  (and (boundp '*fc-viewer-mode*)
-       *fc-viewer-mode*))
+      (fc-viewer-enter)
+    (fc-viewer-quit)))
 
 (fc-add-display-hook #'-fc-viewer-display)
+(add-hook '*fc-viewer-hook* #'fc--default-toggle-viewer)
 
 (provide 'fc-viewer)
 

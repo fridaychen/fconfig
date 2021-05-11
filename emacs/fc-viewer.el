@@ -10,6 +10,8 @@
 (defconst *fc-reading-title-limit* 22)
 (defvar-local *fc-bak-line-spacing* nil)
 
+(defvar *fc-viewer-hook* nil "After viewer mode toggled hook.")
+
 (cl-defun -fc-viewer-adjust-width ()
   "Adjust viewer buffer width."
   (when (> (window-width) *fc-reading-fill*)
@@ -61,8 +63,7 @@
     (fc-viewer-enter))
 
   (setq-local *fc-viewer-mode* (not *fc-viewer-mode*))
-  ;; (fc-setup-reading-mode-line)
-  )
+  (fc-run-hook '*fc-viewer-hook*))
 
 (cl-defun fc-viewer-list ()
   "List viewer buffer."

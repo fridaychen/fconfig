@@ -12,7 +12,11 @@
     (defun fc--setup-markdown-mode ()
       (eldoc-mode -1))
 
-    (add-hook 'markdown-mode-hook 'fc--setup-markdown-mode)))
+    (defun fc--md-toggle-viewer ()
+      (markdown-toggle-markup-hiding (if *fc-viewer-mode* 1 -1)))
+
+    (add-hook '*fc-viewer-hook* #'fc--md-toggle-viewer)
+    (add-hook 'markdown-mode-hook #'fc--setup-markdown-mode)))
 
 (fc-load 'markdown-changelog)
 

@@ -17,6 +17,11 @@
 
 (defvar *fc-modal-cur-fringe-color* *fc-modal-command-fringe-color*)
 
+(defconst *fc-modal-fringe-faces* '(fringe
+                                    flycheck-fringe-error
+                                    flycheck-fringe-info
+                                    flycheck-fringe-warning))
+
 (defvar *fc-modal-idle-timeout* 60)
 (defvar *fc-modal-keymap* (fc-make-keymap nil "fc-modal") "Keymap of Modal mode.")
 
@@ -86,12 +91,14 @@ MODES: modes to be excluded."
   (blink-cursor-mode -1)
   (fc-modal-set-cursor-color *fc-modal-command-cursor-color*)
   (fc-modal-set-cursor-shape *fc-modal-command-cursor-shape*)
-  (set-face-attribute 'fringe nil
-                      :background
-                      *fc-modal-cur-fringe-color*
-                      :foreground
-                      (apply #'color-rgb-to-hex
-                             (color-complement *fc-modal-cur-fringe-color*))))
+  (--each *fc-modal-fringe-faces*
+    (when (facep it)
+      (set-face-attribute it nil
+                          :background
+                          *fc-modal-cur-fringe-color*
+                          :foreground
+                          (apply #'color-rgb-to-hex
+                                 (color-complement *fc-modal-cur-fringe-color*))))))
 
 (defun fc--modal-visual-feedback-leave ()
   "Leave modal mode."
@@ -99,11 +106,13 @@ MODES: modes to be excluded."
   (blink-cursor-mode 1)
   (fc-modal-set-cursor-color *fc-modal-edit-cursor-color*)
   (fc-modal-set-cursor-shape *fc-modal-edit-cursor-shape*)
-  (set-face-attribute 'fringe nil
-                      :background
-                      (face-attribute 'default :background)
-                      :foreground
-                      (face-attribute 'default :foreground)))
+  (--each *fc-modal-fringe-faces*
+    (when (facep it)
+      (set-face-attribute it nil
+                          :background
+                          (face-attribute 'default :background)
+                          :foreground
+                          (face-attribute 'font-lock-keyword-face :foreground)))))
 
 (defun fc-modal-visual-feedback ()
   "Setup modal mode ui on GUI."

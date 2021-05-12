@@ -83,7 +83,7 @@
                                  "terminator.mp3")))
 
 ;; completion
-(defvar *fc-completion* (if *is-mac* 'ivy 'helm))
+(defvar *fc-completion* 'ivy 'helm)
 
 ;; screen
 (setf *fc-enable-hideshowvis* nil)

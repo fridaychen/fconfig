@@ -317,15 +317,17 @@ FULLSCREEN: fullscreen ui mode."
    (t
     (ivy-read (fc-prompt prompt) collection))))
 
-(cl-defun fc-user-select (prompt collection &key fullscreen)
+(cl-defun fc-user-select (prompt collection &key always fullscreen)
   "Select a item from the collection.
 PROMPT: user prompt.
 COLLECTION: cadidates collection.
+ALWAYS: always ask use to select.
 FULLSCREEN: fullscreen ui mode."
   (when (not collection)
     (cl-return-from fc-user-select nil))
 
-  (when (= (length collection) 1)
+  (when (and (not always)
+             (= (length collection) 1))
     (let* ((proj (car collection)))
       (cl-return-from fc-user-select
         (if (cl-typep proj 'cons)
@@ -351,7 +353,8 @@ FULLSCREEN: fullscreen ui mode.
 DEFAULT: default function."
   (fc-funcall (fc-user-select prompt
                               collection
-                              :fullscreen fullscreen)
+                              :fullscreen fullscreen
+                              :always t)
               :default default))
 
 (defun fc--popup-tip-local (title content timeout)

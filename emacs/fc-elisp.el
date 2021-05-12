@@ -11,13 +11,21 @@
    `(
      ("e" eval-last-sexp)
      ("f" eval-defun)
-     ("H" fc-add-elisp-header-footer)
-     ("L" ,(fc-manual (when buffer-file-name
+     ("l" ,(fc-manual (when buffer-file-name
                         (load buffer-file-name))))
+     ("SPC" fc-elisp-portal)
      )
    "fc-emacs-lisp-map"
    *fc-func-mode-map*)
-  "KEYS e: eval  f: eval fun  E: org edit exit  H: add header  L: load current file.")
+  "KEYS e: eval  f: eval fun  l: load current file  E: org edit exit  SPC: portal.")
+
+(defun fc-elisp-portal ()
+  "Show elisp portal."
+  (fc-user-select-func
+   "Elisp"
+   `(
+     ("Add header and footer" . fc-add-elisp-header-footer)
+     )))
 
 (defun fc-add-elisp-header-footer ()
   "Add elisp header and footer."

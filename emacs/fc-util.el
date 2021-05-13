@@ -256,6 +256,14 @@ BODY: form body."
        (narrow-to-region ,start ,end)
        ,@body)))
 
+(defmacro fc-buffer (&rest body)
+  "Buffer wrapper.
+BODY: form body."
+  (declare (indent defun))
+  `(save-excursion
+     (save-restriction
+       ,@body)))
+
 (cl-defmacro fc-decorate-region (prefix suffix &key (mark-func #'er/mark-symbol))
   "Decorate region.
 PREFIX: region prefix.
@@ -303,7 +311,7 @@ FULLSCREEN: fullscreen ui mode."
     (let ((helm-full-frame t))
       (helm :sources
             (helm-build-sync-source prompt
-              :candidates collection))))
+                                    :candidates collection))))
 
    ((let ((total_len (apply #'+
                             (--map

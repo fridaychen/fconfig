@@ -24,6 +24,27 @@ function fit-count-changes() {
         sed -e "s/ //g"
 }
 
+function fit-select-branch() {
+    git branch | fzf --prompt="Select branch > "
+}
+
+function fit-select-commit() {
+    git log \
+        --graph \
+        --date="format:%y/%m/%d %H:%M" \
+        --pretty="format:%h│%Cblue%an %Cgreen%ad%Creset │ %s" \
+        --color=auto \
+        $@ |
+        fzf -1 \
+            --nth 2 \
+            --ansi \
+            --reverse \
+            --bind="?:toggle-preview" \
+            --prompt="Select commit > " \
+            --preview-window="right:50%:wrap" |
+        grep -o "[a-f0-9]\{7\}"
+}
+
 function fit-switch-branch() {
     git branch |
         sed -e "/^\\*/d" |

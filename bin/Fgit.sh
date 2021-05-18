@@ -25,23 +25,24 @@ function fit-count-changes() {
 }
 
 function fit-select-branch() {
-    git branch | fzf --prompt="Select branch > "
+    git branch $@ | fzf --prompt="Select branch > "
 }
 
 function fit-select-commit() {
     git log \
         --graph \
         --date="format:%y/%m/%d %H:%M" \
-        --pretty="format:%h│%Cblue%an %Cgreen%ad%Creset │ %s" \
-        --color=auto \
+        --pretty="format:│%h│%Cblue%an %Cgreen%ad%Creset │ %s" \
+        --color=always \
         $@ |
         fzf -1 \
-            --nth 2 \
             --ansi \
+            -d "│" \
             --reverse \
             --bind="?:toggle-preview" \
             --prompt="Select commit > " \
-            --preview-window="right:50%:wrap" |
+            --preview-window="bottom:40%:wrap" \
+            --preview "git show --color=always {2}" |
         grep -o "[a-f0-9]\{7\}"
 }
 

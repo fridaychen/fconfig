@@ -8,8 +8,8 @@
 (require 'eieio)
 (require 'iso-transl)
 
-(when (and (featurep 'nativecomp)
-           (native-comp-available-p))
+(when (and (fboundp 'native-comp-available-p)
+	   (native-comp-available-p))
   (setf package-native-compile t))
 
 (setf enable-local-variables :all
@@ -48,7 +48,7 @@
 ;; first step initilization
 (let ((has-battery (fc-has-battery)))
   (setf *is-laptop* has-battery
-        *fc-enable-screen-saver* (not has-battery)))
+	*fc-enable-screen-saver* (not has-battery)))
 
 (when *is-gui*
   (fc-require 'fc-font))

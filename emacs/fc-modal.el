@@ -126,8 +126,8 @@ MODES: modes to be excluded."
   "Hook function for after theme change."
   (let ((default-bg (face-attribute 'default :background))
         (bg (or
-             (and (facep 'org-level-1)
-                  (face-attribute 'org-level-1 :foreground))
+             (and (facep 'fringe)
+                  (face-attribute 'fringe :background))
              (fc-get-face-attribute 'highlight :foreground))))
     (setf *fc-modal-cur-fringe-color*
           (if (> (fc-color-difference default-bg bg) 30000)

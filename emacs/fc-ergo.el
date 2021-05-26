@@ -796,6 +796,7 @@ ARGS: list of infos."
 (fc-bind-keys `(("RET" newline-and-indent)
                 ("<escape>" fc-escape-key)
                 ("TAB" fc-tab-key)
+                ("M-x" fc-M-x)
                 ("C-<return>" fc-ctrl-enter-key)
                 ("C-x b" ivy-switch-buffer)
                 ("C-@" fc-escape-key)

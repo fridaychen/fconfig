@@ -173,6 +173,8 @@ COLOR: background color."
                                            2)))
 
       ('material
+       (fc-set-face-attribute 'fringe nil
+                              :background "#ff9800")
        (fc-set-face-attribute 'default nil
                               :foreground "#dfdfdf"
                               :background "#102a20")
@@ -185,6 +187,8 @@ COLOR: background color."
 
       ('monokai
        (when *is-gui*
+         (fc-set-face-attribute 'fringe nil
+                                :background monokai-orange)
          (fc-set-face-attribute 'default nil
                                 :background
                                 "#282a3a"))
@@ -210,6 +214,10 @@ COLOR: background color."
        (fc-set-face-attribute 'font-lock-doc-face nil
                               :foreground "gray80"))
 
+      ('sanityinc-tomorrow-eighties
+       (fc-set-face-attribute 'fringe nil
+                              :background "#de935f"))
+
       ('tango-dark
        (fc-set-face-attribute 'default nil
                               :background "#203420")
@@ -218,6 +226,10 @@ COLOR: background color."
                               :background "gray30"))
 
       ('zenburn
+       (fc-set-face-attribute 'fringe nil
+                              :background (cdr
+                                           (assoc-string "zenburn-orange"
+                                                         zenburn-default-colors-alist)))
        (fc-set-face-attribute 'default nil
                               :background "#383838")
        (fc-set-face-attribute 'hl-line nil

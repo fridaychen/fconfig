@@ -165,6 +165,12 @@ COLOR: background color."
                             *fc-soothe-dark-percent*
                           *fc-soothe-light-percent*)))
     (pcase *fc-current-theme*
+      ('adwaita
+       (fc-set-face-attribute 'default nil
+                              :background "#F0FFF0")
+       (fc-set-face-attribute 'fringe nil
+                              :background "#ff9800"))
+
       ('classic
        (setf soothe-percent -2)
        (fc-set-face-attribute 'default nil

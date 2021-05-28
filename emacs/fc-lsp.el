@@ -12,7 +12,8 @@
            (require 'lsp)
            (require 'lsp-mode)
 
-           (setq lsp-headerline-breadcrumb-enable nil)))
+           (setq lsp-headerline-breadcrumb-enable nil
+                 lsp-progress-via-spinner nil)))
 
 ;; (fc-load 'lsp-ui
 ;;      :after (progn

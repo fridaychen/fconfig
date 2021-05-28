@@ -40,6 +40,8 @@ END: end of region."
 (defconst *fc-c-map*
   (fc-make-keymap
    `(
+     ("h" ,(fc-cond-key :normal 'fc-c-string2hex
+                        :region 'fc-c-hex2string))
      ("i d" ,(fc-manual (fc-expand-snippet "do")))
      ("i f" ,(fc-manual (fc-expand-snippet "f")))
      ("i i" ,(fc-manual (fc-expand-snippet "if")))
@@ -50,7 +52,7 @@ END: end of region."
      )
    "fc-c-map"
    *fc-func-mode-map*)
-  "KEYS i d: insert do  i f: insert func  i i: insert if  i w: insert switch  i w: insert while  C: clang-format off  E: org exit edit.")
+  "KEYS h: hex  i d: insert do  i f: insert func  i i: insert if  i w: insert switch  i w: insert while  C: clang-format off  E: org exit edit.")
 
 (defun fc-c-mode-func ()
   "Mode func."

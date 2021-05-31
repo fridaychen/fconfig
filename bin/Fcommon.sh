@@ -31,3 +31,11 @@ function make-string() {
 function fc-net-connected() {
     [[ $(nmcli networking conn) = "full" ]]
 }
+
+function fc-user-confirm() {
+    # local opt
+    while read -e -t 0.1; do :; done
+    read -n 1 -s -r -p "$* [y/N] ? " opt
+    echo -e "\n"
+    [[ ${opt} = "y" || ${opt} = "Y" ]]
+}

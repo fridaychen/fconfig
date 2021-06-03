@@ -83,7 +83,8 @@ FONT: to be tested."
 (defun fc-select-font-family ()
   "Select a font family from system."
   (fc-user-select "Select font family : "
-                  (font-family-list)))
+                  (delete-dups
+                   (sort (font-family-list) #'string<))))
 
 (cl-defun fc-config-font ()
   "Allow user config FONT."

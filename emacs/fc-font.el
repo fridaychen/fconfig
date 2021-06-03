@@ -85,6 +85,28 @@ FONT: to be tested."
   (fc-user-select "Select font family : "
                   (font-family-list)))
 
+(cl-defun fc-config-font ()
+  "Allow user config FONT."
+  (interactive)
+
+  (let ((family (fc-select-font-family))
+        (height (string-to-number
+                 (read-string "Height"
+                              (fc-string *fc-font-height*))))
+        (weight (read-string "Weight"
+                             (fc-string *fc-font-weight-of-default*))))
+    (when (zerop height)
+      (message "Zero font height is not allowed")
+      (cl-return-from fc-config-font))
+    (when (fc-void-p family)
+      (message "Font dose not exists.")
+      (cl-return-from fc-config-font))
+
+    (setf *fc-default-font* (list :family family)
+          *fc-font-height* height
+          *fc-font-weight-of-default* (intern weight))
+    (fc-setup-font)))
+
 ;; configration
 (setf font-lock-maximum-decoration t
       text-scale-mode-step 1.1

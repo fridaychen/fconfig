@@ -1085,13 +1085,14 @@ REST: commands."
   (let ((server-title (if server-mode "server stop" "server start")))
     (fc-user-select-func
      "System"
-     `(("location"		.	fc-update-location)
-       ("package"		.	list-packages)
-       ("profile startup"	.	fc-profile-startup)
-       (,server-title		.	fc-toggle-server)
-       ("theme"			.	fc-select-theme)
-       ("theme reset"		.	fc-reset-theme)
-       ("upgrade"		.	(lambda () (fc-run (package-utils-upgrade-all))))))))
+     `(("font"            . fc-config-font)
+       ("location"	  . fc-update-location)
+       ("package"	  . list-packages)
+       ("profile startup" . fc-profile-startup)
+       (,server-title	  . fc-toggle-server)
+       ("theme"		  . fc-select-theme)
+       ("theme reset"	  . fc-reset-theme)
+       ("upgrade"	  . (lambda () (fc-run (package-utils-upgrade-all))))))))
 
 (advice-add 'package-utils-upgrade-all :after #'fc-job-done)
 

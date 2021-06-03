@@ -702,7 +702,10 @@ N: number."
                             (fc-display-ppi) *fc-fringe-width*))
           ("User" ,user)
           ("Loc" ,loc)
-          ("Font" ,(format "%s, %d" *fc-default-font* *fc-font-height*))
+          ("Font" ,(format "%s, %s, %d"
+                           *fc-default-font*
+                           *fc-font-weight-of-default*
+                           *fc-font-height*))
           ("Theme" ,(format "%s, %s"
                             *fc-current-theme*
                             (if (fboundp 'fc-modeline-mode)

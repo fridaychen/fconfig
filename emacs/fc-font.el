@@ -16,48 +16,48 @@
 (defun fc-setup-font ()
   "Setup font."
   (apply #'set-face-attribute 'default 'nil
-         :height *fc-font-height*
-         :weight *fc-font-weight-of-default*
-         *fc-default-font*)
+	 :height *fc-font-height*
+	 :weight *fc-font-weight-of-default*
+	 *fc-default-font*)
 
   (let ((italic-font (apply #'font-spec
-                            :slant 'italic
-                            *fc-default-font*)))
+			    :slant 'italic
+			    *fc-default-font*)))
     (when (find-font italic-font)
       (set-face-attribute 'italic
-                          nil
-                          :font italic-font
-                          :height *fc-font-height*)))
+			  nil
+			  :font italic-font
+			  :height *fc-font-height*)))
 
   (let ((bold-italic-font (apply #'font-spec
-                                 :slant 'italic
-                                 :weight 'bold
-                                 *fc-default-font*)))
+				 :slant 'italic
+				 :weight 'bold
+				 *fc-default-font*)))
     (when (find-font bold-italic-font)
       (set-face-attribute 'bold-italic
-                          nil
-                          :font bold-italic-font
-                          :height *fc-font-height*)))
+			  nil
+			  :font bold-italic-font
+			  :height *fc-font-height*)))
 
   (let ((font (frame-parameter nil 'font)))
     (-map (lambda (n)
-            (dolist (charset (car n))
-              (set-fontset-font
-               font
-               charset
-               (apply #'font-spec
-                      (cdr n)))))
+	    (dolist (charset (car n))
+	      (set-fontset-font
+	       font
+	       charset
+	       (apply #'font-spec
+		      (cdr n)))))
 
-          *fc-font*))
+	  *fc-font*))
 
   (when (and *fc-use-another-font-for-mode-line*
-             (fontset-info "fontset-fc"))
+	     (fontset-info "fontset-fc"))
     (set-face-attribute 'mode-line nil
-                        :fontset "fontset-fc"))
+			:fontset "fontset-fc"))
 
   (set-face-attribute 'mode-line nil
-                      :height (+ *fc-font-height*
-                                 *fc-font-mode-line-delta*)))
+		      :height (+ *fc-font-height*
+				 *fc-font-mode-line-delta*)))
 
 (cl-defun fc-adjust-font (delta)
   (cl-incf *fc-font-height* delta)
@@ -83,29 +83,29 @@ FONT: to be tested."
 (defun fc-select-font-family ()
   "Select a font family from system."
   (fc-user-select "Select font family : "
-                  (delete-dups
-                   (sort (font-family-list) #'string<))))
+		  (delete-dups
+		   (sort (font-family-list) #'string<))))
 
 (cl-defun fc-config-font ()
   "Allow user config FONT."
   (interactive)
 
   (let ((family (fc-select-font-family))
-        (height (string-to-number
-                 (read-string "Height"
-                              (fc-string *fc-font-height*))))
-        (weight (read-string "Weight"
-                             (fc-string *fc-font-weight-of-default*))))
-    (when (zerop height)
-      (message "Zero font height is not allowed")
+	(height (string-to-number
+		 (read-string "Height"
+			      (fc-string *fc-font-height*))))
+	(weight (read-string "Weight"
+			     (fc-string *fc-font-weight-of-default*))))
+    (when (> 96 height)
+      (message "Font height too small.")
       (cl-return-from fc-config-font))
     (when (fc-void-p family)
       (message "Font dose not exists.")
       (cl-return-from fc-config-font))
 
     (setf *fc-default-font* (list :family family)
-          *fc-font-height* height
-          *fc-font-weight-of-default* (intern weight))
+	  *fc-font-height* height
+	  *fc-font-weight-of-default* (intern weight))
     (fc-setup-font)))
 
 ;; configration

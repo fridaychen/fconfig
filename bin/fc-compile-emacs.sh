@@ -12,7 +12,7 @@ function update_emacs() {
 }
 
 function compile_emacs() {
-    make distclean
+    git clean -xdf
     ./autogen.sh
     ./configure --with-native-compilation --with-json
     make -j$(nproc)

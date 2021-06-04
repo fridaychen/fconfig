@@ -995,18 +995,6 @@ REST: commands."
         "~/.emacs.d/fconfig/resource/dot-dir-locals.el")
        (concat dir "/.dir-locals.el")))))
 
-(defun fc-select-and-set-default-font ()
-  "Select font as default font."
-  (let* ((font (fc-select-font-family))
-         (weight (fc-user-select
-                  "Select font weight : "
-                  '(("light" . light)
-                    ("regular" . regular)
-                    ("bold" . bold)))))
-    (set-face-attribute 'default nil
-                        :family font
-                        :weight weight)))
-
 (defun fc-decode-ansi-esc-code ()
   "Decode ansi escape code."
   (let ((start (if (region-active-p)
@@ -1051,14 +1039,22 @@ REST: commands."
     (text-mode)
     (fc-pop-buf (current-buffer) :read-only t)))
 
+(defun fc-config-line-space ()
+  "Setup line space for all file buffers."
+  (setf *fc-basic-line-spacing* (string-to-number
+                                 (read-string
+                                  "New line space"
+                                  (fc-string *fc-basic-line-spacing*))))
+  (--each (fc-list-buffer)
+    (with-current-buffer
+        (setf line-spacing *fc-basic-line-spacing*))))
+
 (defun fc-select-other-func ()
   "Select other function."
   (fc-user-select-func
    "Other"
    `(
-     ("background"		. fc-set-background-color)
      ("de-ansi esc color"	. fc-decode-ansi-esc-code)
-     ("default font"		. fc-select-and-set-default-font)
      ("dos2unix"		. dos2unix)
      ("hex2string"              . fc-c-hex2string)
      ("init dir-locals"		. fc-init-dir-locals)
@@ -1085,14 +1081,23 @@ REST: commands."
   (let ((server-title (if server-mode "server stop" "server start")))
     (fc-user-select-func
      "System"
-     `(("font"            . fc-config-font)
-       ("location"	  . fc-update-location)
+     `(("location"	  . fc-update-location)
        ("package"	  . list-packages)
        ("profile startup" . fc-profile-startup)
        (,server-title	  . fc-toggle-server)
-       ("theme"		  . fc-select-theme)
-       ("theme reset"	  . fc-reset-theme)
        ("upgrade"	  . (lambda () (fc-run (package-utils-upgrade-all))))))))
+
+(defun fc-select-ui-func ()
+  "Select system function."
+  (let ((server-title (if server-mode "server stop" "server start")))
+    (fc-user-select-func
+     "UI"
+     `(("background"   . fc-set-background-color)
+       ("font"         . fc-config-font)
+       ("line space"   . fc-config-line-space)
+       ("theme"        . fc-select-theme)
+       ("theme reset"  . fc-reset-theme)
+       ))))
 
 (advice-add 'package-utils-upgrade-all :after #'fc-job-done)
 
@@ -1168,6 +1173,7 @@ C: target char."
      ("project" .	fc-select-proj-func)
      ("other"   .	fc-select-other-func)
      ("sys"	.	fc-select-sys-func)
+     ("ui"	.	fc-select-ui-func)
      )
    :default #'(lambda () (message "No app is selected !!!"))))
 

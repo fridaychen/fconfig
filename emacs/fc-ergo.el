@@ -1166,9 +1166,9 @@ KEYMAP: keymap to run."
   (fc-make-keymap
    `(("SPC" fc-app-portal)
      ("a" align)
-     ("b" compile)
+     ("b" ,*fc-undef-key*)
      ("c" ,(fc-cond-key :normal 'quick-calc
-                        :region (fc-manual (message (calc-eval (fc-current-thing t t))))))
+                        :region (fc-manual (calc-eval (fc-current-thing t t)))))
      ("d" fc-dev-mode-toggle)
      ("f" ,(fc-cond-key :normal 'fc-find-files
                         :proj (fc-manual (fc-proj-find-file default-directory))))
@@ -1221,7 +1221,7 @@ KEYMAP: keymap to run."
                                   (fc-current-thing nil nil)))))
      )
    "ergo-quick-map")
-  "KEYS a: align  b: compile  c: calc  d: dev mode  f: find file  h: hex mode  i: insert file  k: flycheck  l: imenu list  m: multiple  n: new buffer  o: occur  r: recover buffer  s: save  t: time  u: (un)maximize  w: save as  x: reading  B: none  C: calendar  D: open dir  F: format  I: insert signature  L: screen saver  M: rename file  R: readonly  S: save buffers  W: forecast  X: reading.")
+  "KEYS a: align  c: calc  d: dev mode  f: find file  h: hex mode  i: insert file  k: flycheck  l: imenu list  m: multiple  n: new buffer  o: occur  r: recover buffer  s: save  t: time  u: (un)maximize  v: tomato  w: save as  x: reading  B: none  C: calendar  D: open dir  F: format  I: insert signature  L: screen saver  M: rename file  R: readonly  S: save buffers  W: forecast  X: reading.")
 
 (cl-defmacro fc--adjust-window-size (horizontally step)
   "Adjust window size.
@@ -1382,7 +1382,8 @@ AUTO: auto select face."
    ("5" toggle-frame-fullscreen)
    ("6" fc-toggle-window-maximize)
    ("7" ,(fc-cond-key :normal 'compile
-                      :work 'fc-proj-build))
+                      :work 'fc-proj-build
+                      :prefix 'compile))
    ("8" ,(fc-cond-key :normal 'fc-proj-open
                       :work 'fc-proj-find-file))
    ("9" ,(fc-manual (set-mark-command 0)))

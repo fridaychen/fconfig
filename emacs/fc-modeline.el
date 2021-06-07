@@ -47,21 +47,7 @@
   (and default-directory
        (file-remote-p default-directory 'host)))
 
-(defun fc--vc-str ()
-  "Generate VC state string."
-  (when vc-mode
-    (let* ((color (pcase (vc-state buffer-file-name)
-                    ('edited "#cf6a4c")
-                    ('up-to-date nil)
-                    ((or 'needs-merge 'conflict) "#ff0066")
-                    (_ "#00cc66")))
-           (face (if color
-                     `(:foreground ,color :inherit bold)
-                   nil)))
-      (fc-text (if *is-colorful* "" "VC")
-               :face face))))
-
-(defun fc--viewer-str ()
+(defun fc--viewer-seg ()
   "Generate viewer state string."
   (let* ((which (which-function))
          (chapter (if (null which) "" which)))
@@ -95,18 +81,18 @@
   "Buffer title segment."
   (cond
    ((fc-viewer-mode-p)
-    (fc--viewer-str))
+    (fc--viewer-seg))
 
    ((fc--narrow-window-p)
     (fc-text
      (list
-      (fc--vc-str)
+      (fc--vc-seg)
       (fc--buffer-short-id))))
 
    (t
     (fc-text
      (list
-      (fc--vc-str)
+      (fc--vc-seg)
       (fc--buffer-full-id))))))
 
 (defun fc--vc-seg ()

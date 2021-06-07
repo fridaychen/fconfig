@@ -8,12 +8,10 @@
 
 (defvar *fc-tomato-bar* nil)
 
-(defcustom *fc-tomato-work-interval* (* 60 25)
-  "Interval of time you will be working, in seconds."
-  :type 'number)
-(defcustom *fc-tomato-rest-interval* (* 60 5)
-  "Interval of time you will be resting, in seconds."
-  :type 'number)
+(defvar *fc-tomato-work-interval* (* 60 25)
+  "Interval of time you will be working, in seconds.")
+(defvar *fc-tomato-rest-interval* (* 60 5)
+  "Interval of time you will be resting, in seconds.")
 
 (defvar *fc-tomato-start-hook* nil)
 (defvar *fc-tomato-rest-hook* nil)
@@ -42,11 +40,7 @@
           (,tomato-restbar-interval "▆" "#66ff66")
           (,tomato-restbar-interval "▇" "#99ff66")
           (,tomato-restbar-interval "█" "#ccff66")
-          (nil
-           ,(cond
-             (*is-colorful* "⌘")
-             (t "P"))
-           "#cf6a4c"))))
+          (nil nil nil))))
 
   (defun fc-tomato-reset-bar ()
     (fc-tomato-update-bar (car (last tomato-bars))))
@@ -58,8 +52,10 @@
                 (format-time-string "%M:%S" (time-subtract (current-time) tomato-start-time)))
       "Not running"))
 
-  (defun fc-tomato-propertize (bar bar-color)
+  (cl-defun fc-tomato-propertize (bar bar-color)
     "Propertize BAR with BAR-COLOR, help echo, and click action."
+    (unless bar
+      (cl-return-from fc-tomato-propertize ""))
     (fc-text bar
              :face `(:foreground ,bar-color)
              :tip '(fc-tomato-state-string)

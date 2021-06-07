@@ -47,6 +47,8 @@ END: end of region."
      ("i i" ,(fc-manual (fc-expand-snippet "if")))
      ("i s" ,(fc-manual (fc-expand-snippet "switch")))
      ("i w" ,(fc-manual (fc-expand-snippet "while")))
+     ("j" c-backward-conditional)
+     ("k" c-forward-conditional)
      ("C" fc--clang-format-off-region)
      ("SPC" fc-c-portal)
      )

@@ -200,7 +200,7 @@
   "Format center modeline."
   (list
    (fc-text
-    (fc--buffer-title-seg) :face 'highlight)))
+    (fc--buffer-title-seg))))
 
 (defun fc--modeline-format-right ()
   "Format right modeline."

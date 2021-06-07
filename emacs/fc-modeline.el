@@ -98,13 +98,13 @@
 (defun fc--vc-seg ()
   "VC state segment."
   (when vc-mode
-    (let ((color (pcase (vc-state buffer-file-name)
+    (let ((str (if *is-colorful* "" "VC"))
+          (color (pcase (vc-state buffer-file-name)
                    ('edited "#cf6a4c")
-                   ('up-to-date "gray")
-                   ((or 'needs-merge 'conflict) "#ff0066")
-                   (_ "#00cc66"))))
-      (fc-text (if *is-colorful* "" "VC")
-               :face `(:foreground ,color)))))
+                   ((or 'needs-merge 'conflict) "#ff0066"))))
+      (if color
+          (fc-text str :face `(:foreground ,color))
+        str))))
 
 (defun fc--layout-seg ()
   "Layout segment."

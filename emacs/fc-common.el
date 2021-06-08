@@ -178,6 +178,10 @@ COLOR: background color."
                                            (fc-get-face-attribute 'default :background)
                                            2)))
 
+      ('fantom
+       (fc-set-face-attribute 'fringe nil
+                              :background "#F2A4AC"))
+
       ('material
        (fc-set-face-attribute 'fringe nil
                               :background "#ff9800")

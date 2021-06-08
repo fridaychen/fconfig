@@ -7,6 +7,7 @@
 (require 'cl-lib)
 
 (defvar *fc-font-height* 180)
+(defvar *fc-font-width* 'normal)
 (defvar *fc-default-font* "Monaco")
 (defvar *fc-read-font* "Monaco")
 (defvar *fc-font* '(('iso-8859-1 . "Monaco")))
@@ -18,6 +19,7 @@
   (apply #'set-face-attribute 'default 'nil
          :height *fc-font-height*
          :weight *fc-font-weight-of-default*
+         :width *fc-font-width*
          *fc-default-font*)
 
   (let ((italic-font (apply #'font-spec
@@ -94,12 +96,22 @@ FONT: to be tested."
         (height (string-to-number
                  (read-string "Height"
                               (fc-string *fc-font-height*))))
-        (weight (fc-user-select
-                 "Weight"
-                 '(("light"   . light)
-                   ("book"    . book)
-                   ("regular" . regular)
-                   ("bold"    . bold)))))
+        (weight (intern (fc-user-select
+                         "Weight"
+                         '("light"
+                           "book"
+                           "regular"
+                           "bold"))))
+        (width (intern (fc-user-select
+                        "Width"
+                        '("extra-condensed"
+                          "condensed"
+                          "semi-condensed"
+                          "normal"
+                          "semi-expanded"
+                          "expanded"
+                          "extra-expanded"
+                          "ultra-expanded")))))
     (when (> 96 height)
       (message "Font height too small.")
       (cl-return-from fc-config-font))
@@ -109,6 +121,7 @@ FONT: to be tested."
 
     (setf *fc-default-font* (list :family family)
           *fc-font-height* height
+          *fc-font-width* width
           *fc-font-weight-of-default* weight)
     (fc-setup-font)))
 

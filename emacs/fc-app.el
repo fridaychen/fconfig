@@ -15,49 +15,49 @@
   "Select template.
 NAME: target buffer name."
   (let* ((file-regex "txt$\\|md$\\|org$")
-         (template-dir (format "%s/template/" *fc-resource*))
-         (templates (when (fc-dir-exists-p template-dir)
-                      (directory-files
-                       template-dir
-                       nil
-                       file-regex)))
-         (site-template-dir (format "%s/site/template/" *fc-home*))
-         (site-templates (when (fc-dir-exists-p site-template-dir)
-                           (directory-files
-                            site-template-dir
-                            nil
-                            file-regex)))
-         (template (fc-user-select
-                    (format "Select template for %s" name)
-                    (--map
-                     (cons (capitalize
-                            (replace-regexp-in-string
-                             "_\\|-"
-                             " "
-                             (file-name-sans-extension it)))
-                           it)
-                     (cl-concatenate 'list templates site-templates)))))
+	 (template-dir (format "%s/template/" *fc-resource*))
+	 (templates (when (fc-dir-exists-p template-dir)
+		      (directory-files
+		       template-dir
+		       nil
+		       file-regex)))
+	 (site-template-dir (format "%s/site/template/" *fc-home*))
+	 (site-templates (when (fc-dir-exists-p site-template-dir)
+			   (directory-files
+			    site-template-dir
+			    nil
+			    file-regex)))
+	 (template (fc-user-select
+		    (format "Select template for %s" name)
+		    (--map
+		     (cons (capitalize
+			    (replace-regexp-in-string
+			     "_\\|-"
+			     " "
+			     (file-name-sans-extension it)))
+			   it)
+		     (cl-concatenate 'list templates site-templates)))))
     (when template
       (format "%s/template/%s"
-              *fc-resource* template))))
+	      *fc-resource* template))))
 
 (cl-defun fc-new-buffer-with-template (bufname template)
   "New buffer with template.
 BUFNAME: name of buffer.
 TEMPLATE: template file path."
   (interactive (let* ((name (read-string "Buffer name : "))
-                      (template (-fc-select-template name)))
-                 (list name template)))
+		      (template (-fc-select-template name)))
+		 (list name template)))
 
   (let* ((buf (get-buffer-create bufname)))
     (save-excursion
       (with-current-buffer buf
-        (setf enable-local-variables :all
-              enable-dir-local-variables nil)
-        (erase-buffer)
-        (insert-file-contents template)
+	(setf enable-local-variables :all
+	      enable-dir-local-variables nil)
+	(erase-buffer)
+	(insert-file-contents template)
 
-        (goto-char (point-min)))
+	(goto-char (point-min)))
 
       (fc-pop-buf buf :automode t :select t))))
 
@@ -66,34 +66,34 @@ TEMPLATE: template file path."
 REST: words."
   (when (fc-network-connected-p)
     (apply #'fc-exec-command
-           "google-speak"
-           (--map (replace-regexp-in-string " " "+" it)
-                  rest))))
+	   "google-speak"
+	   (--map (replace-regexp-in-string " " "+" it)
+		  rest))))
 
 ;; open in OS
 (cl-defun fc-open-in-system (&optional (path nil))
   "Open path in desktop system.
 PATH: target path."
   (when (and (not path)
-             buffer-file-name)
+	     buffer-file-name)
     (setf path buffer-file-name))
 
   (let* ((dir (shell-quote-argument
-               (file-name-directory path))))
+	       (file-name-directory path))))
     (cond
      (*is-mac* (shell-command
-                (format "open %s &" dir)
-                nil
-                nil))
+		(format "open %s &" dir)
+		nil
+		nil))
      (*is-linux* (dbus-call-method
-                  :session
-                  "org.freedesktop.FileManager1"
-                  "/org/freedesktop/FileManager1"
-                  "org.freedesktop.FileManager1"
-                  "ShowFolders"
-                  (list :array
-                        (format "file:%s" path))
-                  "")))))
+		  :session
+		  "org.freedesktop.FileManager1"
+		  "/org/freedesktop/FileManager1"
+		  "org.freedesktop.FileManager1"
+		  "ShowFolders"
+		  (list :array
+			(format "file:%s" path))
+		  "")))))
 
 ;; note buffer
 (defvar *fc-note* "*scratch*" "Name of note buffer.")
@@ -112,10 +112,10 @@ S: note string."
   (goto-char (point-max))
 
   (fc-insert-space-text nil
-                        "#+BEGIN_SRC " (substring (fc-string orig-mode) 0 -5)
-                        "\n"
-                        s
-                        "#+END_SRC\n"))
+			"#+BEGIN_SRC " (substring (fc-string orig-mode) 0 -5)
+			"\n"
+			s
+			"#+END_SRC\n"))
 
 (defun fc--insert-node (s)
   "Inset note into note buffer.
@@ -123,9 +123,9 @@ S: note string."
   (goto-char (point-max))
 
   (fc-insert-space-text nil
-                        "-------" (current-time-string) "-------\n"
-                        s
-                        "\n\n"))
+			"-------" (current-time-string) "-------\n"
+			s
+			"\n\n"))
 
 (defun fc-insert-note (s)
   "Insett note into note buffer.
@@ -133,8 +133,8 @@ S: note string."
   (let ((orig-mode major-mode))
     (with-current-buffer *fc-note*
       (if (eq major-mode 'org-mode)
-          (fc--insert-org-note orig-mode s)
-        (fc--insert-note s)))))
+	  (fc--insert-org-note orig-mode s)
+	(fc--insert-note s)))))
 
 ;; help functions
 (defun fc-show-ascii-table ()
@@ -144,24 +144,24 @@ S: note string."
   (fc-popup-tip
    " <<US-ASCII>>
 
-                  2 3 4 5 6 7
-                  -------------
-                  0:   0 @ P ` p
-                  1: ! 1 A Q a q
-                  2: \" 2 B R b r
-                  3: # 3 C S c s
-                  4: $ 4 D T d t
-                  5: % 5 E U e u
-                  6: & 6 F V f v
-                  7: ' 7 G W g w
-                  8: ( 8 H X h x
-                       9: ) 9 I Y i y
-                  A: * : J Z j z
-                  B: + ; K [ k {
-                  C: , < L \ l |
-                  D: - = M ] m }
-  E: . > N ^ n ~
-  F: / ? O _ o DEL"))
+    2 3 4 5 6 7
+  -------------
+ 0:   0 @ P ` p
+ 1: ! 1 A Q a q
+ 2: \" 2 B R b r
+ 3: # 3 C S c s
+ 4: $ 4 D T d t
+ 5: % 5 E U e u
+ 6: & 6 F V f v
+ 7: ' 7 G W g w
+ 8: ( 8 H X h x
+ 9: ) 9 I Y i y
+ A: * : J Z j z
+ B: + ; K [ k {
+ C: , < L \ l |
+ D: - = M ] m }
+ E: . > N ^ n ~
+ F: / ? O _ o DEL"))
 
 (defun fc-show-common-keys ()
   "Show functions of common keys."
@@ -211,9 +211,9 @@ REGEX: regex."
 
     (push (shell-quote-argument pattern) l)
     (push (if (string-suffix-p "/" root)
-              (concat root "*")
-            (concat root "/*"))
-          l)
+	      (concat root "*")
+	    (concat root "/*"))
+	  l)
 
     (grep (s-join " " (reverse l)))))
 
@@ -221,21 +221,21 @@ REGEX: regex."
   "Get root directory for grep.
 ROOT: directory."
   (if (and buffer-file-name
-           (equal (file-name-directory buffer-file-name)
-                  (expand-file-name root)))
+	   (equal (file-name-directory buffer-file-name)
+		  (expand-file-name root)))
       "."
     root))
 
 (defun fc--ergo-grep-file ()
   "Get grep file extentions."
   (let* ((filename buffer-file-name)
-         (ext (if filename
-                  (file-name-extension filename)
-                nil)))
+	 (ext (if filename
+		  (file-name-extension filename)
+		nil)))
     (cond
      ((and ext
-           buffer-file-name
-           (member (intern ext) '(c h)))
+	   buffer-file-name
+	   (member (intern ext) '(c h)))
       "*.[hc]")
      (ext (concat "*." ext))
      (t "*"))))
@@ -249,17 +249,17 @@ FILE: file name patterns.
 RECURSION: recursion or not.
 WORD: word boundary or not"
   (interactive (list current-prefix-arg
-                     (fc-current-thing t t :prompt "Grep Pattern")
-                     (read-directory-name "Root : " default-directory)
-                     (read-string "File : " (fc--ergo-grep-file))
-                     (fc-user-confirm "Recusion")
-                     (fc-user-confirm "Word")))
+		     (fc-current-thing t t :prompt "Grep Pattern")
+		     (read-directory-name "Root : " default-directory)
+		     (read-string "File : " (fc--ergo-grep-file))
+		     (fc-user-confirm "Recusion")
+		     (fc-user-confirm "Word")))
 
   (fc-grep pattern (fc--ergo-grep-root root)
-           :file file
-           :recursion recursion
-           :word word
-           :regex (if regex t nil)))
+	   :file file
+	   :recursion recursion
+	   :word word
+	   :regex (if regex t nil)))
 
 (defun fc-ergo-simple-grep (pattern)
   "Simple grep.
@@ -267,10 +267,10 @@ PATTERN: target pattern."
   (interactive (list (fc-current-thing t t :regq t :prompt "Simple pattern" )))
 
   (fc-grep pattern (fc--ergo-grep-root default-directory)
-           :file (fc--ergo-grep-file)
-           :recursion t
-           :word nil
-           :regex t))
+	   :file (fc--ergo-grep-file)
+	   :recursion t
+	   :word nil
+	   :regex t))
 
 (defun fc-ergo-simple-proj-grep (pattern)
   "Simple project grep.
@@ -278,10 +278,10 @@ PATTERN: target pattern."
   (interactive (list (fc-current-thing t t :regq t :prompt "Project simple pattern")))
 
   (fc-grep pattern (file-relative-name (fc-proj-root))
-           :file (fc--ergo-grep-file)
-           :recursion t
-           :word nil
-           :regex t))
+	   :file (fc--ergo-grep-file)
+	   :recursion t
+	   :word nil
+	   :regex t))
 
 ;; transparency
 (defvar *fc-alpha-transparency* 75)
@@ -294,12 +294,12 @@ PATTERN: target pattern."
     (set-frame-parameter
      nil 'alpha
      (if (eql (cond
-               ((numberp alpha) alpha)
-               ((numberp (cdr alpha)) (cdr alpha))
-               ;; Also handle undocumented (<active> <inactive>) form.
-               ((numberp (cadr alpha)) (cadr alpha)))
-              100)
-         `(,*fc-alpha-transparency* . 50) '(100 . 100)))))
+	       ((numberp alpha) alpha)
+	       ((numberp (cdr alpha)) (cdr alpha))
+	       ;; Also handle undocumented (<active> <inactive>) form.
+	       ((numberp (cadr alpha)) (cadr alpha)))
+	      100)
+	 `(,*fc-alpha-transparency* . 50) '(100 . 100)))))
 
 ;; insert signature
 (cl-defun fc-insert-figlet ()
@@ -307,29 +307,29 @@ PATTERN: target pattern."
   (interactive)
 
   (fc-insert-text (lambda (start end)
-                    (fc-region start end
-                      (fc-multi-line-comment-region start end)
-                      (whitespace-cleanup)))
-                  (fc-exec-command-to-string "figlet"
-                                             "-w"
-                                             (fc-string *fc-column-limit*)
-                                             "-f"
-                                             (fc-user-select
-                                              "Select font"
-                                              (--map
-                                               (cons (file-name-base it)
-                                                     (format "%s/extra/figlet/%s" *fc-home* it))
-                                               (fc--list-file (format "%s/extra/figlet" *fc-home*)
-                                                              nil
-                                                              :sort t)))
-                                             (read-string "Text : "))))
+		    (fc-region start end
+		      (fc-multi-line-comment-region start end)
+		      (whitespace-cleanup)))
+		  (fc-exec-command-to-string "figlet"
+					     "-w"
+					     (fc-string *fc-column-limit*)
+					     "-f"
+					     (fc-user-select
+					      "Select font"
+					      (--map
+					       (cons (file-name-base it)
+						     (format "%s/extra/figlet/%s" *fc-home* it))
+					       (fc--list-file (format "%s/extra/figlet" *fc-home*)
+							      nil
+							      :sort t)))
+					     (read-string "Text : "))))
 
 (cl-defun fc-insert-signature ()
   "Insert signature."
   (interactive)
 
   (fc-insert-text #'fc-multi-line-comment-region
-                  "
+		  "
   _____        ____
   |  ___|      / ___|   fridaychen@gmail.com
   | |_        | |
@@ -341,7 +341,7 @@ PATTERN: target pattern."
   "Insert ascii art todo list block."
   (interactive)
   (fc-insert-text #'fc-multi-line-comment-region
-                  "
+		  "
   /)/)   ToDo:
   ( ..\\   |. []-
   /'-._)  |. []-
@@ -354,35 +354,35 @@ PATTERN: target pattern."
   "Generate rg type-args.
 FILE-TYPES: fc style file types."
   (apply #'seq-concatenate
-         'list
-         (--map (pcase it
-                  ('code '("-t" "awk"
-                           "-t" "c" "-t" "cpp" "-t" "elisp" "-t" "go"
-                           "-t" "py" "-t" "ruby" "-t" "rust" "-t" "sh"
-                           "-t" "vim"
-                           ))
-                  ('doc '("-t" "markdown" "-t" "org" "-t" "txt"))
-                  ('conf '("-t" "cmake" "-t" "make" "-t" "config"
-                           "-t" "json" "-t" "yaml"))
-                  ('xml '("-t" "xml")))
-                file-types)))
+	 'list
+	 (--map (pcase it
+		  ('code '("-t" "awk"
+			   "-t" "c" "-t" "cpp" "-t" "elisp" "-t" "go"
+			   "-t" "py" "-t" "ruby" "-t" "rust" "-t" "sh"
+			   "-t" "vim"
+			   ))
+		  ('doc '("-t" "markdown" "-t" "org" "-t" "txt"))
+		  ('conf '("-t" "cmake" "-t" "make" "-t" "config"
+			   "-t" "json" "-t" "yaml"))
+		  ('xml '("-t" "xml")))
+		file-types)))
 
 (cl-defun fc--list-file-rg (dir file-types)
   "List files.
 DIR: under this dir performing finding file.
 FILE-TYPES: target file types to be finded."
   (let ((default-directory dir)
-        (arg-type (fc--rg-types file-types))
-        (arg-cpu (list "-j" (format "%d" *fc-rg-cpus*))))
+	(arg-type (fc--rg-types file-types))
+	(arg-cpu (list "-j" (format "%d" *fc-rg-cpus*))))
     (let* ((result (apply #'fc-exec-command-to-string
-                          "rg"
-                          "--files"
-                          "--no-ignore"
-                          (seq-concatenate
-                           'list
-                           arg-cpu
-                           arg-type)))
-           (files (split-string (string-trim result) "\n")))
+			  "rg"
+			  "--files"
+			  "--no-ignore"
+			  (seq-concatenate
+			   'list
+			   arg-cpu
+			   arg-type)))
+	   (files (split-string (string-trim result) "\n")))
       files)))
 
 (cl-defun fc--list-file-ff (dir file-types)
@@ -390,12 +390,12 @@ FILE-TYPES: target file types to be finded."
 DIR: under this dir performing finding file.
 FILE-TYPES: target file types to be finded."
   (let* ((default-directory dir)
-         (arg-type (--map (format "-%s" it) file-types)))
+	 (arg-type (--map (format "-%s" it) file-types)))
     (let* ((result (apply #'fc-exec-command-to-string
-                          "ff"
-                          "-nocolor"
-                          arg-type))
-           (files (split-string (string-trim result) "\n")))
+			  "ff"
+			  "-nocolor"
+			  arg-type))
+	   (files (split-string (string-trim result) "\n")))
       files)))
 
 (cl-defun fc--list-file (dir file-types &key sort)
@@ -405,7 +405,7 @@ FILE-TYPES: target file types to be finded.
 SORT: sort or not."
   (let ((files (fc--list-file-rg dir file-types)))
     (if sort
-        (sort files #'string<)
+	(sort files #'string<)
       files)))
 
 (cl-defun fc--find-file (dir prompt file-types &key sort)
@@ -424,20 +424,20 @@ DIR: under this dir performing search.
 PATTERN: target regex pattern.
 FILE-TYPES: target file types to be searched."
   (let ((default-directory dir)
-        (arg-type (fc--rg-types file-types))
-        (arg-cpu (list "-j" (format "%d" *fc-rg-cpus*))))
+	(arg-type (fc--rg-types file-types))
+	(arg-cpu (list "-j" (format "%d" *fc-rg-cpus*))))
     (apply #'fc-exec-command-to-buffer
-           (current-buffer)
-           "rg"
-           "--vimgrep"
-           "--stats"
-           "--no-ignore"
-           "-S"
-           pattern
-           (seq-concatenate
-            'list
-            arg-cpu
-            arg-type)))
+	   (current-buffer)
+	   "rg"
+	   "--vimgrep"
+	   "--stats"
+	   "--no-ignore"
+	   "-S"
+	   pattern
+	   (seq-concatenate
+	    'list
+	    arg-cpu
+	    arg-type)))
 
   (goto-char (point-min))
   (setf enable-local-variables :all)
@@ -466,18 +466,18 @@ FILE-TYPES: target file types to be searched."
   "Text retrieve.
 DIR: dir to search."
   (let* ((pattern (fc-current-thing t nil :regq t :confirm t))
-         (bufname (format "*fc text retrieve %s*" pattern))
-         (buf (get-buffer-create bufname))
-         (filename (when buffer-file-name
-                     (file-name-nondirectory buffer-file-name))))
+	 (bufname (format "*fc text retrieve %s*" pattern))
+	 (buf (get-buffer-create bufname))
+	 (filename (when buffer-file-name
+		     (file-name-nondirectory buffer-file-name))))
     (save-excursion
       (with-current-buffer buf
-        (fc--internal-ftr-rg dir pattern '(code conf doc xml))
+	(fc--internal-ftr-rg dir pattern '(code conf doc xml))
 
-        (goto-char (point-min))
+	(goto-char (point-min))
 
-        (when filename
-          (search-forward filename nil t)))
+	(when filename
+	  (search-forward filename nil t)))
 
       (fc-pop-buf buf :automode t :read-only t :highlight (list pattern)))))
 
@@ -487,15 +487,15 @@ DIR: dir to search."
 (defun fc-eshell-dirtrim (path n full-prefix short-prefix)
   (let* ((parts (-filter #'fc-not-void-p (split-string path "/"))))
     (if (<= (length parts) n)
-        (concat full-prefix path)
+	(concat full-prefix path)
       (concat short-prefix
-              (string-join (last parts n)
-                           "/")))))
+	      (string-join (last parts n)
+			   "/")))))
 
 (defun fc-eshell-pwd ()
   (let ((pwd (eshell/pwd))
-        (home (getenv "HOME"))
-        (prompt_dirtrim 5))
+	(home (getenv "HOME"))
+	(prompt_dirtrim 5))
     (cond
      ((string-equal home pwd)
       "~")
@@ -519,12 +519,12 @@ DIR: dir to search."
      (fc-text ":" :face '(:foreground "red"))
      (fc-eshell-pwd)
      (if branch
-         (fc-text
-          (format "\n %s %s%s"
-                  (if *is-colorful* "" "^")
-                  branch
-                  (shell-command-to-string "git status -s | awk -f ${FCHOME}/bin/ps-fit.awk"))
-          :face '(:foreground "OrangeRed" :inherit bold)))
+	 (fc-text
+	  (format "\n %s %s%s"
+		  (if *is-colorful* "" "^")
+		  branch
+		  (shell-command-to-string "git status -s | awk -f ${FCHOME}/bin/ps-fit.awk"))
+	  :face '(:foreground "OrangeRed" :inherit bold)))
      "\n"
      (if *is-colorful* "╍❱ " "-> "))))
 
@@ -536,7 +536,7 @@ ARGS: args for fast jump."
   (if (/= 1 (length args))
       "input one argument only !"
     (cd (string-trim (shell-command-to-string
-                      (concat "fasd -d " (car args)))))
+		      (concat "fasd -d " (car args)))))
     ""))
 
 (defun r ()
@@ -549,7 +549,7 @@ ARGS: args for fast jump."
      (cl-return))
 
    (setf dir
-         (file-name-directory (substring dir 0 -1)))
+	 (file-name-directory (substring dir 0 -1)))
    while (> (length dir) 1)))
 
 (defun lsd (&rest args)
@@ -560,25 +560,25 @@ ARGS: ls patterns."
   (if (not args)
       (shell-command-to-string "ls -d */" )
     (string-join (-map
-                  (lambda (x)
-                    (shell-command-to-string (format "ls -d \"%s\"/*/" x)))
-                  args)
-                 "")))
+		  (lambda (x)
+		    (shell-command-to-string (format "ls -d \"%s\"/*/" x)))
+		  args)
+		 "")))
 
 (defun fc--find-one-file (prompt args)
   "Let user select one file for list.
 PROMPT: user prompt string.
 ARGS: args for ff."
   (let* ((result (apply #'fc-exec-command-to-string
-                        "ff"
-                        "-nocolor"
-                        args))
-         (files (if (string-equal "" result)
-                    ()
-                  (split-string (string-trim result) "\n")))
-         (file
-          (fc-user-select prompt
-                          files)))
+			"ff"
+			"-nocolor"
+			args))
+	 (files (if (string-equal "" result)
+		    ()
+		  (split-string (string-trim result) "\n")))
+	 (file
+	  (fc-user-select prompt
+			  files)))
     file))
 
 (cl-defmacro ff-run (prompt args &rest rest)
@@ -589,7 +589,7 @@ REST: commands to run."
   (declare (indent 2))
   `(let ((file (fc--find-one-file ,prompt ,args)))
      (if (not file)
-         "No file was found !!!"
+	 "No file was found !!!"
        ,@rest)))
 
 (defun fn (&rest args)
@@ -672,8 +672,8 @@ ARGS: args for ff."
   (text-mode)
 
   (insert-file-contents (fc-file-first-exists
-                         '("~/.emacs.d/welcome.txt"
-                           "~/.emacs.d/fconfig/welcome.txt")))
+			 '("~/.emacs.d/welcome.txt"
+			   "~/.emacs.d/fconfig/welcome.txt")))
 
   (if *is-gui*
       (text-scale-decrease *fc-welcome-scale*)))
@@ -683,15 +683,15 @@ ARGS: args for ff."
   :local t
   :autoload t
   :after (progn
-           (defun fc-isearch-dwim ()
-             "Do search dwim."
-             (interactive)
+	   (defun fc-isearch-dwim ()
+	     "Do search dwim."
+	     (interactive)
 
-             (let ((target (fc-current-thing nil t)))
-               (isearch-resume target nil nil t target nil))))
+	     (let ((target (fc-current-thing nil t)))
+	       (isearch-resume target nil nil t target nil))))
   :bind '((isearch-mode-map
-           ("C-j" isearch-repeat-forward)
-           ("C-k" isearch-repeat-backward))))
+	   ("C-j" isearch-repeat-forward)
+	   ("C-k" isearch-repeat-backward))))
 
 ;; search
 (defvar *fc-app-search-regex* nil)
@@ -700,7 +700,7 @@ ARGS: args for ff."
   "Set search target.
 REGEX: target."
   (fc-bind-keys `(("C-r" ,(fc-manual
-                           (fc-search-next nil t)))))
+			   (fc-search-next nil t)))))
 
   (when *fc-app-search-regex*
     (unhighlight-regexp *fc-app-search-regex*))
@@ -717,16 +717,16 @@ BACKWARD: search direction."
   (interactive)
 
   (cond (regex
-         (fc--search-set-target regex))
+	 (fc--search-set-target regex))
 
-        ((region-active-p)
-         (fc--search-set-target (fc-current-thing t t :regq t)))
+	((region-active-p)
+	 (fc--search-set-target (fc-current-thing t t :regq t)))
 
-        ((not *fc-app-search-regex*)
-         (fc--search-set-target (fc-current-thing t nil
-                                                  :regq t
-                                                  :confirm t
-                                                  :prompt "Search regex: "))))
+	((not *fc-app-search-regex*)
+	 (fc--search-set-target (fc-current-thing t nil
+						  :regq t
+						  :confirm t
+						  :prompt "Search regex: "))))
 
   (if backward
       (re-search-backward *fc-app-search-regex* 0 t)
@@ -741,45 +741,45 @@ BACKWARD: search direction."
 (fc-load 'google-this
   :autoload t
   :bind '((nil
-           ("M-*" google-this))
-          (*fc-modal-keymap*
-           ("*" google-this))))
+	   ("M-*" google-this))
+	  (*fc-modal-keymap*
+	   ("*" google-this))))
 
 ;; current dir tree
 (fc-load 'neotree
   :autoload t
   :after (progn
-           (defvar *fc-tree-dir* nil)
+	   (defvar *fc-tree-dir* nil)
 
-           ;; setup neotree
-           (setf neo-show-hidden-files t
-                 neo-hidden-regexp-list *fc-ignore-file*
-                 neo-theme (if *is-gui* 'classic 'ascii)
-                 neo-show-hidden-files nil)
+	   ;; setup neotree
+	   (setf neo-show-hidden-files t
+		 neo-hidden-regexp-list *fc-ignore-file*
+		 neo-theme (if *is-gui* 'classic 'ascii)
+		 neo-show-hidden-files nil)
 
-           (cl-defun fc-show-tree ()
-             (interactive)
+	   (cl-defun fc-show-tree ()
+	     (interactive)
 
-             (when (equal (neo-global--get-window)
-                          (get-buffer-window))
-               (neotree-hide)
-               (cl-return-from fc-show-tree))
+	     (when (equal (neo-global--get-window)
+			  (get-buffer-window))
+	       (neotree-hide)
+	       (cl-return-from fc-show-tree))
 
-             (let ((dir (file-name-directory buffer-file-name)))
-               (cond
-                ((and (neo-global--window-exists-p)
-                      (equal *fc-tree-dir* dir))
-                 (neotree-hide))
+	     (let ((dir (file-name-directory buffer-file-name)))
+	       (cond
+		((and (neo-global--window-exists-p)
+		      (equal *fc-tree-dir* dir))
+		 (neotree-hide))
 
-                ((and (equal *fc-tree-dir* dir))
-                 (neotree-show))
+		((and (equal *fc-tree-dir* dir))
+		 (neotree-show))
 
-                (t
-                 (setf *fc-tree-dir* dir)
-                 (neotree-dir (file-name-directory buffer-file-name)))))))
+		(t
+		 (setf *fc-tree-dir* dir)
+		 (neotree-dir (file-name-directory buffer-file-name)))))))
 
   :bind '((*fc-modal-keymap*
-           ("Z" fc-show-tree))))
+	   ("Z" fc-show-tree))))
 
 ;; development mode
 (defun fc-dev-mode-toggle ()
@@ -790,12 +790,12 @@ BACKWARD: search direction."
 
   (if *fc-dev-mode*
       (progn
-        (setf debug-on-error t
-              warning-minimum-level :debug)
+	(setf debug-on-error t
+	      warning-minimum-level :debug)
 
-        (run-hooks '*fc-enable-dev-hook*))
+	(run-hooks '*fc-enable-dev-hook*))
     (setf debug-on-error nil
-          warning-minimum-level :error)
+	  warning-minimum-level :error)
     (run-hooks '*fc-disable-dev-hook*)))
 
 ;; multiple buffers functions
@@ -804,7 +804,7 @@ BACKWARD: search direction."
 DIR: root dir.
 FUNC: function to be run."
   (setf dir (concat (expand-file-name dir)
-                    (if (string-suffix-p "/" dir) "" "/")))
+		    (if (string-suffix-p "/" dir) "" "/")))
 
   (--each (fc-list-buffer :dir dir)
     (with-current-buffer it
@@ -818,13 +818,13 @@ REST: commands."
   `(lambda () (interactive)
      (let ((dir (read-directory-name (format "Select directory for %s :" ,operation))))
        (when dir
-         (setf dir (concat (expand-file-name dir)
-                           (if (string-suffix-p "/" dir) "" "/")))
+	 (setf dir (concat (expand-file-name dir)
+			   (if (string-suffix-p "/" dir) "" "/")))
 
-         (when (fc-user-confirm (format "%s files under %s" (capitalize ,operation) dir))
-           (--each (fc-list-buffer :dir dir)
-             (with-current-buffer it
-               ,@rest)))))))
+	 (when (fc-user-confirm (format "%s files under %s" (capitalize ,operation) dir))
+	   (--each (fc-list-buffer :dir dir)
+	     (with-current-buffer it
+	       ,@rest)))))))
 
 (defun fc-select-multi-buffer-func ()
   "Select multi buffer function."
@@ -855,24 +855,24 @@ REST: commands."
    "Project"
    `(
      ("auto format"		.	,(lambda ()
-                                           (fc-proj--set *fc-project*
-                                                         (fc-user-confirm "Enable auto format")
-                                                         :local nil '*fc-format-at-save*)
-                                           (fc-proj--save *fc-project*)))
+					   (fc-proj--set *fc-project*
+							 (fc-user-confirm "Enable auto format")
+							 :local nil '*fc-format-at-save*)
+					   (fc-proj--save *fc-project*)))
      ("clang style"     .	,(lambda ()
-                                   (fc-proj--set *fc-project*
-                                                 (fc-user-select "Clang style" '("LLVM"
-                                                                                 "Google"
-                                                                                 "Chromium"
-                                                                                 "Mozilla"
-                                                                                 "WebKit"
-                                                                                 "Microsoft"))
-                                                 :local nil 'fc-proj-clang-style)
-                                   (fc-proj--save *fc-project*)))
+				   (fc-proj--set *fc-project*
+						 (fc-user-select "Clang style" '("LLVM"
+										 "Google"
+										 "Chromium"
+										 "Mozilla"
+										 "WebKit"
+										 "Microsoft"))
+						 :local nil 'fc-proj-clang-style)
+				   (fc-proj--save *fc-project*)))
      ("close files"     .       ,(lambda ()
-                                   (fc--run-multi-buffer
-                                    (fc-proj-root)
-                                    (lambda () (kill-buffer)))))
+				   (fc--run-multi-buffer
+				    (fc-proj-root)
+				    (lambda () (kill-buffer)))))
      ("open"            .	fc-proj-open)
      ("property"        .	fc-proj-select-property-to-edit)
      ("rename"          .	fc-proj-query-rename)
@@ -880,23 +880,23 @@ REST: commands."
      ("save"            .	,(lambda () (fc-proj--save *fc-project*)))
      ("switch"          .	fc-proj-switch)
      ("tab indent mode" .	,(lambda ()
-                                   (fc-proj--set *fc-project*
-                                                 (fc-user-confirm "Enable tab indent mode")
-                                                 :local 'c-mode 'indent-tabs-mode)
-                                   (fc-proj--save *fc-project*)))
+				   (fc-proj--set *fc-project*
+						 (fc-user-confirm "Enable tab indent mode")
+						 :local 'c-mode 'indent-tabs-mode)
+				   (fc-proj--save *fc-project*)))
      ("tab width"       .	,(lambda ()
-                                   (let ((tabwidth (string-to-number (read-string "Tab width : "))))
-                                     (fc-proj--set *fc-project* tabwidth :local 'c-mode 'c-basic-offset)
-                                     (fc-proj--set *fc-project* tabwidth :local 'c-mode 'tab-width)
-                                     (fc-proj--save *fc-project*))))
+				   (let ((tabwidth (string-to-number (read-string "Tab width : "))))
+				     (fc-proj--set *fc-project* tabwidth :local 'c-mode 'c-basic-offset)
+				     (fc-proj--set *fc-project* tabwidth :local 'c-mode 'tab-width)
+				     (fc-proj--save *fc-project*))))
      ("update local vars"	.	,(lambda ()
-                                           (fc-proj--update-local-vars *fc-project*)
-                                           (fc-proj--save *fc-project*)))
+					   (fc-proj--update-local-vars *fc-project*)
+					   (fc-proj--save *fc-project*)))
      ("work"            .	,(lambda ()
-                                   (fc-proj--set *fc-project*
-                                                 (fc-user-confirm "Remote work")
-                                                 :local nil 'fc-proj-work)
-                                   (fc-proj--save *fc-project*))))))
+				   (fc-proj--set *fc-project*
+						 (fc-user-confirm "Remote work")
+						 :local nil 'fc-proj-work)
+				   (fc-proj--save *fc-project*))))))
 
 ;; desktop
 (require 'desktop)
@@ -904,12 +904,12 @@ REST: commands."
 (cl-defun fc-get-desktop-path ()
   "Get desktop path."
   (let ((dir (cond
-              (*is-gui*
-               "~/.emacs.d/desktop-gui")
-              (*is-colorful*
-               "~/.emacs.d/desktop-colorful")
-              (t
-               "~/.emacs.d/desktop-linux"))))
+	      (*is-gui*
+	       "~/.emacs.d/desktop-gui")
+	      (*is-colorful*
+	       "~/.emacs.d/desktop-colorful")
+	      (t
+	       "~/.emacs.d/desktop-linux"))))
     (unless (fc-dir-exists-p dir)
       (make-directory dir))
     dir))
@@ -926,10 +926,10 @@ REST: commands."
 (cl-defun fc-save-desktop ()
   "Save to desktop."
   (when (or (fc-own-desktop-p)
-            (fc-user-confirm "Save desktop"))
+	    (fc-user-confirm "Save desktop"))
     (unless (fc-own-desktop-p)
       (let ((desktop-dirname (fc-get-desktop-path)))
-        (desktop-remove)))
+	(desktop-remove)))
 
     (desktop-save (fc-get-desktop-path))
     (recentf-save-list)))
@@ -945,38 +945,38 @@ REST: commands."
 (defun fc-select-theme ()
   "Allow user to select theme."
   (let* ((theme (fc-user-select "Themes"
-                                (custom-available-themes)))
+				(custom-available-themes)))
 
-         (modeline-separator (and *is-gui*
-                                  (not (fboundp 'fc-modeline-mode))
-                                  (fc-user-select "Mode separator"
-                                                  '(arrow
-                                                    arrow-fade
-                                                    bar
-                                                    box
-                                                    brace
-                                                    butt
-                                                    chamfer
-                                                    contour
-                                                    curve
-                                                    rounded
-                                                    roundstub
-                                                    slant
-                                                    wave
-                                                    zigzag)))))
+	 (modeline-separator (and *is-gui*
+				  (not (fboundp 'fc-modeline-mode))
+				  (fc-user-select "Mode separator"
+						  '(arrow
+						    arrow-fade
+						    bar
+						    box
+						    brace
+						    butt
+						    chamfer
+						    contour
+						    curve
+						    rounded
+						    roundstub
+						    slant
+						    wave
+						    zigzag)))))
 
     (if (fc-void-p modeline-separator)
-        (setf modeline-separator (symbol-name powerline-default-separator)))
+	(setf modeline-separator (symbol-name powerline-default-separator)))
     (if (fc-void-p theme)
-        (setf theme (symbol-name *fc-current-theme*)))
+	(setf theme (symbol-name *fc-current-theme*)))
 
     (setf theme (intern theme)
-          modeline-separator (intern modeline-separator))
+	  modeline-separator (intern modeline-separator))
 
     (unless (and (eql modeline-separator powerline-default-separator)
-                 (eql theme *fc-current-theme*))
+		 (eql theme *fc-current-theme*))
       (fc-load-theme theme
-                     modeline-separator))))
+		     modeline-separator))))
 
 ;; default background color
 (defvar *fc-background-color* "black")
@@ -992,17 +992,17 @@ REST: commands."
       (fc-exec-command
        "cp"
        (expand-file-name
-        "~/.emacs.d/fconfig/resource/dot-dir-locals.el")
+	"~/.emacs.d/fconfig/resource/dot-dir-locals.el")
        (concat dir "/.dir-locals.el")))))
 
 (defun fc-decode-ansi-esc-code ()
   "Decode ansi escape code."
   (let ((start (if (region-active-p)
-                   (region-beginning)
-                 (point-min)))
-        (end (if (region-active-p)
-                 (region-end)
-               (point-max))))
+		   (region-beginning)
+		 (point-min)))
+	(end (if (region-active-p)
+		 (region-end)
+	       (point-max))))
     (ansi-color-apply-on-region start end)))
 
 (defun dos2unix ()
@@ -1020,11 +1020,11 @@ REST: commands."
 
   (save-excursion
     (fc-replace-regexp "\\([^\r]\\)\n"
-                       "\\1\r\n"
-                       :from-start t)
+		       "\\1\r\n"
+		       :from-start t)
     (fc-replace-regexp "^\n"
-                       "\r\n"
-                       :from-start t)))
+		       "\r\n"
+		       :from-start t)))
 
 (defun fc-forecast ()
   "Exec forecast."
@@ -1042,12 +1042,12 @@ REST: commands."
 (defun fc-config-line-space ()
   "Setup line space for all file buffers."
   (setf *fc-basic-line-spacing* (string-to-number
-                                 (read-string
-                                  "New line space"
-                                  (fc-string *fc-basic-line-spacing*))))
+				 (read-string
+				  "New line space"
+				  (fc-string *fc-basic-line-spacing*))))
   (--each (fc-list-buffer)
     (with-current-buffer
-        (setf line-spacing *fc-basic-line-spacing*))))
+	(setf line-spacing *fc-basic-line-spacing*))))
 
 (defun fc-select-other-func ()
   "Select other function."
@@ -1063,11 +1063,11 @@ REST: commands."
      ("load latest desktop"	. ,(fc-manual (fc-load-desktop)))
      ("string2hex"              . fc-c-string2hex)
      ("tabify"                  . ,(fc-manual (tabify (point-min)
-                                                      (point-max))))
+						      (point-max))))
      ("toggle visual line move" . ,(fc-manual (fc-toggle-var 'line-move-visual)))
      ("unix2dos"		. unix2dos)
      ("untabify"                . ,(fc-manual (untabify (point-min)
-                                                        (point-max))))
+							(point-max))))
      )))
 
 (cl-defun fc-toggle-server ()
@@ -1106,12 +1106,12 @@ REST: commands."
   (interactive)
 
   (let ((s (fc-current-thing t t :regq t :confirm t))
-        (target (format-mode-line "%l:")))
+	(target (format-mode-line "%l:")))
     (occur s)
 
     (with-selected-window (get-buffer-window "*Occur*")
       (when (search-forward target)
-        (search-forward s)))))
+	(search-forward s)))))
 
 ;; vi-style f command
 (defvar *fc-move-char* nil)
@@ -1121,14 +1121,14 @@ REST: commands."
   "Move forward to char.
 C: target char."
   (interactive (list (progn
-                       (fc-ergo-repeat-func 'fc-repeat-to-char)
-                       (read-char "Forward to char : " nil *ergo-prefix-timeout*))))
+		       (fc-ergo-repeat-func 'fc-repeat-to-char)
+		       (read-char "Forward to char : " nil *ergo-prefix-timeout*))))
 
   (unless c
     (cl-return-from fc-forward-to-char))
 
   (setf *fc-move-char* c
-        *fc-move-func* 'fc-forward-to-char)
+	*fc-move-func* 'fc-forward-to-char)
 
   (when (= (char-after (point)) c)
     (forward-char))
@@ -1139,14 +1139,14 @@ C: target char."
   "Move backward to char.
 C: target char."
   (interactive (list (progn
-                       (fc-ergo-repeat-func 'fc-repeat-to-char)
-                       (read-char "Backward to char : " nil *ergo-prefix-timeout*))))
+		       (fc-ergo-repeat-func 'fc-repeat-to-char)
+		       (read-char "Backward to char : " nil *ergo-prefix-timeout*))))
 
   (unless c
     (cl-return-from fc-backward-to-char))
 
   (setf *fc-move-char* c
-        *fc-move-func* 'fc-backward-to-char)
+	*fc-move-func* 'fc-backward-to-char)
 
   (search-backward (char-to-string c)))
 
@@ -1155,7 +1155,7 @@ C: target char."
   (interactive)
 
   (if (and *fc-move-func*
-           *fc-move-char*)
+	   *fc-move-char*)
       (funcall *fc-move-func* *fc-move-char*)
     (message "Empty recent search char")))
 

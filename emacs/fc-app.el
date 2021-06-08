@@ -1089,15 +1089,14 @@ REST: commands."
 
 (defun fc-select-ui-func ()
   "Select system function."
-  (let ((server-title (if server-mode "server stop" "server start")))
-    (fc-user-select-func
-     "UI"
-     `(("background"   . fc-set-background-color)
-       ("font"         . fc-config-font)
-       ("line space"   . fc-config-line-space)
-       ("theme"        . fc-select-theme)
-       ("theme reset"  . fc-reset-theme)
-       ))))
+  (fc-user-select-func
+   "UI"
+   `(("background"   . fc-set-background-color)
+     ("font"         . fc-config-font)
+     ("line space"   . fc-config-line-space)
+     ("theme"        . fc-select-theme)
+     ("theme reset"  . fc-reset-theme)
+     )))
 
 (advice-add 'package-utils-upgrade-all :after #'fc-job-done)
 

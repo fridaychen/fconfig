@@ -98,10 +98,15 @@ FONT: to be tested."
                               (fc-string *fc-font-height*))))
         (weight (intern (fc-user-select
                          "Weight"
-                         '("light"
-                           "book"
-                           "regular"
-                           "bold"))))
+                         '("ultra-light"
+                           "extra-light"
+                           "light"
+                           "semi-light"
+                           "normal"
+                           "semi-bold"
+                           "bold"
+                           "extra-bold"
+                           "ultra-bold"))))
         (width (intern (fc-user-select
                         "Width"
                         '("extra-condensed"

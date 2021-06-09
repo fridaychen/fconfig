@@ -200,13 +200,11 @@ COLOR: background color."
          (fc-set-face-attribute 'fringe nil
                                 :background monokai-orange)
          (fc-set-face-attribute 'default nil
-                                :background
-                                "#282a3a"))
+                                :background "#282a3a"))
        )
 
       ('monokai-pro
-       (fc-set-face-attribute 'minibuffer-prompt
-                              nil
+       (fc-set-face-attribute 'minibuffer-prompt nil
                               :foreground (fc-get-face-attribute
                                            'font-lock-keyword-face
                                            :foreground))
@@ -214,8 +212,7 @@ COLOR: background color."
                               :foreground "gray50"))
 
       ('monokai-pro-octagon
-       (fc-set-face-attribute 'minibuffer-prompt
-                              nil
+       (fc-set-face-attribute 'minibuffer-prompt nil
                               :foreground (fc-get-face-attribute
                                            'font-lock-keyword-face
                                            :foreground))

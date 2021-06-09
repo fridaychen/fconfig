@@ -978,13 +978,6 @@ REST: commands."
       (fc-load-theme theme
 		     modeline-separator))))
 
-;; default background color
-(defvar *fc-background-color* "black")
-
-(defun fc-set-background-color ()
-  "Setup background color."
-  (set-background-color *fc-background-color*))
-
 (defun fc-init-dir-locals ()
   "Copy default .dir-locals.el."
   (let ((dir (read-directory-name "Target dir : ")))
@@ -1091,8 +1084,7 @@ REST: commands."
   "Select system function."
   (fc-user-select-func
    "UI"
-   `(("background"   . fc-set-background-color)
-     ("font"         . fc-config-font)
+   `(("font"         . fc-config-font)
      ("line space"   . fc-config-line-space)
      ("theme"        . fc-select-theme)
      ("theme reset"  . fc-reset-theme)

@@ -343,7 +343,7 @@ ROOT: project path."
                         (read-string "Thing : " sym))))
     (cond
      (confirm
-      (when (fc-not-void-p sym)
+      (when (fc-not-void-p user-sym)
         (fc-tag-find-apropos user-sym)))
 
      ((fc-not-void-p sym)

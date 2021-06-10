@@ -128,12 +128,10 @@ DEACTIVATE: deativeate region.
 REGQ: regex quote.
 CONFIRM: ask use to confirm.
 PROMPT: prompt for user input."
-  (let ((result))
-    (setf result
-          (if (use-region-p)
-              (buffer-substring (region-beginning)
-                                (region-end))
-            (thing-at-point (if extension 'symbol 'word))))
+  (let ((result (if (use-region-p)
+                    (buffer-substring (region-beginning)
+                                      (region-end))
+                  (thing-at-point (if extension 'symbol 'word)))))
 
     (when (and deactivate (use-region-p))
       (deactivate-mark))

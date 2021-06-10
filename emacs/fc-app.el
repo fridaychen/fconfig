@@ -249,7 +249,7 @@ FILE: file name patterns.
 RECURSION: recursion or not.
 WORD: word boundary or not"
   (interactive (list current-prefix-arg
-		     (fc-current-thing t t :prompt "Grep Pattern")
+		     (fc-current-thing :prompt "Grep Pattern")
 		     (read-directory-name "Root : " default-directory)
 		     (read-string "File : " (fc--ergo-grep-file))
 		     (fc-user-confirm "Recusion")
@@ -264,7 +264,7 @@ WORD: word boundary or not"
 (defun fc-ergo-simple-grep (pattern)
   "Simple grep.
 PATTERN: target pattern."
-  (interactive (list (fc-current-thing t t :regq t :prompt "Simple pattern" )))
+  (interactive (list (fc-current-thing :regq t :prompt "Simple pattern" )))
 
   (fc-grep pattern (fc--ergo-grep-root default-directory)
 	   :file (fc--ergo-grep-file)
@@ -275,7 +275,7 @@ PATTERN: target pattern."
 (defun fc-ergo-simple-proj-grep (pattern)
   "Simple project grep.
 PATTERN: target pattern."
-  (interactive (list (fc-current-thing t t :regq t :prompt "Project simple pattern")))
+  (interactive (list (fc-current-thing :regq t :prompt "Project simple pattern")))
 
   (fc-grep pattern (file-relative-name (fc-proj-root))
 	   :file (fc--ergo-grep-file)
@@ -465,7 +465,7 @@ FILE-TYPES: target file types to be searched."
 (defun fc-text-retrieve (dir)
   "Text retrieve.
 DIR: dir to search."
-  (let* ((pattern (fc-current-thing t nil :regq t :confirm t))
+  (let* ((pattern (fc-current-thing :ask nil :regq t :confirm t))
 	 (bufname (format "*fc text retrieve %s*" pattern))
 	 (buf (get-buffer-create bufname))
 	 (filename (when buffer-file-name
@@ -687,7 +687,7 @@ ARGS: args for ff."
 	     "Do search dwim."
 	     (interactive)
 
-	     (let ((target (fc-current-thing nil t)))
+	     (let ((target (fc-current-thing)))
 	       (isearch-resume target nil nil t target nil))))
   :bind '((isearch-mode-map
 	   ("C-j" isearch-repeat-forward)
@@ -720,10 +720,10 @@ BACKWARD: search direction."
 	 (fc--search-set-target regex))
 
 	((region-active-p)
-	 (fc--search-set-target (fc-current-thing t t :regq t)))
+	 (fc--search-set-target (fc-current-thing :regq t)))
 
 	((not *fc-app-search-regex*)
-	 (fc--search-set-target (fc-current-thing t nil
+	 (fc--search-set-target (fc-current-thing :ask nil
 						  :regq t
 						  :confirm t
 						  :prompt "Search regex: "))))
@@ -1097,7 +1097,7 @@ REST: commands."
   "Run occru dwim."
   (interactive)
 
-  (let ((s (fc-current-thing t t :regq t :confirm t))
+  (let ((s (fc-current-thing :regq t :confirm t))
 	(target (format-mode-line "%l:")))
     (occur s)
 
@@ -1150,6 +1150,42 @@ C: target char."
 	   *fc-move-char*)
       (funcall *fc-move-func* *fc-move-char*)
     (message "Empty recent search char")))
+
+;; convert between string and hex
+(defun fc--string2hex (prefix suffix)
+  "Convert string to hex and insert."
+  (--each (append (fc-current-thing :prompt "String") nil)
+    (insert (format "%s%02x%s" prefix it suffix))))
+
+(defun fc-string2hex ()
+  (interactive)
+
+  (cl-multiple-value-bind (prefix suffix)
+      (pcase major-mode
+	((guard (derived-mode-p 'prog-mode))
+	 (list "0x" ", "))
+
+	(_
+	 (list "" " ")))
+    (fc--string2hex prefix suffix)))
+
+(defun fc-hex2string (start end)
+  "Convert hex to string.
+START: source of region.
+END: end of region."
+  (interactive "r")
+
+  (fc-region start end
+    (cl-loop
+     initially (goto-char 0)
+     while (re-search-forward "[0-9a-fA-F]\\{2\\}" nil t)
+     collect (string-to-number (match-string 0) 16) into numbers
+     finally do
+     (if (null numbers)
+	 (message "Hex number is not found !")
+       (message "string is %s"
+		(kill-new (apply #'string numbers))))
+     (deactivate-mark))))
 
 ;; app portal
 (defun fc-app-portal ()

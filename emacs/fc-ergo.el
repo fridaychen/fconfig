@@ -108,7 +108,7 @@
   "Replace.
 BACKWARD: backward direction.
 FROM-BEGINNING: start from beginnning."
-  (let* ((from-str (fc-current-thing t t :regq t :prompt "Regex Query replace from"))
+  (let* ((from-str (fc-current-thing :regq t :prompt "Regex Query replace from"))
          (to-str (read-string (format "Regex Query replace from %s to : "
                                       from-str))))
     (cond
@@ -492,7 +492,7 @@ INDENT-FUNC: function for indent."
   "Translate word."
   (interactive)
 
-  (let ((words (fc-current-thing nil t)))
+  (let ((words (fc-current-thing :ext nil)))
     (when (fc-not-void-p words)
       (fc-dict-lookup words))))
 
@@ -566,67 +566,6 @@ ARG: words."
   (interactive)
 
   (fc-popup-tip (current-time-string) :timeout 3))
-
-(cl-defmacro fc-cond-key (&key normal region proj one work prefix fold dev preregion)
-  "Run operation conditionaly.
-NORMAL: normal mode.
-REGION: region mode.
-PROJ: project mode.
-ONE: one-window mode.
-WORK: work on project mode.
-PREFIX: fc prefix mode.
-FOLD: function return function.
-DEV: dev mode.
-PREREGION: prefix and region mode"
-  `(lambda ()
-     (interactive)
-
-     (cond
-      ((and ,preregion (region-active-p) *fc-ergo-prefix*)
-       (fc-funcall ,preregion))
-
-      ((and ,region (region-active-p))
-       (fc-funcall ,region))
-
-      ((and ,prefix *fc-ergo-prefix*)
-       (fc-funcall ,prefix))
-
-      ((and *fc-dev-mode* ,dev)
-       (fc-funcall ,dev))
-
-      ((and ,work *fc-project*)
-       (fc-funcall ,work))
-
-      ((and ,proj (fc-proj-root))
-       (fc-funcall ,proj))
-
-      ((and ,one (one-window-p))
-       (fc-funcall ,one))
-
-      (,fold
-       (let ((f (fc-funcall ,fold)))
-         (fc-funcall f)))
-
-      (,normal
-       (fc-funcall ,normal)))))
-
-(defmacro fc-mode-key (mode-func)
-  "Run operation according to the major mode.
-MODE-FUNC: mode and function definitions."
-  `(lambda ()
-     (interactive)
-
-     (cl-block find-mode
-       (--each ,mode-func
-         (let ((mode (car it))
-               (func (cdr it)))
-           (when (or (and (cl-typep mode 'symbol)
-                          (or (eq major-mode mode)
-                              (eq mode '_)))
-                     (and (cl-typep mode 'list)
-                          (member major-mode mode)))
-             (fc-funcall func)
-             (cl-return-from find-mode)))))))
 
 (defmacro fc-delete-key (&optional mark-func not-save)
   "Delete region.
@@ -1168,7 +1107,7 @@ KEYMAP: keymap to run."
      ("a" align)
      ("b" ,*fc-undef-key*)
      ("c" ,(fc-cond-key :normal 'quick-calc
-                        :region (fc-manual (calc-eval (fc-current-thing t t)))))
+                        :region (fc-manual (calc-eval (fc-current-thing)))))
      ("d" fc-dev-mode-toggle)
      ("f" ,(fc-cond-key :normal 'fc-find-files
                         :proj (fc-manual (fc-proj-find-file default-directory))))
@@ -1218,7 +1157,7 @@ KEYMAP: keymap to run."
      ("'" ,(fc-cond-key :normal 'fc-show-hide-note
                         :region (fc-manual
                                  (fc-insert-note
-                                  (fc-current-thing nil nil)))))
+                                  (fc-current-thing)))))
      )
    "ergo-quick-map")
   "KEYS a: align  c: calc  d: dev mode  f: find file  h: hex mode  i: insert file  k: flycheck  l: imenu list  m: multiple  n: new buffer  o: occur  r: recover buffer  s: save  t: time  u: (un)maximize  v: tomato  w: save as  x: reading  B: none  C: calendar  D: open dir  F: format  I: insert signature  L: screen saver  M: rename file  R: readonly  S: save buffers  W: forecast  X: reading.")
@@ -1428,7 +1367,7 @@ AUTO: auto select face."
    ;; h := Help
    ("h" ,(fc-cond-key :normal (fc-head-key "Help" '*ergo-help-map*)
                       :region (fc-manual
-                               (fc-hi-lock-toggle (fc-current-thing t t)))))
+                               (fc-hi-lock-toggle (fc-current-thing)))))
 
    ("i" previous-line)
    ("j" backward-char)
@@ -1511,7 +1450,7 @@ AUTO: auto select face."
                       :prefix (fc-manual (fc-text-retrieve default-directory))))
    ("H" ,(fc-cond-key :normal 'swiper
                       :region (fc-manual
-                               (swiper (fc-current-thing nil nil)))))
+                               (swiper (fc-current-thing :ask nil)))))
    ("I" fc-begin-of-func)
    ("J" backward-word)
    ("K" fc-end-of-func)
@@ -1519,7 +1458,7 @@ AUTO: auto select face."
    ("M" ,(fc-cond-key :normal (fc-head-key "Layout" '*ergo-layout-map*)
                       :region (fc-manual
                                (fc-insert-note
-                                (fc-current-thing nil nil)))))
+                                (fc-current-thing :ask nil)))))
    ("N" fc-narrow-widen)
    ("O" ,(fc-manual (beginning-of-line)
                     (newline-and-indent)

@@ -120,7 +120,7 @@ SYMBOL: symbol name to be togllged."
       (set symbol nil)
     (set symbol t)))
 
-(cl-defun fc-current-thing (extension ask &key regq confirm prompt (deactivate t))
+(cl-defun fc-current-thing (&key (ask t) (ext t) regq confirm (prompt "Thing") (deactivate t))
   "Fetch current thing at the point.
 EXTENSION: extensional way.
 ASK: ask user to confirm.
@@ -131,14 +131,14 @@ PROMPT: prompt for user input."
   (let ((result (if (use-region-p)
                     (buffer-substring (region-beginning)
                                       (region-end))
-                  (thing-at-point (if extension 'symbol 'word)))))
+                  (thing-at-point (if ext 'symbol 'word)))))
 
     (when (and deactivate (use-region-p))
       (deactivate-mark))
 
     (if (or confirm
             (and ask (null result)))
-        (setf result (read-string (or prompt "Thing")
+        (setf result (read-string prompt
                                   (if (and regq result)
                                       (regexp-quote result)
                                     result)))

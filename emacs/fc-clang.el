@@ -4,44 +4,19 @@
 ;;
 
 ;;; Code:
-(defun fc-c-string2hex ()
-  "Convert string to hex and insert."
-  (--each (append (fc-current-thing t t) nil)
-    (insert (format "0x%02x, " it))))
-
-(defun fc-c-hex2string (start end)
-  "Convert hex to string.
-START: source of region.
-END: end of region."
-  (interactive "r")
-
-  (fc-region start end
-    (cl-loop
-     initially (goto-char 0)
-     while (re-search-forward "[0-9a-fA-F]\\{2\\}" nil t)
-     collect (string-to-number (match-string 0) 16) into numbers
-     finally do
-     (if (null numbers)
-         (message "Hex number is not found !")
-       (message "string is %s"
-                (kill-new (apply #'string numbers))))
-     (deactivate-mark))))
-
 (defun fc-c-portal ()
   "Show c portal."
   (fc-user-select-func
    "C"
    `(
-     ("string2hex" . fc-c-string2hex)
-     ("hex2string" . fc-c-hex2string)
+     ("string2hex" . fc-string2hex)
+     ("hex2string" . fc-hex2string)
      ("mark ifdef" . mark-ifdef)
      )))
 
 (defconst *fc-c-map*
   (fc-make-keymap
    `(
-     ("h" ,(fc-cond-key :normal 'fc-c-string2hex
-                        :region 'fc-c-hex2string))
      ("i d" ,(fc-manual (fc-expand-snippet "do")))
      ("i f" ,(fc-manual (fc-expand-snippet "f")))
      ("i i" ,(fc-manual (fc-expand-snippet "if")))

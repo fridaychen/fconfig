@@ -210,7 +210,7 @@ PARAM: parameter of block."
      ("^" org-sort)
      ("SPC" fc-org-portal))
    "fc-org-map"
-   *fc-punctuation-map*)
+   *fc-func-mode-map*)
   "KEYS c: C-c C-c  i d: drawer  i t: timestamp  l: link  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  C i: clock in  C o: clock out  A: archive  D: deadline  E: edit special  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()

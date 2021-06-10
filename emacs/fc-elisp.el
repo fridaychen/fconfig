@@ -65,6 +65,8 @@
              (fc-remove-empty-line)
              (indent-region (point-min) (point-max)))
 
+           (fc-unbind-keys '("C-M-i") emacs-lisp-mode-map)
+
            (fc-add-fmt 'emacs-lisp-mode nil #'fc-format-emacs-lisp)
 
            (add-hook 'emacs-lisp-mode-hook (lambda ()

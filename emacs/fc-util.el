@@ -122,7 +122,7 @@ SYMBOL: symbol name to be togllged."
 
 (cl-defun fc-current-thing (&key (ask t) (ext t) regq confirm (prompt "Thing") (deactivate t))
   "Fetch current thing at the point.
-EXTENSION: extensional way.
+EXT: extensional way.
 ASK: ask user to confirm.
 DEACTIVATE: deativeate region.
 REGQ: regex quote.

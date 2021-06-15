@@ -335,22 +335,13 @@ ROOT: project path."
     (when file
       (find-file (format "%s/%s" root file)))))
 
-(cl-defun fc-find-definitions (&key confirm)
+(cl-defun fc-find-definitions (&key apropos)
   (interactive)
 
-  (let* ((sym (fc-current-thing :ask nil))
-         (user-sym (and (or confirm (fc-void-p sym))
-                        (read-string "Thing : " sym))))
-    (cond
-     (confirm
-      (when (fc-not-void-p user-sym)
-        (fc-tag-find-apropos user-sym)))
-
-     ((fc-not-void-p sym)
-      (fc-tag-find-definitions sym))
-
-     ((fc-not-void-p user-sym)
-      (fc-tag-find-apropos user-sym)))))
+  (let* ((sym (fc-current-thing :confirm apropos)))
+    (if apropos
+        (fc-tag-find-apropos sym)
+      (fc-tag-find-definitions sym))))
 
 (cl-defun fc-find-references ()
   (interactive)

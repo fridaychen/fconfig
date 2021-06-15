@@ -743,7 +743,7 @@ ARGS: list of infos."
                 ("C-x b" ivy-switch-buffer)
                 ("C-@" fc-escape-key)
                 ("C-<SPC>" fc-escape-key)
-                ("C-." ,(fc-manual (fc-find-definitions :confirm t)))
+                ("C-." ,(fc-manual (fc-find-definitions :apropos t)))
                 ("C-_" fc-fast-switch-window) ;; it is C-/ in the console
                 ("C-;" fc-fast-switch-window)))
 

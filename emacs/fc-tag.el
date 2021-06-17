@@ -173,10 +173,6 @@
                 )
 (puthash 'emacs-lisp-mode *fc-tag-xref* *fc-tag*)
 
-;; (add-hook 'text-mode-hook 'fc-tag-open-file)
-;; (add-hook 'c-mode-hook 'fc-tag-open-file)
-;; (add-hook 'c++-mode-hook 'fc-tag-open-file)
-
 (provide 'fc-tag)
 
 ;; Local Variables:

@@ -335,27 +335,6 @@ ROOT: project path."
     (when file
       (find-file (format "%s/%s" root file)))))
 
-(cl-defun fc-find-definitions (&key apropos)
-  (interactive)
-
-  (let* ((sym (if apropos
-                  (fc-current-thing :confirm t)
-                (fc-current-thing :ask nil))))
-    (unless sym
-      (setf apropos nil
-            sym (fc-current-thing :confirm t)))
-
-    (if apropos
-        (fc-tag-find-apropos sym)
-      (fc-tag-find-definitions sym))))
-
-(cl-defun fc-find-references ()
-  (interactive)
-
-  (let* ((sym (fc-current-thing)))
-    (when (fc-not-void-p sym)
-      (fc-tag-find-references sym))))
-
 (cl-defun fc-proj-query-replace-with-dired ()
   (let ((files (read-string "Pattern : " "*.[hc]")))
     (find-dired (fc-proj-root) (concat "-name \"" files "\""))

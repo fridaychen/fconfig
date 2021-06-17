@@ -7,6 +7,24 @@
 
 (defvar *fc-tag* (make-hash-table))
 
+(cl-defun fc-find-definitions (&key apropos)
+  (interactive)
+
+  (when (not apropos)
+    (let* ((sym (fc-current-thing :ask nil)))
+      (when sym
+        (fc-tag-find-definitions sym)
+        (cl-return-from fc-find-definitions))))
+
+  (fc-tag-find-apropos (fc-current-thing :confirm t)))
+
+(cl-defun fc-find-references ()
+  (interactive)
+
+  (let* ((sym (fc-current-thing)))
+    (when sym
+      (fc-tag-find-references sym))))
+
 ;; base class
 (defclass fc-tag ()
   ())
@@ -48,26 +66,26 @@
 (defvar *fc-tag-xref* (make-instance 'fc-tag-xref))
 
 ;; global tag
-(defclass fc-tag-basic (fc-tag)
+(defclass fc-tag-global (fc-tag)
   ())
 
-(cl-defmethod fc-tag--find-definitions ((x fc-tag-basic) id)
+(cl-defmethod fc-tag--find-definitions ((x fc-tag-global) id)
   (ggtags-find-tag-dwim id))
 
-(cl-defmethod fc-tag--find-apropos ((x fc-tag-basic) pattern)
+(cl-defmethod fc-tag--find-apropos ((x fc-tag-global) pattern)
   (ggtags-find-tag-dwim pattern))
 
-(cl-defmethod fc-tag--find-references ((x fc-tag-basic) id)
+(cl-defmethod fc-tag--find-references ((x fc-tag-global) id)
   (ggtags-find-reference id))
 
-(cl-defmethod fc-tag--open-project ((x fc-tag-basic) proj-dir src-dirs)
+(cl-defmethod fc-tag--open-project ((x fc-tag-global) proj-dir src-dirs)
   (setenv "GTAGSLIBPATH"
           (s-join ":"
                   (-map #'expand-file-name
                         src-dirs)))
   (ggtags-visit-project-root proj-dir))
 
-(cl-defmethod fc-tag--open-file ((x fc-tag-basic))
+(cl-defmethod fc-tag--open-file ((x fc-tag-global))
   (let ((compile-json-file (fc-exists-file-in-path "compile_commands.json"))
         (gtags-file (fc-exists-file-in-path "compile_commands.json")))
     (when gtags-file
@@ -81,38 +99,7 @@
      (gtags-file
       (add-to-list 'company-backends 'company-gtags)))))
 
-(defvar *fc-tag-basic* (make-instance 'fc-tag-basic))
-
-;; cquery tag
-(defclass fc-tag-cquery (fc-tag)
-  ())
-
-(cl-defmethod fc-tag--find-definitions ((x fc-tag-cquery) id)
-  (xref--find-definitions id nil))
-
-(cl-defmethod fc-tag--find-apropos ((x fc-tag-cquery) pattern)
-  (xref-find-apropos pattern))
-
-(cl-defmethod fc-tag--find-references ((x fc-tag-cquery) id)
-  (xref--find-xrefs id 'references id nil))
-
-(cl-defmethod fc-tag--open-project ((x fc-tag-cquery) proj-dir src-dirs)
-  )
-
-(cl-defmethod fc-tag--open-file ((x fc-tag-cquery))
-  (lsp)
-
-  ;; (lsp-ui--toggle nil)
-  ;; (lsp-ui-doc-mode -1)
-  ;; (lsp-ui-sideline-mode -1)
-
-  ;; (if (fboundp 'lsp-ui-sideline-enable)
-  ;;     (lsp-ui-sideline-enable nil))
-
-  ;; (add-to-list 'company-backends 'company-lsp))
-  )
-
-(defvar *fc-tag-cquery* (make-instance 'fc-tag-cquery))
+(defvar *fc-tag-global* (make-instance 'fc-tag-global))
 
 ;; lsp tag
 (defclass fc-tag-lsp (fc-tag)
@@ -147,10 +134,10 @@
 
   (cond
    ((not (boundp 'fc-proj-tag))
-    *fc-tag-basic*)
+    *fc-tag-global*)
 
    ((eq fc-proj-tag 'global)
-    *fc-tag-basic*)
+    *fc-tag-global*)
 
    ((eq fc-proj-tag 'xref)
     *fc-tag-xref*)
@@ -158,7 +145,7 @@
    ((member fc-proj-tag '(lsp cquery ccls))
     *fc-tag-lsp*)
 
-   (t *fc-tag-basic*)))
+   (t *fc-tag-global*)))
 
 (defun fc-tag-find-definitions (id)
   (fc-tag--find-definitions (fc-find-tag) id))

@@ -338,7 +338,13 @@ ROOT: project path."
 (cl-defun fc-find-definitions (&key apropos)
   (interactive)
 
-  (let* ((sym (fc-current-thing :confirm apropos)))
+  (let* ((sym (if apropos
+                  (fc-current-thing :confirm t)
+                (fc-current-thing :ask nil))))
+    (unless sym
+      (setf apropos nil
+            sym (fc-current-thing :confirm t)))
+
     (if apropos
         (fc-tag-find-apropos sym)
       (fc-tag-find-definitions sym))))

@@ -123,7 +123,6 @@
   (xref--find-definitions id nil))
 
 (cl-defmethod fc-tag--find-apropos ((x fc-tag-lsp) pattern)
-  (setq pattern (propertize pattern 'identifier-at-point t))
   (xref-find-apropos pattern))
 
 (cl-defmethod fc-tag--find-references ((x fc-tag-lsp) id)

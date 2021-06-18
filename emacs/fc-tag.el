@@ -33,7 +33,7 @@
   (message "find-definitions is not implemented"))
 
 (cl-defmethod fc-tag--find-apropos ((x fc-tag) pattern)
-  (message "find aprops is not implemented"))
+  (message "find apropos is not implemented"))
 
 (cl-defmethod fc-tag--find-references ((x fc-tag) id)
   (message "find references is not implemented"))
@@ -54,7 +54,7 @@
 (cl-defmethod fc-tag--find-definitions ((x fc-tag-xref) id)
   (xref--find-definitions id nil))
 
-(cl-defmethod fc-tag--find-aproposs ((x fc-tag-xref) pattern)
+(cl-defmethod fc-tag--find-apropos ((x fc-tag-xref) pattern)
   (xref-find-apropos pattern))
 
 (cl-defmethod fc-tag--find-references ((x fc-tag-xref) id)

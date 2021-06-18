@@ -985,7 +985,7 @@ KEYMAP: keymap to run."
                        (fc-list-buffer :modified t))))
      ("r" fc-recentf)
      ("s" ace-swap-window)
-     ("t" fc-gtags-select)
+     ("t" ,(fc-manual (fc-tag-list)))
      ("u" previous-buffer)
      ("x" ,(fc-manual (fc-switch-to-buffer "Select view"
                                            (fc-rm-current-buf (fc-viewer-list)))))

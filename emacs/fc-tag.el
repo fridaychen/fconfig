@@ -44,6 +44,9 @@
 (cl-defmethod fc-tag--open-project ((x fc-tag) proj-dir src-dirs)
   (message "open project is not implemented"))
 
+(cl-defmethod fc-tag--list ((x fc-tag))
+  (message "list tags is not implemented"))
+
 ;; xref tag
 (defclass fc-tag-xref (fc-tag)
   ())
@@ -99,6 +102,9 @@
      (gtags-file
       (add-to-list 'company-backends 'company-gtags)))))
 
+(cl-defmethod fc-tag--list ((x fc-tag-global))
+  (fc-funcall #'counsel-gtags-find-symbol))
+
 (defvar *fc-tag-global* (make-instance 'fc-tag-global))
 
 ;; lsp tag
@@ -124,6 +130,9 @@
       (lsp)
 
     (add-to-list 'company-backends 'company-capf)))
+
+(cl-defmethod fc-tag--list ((x fc-tag-lsp))
+  (fc-funcall #'lsp-ivy-workspace-symbol))
 
 (defvar *fc-tag-lsp* (make-instance 'fc-tag-lsp))
 
@@ -163,6 +172,9 @@
   (let ((tag (fc-find-tag)))
     (when tag
       (fc-tag--open-file tag))))
+
+(defun fc-tag-list ()
+  (fc-tag--list (fc-find-tag)))
 
 (cl-defun fc-add-tag (mode tag-instance)
   (puthash mode tag-instance *fc-tag*))

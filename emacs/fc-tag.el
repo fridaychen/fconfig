@@ -66,6 +66,9 @@
 (cl-defmethod fc-tag--open-file ((x fc-tag-xref))
   )
 
+(cl-defmethod fc-tag--list ((x fc-tag-xref))
+  (fc-funcall #'xref-find-definitions))
+
 (defvar *fc-tag-xref* (make-instance 'fc-tag-xref))
 
 ;; global tag

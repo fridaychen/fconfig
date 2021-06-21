@@ -18,9 +18,14 @@ function compile_emacs() {
     make -j$(nproc)
 }
 
+function install_emacs() {
+    sudo make install
+}
+
 if [[ $(basename $(pwd)) = "emacs" && -d .git ]]; then
     fc-user-confirm "Update source code" && update_emacs
     fc-user-confirm "Compile" && compile_emacs
+    fc-user-confirm "Install" && install_emacs
 elif fc-user-confirm "Clone emacs"; then
     clone_emacs
 else

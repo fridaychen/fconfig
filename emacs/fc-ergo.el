@@ -453,17 +453,11 @@ INDENT-FUNC: function for indent."
   (interactive)
 
   (pcase major-mode
-    ((or 'c-mode 'c++mode)
-     (c-mark-function))
-
-    ((or 'lisp-mode 'emacs-lisp-mode 'sh-mode 'go-mode)
+    ((guard (derived-mode-p 'prog-mode))
      (mark-defun))
 
     ('org-mode
      (org-mark-subtree))
-
-    ('python-mode
-     (python-mark-defun))
 
     (_
      (backward-sentence)

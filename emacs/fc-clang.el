@@ -113,6 +113,7 @@ END: end of region."
                     (AllowAllArgumentsOnNextLine . false)
                     (AllowAllParametersOfDeclarationOnNextLine . false)
                     (AlignAfterOpenBracket . true)
+                    (AlignConsecutiveAssignments . true)
                     (AlignEscapedNewlines . Left)
                     (AlignConsecutiveMacros . true)
                     (AlignOperands . true)

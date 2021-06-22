@@ -293,9 +293,7 @@ INDENT-FUNC: function for indent."
   (interactive)
 
   (pcase major-mode
-    ((or 'c-mode 'c++mode) (c-beginning-of-defun))
-    ((or 'emacs-lisp-mode 'lisp-mode 'common-lisp-mode 'go-mode) (beginning-of-defun))
-    ('python-mode (python-nav-backward-defun))
+    ((guard (derived-mode-p 'prog-mode)) (beginning-of-defun))
     ((or 'org-mode 'markdown-mode) (outline-next-visible-heading -1))
     ('diff-mode (diff-file-prev))
     (_ (if outline-minor-mode
@@ -307,9 +305,7 @@ INDENT-FUNC: function for indent."
   (interactive)
 
   (pcase major-mode
-    ((or 'c-mode 'c++mode) (c-end-of-defun))
-    ((or 'emacs-lisp-mode 'lisp-mode 'common-lisp-mode 'go-mode) (end-of-defun))
-    ('python-mode (python-nav-forward-defun))
+    ((guard (derived-mode-p 'prog-mode)) (end-of-defun))
     ((or 'org-mode 'markdown-mode) (outline-next-visible-heading 1))
     ('diff-mode (diff-file-next))
     (_ (if outline-minor-mode
@@ -322,8 +318,7 @@ INDENT-FUNC: function for indent."
 
   (pcase major-mode
     ((or 'c-mode 'c++mode) (c-beginning-of-statement-1))
-    ((or 'emacs-lisp-mode 'lisp-mode 'common-lisp-mode 'go-mode) (beginning-of-sexp))
-    ('python-mode (python-nav-beginning-of-block))
+    ((guard (derived-mode-p 'prog-mode)) (beginning-of-sexp))
     ('org-mode (outline-next-visible-heading -1))
     (_ (if outline-minor-mode
            (outline-previous-heading))
@@ -335,8 +330,7 @@ INDENT-FUNC: function for indent."
 
   (pcase major-mode
     ((or 'c-mode 'c++mode) (c-end-of-statement))
-    ((or 'emacs-lisp-mode 'lisp-mode 'common-lisp-mode 'go-mode) (end-of-sexp))
-    ('python-mode (python-nav-end-of-block))
+    ((guard (derived-mode-p 'prog-mode)) (end-of-sexp))
     ('org-mode (outline-next-visible-heading 1))
     (_ (if outline-minor-mode
            (outline-next-heading))

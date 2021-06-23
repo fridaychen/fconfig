@@ -11,7 +11,7 @@
   :after (progn
            (setf flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list
                  flycheck-emacs-lisp-initialize-packages 'auto
-                 flycheck-standard-error-navigation nil)
+                 flycheck-standard-error-navigation t)
            (setq-default flycheck-emacs-lisp-load-path 'inherit)
 
            (add-hook '*fc-enable-dev-hook*

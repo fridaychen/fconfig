@@ -74,6 +74,7 @@ END: end of region."
 
            (defun fc--setup-c-mode ()
              (c-toggle-electric-state 1)
+             (c-toggle-auto-newline 1)
 
              (--each '("FIXME:" "TODO:" "ToDo:" "MEMO:"
                        "FIXME :" "TODO :" "MEMO :")
@@ -114,9 +115,11 @@ END: end of region."
                     (AllowAllParametersOfDeclarationOnNextLine . false)
                     (AlignAfterOpenBracket . true)
                     (AlignConsecutiveAssignments . true)
+                    (AlignConsecutiveBitFields . true)
                     (AlignEscapedNewlines . Left)
                     (AlignConsecutiveMacros . true)
                     (AlignOperands . true)
+                    (AlignTrailingComments . true)
                     (AllowShortBlocksOnASingleLine . false)
 
                     (AllowShortFunctionsOnASingleLine . None)

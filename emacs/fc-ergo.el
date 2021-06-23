@@ -294,7 +294,6 @@ INDENT-FUNC: function for indent."
 
   (pcase major-mode
     ((guard (derived-mode-p 'prog-mode)) (beginning-of-defun))
-    ((or 'org-mode 'markdown-mode) (outline-next-visible-heading -1))
     ('diff-mode (diff-file-prev))
     (_ (if outline-minor-mode
            (outline-previous-heading)
@@ -306,7 +305,6 @@ INDENT-FUNC: function for indent."
 
   (pcase major-mode
     ((guard (derived-mode-p 'prog-mode)) (end-of-defun))
-    ((or 'org-mode 'markdown-mode) (outline-next-visible-heading 1))
     ('diff-mode (diff-file-next))
     (_ (if outline-minor-mode
            (outline-next-heading)

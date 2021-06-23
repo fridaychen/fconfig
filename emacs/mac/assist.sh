@@ -3,16 +3,16 @@
 function modify_brightness {
     local delta=$1
 
-    current=$( brightness -l | grep "display 0: brightness" | cut -d" " -f4 )
+    current=$(brightness -l | grep "display 0: brightness" | cut -d" " -f4)
 
-    new=$( echo "$current+($delta)" | bc )
+    new=$(echo "$current+($delta)" | bc)
 
-    new=$( echo "if ($new > 0) { $new } else { 0 }" | bc )
-    new=$( echo "if ($new <= 0.99) { $new } else { 0.99 }" | bc )
+    new=$(echo "if ($new > 0) { $new } else { 0 }" | bc)
+    new=$(echo "if ($new <= 0.99) { $new } else { 0.99 }" | bc)
 
     brightness -d 0 $new
 
-    echo $( echo "$new*100" | bc )
+    echo $(echo "$new*100" | bc)
 }
 
 function dim {
@@ -26,12 +26,12 @@ function brighten {
 function modify_volume {
     local delta=$1
 
-    current=$( osascript -e "output volume of (get volume settings)" )
+    current=$(osascript -e "output volume of (get volume settings)")
 
-    new=$( echo "$current +($delta)" | bc )
+    new=$(echo "$current +($delta)" | bc)
 
-    new=$( echo "if ($new > 0) { $new } else { 0 }" | bc )
-    new=$( echo "if ($new <= 100) { $new } else { 100 }" | bc )
+    new=$(echo "if ($new > 0) { $new } else { 0 }" | bc)
+    new=$(echo "if ($new <= 100) { $new } else { 100 }" | bc)
 
     osascript -e "set volume output volume ${new}"
 
@@ -47,16 +47,16 @@ function volume_down {
 }
 
 function mute {
-    current=$( osascript -e "output muted of (get volume settings)" )
+    current=$(osascript -e "output muted of (get volume settings)")
 
     case $current in
-	true)
-	    osascript -e 'set volume output muted false'
-	;;
+        true)
+            osascript -e 'set volume output muted false'
+            ;;
 
-	false)
-	    osascript -e 'set volume output muted true'
-	;;
+        false)
+            osascript -e 'set volume output muted true'
+            ;;
     esac
 }
 
@@ -72,30 +72,30 @@ function upgrade {
 
 case $1 in
     --dim)
-	dim
-	;;
+        dim
+        ;;
 
     --brighten)
-	brighten
-	;;
+        brighten
+        ;;
 
     --volup)
-	volume_up
-	;;
+        volume_up
+        ;;
 
     --voldown)
-	volume_down
-	;;
+        volume_down
+        ;;
 
     --mute)
-	mute
-	;;
+        mute
+        ;;
 
     --gateway)
-	gateway
-	;;
+        gateway
+        ;;
 
     --upgrade)
-	upgrade
-	;;
+        upgrade
+        ;;
 esac

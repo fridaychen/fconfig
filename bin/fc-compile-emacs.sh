@@ -3,29 +3,34 @@
 . $FCHOME/bin/Fansi.sh
 . ${FCHOME}/bin/Fcommon.sh
 
-function clone_emacs() {
+function clone() {
     git clone git://github.com/emacs-mirror/emacs.git
 }
 
-function update_emacs() {
+function update() {
     git pull
 }
 
-function compile_emacs() {
+function compile() {
     git clean -xdf
     ./autogen.sh
     ./configure --with-native-compilation --with-json
     make -j$(nproc)
 }
 
-function install_emacs() {
+function install() {
     sudo make install
 }
 
+function update_package() {
+    fj --emup
+}
+
 if [[ $(basename $(pwd)) = "emacs" && -d .git ]]; then
-    fc-user-confirm "Update source code" && update_emacs
-    fc-user-confirm "Compile" && compile_emacs
-    fc-user-confirm "Install" && install_emacs
+    fc-user-confirm "Update source code" && update
+    fc-user-confirm "Compile" && compile
+    fc-user-confirm "Install" && install
+    fc-user-confirm "Update packages" && update_package
 elif fc-user-confirm "Clone emacs"; then
     clone_emacs
 else

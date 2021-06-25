@@ -1130,7 +1130,7 @@ KEYMAP: keymap to run."
      ("v" fc-tomato)
      ("w" write-file)
      ("x" fc-viewer-toggle)
-     ("z" )
+     ("z" flush-lines)
 
      ("B" )
      ("C" calendar)
@@ -1153,7 +1153,7 @@ KEYMAP: keymap to run."
                                   (fc-current-thing)))))
      )
    "ergo-quick-map")
-  "KEYS a: align  c: calc  d: dev mode  f: find file  h: hex mode  i: insert file  k: flycheck  l: imenu list  m: multiple  n: new buffer  o: occur  r: recover buffer  s: save  t: time  u: (un)maximize  v: tomato  w: save as  x: reading  B: none  C: calendar  D: open dir  F: format  I: insert signature  L: screen saver  M: rename file  R: readonly  S: save buffers  W: forecast  X: reading.")
+  "KEYS a: align  c: calc  d: dev mode  f: find file  h: hex mode  i: insert file  k: flycheck  l: imenu list  m: multiple  n: new buffer  o: occur  r: recover buffer  s: save  t: time  u: (un)maximize  v: tomato  w: save as  x: reading  z: flush lines  B: none  C: calendar  D: open dir  F: format  I: insert signature  L: screen saver  M: rename file  R: readonly  S: save buffers  W: forecast  X: reading.")
 
 (cl-defmacro fc--adjust-window-size (horizontally step)
   "Adjust window size.

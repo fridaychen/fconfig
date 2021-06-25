@@ -9,14 +9,16 @@
   (fc-user-select-func
    "C"
    `(
-     ("string2hex" . fc-string2hex)
-     ("hex2string" . fc-hex2string)
+     ("insert standard headers" . fc-c-insert-std-header)
+     ("insert unix headers" . fc-c-insert-unix-header)
      ("mark ifdef" . mark-ifdef)
      )))
 
 (defconst *fc-c-map*
   (fc-make-keymap
    `(
+     ("h c" fc-c-insert-std-header)
+     ("h u" fc-c-insert-unix-header)
      ("i d" ,(fc-manual (fc-expand-snippet "do")))
      ("i f" ,(fc-manual (fc-expand-snippet "f")))
      ("i i" ,(fc-manual (fc-expand-snippet "if")))
@@ -29,7 +31,7 @@
      )
    "fc-c-map"
    *fc-func-mode-map*)
-  "KEYS h: hex  i d: insert do  i f: insert func  i i: insert if  i w: insert switch  i w: insert while  C: clang-format off  E: org exit edit.")
+  "KEYS h c: insert c headers  h u: insert unix headers  i d: insert do  i f: insert func  i i: insert if  i w: insert switch  i w: insert while  C: clang-format off  E: org exit edit.")
 
 (defun fc-c-mode-func ()
   "Mode func."
@@ -56,6 +58,22 @@ END: end of region."
       (insert "\n"))
     (insert "  /* clang-format on */")
     (c-indent-line-or-region)))
+
+(defun fc-c-insert-std-header ()
+  "Insert standard c header files."
+  (interactive)
+  (insert "#include <stdio.h>\n"
+          "#include <stdlib.h>\n"
+          "#include <string.h>\n"))
+
+(defun fc-c-insert-unix-header ()
+  "Insert unix header files."
+  (interactive)
+  (insert "#include <unistd.h>\n"
+          "#include <errno.h>\n"
+          "#include <fcntl.h>\n"
+          "#include <sys/types.h>\n"
+          "#include <sys/stat.h>\n"))
 
 (fc-install 'protobuf-mode)
 

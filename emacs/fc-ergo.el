@@ -239,7 +239,8 @@ INDENT-FUNC: function for indent."
       (forward-char)))
 
    ((looking-at-p "[[:space:]]*$")
-    (unless fc-modal-global-mode
+    (if fc-modal-global-mode
+        (delete-blank-lines)
       (indent-for-tab-command)))
 
    ((or fc-modal-global-mode

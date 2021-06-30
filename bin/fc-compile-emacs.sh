@@ -32,7 +32,7 @@ if [[ $(basename $(pwd)) = "emacs" && -d .git ]]; then
     fc-user-confirm "Install" && install
     fc-user-confirm "Update packages" && update_package
 elif fc-user-confirm "Clone emacs"; then
-    clone_emacs
+    clone
 else
     error-msg "Not under emacs !"
 fi

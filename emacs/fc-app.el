@@ -1041,6 +1041,17 @@ REST: commands."
     (with-current-buffer
         (setf line-spacing *fc-basic-line-spacing*))))
 
+(defconst *fc-app-font-size-map*
+  (fc-make-keymap
+   `(
+     ("j" ,(fc-manual (fc-adjust-font -1)
+                      (format "%d" *fc-font-height*)))
+     ("k" ,(fc-manuals (fc-adjust-font 1)
+                       (format "%d" *fc-font-height*)))
+     )
+   "font size keymap")
+  "KEYS  j: down  k: up.")
+
 (defun fc-select-other-func ()
   "Select other function."
   (fc-user-select-func
@@ -1084,6 +1095,8 @@ REST: commands."
   (fc-user-select-func
    "UI"
    `(("font"         . fc-config-font)
+     ("font size"    . ,(fc-head-key-repeat "Adjust font size"
+                                            '*fc-app-font-size-map*))
      ("line space"   . fc-config-line-space)
      ("theme"        . fc-select-theme)
      ("theme reset"  . fc-reset-theme)

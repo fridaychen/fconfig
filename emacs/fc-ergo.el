@@ -235,8 +235,8 @@ INDENT-FUNC: function for indent."
     (unless (yas-expand)
       (insert "y")))
 
-   ((when (looking-at "[\")}\\]")
-      (forward-char)))
+   ((looking-at "[\")}\\]")
+    (forward-char))
 
    ((looking-at-p "[[:space:]]*$")
     (if fc-modal-global-mode

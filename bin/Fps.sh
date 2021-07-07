@@ -15,9 +15,16 @@ FC_CPU_OVERLOAD_TH=$(($(nproc) * 50))
 FC_PS_FIT_AWK=$(cat $FCHOME/bin/ps-fit.awk)
 if [[ $FC_COLORFUL == false || $FC_EMOJI == false ]]; then
     FC_FIT_PREFIX="^"
+    FC_OVERLOAD_PREFIX="OL"
+    FC_EXEC_PREFIX="!"
+    FC_EXIT_FAIL="NG"
 else
     FC_FIT_PREFIX=""
+    FC_OVERLOAD_PREFIX="🔥"
+    FC_EXEC_PREFIX="❕"
+    FC_EXIT_FAIL="❌"
 fi
+export EXITCODE=0
 
 # construct colorful PS part with attr, fg, bg
 # 256 <= number < 512 : 256colors FG
@@ -42,9 +49,14 @@ function ps-part() {
     echo $rst
 }
 
+function ps-save-exit-code() {
+    echo $? >"/dev/shm/${USER}.bashexit.${FCROOTPID}"
+}
+
 function last-command-result() {
-    if [[ $? != 0 ]]; then
-        echo -n " ❌"
+    local exitcode=$(cat "/dev/shm/${USER}.bashexit.${FCROOTPID}")
+    if [[ $exitcode != 0 ]]; then
+        echo -n "${FC_EXIT_FAIL} "
     fi
 }
 
@@ -57,7 +69,7 @@ function ps-resource-overload() {
             local mem=$(free -m | awk '/^Mem/ {printf("%u", 100*$3/$2);}')
 
             if [[ $mem -gt 70 || $cpu -gt $FC_CPU_OVERLOAD_TH ]]; then
-                echo -n " 🔥$cpu/$mem"
+                echo -n " ${FC_OVERLOAD_PREFIX}$cpu/$mem"
             fi
             ;;
     esac
@@ -75,6 +87,17 @@ function ps-fit-info() {
 
         git status -s | awk "$FC_PS_FIT_AWK"
     fi
+}
+
+function ps-exec-start() {
+    # places the epoch time in ns into shared memory
+    date +%s.%N >"/dev/shm/${USER}.bashtime.${FCROOTPID}"
+}
+
+function ps-exec-time() {
+    local endtime=$(date +%s.%N)
+    local starttime=$(cat /dev/shm/${USER}.bashtime.${FCROOTPID})
+    printf "${FC_EXEC_PREFIX}%.2f" $(echo "scale=2; $endtime - $starttime" | bc)
 }
 
 function ps-art-l0() {
@@ -122,6 +145,7 @@ function setup_ps() {
     local PS_LAST="\$(last-command-result)"
     local PS_FIT="\$(ps-fit-info)"
     local PS_OVERLOAD="\$(ps-resource-overload)"
+    local PS_EXEC_TIME="\$(ps-exec-time)"
     local PS_NOW="\$(ps-now)"
     local PS_ART_L0="\$(ps-art-l0)"
     local PS_ART_L1="\$(ps-art-l1)"
@@ -138,7 +162,9 @@ function setup_ps() {
         fi
     fi
 
-    PS1=$(ps-part $HIGHLIGHT $NODE_ICON_FG $NODE_ICON_BG $PS_ART_L0 "\n")
+    PS0='$(ps-exec-start)'
+    PS1='$(ps-save-exit-code)'
+    PS1+=$(ps-part $HIGHLIGHT $NODE_ICON_FG $NODE_ICON_BG $PS_ART_L0 "\n")
     PS1+=$(ps-part $HIGHLIGHT $NODE_ICON_FG $NODE_ICON_BG $PS_ART_L1 $RESET $FG_CYAN "\u")
 
     if [[ ! -z $SSH_TTY ]]; then
@@ -150,6 +176,7 @@ function setup_ps() {
         ps-part \
             $HIGHLIGHT $NODE_ICON_FG $NODE_ICON_BG $PS_ART_L2 $RESET \
             $HIGHLIGHT $PS_LAST \
+            $FG_GREEN $PS_EXEC_TIME " " \
             $FG_MAGENTA $PS_FIT \
             $FG_WHITE $PS_OVERLOAD \
             "\n"
@@ -162,4 +189,5 @@ function setup_ps() {
     PS2=$(ps-part $RESET $HIGHLIGHT $FG_BLUE ">+${S}+('> " $RESET)
 }
 
+ps-exec-start
 setup_ps

@@ -93,3 +93,5 @@ function _fcedit() {
 export FCEDIT=_fcedit
 
 fc-copy ${FCHOME}/bin/.dircolors ~/.dircolors
+
+export FCROOTPID=$BASHPID

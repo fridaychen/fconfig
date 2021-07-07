@@ -67,7 +67,7 @@ function fj-speak() {
 }
 
 function fj-done() {
-    if [ $? -eq 0 ]; then
+    if [[ $? -eq 0 ]]; then
         fj-speak ${1:-great}
     else
         fj-speak ${2:-oops}

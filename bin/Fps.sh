@@ -24,6 +24,7 @@ else
     FC_EXEC_PREFIX="❕"
     FC_EXIT_FAIL="❌"
 fi
+FC_EXITCODE_FILE=/dev/shm/${USER}.bashexit.${FCROOTPID}
 FC_EXEC_FILE=/dev/shm/${USER}.bashtime.${FCROOTPID}
 
 # construct colorful PS part with attr, fg, bg
@@ -50,11 +51,11 @@ function ps-part() {
 }
 
 function ps-save-exit-code() {
-    echo $? >"/dev/shm/${USER}.bashexit.${FCROOTPID}"
+    echo $? >$FC_EXITCODE_FILE
 }
 
 function last-command-result() {
-    local exitcode=$(cat "/dev/shm/${USER}.bashexit.${FCROOTPID}")
+    local exitcode=$(cat $FC_EXITCODE_FILE)
     if [[ $exitcode != 0 ]]; then
         echo -n "${FC_EXIT_FAIL} "
     fi

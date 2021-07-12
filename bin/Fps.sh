@@ -24,7 +24,7 @@ else
     FC_EXEC_PREFIX="❕"
     FC_EXIT_FAIL="❌"
 fi
-export EXITCODE=0
+FC_EXEC_FILE=/dev/shm/${USER}.bashtime.${FCROOTPID}
 
 # construct colorful PS part with attr, fg, bg
 # 256 <= number < 512 : 256colors FG
@@ -91,13 +91,16 @@ function ps-fit-info() {
 
 function ps-exec-start() {
     # places the epoch time in ns into shared memory
-    date +%s.%N >"/dev/shm/${USER}.bashtime.${FCROOTPID}"
+    date +%s.%N >$FC_EXEC_FILE
 }
 
 function ps-exec-time() {
-    local endtime=$(date +%s.%N)
-    local starttime=$(cat /dev/shm/${USER}.bashtime.${FCROOTPID})
-    printf "${FC_EXEC_PREFIX}%.2f" $(echo "scale=2; $endtime - $starttime" | bc)
+    if [[ -f $FC_EXEC_FILE ]]; then
+        local endtime=$(date +%s.%N)
+        local starttime=$(cat $FC_EXEC_FILE)
+        printf "${FC_EXEC_PREFIX}%.2f" $(echo "scale=2; $endtime - $starttime" | bc)
+        rm $FC_EXEC_FILE
+    fi
 }
 
 function ps-art-l0() {
@@ -189,5 +192,4 @@ function setup_ps() {
     PS2=$(ps-part $RESET $HIGHLIGHT $FG_BLUE ">+${S}+('> " $RESET)
 }
 
-ps-exec-start
 setup_ps

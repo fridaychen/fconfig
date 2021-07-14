@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. ${FCHOME}/bin/Fcommon.sh
-
 if [[ -z ${NODE_ICON[@]} ]]; then
     NODE_ICON=(
         ' ,___,'
@@ -13,17 +11,15 @@ fi
 
 FC_CPU_OVERLOAD_TH=$(($(nproc) * 50))
 FC_PS_FIT_AWK=$(cat $FCHOME/bin/ps-fit.awk)
+
+declare -g -A FC_PS_PREFIX
+
 if [[ $FC_COLORFUL == false || $FC_EMOJI == false ]]; then
-    FC_FIT_PREFIX="^"
-    FC_OVERLOAD_PREFIX="OL"
-    FC_EXEC_PREFIX="!"
-    FC_EXIT_FAIL="NG"
+    FC_PS_PREFIX=([fit]="^" [ol]="OL" [ec]="NG" [exec]="!")
 else
-    FC_FIT_PREFIX=""
-    FC_OVERLOAD_PREFIX="🔥"
-    FC_EXEC_PREFIX="❕"
-    FC_EXIT_FAIL="❌"
+    FC_PS_PREFIX=([fit]="" [ol]="🔥" [ec]="❌" [exec]="❕")
 fi
+
 FC_EXITCODE_FILE=${USER}.bashexit.${FCROOTPID}
 FC_EXEC_FILE=${USER}.bashtime.${FCROOTPID}
 
@@ -72,7 +68,7 @@ function ps-resource-overload() {
             local mem=$(free -m | awk '/^Mem/ {printf("%u", 100*$3/$2);}')
 
             if [[ $mem -gt 70 || $cpu -gt $FC_CPU_OVERLOAD_TH ]]; then
-                echo -n " ${FC_OVERLOAD_PREFIX}$cpu/$mem"
+                echo -n " ${FC_PS_PREFIX[ol]}$cpu/$mem"
             fi
             ;;
     esac
@@ -86,7 +82,7 @@ function ps-fit-info() {
     local branch=$(fit-current-branch)
 
     if [[ ! -z $branch ]]; then
-        echo -n "$FC_FIT_PREFIX $branch"
+        echo -n "${FC_PS_PREFIX[fit]} $branch"
 
         git status -s | awk "$FC_PS_FIT_AWK"
     fi
@@ -102,7 +98,7 @@ function ps-exec-time() {
         local endtime=$(date +%s.%N)
         local starttime=""
         fc-dget $FC_EXEC_FILE starttime
-        printf "${FC_EXEC_PREFIX}%.2f" $(echo "scale=2; $endtime - $starttime" | bc)
+        printf "${FC_PS_PREFIX[exec]}%.2f" $(echo "scale=2; $endtime - $starttime" | bc)
         fc-ddel $FC_EXEC_FILE
     fi
 }

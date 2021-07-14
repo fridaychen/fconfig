@@ -123,7 +123,7 @@ function ps-art-l3() {
     echo "${NODE_ICON[3]}"
 }
 
-function setup_ps() {
+function setup-ps() {
     local RESET=0
     local NORMAL=0
     local HIGHLIGHT=1
@@ -196,4 +196,11 @@ function setup_ps() {
     PS2=$(ps-part $RESET $HIGHLIGHT $FG_BLUE ">+${S}+('> " $RESET)
 }
 
-setup_ps
+function ps-cleanup() {
+    fc-ddel $FC_EXITCODE_FILE
+    fc-ddel FC_EXEC_FILE
+}
+
+setup-ps
+
+trap ps-cleanup EXIT

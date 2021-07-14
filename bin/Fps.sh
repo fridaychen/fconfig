@@ -24,8 +24,8 @@ else
     FC_EXEC_PREFIX="❕"
     FC_EXIT_FAIL="❌"
 fi
-FC_EXITCODE_FILE=/dev/shm/${USER}.bashexit.${FCROOTPID}
-FC_EXEC_FILE=/dev/shm/${USER}.bashtime.${FCROOTPID}
+FC_EXITCODE_FILE=${USER}.bashexit.${FCROOTPID}
+FC_EXEC_FILE=${USER}.bashtime.${FCROOTPID}
 
 # construct colorful PS part with attr, fg, bg
 # 256 <= number < 512 : 256colors FG
@@ -51,11 +51,13 @@ function ps-part() {
 }
 
 function ps-save-exit-code() {
-    echo $? >$FC_EXITCODE_FILE
+    fc-dput $FC_EXITCODE_FILE $?
 }
 
 function last-command-result() {
-    local exitcode=$(cat $FC_EXITCODE_FILE)
+    local exitcode
+    fc-dget $FC_EXITCODE_FILE exitcode
+
     if [[ $exitcode != 0 ]]; then
         echo -n "${FC_EXIT_FAIL} "
     fi
@@ -92,15 +94,16 @@ function ps-fit-info() {
 
 function ps-exec-start() {
     # places the epoch time in ns into shared memory
-    date +%s.%N >$FC_EXEC_FILE
+    fc-dput $FC_EXEC_FILE $(date +%s.%N)
 }
 
 function ps-exec-time() {
-    if [[ -f $FC_EXEC_FILE ]]; then
+    if $(fc-dhas $FC_EXEC_FILE); then
         local endtime=$(date +%s.%N)
-        local starttime=$(cat $FC_EXEC_FILE)
+        local starttime=""
+        fc-dget $FC_EXEC_FILE starttime
         printf "${FC_EXEC_PREFIX}%.2f" $(echo "scale=2; $endtime - $starttime" | bc)
-        rm $FC_EXEC_FILE
+        fc-ddel $FC_EXEC_FILE
     fi
 }
 

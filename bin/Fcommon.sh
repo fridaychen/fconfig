@@ -39,3 +39,29 @@ function fc-user-confirm() {
     echo -e "\n"
     [[ ${opt} = "y" || ${opt} = "Y" ]]
 }
+
+function fc-dhas() {
+    [[ -f "/dev/shm/$1" ]]
+}
+
+function fc-ddel() {
+    rm -f "/dev/shm/$1"
+}
+
+function fc-dput() {
+    local file="/dev/shm/$1"
+    shift 1
+
+    echo $* >$file
+}
+
+function fc-dget() {
+    local file="/dev/shm/$1"
+    shift 1
+
+    # if [[ ! -f "/dev/shm/$file" ]]; then
+    #     return
+    # fi
+
+    read $* <$file
+}

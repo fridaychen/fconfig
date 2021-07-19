@@ -24,22 +24,22 @@
 (defconst *fc-book-zh-single-quote*
   (fc-decorate-region
    (lambda ()
-     (when (seq-contains "“”‘’'\"" (char-after))
+     (when (seq-contains-p "“”‘’'\"" (char-after))
        (delete-char 1))
      (insert "‘"))
    (lambda ()
-     (when (seq-contains "“”‘’'\"" (char-before))
+     (when (seq-contains-p "“”‘’'\"" (char-before))
        (delete-char -1))
      (insert "’"))))
 
 (defconst *fc-book-zh-quote*
   (fc-decorate-region
    (lambda ()
-     (when (seq-contains "“”‘’'\"" (char-after))
+     (when (seq-contains-p "“”‘’'\"" (char-after))
        (delete-char 1))
      (insert "“"))
    (lambda ()
-     (when (seq-contains "“”‘’'\"" (char-before))
+     (when (seq-contains-p "“”‘’'\"" (char-before))
        (delete-char -1))
      (insert "”"))))
 

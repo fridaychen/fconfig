@@ -5,12 +5,16 @@
 
 ;;; Code:
 
-(defvar-local *fc-viewer-mode* nil)
+(defvar-local fc-viewer-minor-mode nil)
 (defvar-local *fc-reading-line-spacing* 10)
 (defconst *fc-reading-title-limit* 22)
 (defvar-local *fc-bak-line-spacing* nil)
 
 (defvar *fc-viewer-hook* nil "After viewer mode toggled hook.")
+
+(defvar *fc-viewer-keymap*
+  (fc-make-keymap nil "fc-viewer")
+  "Keymap of viewer mode.")
 
 (cl-defun -fc-viewer-adjust-width ()
   "Adjust viewer buffer width."
@@ -19,31 +23,31 @@
 
 (cl-defun -fc-viewer-display ()
   "View display function."
-  (when *fc-viewer-mode*
+  (when fc-viewer-minor-mode
     (hl-line-mode 1)
     (-fc-viewer-adjust-width)))
+
+(cl-defun fc-viewer-list-buffer ()
+  "List viewer buffer."
+  (fc-list-buffer :filter
+                  (lambda ()
+                    fc-viewer-minor-mode)))
 
 (defun fc-viewer-toggle ()
   "Toggle viewer mode."
   (interactive)
 
-  (setq-local *fc-viewer-mode* (not *fc-viewer-mode*))
+  (if fc-viewer-minor-mode
+      (fc-viewer-quit)
+    (fc-viewer-enter))
+
   (fc-run-hook '*fc-viewer-hook*))
 
-(cl-defun fc-viewer-list ()
-  "List viewer buffer."
-  (fc-list-buffer :filter
-                  (lambda ()
-                    *fc-viewer-mode*)))
-
-(cl-defun fc-viewer-mode-p ()
-  "Test if current buffer is under viewer mode."
-  (and (boundp '*fc-viewer-mode*)
-       *fc-viewer-mode*))
-
 (defun fc-viewer-enter ()
-  "Enter reading mode."
+  "Enter viewer mode."
   (interactive)
+
+  (setf fc-viewer-minor-mode t)
 
   (fc-set-window-width :width *fc-reading-fill*)
 
@@ -64,6 +68,7 @@
   "Quit viewer mode."
   (interactive)
 
+  (setf fc-viewer-minor-mode nil)
   (hl-line-mode -1)
   (read-only-mode -1)
 
@@ -72,13 +77,14 @@
 
   (set-display-table-slot buffer-display-table 'wrap ?\\))
 
-(defun fc--default-toggle-viewer ()
-  (if *fc-viewer-mode*
-      (fc-viewer-enter)
-    (fc-viewer-quit)))
+(define-minor-mode fc-viewer-minor-mode
+  "Viewer minor mode."
+  :global nil
+  :lighter " Viewer"
+  :keymap *fc-viewer-keymap*
+  (fc-viewer-toggle))
 
 (fc-add-display-hook #'-fc-viewer-display)
-(add-hook '*fc-viewer-hook* #'fc--default-toggle-viewer)
 
 (provide 'fc-viewer)
 

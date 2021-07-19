@@ -982,7 +982,7 @@ KEYMAP: keymap to run."
      ("t" ,(fc-manual (fc-tag-list)))
      ("u" previous-buffer)
      ("x" ,(fc-manual (fc-switch-to-buffer "Select view"
-                                           (fc-rm-current-buf (fc-viewer-list)))))
+                                           (fc-rm-current-buf (fc-viewer-list-buffer)))))
      ("w" fc-buffers-list)
 
      ("[" ,(fc-manual (recenter 1)))

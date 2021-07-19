@@ -14,7 +14,7 @@
 
     (defun fc--md-toggle-viewer ()
       (when (derived-mode-p 'markdown-mode)
-        (markdown-toggle-markup-hiding (if *fc-viewer-mode* 1 -1))))
+        (markdown-toggle-markup-hiding (if fc-viewer-minor-mode 1 -1))))
 
     (add-hook '*fc-viewer-hook* #'fc--md-toggle-viewer)
     (add-hook 'markdown-mode-hook #'fc--setup-markdown-mode)))

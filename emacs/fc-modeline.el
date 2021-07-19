@@ -32,7 +32,8 @@
   "Buffer state segment."
   (if (and (not (fc--extreme-narrow-window-p))
            (fboundp 'fc-info-func)
-           (not fc-viewer-minor-mode))
+           (not (and (boundp 'fc-viewer-minor-mode)
+                     fc-viewer-minor-mode)))
       (fc-info-func)
     ""))
 
@@ -80,7 +81,7 @@
 (defun fc--buffer-title-seg ()
   "Buffer title segment."
   (cond
-   (fc-viewer-minor-mode
+   ((and (boundp 'fc-viewer-minor-mode) fc-viewer-minor-mode)
     (fc--viewer-seg))
 
    ((fc--narrow-window-p)
@@ -160,7 +161,8 @@
 (defun fc--pos-seg ()
   "Position seg."
   (when (or (> (buffer-size) 10240)
-            fc-viewer-minor-mode)
+            (and (boundp 'fc-viewer-minor-mode)
+                 fc-viewer-minor-mode))
     (list -3
           (fc-text
            "%p"

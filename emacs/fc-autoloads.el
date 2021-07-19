@@ -60,7 +60,7 @@
 (autoload #'fc-has-battery "fc-util")
 
 ;; viewer
-(autoload #'fc-viewer-mode-p "fc-viewer")
+(autoload #'fc-viewer-toggle "fc-viewer")
 
 ;; git
 (autoload #'magit-get-current-branch "magit")

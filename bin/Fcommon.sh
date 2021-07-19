@@ -45,7 +45,9 @@ function fc-dhas() {
 }
 
 function fc-ddel() {
-    rm -f "/dev/shm/$1"
+    for i in "$@"; do
+        rm -f "/dev/shm/$i"
+    done
 }
 
 function fc-dput() {
@@ -59,9 +61,7 @@ function fc-dget() {
     local file="/dev/shm/$1"
     shift 1
 
-    # if [[ ! -f "/dev/shm/$file" ]]; then
-    #     return
-    # fi
-
-    read $* <$file
+    if [[ -f $file ]]; then
+        read $* <$file
+    fi
 }

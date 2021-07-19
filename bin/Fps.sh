@@ -193,8 +193,7 @@ function setup-ps() {
 }
 
 function ps-cleanup() {
-    fc-ddel $FC_EXITCODE_FILE
-    fc-ddel $FC_EXEC_FILE
+    fc-ddel $FC_EXEC_FILE $FC_EXITCODE_FILE
 }
 
 setup-ps

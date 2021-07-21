@@ -61,6 +61,13 @@
                       :height (+ *fc-font-height*
                                  *fc-font-mode-line-delta*)))
 
+(cl-defun fc-reset-buffer-font ()
+  (apply #'buffer-face-set
+         :height *fc-font-height*
+         :weight *fc-font-weight-of-default*
+         :width *fc-font-width*
+         *fc-default-font*))
+
 (cl-defun fc-adjust-font (delta)
   (cl-incf *fc-font-height* delta)
   (fc-setup-font))

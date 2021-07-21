@@ -61,6 +61,7 @@
 
 ;; viewer
 (autoload #'fc-viewer-toggle "fc-viewer")
+(autoload #'fc-viewer-list-buffer "fc-viewer")
 
 ;; git
 (autoload #'magit-get-current-branch "magit")

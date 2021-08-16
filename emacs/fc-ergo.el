@@ -953,6 +953,8 @@ KEYMAP: keymap to run."
   (fc-make-keymap
    `(("<SPC>" counsel-imenu)
 
+     ("7" ,(fc-manual (fc-show-hide-buffer "*compilation*")))
+
      ("a" ,(fc-mode-key
             `((image-mode . image-bob)
               (_ . beginning-of-buffer))))

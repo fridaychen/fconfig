@@ -31,9 +31,9 @@
 (defun fc--state-seg ()
   "Buffer state segment."
   (if (and (not (fc--extreme-narrow-window-p))
-           (fboundp 'fc-info-func)
-           (fc-not-void-p 'fc-viewer-minor-mode))
-      (fc-info-func)
+           (fboundp 'fc-modeline-info-func)
+           (fc-void-p fc-viewer-minor-mode))
+      (fc-modeline-info-func)
     ""))
 
 (defun fc--major-mode-seg ()
@@ -80,7 +80,7 @@
 (defun fc--buffer-title-seg ()
   "Buffer title segment."
   (cond
-   ((fc-void-p 'fc-viewer-minor-mode)
+   ((fc-not-void-p fc-viewer-minor-mode)
     (fc--viewer-seg))
 
    ((fc--narrow-window-p)
@@ -160,7 +160,7 @@
 (defun fc--pos-seg ()
   "Position seg."
   (when (or (> (buffer-size) 10240)
-            (fc-void-p 'fc-viewer-minor-mode))
+            (fc-not-void-p fc-viewer-minor-mode))
     (list -3
           (fc-text
            "%p"

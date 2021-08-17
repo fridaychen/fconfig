@@ -123,7 +123,7 @@ FROM-BEGINNING: start from beginnning."
 
     (query-replace-regexp from-str to-str nil nil nil backward)))
 
-(defun fc-info-func ()
+(defun fc-modeline-info-func ()
   "Mode-line info func."
   (concat (if fc-modal-mode (if *is-colorful* "" "M") "-")
           (if *fc-ergo-prefix* "P" "-")
@@ -952,6 +952,8 @@ KEYMAP: keymap to run."
 (defconst *ergo-goto-map*
   (fc-make-keymap
    `(("<SPC>" counsel-imenu)
+
+     ("7" ,(fc-manual (fc-show-hide-buffer "*compilation*")))
 
      ("a" ,(fc-mode-key
             `((image-mode . image-bob)

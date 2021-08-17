@@ -23,6 +23,10 @@
 
 (fc-load 'markdown-toc)
 
+(cl-defun fc--md-lang ()
+  "Get current language."
+  (fc-search "language: *\\(.+\\)" :begin t :sub 1 :bound 128))
+
 (cl-defun fc-md-add-header (&optional title author date lang)
   "Add header.
 TITLE: title.

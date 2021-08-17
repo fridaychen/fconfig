@@ -964,7 +964,7 @@ KEYMAP: keymap to run."
      ("e" ,(fc-mode-key
             `((image-mode . image-eob)
               (_ . end-of-buffer))))
-     ("g" ,(fc-manual (fc-switch-to-buffer-re "\\.c$\\|\\.el$|\\.go$\\|\\.py$")))
+     ("g" ,(fc-manual (fc-switch-to-buffer-re "\\.c$\\|\\.el$\\|\\.go$\\|\\.py$")))
 
      ("i" windmove-up)
      ("j" windmove-left)
@@ -996,7 +996,6 @@ KEYMAP: keymap to run."
      (";" goto-line))
    "ergo-goto-map")
   "KEYS SPC: last layout  a: to begin of buffer  b: favorite buffer  c: recenter  e: to end of buffer  g: recent code  h: imenu  i: above window  k:  beneath window  j: left window  l: right window  m: switch layout  n: show last navi buf  q: modified buffer  r: all recent file  t: tag  w: all buffer  ;: goto line.")
-
 (defconst *ergo-goto-region-map*
   (fc-make-keymap
    `(("a" beginning-of-buffer)

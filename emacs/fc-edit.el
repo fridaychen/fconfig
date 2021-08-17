@@ -26,12 +26,9 @@
 (set-next-selection-coding-system 'ctext)
 
 (fc-load 'mozc
-  :autoload t
   :enable (executable-find "mozc_emacs_helper")
   :idle t
-  :after　(progn
-            (setf *fc-input-methods* 'japanese-mozc)
-            (add-to-list '*fc-input-methods* 'japanese-mozc)))
+  :after (add-to-list '*fc-input-methods* 'japanese-mozc))
 
 (defun fc-next-input-method ()
   "Switch to next input method."

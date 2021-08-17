@@ -5,7 +5,6 @@
 
 ;;; Code:
 
-(defvar-local fc-viewer-minor-mode nil)
 (defvar-local *fc-reading-line-spacing* 10)
 (defconst *fc-reading-title-limit* 22)
 (defvar-local *fc-bak-line-spacing* nil)

@@ -60,6 +60,7 @@
 (autoload #'fc-has-battery "fc-util")
 
 ;; viewer
+(defvar-local fc-viewer-minor-mode nil)
 (autoload #'fc-viewer-toggle "fc-viewer")
 (autoload #'fc-viewer-list-buffer "fc-viewer")
 

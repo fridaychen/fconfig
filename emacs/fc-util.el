@@ -858,6 +858,17 @@ COLORB: another color."
            sum (+ (* i i) (* j j)) into x
            finally return (sqrt x)))
 
+(defun fc-line-num ()
+  "Get current line number."
+  (string-to-number (format-mode-line "%l")))
+
+(defun fc-point-to-line (point)
+  "Calautle the line number of POINT.
+POINT: target point."
+  (save-excursion
+    (goto-char point)
+    (fc-line-num)))
+
 (provide 'fc-util)
 
 ;; Local Variables:

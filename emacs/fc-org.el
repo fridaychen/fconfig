@@ -172,7 +172,7 @@ PARAM: parameter of block."
     (when (null elt)
       (cl-return-from fc--org-do))
 
-    (message "context: %s  elt: %s" context elt)
+    ;; (message "context: %s  elt: %s" context elt)
     (pcase elt
       (:checkbox (org-ctrl-c-ctrl-c))
       (:headline (org-insert-heading-respect-content))
@@ -184,6 +184,9 @@ PARAM: parameter of block."
       (:timestamp (fc-funcall #'org-time-stamp))
       (:todo-keyword (org-todo))
       (_ (message "context: %s" context)))))
+
+(defun fc-org-mode-mouse-func (event)
+  (fc--org-do))
 
 (defconst *fc-org-map*
   (fc-make-keymap

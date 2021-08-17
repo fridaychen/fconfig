@@ -1297,6 +1297,28 @@ AUTO: auto select face."
       (highlight-regexp regex
                         (hi-lock-read-face-name)))))
 
+(cl-defun fc-mouse-turn-page (event)
+  (let* ((posn (elt event 1))
+         (start (fc-point-to-line (window-start)))
+         (end (fc-point-to-line (window-end)))
+         (middle (/ (- end start) 2)))
+    (if (or (= start (fc-line-num))
+            (< (fc-line-num) middle))
+        (fc-funcall #'scroll-down-command)
+      (fc-funcall #'scroll-up-command))))
+
+(cl-defun fc-mouse-func (event)
+  (interactive "e")
+
+  (let ((f (intern (format "fc-%s-mouse-func"
+                           (symbol-name major-mode)))))
+    (when (and
+           (fboundp f)
+           (apply f (list event)))
+      (cl-return-from fc-mouse-func))
+
+    (fc-mouse-turn-page event)))
+
 ;; normal mode
 (fc-modal-keys
  `(
@@ -1560,7 +1582,8 @@ AUTO: auto select face."
    ("SPC" ,(fc-cond-key :normal 'scroll-up-command
                         :region 'kill-ring-save
                         :prefix 'just-one-space))
-   ("<escape>" fc-escape-key)))
+   ("<escape>" fc-escape-key)
+   ("<mouse-1>" fc-mouse-func)))
 
 (cl-defun fc-ergo-search-next ()
   "Ergo search next."

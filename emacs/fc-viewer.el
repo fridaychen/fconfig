@@ -53,6 +53,8 @@
   (hl-line-mode 1)
   (read-only-mode 1)
 
+  (fc-modal-set-cursor-shape nil)
+
   (setf *fc-bak-line-spacing* line-spacing
         line-spacing *fc-reading-line-spacing*)
 
@@ -70,6 +72,8 @@
   (setf fc-viewer-minor-mode nil)
   (hl-line-mode -1)
   (read-only-mode -1)
+
+  (fc-modal-visual-feedback)
 
   (setf line-spacing *fc-bak-line-spacing*)
   (setq-local *fc-show-line-col-mode* t)

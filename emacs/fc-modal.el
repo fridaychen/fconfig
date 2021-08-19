@@ -75,7 +75,7 @@ MODES: modes to be excluded."
 (setf *ansi-cursor-map*
       #s(hash-table
          data (
-               box 0 hbar 3)))
+               box 0 hbar 3 nil 4)))
 
 (defun fc-modal-set-cursor-shape (shape)
   "Set cursor SHAPE."

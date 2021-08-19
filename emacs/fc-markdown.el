@@ -14,7 +14,11 @@
 
     (defun fc--md-toggle-viewer ()
       (when (derived-mode-p 'markdown-mode)
-        (markdown-toggle-markup-hiding (if fc-viewer-minor-mode 1 -1))))
+        (markdown-toggle-markup-hiding (if fc-viewer-minor-mode 1 -1)))
+
+      (when (and fc-viewer-minor-mode
+                 (equal (fc--md-lang) "en-US"))
+        (fc-modal-visual-feedback)))
 
     (add-hook '*fc-viewer-hook* #'fc--md-toggle-viewer)
     (add-hook 'markdown-mode-hook #'fc--setup-markdown-mode)))
@@ -25,7 +29,7 @@
 
 (cl-defun fc--md-lang ()
   "Get current language."
-  (fc-search "language: *\\(.+\\)" :begin t :sub 1 :bound 128))
+  (fc-search "language: *\\(.+\\)" :begin t :sub 1 :bound 128 :default "en-US"))
 
 (cl-defun fc-md-add-header (&optional title author date lang)
   "Add header.

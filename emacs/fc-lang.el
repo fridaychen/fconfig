@@ -85,21 +85,22 @@ OBJ: object"
         (t
          (format "%S" obj))))
 
-(cl-defun fc--search (regex &key sub bound count begin)
+(cl-defun fc--search (regex &key sub bound count begin (default ""))
   (when begin
     (goto-char (point-min)))
 
   (if (re-search-forward regex (and bound (+ (point) bound)) t (or count 1))
       (match-string (or sub 0))
-    ""))
+    default))
 
-(cl-defun fc-search (regex &key sub bound count begin)
+(cl-defun fc-search (regex &key sub bound count begin default)
   (save-excursion
     (fc--search regex
                 :sub sub
                 :bound bound
                 :count count
-                :begin begin)))
+                :begin begin
+                :default default)))
 
 (cl-defun fc-add-to-list (name &rest rest)
   (--each rest

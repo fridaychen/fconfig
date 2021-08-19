@@ -54,6 +54,7 @@
             *fc-font* (list
                        (cons '(kana han cjk-misc bopomofo) cjk-font)
                        (cons '(symbol) symbol-font))
+            *fc-mode-line-font* (funcall find-font *fc-mode-line-fonts*)
             *fc-read-font* (funcall find-font *fc-reading-fonts*))))
 
   (fc-idle-delay

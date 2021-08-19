@@ -312,7 +312,7 @@ FULLSCREEN: fullscreen ui mode."
     (let ((helm-full-frame t))
       (helm :sources
             (helm-build-sync-source prompt
-                                    :candidates collection))))
+              :candidates collection))))
 
    ((let ((total_len (apply #'+
                             (--map
@@ -842,12 +842,13 @@ ATTR: attribute."
       face-bg)
      (t (face-attribute 'default attr)))))
 
-(defun fc-set-face-attribute (face &rest rest)
+(defun fc-set-face-attribute (face frame &rest rest)
   "Safely set face attribute.
 FACE: target face.
+FRAME: target frame.
 REST: all arguments."
   (when (facep face)
-    (apply 'set-face-attribute face rest)))
+    (apply 'set-face-attribute face frame (flatten-list rest))))
 
 (defun fc-color-difference (colora colorb)
   "Calculate color difference between two colors.

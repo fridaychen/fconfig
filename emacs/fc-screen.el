@@ -186,6 +186,7 @@ TITLE: new title."
 
 (add-hook '*fc-project-hook* #'-fc-setup-window-title)
 (add-hook 'kill-emacs-hook #'-fc-setup-window-title-before-exit)
+(add-hook 'kill-emacs-hook #'(lambda () (fc-modal-set-cursor-shape 'box)))
 
 (unless *is-gui*
   (defun fc-change-window-divider ()

@@ -49,6 +49,10 @@
     (:family "Literata")
     (:family "Constantia")))
 
+(defconst *fc-mode-line-fonts*
+  '((:family "Sarasa Mono Slab SC")
+    ))
+
 (when *is-gui*
   (create-fontset-from-fontset-spec
    "-*-*-*-*-*-*-*-*-*-*-*-*-fontset-fc,

@@ -38,7 +38,8 @@
 
 (defun fc--major-mode-seg ()
   "The name of the major mode."
-  (if (fc--wide-window-p)
+  (if (and (fc--wide-window-p)
+           (fc-void-p fc-viewer-minor-mode))
       mode-name
     ""))
 
@@ -54,7 +55,9 @@
     (fc-text (list chapter
                    (file-name-sans-extension
                     (buffer-name)))
-             :face '(:foreground "#cf6a4c" :inherit bold)
+             :face `(:foreground ,(color-complement
+                                   (fc-get-face-attribute 'mode-line :background))
+                                 :inherit bold)
              :limit (- (window-width) 10)
              :separator " :")))
 
@@ -213,16 +216,16 @@
          (most-right (if (fc--right-bottom-window-p)
                          (fc--modeline-format-most-right)
                        nil))
-         (available-width (-
-                           (window-width)
-                           (string-width (format-mode-line left))
-                           (string-width (format-mode-line center))
-                           (string-width (format-mode-line right))
-                           (string-width (format-mode-line most-right))))
-         (padding (if (> available-width 0)
-                      (list (make-string available-width ? ))
-                    nil)))
-    (nconc left center padding right most-right)))
+         (right-len (+
+                     (string-width (format-mode-line right))
+                     (string-width (format-mode-line most-right))))
+         (padding (propertize " "
+                              'display `(space :align-to (- (+ scroll-bar scroll-bar) ,right-len)
+                                               ;; 'face face
+                                               ))))
+    (nconc left center
+           (list padding)
+           right most-right)))
 
 (defun fc-modeline-mode ()
   "Setup mode line."

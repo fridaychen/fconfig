@@ -79,7 +79,7 @@ def main():
                     if args.output_file is None
                     else args.output_file,
                 ],
-                noret=True,
+                noret=False,
             )
     except Exception as inst:
         print("Unknown error: ")

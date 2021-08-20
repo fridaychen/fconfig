@@ -119,13 +119,16 @@
                         (when *fc-enable-nyan*
                           (nyan-mode 0))
 
+                        (when (minibufferp (current-buffer))
+                          (other-window 1)
+                          (deactivate-mark)
+                          (minibuffer-keyboard-quit))
+
                         (column-number-mode -1)
                         (line-number-mode -1)))
 
            (defun after-screen-saver ()
              "Setup after screen saver."
-             (require 'iso-transl) ; reduce <t> rate of occurrence
-
              (set-window-configuration *fc-screensave-backup-winconf*)
              (setf *fc-screensave-backup-winconf* nil)
 

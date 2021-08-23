@@ -6,8 +6,34 @@
 ;;; Code:
 
 (defconst fc--modeline-hi-face 'fc-modeline-highlight-face)
-(defconst fc--modeline-hl-sep (fc-text " " :face fc--modeline-hi-face))
+(defconst fc--mode-hi-sep (fc-text " " :face fc--modeline-hi-face))
+(defconst fc--modeline-hi-inactive-face 'fc-modeline-highlight-inactive-face)
+(defconst fc--modeline-hi-inactive-sep (fc-text " " :face fc--modeline-hi-inactive-face))
 (defconst fc--modeline-sep " ")
+
+(defvar *fc-selected-window* (frame-selected-window))
+
+(defun fc--active-window-p ()
+  "Test if current window is active."
+  (equal *fc-selected-window* (selected-window)))
+
+(defun fc--modeline-base-face ()
+  "Return base face for modeline."
+  (if (fc--active-window-p)
+      'mode-line
+    'mode-line-inactive))
+
+(defun fc--modeline-get-hi-face ()
+  "Get approparite highlight face."
+  (if (fc--active-window-p)
+      fc--modeline-hi-face
+    fc--modeline-hi-inactive-face))
+
+(defun fc--modeline-get-hi-sep ()
+  "Get approparite highlight separator."
+  (if (fc--active-window-p)
+      fc--mode-hi-sep
+    fc--modeline-hi-inactive-sep))
 
 (defun fc--narrow-window-p ()
   "Test if current window is narrow."
@@ -55,9 +81,9 @@
     (fc-text (list chapter
                    (file-name-sans-extension
                     (buffer-name)))
-             :face `(:foreground ,(color-complement
-                                   (fc-get-face-attribute 'mode-line :background))
-                                 :inherit bold)
+             :face `(:foreground ,(color-complement-hex
+                                   (fc-get-face-attribute (fc--modeline-base-face) :background))
+                                 :inherit ,(fc--modeline-base-face))
              :limit (- (window-width) 10)
              :separator " :")))
 
@@ -114,7 +140,10 @@
   (if (and (fboundp 'fc-layout-current)
            (fc--wide-window-p))
       (fc-text (format ":%s" (fc-layout-current))
-               :face '(:foreground "#cf6a4c" :inherit bold))
+               :face (list :foreground
+                           (color-complement-hex
+                            (fc-get-face-attribute (fc--modeline-base-face) :background))
+                           :inherit (fc--modeline-base-face)))
     ""
     ))
 
@@ -167,23 +196,25 @@
     (list -3
           (fc-text
            "%p"
-           :face fc--modeline-hi-face))))
+           :face (fc--modeline-get-hi-face)))))
 
 (defun fc--modeline-format-left ()
   "Format left modeline."
-  (list
-   fc--modeline-hl-sep
-   (fc-text
-    (fc--line-col-seg) :face fc--modeline-hi-face)
-   fc--modeline-hl-sep
-   (fc--pos-seg)
-   fc--modeline-hl-sep
-   (fc-text
-    (fc--state-seg) :face fc--modeline-hi-face)
-   fc--modeline-hl-sep
-   fc--modeline-sep
-   (fc--major-mode-seg)
-   fc--modeline-sep))
+  (let ((hi-face (fc--modeline-get-hi-face))
+        (hl-sep (fc--modeline-get-hi-sep)))
+    (list
+     hl-sep
+     (fc-text
+      (fc--line-col-seg) :face hi-face)
+     hl-sep
+     (fc--pos-seg)
+     hl-sep
+     (fc-text
+      (fc--state-seg) :face (fc--modeline-get-hi-face))
+     hl-sep
+     fc--modeline-sep
+     (fc--major-mode-seg)
+     fc--modeline-sep)))
 
 (defun fc--modeline-format-center ()
   "Format center modeline."
@@ -206,7 +237,7 @@
    (fc--work-seg)
    " "
    (fc-text
-    (fc--proj-seg) :face fc--modeline-hi-face)))
+    (fc--proj-seg) :face (fc--modeline-get-hi-face))))
 
 (defun fc--modeline-format-main ()
   "Format modeline."
@@ -237,11 +268,36 @@
                         :weight 'medium
                         :inherit 'mode-line))
 
+  (unless (facep 'fc-modeline-highlight-inactive-face)
+    (make-face 'fc-modeline-highlight-inactive-face)
+    (set-face-attribute 'fc-modeline-highlight-inactive-face nil
+                        :foreground "black"
+                        :background "DarkGoldenrod4"
+                        :weight 'medium
+                        :inherit 'mode-line))
+
   (fc-funcall #'mode-icons-mode :args (list -1))
   (setq-default mode-line-format
                 '("%e"
                   (:eval
                    (fc--modeline-format-main)))))
+
+(defun fc-modeline-set-selected-window (&rest _)
+  "Set the variable `*fc-selected-window*' appropriately."
+  (when (not (minibuffer-window-active-p (frame-selected-window)))
+    (setq *fc-selected-window* (frame-selected-window))
+    (force-mode-line-update)))
+
+(defun fc-modeline-unset-selected-window (&rest _)
+  "Set the variable `*fc-selected-window*' appropriately."
+  (when (not (minibuffer-window-active-p (frame-selected-window)))
+    (setq *fc-selected-window* nil)
+    (force-mode-line-update)))
+
+(add-hook 'after-make-frame-functions #'fc-modeline-set-selected-window)
+(add-hook 'buffer-list-update-hook #'fc-modeline-set-selected-window)
+(add-hook 'window-configuration-change-hook #'fc-modeline-set-selected-window)
+(add-hook 'window-selection-change-functions #'fc-modeline-set-selected-window)
 
 (provide 'fc-modeline)
 

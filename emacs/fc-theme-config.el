@@ -9,7 +9,8 @@
 (defvar *fc-dark-theme* 'wombat "Perfer dark theme.")
 (defvar *fc-deep-dark-theme* 'wombat "Prefer deep dark theme.")
 (defvar *fc-light-theme* 'tango "Prefer light theme.")
-(defvar *fc-enable-spaceline* t "Spaceline switch.")
+(defvar *fc-enable-fc-mode-line* (fboundp 'fc-modeline-mode) "FC modeline flag.")
+(defvar *fc-enable-spaceline* (not *fc-enable-fc-mode-line*) "Spaceline switch.")
 (defvar *fc-modeline-separator* '(wave zigzag brace chamfer contour) "Prefer modeline separator style.")
 (defvar *fc-current-theme* nil "Current theme.")
 (defvar *fc-after-theme-hook* nil "After theme hook.")
@@ -46,52 +47,52 @@
       (>= *fc-extreme-narrow-window-threshold* (window-width)))
 
     (spaceline-define-segment fc-line-col-seg
-      (fc-text
-       (list
-        (when (and
-               *fc-show-line-col-mode*
-               (-fc-wide-window-p))
-          (cond
-           ((eq 'pdfc-view-mode major-mode)
-            (spaceline--pdfview-page-number))
+                              (fc-text
+                               (list
+                                (when (and
+                                       *fc-show-line-col-mode*
+                                       (-fc-wide-window-p))
+                                  (cond
+                                   ((eq 'pdfc-view-mode major-mode)
+                                    (spaceline--pdfview-page-number))
 
-           ((and column-number-mode line-number-mode)
-            (concat
-             "%3l:%c"
-             (cond
-              ((> (current-column) 99)
-               " ")
-              ((> (current-column) 10)
-               "  ")
-              (t
-               "   "))))
+                                   ((and column-number-mode line-number-mode)
+                                    (concat
+                                     "%3l:%c"
+                                     (cond
+                                      ((> (current-column) 99)
+                                       " ")
+                                      ((> (current-column) 10)
+                                       "  ")
+                                      (t
+                                       "   "))))
 
-           (column-number-mode
-            "_:%3c")
+                                   (column-number-mode
+                                    "_:%3c")
 
-           (line-number-mode
-            "%3l:_")
+                                   (line-number-mode
+                                    "%3l:_")
 
-           (t
-            "_:_")))
+                                   (t
+                                    "_:_")))
 
-        (when (or (> (buffer-size) 10240)
-                  (fc-viewer-mode-p))
-          "%p"))))
+                                (when (or (> (buffer-size) 10240)
+                                          (fc-viewer-mode-p))
+                                  "%p"))))
 
     (spaceline-define-segment fc-info-seg
-      (if (and (not (-fc-extreme-narrow-window-p))
-               (fboundp 'fc-info-func)
-               (not (fc-viewer-mode-p)))
-          (fc-text (fc-info-func)
-                   :face 'hi-black-b)
-        ""))
+                              (if (and (not (-fc-extreme-narrow-window-p))
+                                       (fboundp 'fc-info-func)
+                                       (not (fc-viewer-mode-p)))
+                                  (fc-text (fc-info-func)
+                                           :face 'hi-black-b)
+                                ""))
 
     (spaceline-define-segment fc-major-mode-seg
-      "The name of the major mode."
-      (if (-fc-wide-window-p)
-          (powerline-major-mode)
-        ""))
+                              "The name of the major mode."
+                              (if (-fc-wide-window-p)
+                                  (powerline-major-mode)
+                                ""))
 
     (defun fc--remote-buffer-p ()
       (and default-directory
@@ -138,51 +139,51 @@
                        (* (window-width) 0.35))))
 
     (spaceline-define-segment fc-buffer-title-seg
-      (cond
-       ((fc-viewer-mode-p)
-        (fc--viewer-str))
+                              (cond
+                               ((fc-viewer-mode-p)
+                                (fc--viewer-str))
 
-       ((-fc-narrow-window-p)
-        (fc-text
-         (list
-          (fc--vc-str)
-          (fc--buffer-short-id))))
+                               ((-fc-narrow-window-p)
+                                (fc-text
+                                 (list
+                                  (fc--vc-str)
+                                  (fc--buffer-short-id))))
 
-       (t
-        (fc-text
-         (list
-          (fc--vc-str)
-          (fc--buffer-full-id))))))
+                               (t
+                                (fc-text
+                                 (list
+                                  (fc--vc-str)
+                                  (fc--buffer-full-id))))))
 
     (spaceline-define-segment fc-vc-seg
-      (when vc-mode
-        (let ((color (pcase (vc-state buffer-file-name)
-                       ('edited "#cf6a4c")
-                       ('up-to-date "gray")
-                       ((or 'needs-merge 'conflict) "#ff0066")
-                       (_ "#00cc66"))))
-          (fc-text (if *is-colorful* "" "VC")
-                   :face `(:foreground ,color)))))
+                              (when vc-mode
+                                (let ((color (pcase (vc-state buffer-file-name)
+                                               ('edited "#cf6a4c")
+                                               ('up-to-date "gray")
+                                               ((or 'needs-merge 'conflict) "#ff0066")
+                                               (_ "#00cc66"))))
+                                  (fc-text (if *is-colorful* "" "VC")
+                                           :face `(:foreground ,color)))))
 
     (spaceline-define-segment fc-layout-seg
-      (if (and (fboundp 'fc-layout-current)
-               (-fc-wide-window-p)
-               (fc-right-bottom-window-p))
-          (fc-text (format ":%s" (fc-layout-current))
-                   :face '(:foreground "#cf6a4c" :inherit bold))
-        ""))
+                              (if (and (fboundp 'fc-layout-current)
+                                       (-fc-wide-window-p)
+                                       (fc-right-bottom-window-p))
+                                  (fc-text (format ":%s" (fc-layout-current))
+                                           :face '(:foreground "#cf6a4c" :inherit bold))
+                                ""))
 
     (spaceline-define-segment fc-proj-seg
-      (and (fboundp 'fc-proj-update-mode-line)
-           (-fc-wide-window-p)
-           (fc-right-bottom-window-p)
-           (fc-proj-update-mode-line)))
+                              (and (fboundp 'fc-proj-update-mode-line)
+                                   (-fc-wide-window-p)
+                                   (fc-right-bottom-window-p)
+                                   (fc-proj-update-mode-line)))
 
     (spaceline-define-segment fc-work-seg
-      (when (and (boundp '*fc-tomato-bar*)
-                 (-fc-wide-window-p)
-                 (fc-right-bottom-window-p))
-        *fc-tomato-bar*))))
+                              (when (and (boundp '*fc-tomato-bar*)
+                                         (-fc-wide-window-p)
+                                         (fc-right-bottom-window-p))
+                                *fc-tomato-bar*))))
 
 (defun fc-setup-term-mode-line ()
   "Setup mode line for terminal."
@@ -221,21 +222,21 @@ SEPERATOR: powerline seperator."
   (spaceline-helm-mode)
 
   (spaceline-install
-    'fc
-    ;; left
-    `((fc-line-col-seg :face highlight-face)
-      (fc-info-seg input-method)
-      (fc-major-mode-seg fc-buffer-title-seg)
-      nyan-cat)
-    ;; right
-    `((flycheck-error)
-      (flycheck-warning)
-      ;; (process :when active)
-      (org-clock :when active)
-      (battery :when active)
-      (global :when active)
-      (fc-layout-seg fc-work-seg)
-      (fc-proj-seg :face highlight-face)))
+   'fc
+   ;; left
+   `((fc-line-col-seg :face highlight-face)
+     (fc-info-seg input-method)
+     (fc-major-mode-seg fc-buffer-title-seg)
+     nyan-cat)
+   ;; right
+   `((flycheck-error)
+     (flycheck-warning)
+     ;; (process :when active)
+     (org-clock :when active)
+     (battery :when active)
+     (global :when active)
+     (fc-layout-seg fc-work-seg)
+     (fc-proj-seg :face highlight-face)))
 
   (setq-default mode-line-format
                 '("%e" (:eval (spaceline-ml-fc)))))
@@ -243,12 +244,12 @@ SEPERATOR: powerline seperator."
 (defun fc-setup-reading-mode-line ()
   "Set reading spaceline mode-line."
   (spaceline-install
-    'fc-reading
-    ;; left
-    `((fc-line-col-seg :face highlight-face)
-      (fc-buffer-title-seg))
-    ;; right
-    `())
+   'fc-reading
+   ;; left
+   `((fc-line-col-seg :face highlight-face)
+     (fc-buffer-title-seg))
+   ;; right
+   `())
 
   (setq mode-line-format
         (if (fc-viewer-mode-p)
@@ -291,7 +292,7 @@ POWERLINE-SEPERATOR: new seperator for powerline."
       (cl-return-from fc-load-theme))))
 
   (cond
-   ((fboundp 'fc-modeline-mode)
+   (*fc-enable-fc-mode-line*
     (fc-modeline-mode))
 
    (*fc-enable-spaceline*

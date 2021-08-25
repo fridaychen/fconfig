@@ -114,7 +114,8 @@ S: note string."
   (fc-insert-space-text nil
                         "#+BEGIN_SRC " (substring (fc-string orig-mode) 0 -5)
                         "\n"
-                        s
+                        s)
+  (fc-insert-space-text nil
                         "#+END_SRC\n"))
 
 (defun fc--insert-node (s)

@@ -945,9 +945,9 @@ REST: commands."
   "Allow user to select theme."
   (let* ((theme (fc-user-select "Themes"
                                 (custom-available-themes)))
-
+         (use-powerline (not *fc-enable-fc-mode-line*))
          (modeline-separator (and *is-gui*
-                                  (not (fboundp 'fc-modeline-mode))
+                                  use-powerline
                                   (fc-user-select "Mode separator"
                                                   '(arrow
                                                     arrow-fade
@@ -964,15 +964,19 @@ REST: commands."
                                                     wave
                                                     zigzag)))))
 
-    (if (fc-void-p modeline-separator)
-        (setf modeline-separator (symbol-name powerline-default-separator)))
-    (if (fc-void-p theme)
-        (setf theme (symbol-name *fc-current-theme*)))
+    (when (and use-powerline (fc-void-p modeline-separator))
+      (setf modeline-separator (symbol-name powerline-default-separator)))
 
-    (setf theme (intern theme)
-          modeline-separator (intern modeline-separator))
+    (when (fc-void-p theme)
+      (setf theme (symbol-name *fc-current-theme*)))
 
-    (unless (and (eql modeline-separator powerline-default-separator)
+    (setf theme (intern theme))
+
+    (when use-powerline
+      (setf modeline-separator (intern modeline-separator)))
+
+    (unless (and (or (not use-powerline)
+                     (eql modeline-separator powerline-default-separator))
                  (eql theme *fc-current-theme*))
       (fc-load-theme theme
                      modeline-separator))))

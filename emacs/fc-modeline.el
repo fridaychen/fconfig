@@ -13,6 +13,13 @@
 
 (defvar *fc-selected-window* (frame-selected-window))
 
+(defvar *fc-buffer-id-keymap* (fc-make-keymap
+                               '(([mode-line mouse-1] ivy-switch-buffer))
+                               "fc-buffer-id-keymap"))
+(defvar *fc-pos-keymap* (fc-make-keymap
+                         '(([mode-line mouse-1] counsel-imenu))
+                         "fc-pos-keymap"))
+
 (defun fc--active-window-p ()
   "Test if current window is active."
   (equal *fc-selected-window* (selected-window)))
@@ -85,7 +92,8 @@
                                    (fc-get-face-attribute (fc--modeline-base-face) :background))
                                  :inherit ,(fc--modeline-base-face))
              :limit (- (window-width) 10)
-             :separator " :")))
+             :separator " :"
+             :keys *fc-buffer-id-keymap*)))
 
 (defun fc--buffer-full-id ()
   "Generate buffer full id."
@@ -98,13 +106,15 @@
       (when proj
         (concat proj "::"))
       (buffer-name))
-     :separator "")))
+     :separator ""
+     :keys *fc-buffer-id-keymap*)))
 
 (defun fc--buffer-short-id ()
   "Generate buffer short id."
   (fc-text (buffer-name)
            :limit (ceiling
-                   (* (window-width) 0.35))))
+                   (* (window-width) 0.35))
+           :keys *fc-buffer-id-keymap*))
 
 (defun fc--buffer-title-seg ()
   "Buffer title segment."
@@ -134,6 +144,14 @@
       (if color
           (fc-text str :face `(:foreground ,color))
         str))))
+
+(defun fc--control-seg ()
+  "Control mode segment."
+  (fc-text (fc-current-control-mode)
+           :face 'bold
+           :keys (fc-make-keymap
+                  `(
+                    ([mode-line down-mouse-1] fc-next-control-mode)))))
 
 (defun fc--layout-seg ()
   "Layout segment."
@@ -196,7 +214,8 @@
     (list -3
           (fc-text
            "%p"
-           :face (fc--modeline-get-hi-face)))))
+           :face (fc--modeline-get-hi-face)
+           :keys *fc-pos-keymap*))))
 
 (defun fc--modeline-format-left ()
   "Format left modeline."
@@ -205,7 +224,9 @@
     (list
      hl-sep
      (fc-text
-      (fc--line-col-seg) :face hi-face)
+      (fc--line-col-seg)
+      :face hi-face
+      :keys *fc-pos-keymap*)
      hl-sep
      (fc--pos-seg)
      hl-sep
@@ -231,6 +252,8 @@
 (defun fc--modeline-format-most-right ()
   "Format most right modeline."
   (list
+   " "
+   (fc--control-seg)
    " "
    (fc--layout-seg)
    " "

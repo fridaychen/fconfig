@@ -43,6 +43,7 @@
 
 (add-hook 'find-file-hook #'fc-load-mode-config)
 
+(fc-require 'fc-control)
 (fc-require 'fc-ergo)
 (fc-require 'fc-edit)
 

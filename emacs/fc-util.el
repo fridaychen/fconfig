@@ -312,7 +312,7 @@ FULLSCREEN: fullscreen ui mode."
     (let ((helm-full-frame t))
       (helm :sources
             (helm-build-sync-source prompt
-              :candidates collection))))
+                                    :candidates collection))))
 
    ((let ((total_len (apply #'+
                             (--map
@@ -777,9 +777,6 @@ REST: text to insert."
   "Insert space."
   (when (/= (current-column) 0)
     (end-of-line)
-    (newline))
-
-  (unless (looking-at "\n")
     (insert "\n")))
 
 (cl-defun fc-insert-space-text (after-fun &rest rest)

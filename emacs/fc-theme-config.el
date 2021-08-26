@@ -11,10 +11,6 @@
 (defvar *fc-light-theme* 'tango "Prefer light theme.")
 (defvar *fc-current-theme* nil "Current theme.")
 (defvar *fc-after-theme-hook* nil "After theme hook.")
-(defvar *fc-narrow-window-threshold* 65 "Criteria for narrow window.")
-(defvar *fc-extreme-narrow-window-threshold* 40 "Criteria for extreme narrow window.")
-
-(defvar-local *fc-show-line-col-mode* t)
 
 (defun fc-reset-theme ()
   "Reset color theme."

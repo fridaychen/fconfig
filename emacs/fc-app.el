@@ -942,45 +942,14 @@ REST: commands."
   (esup))
 
 ;; theme
-(defun fc-select-theme ()
+(cl-defun fc-select-theme ()
   "Allow user to select theme."
-  (let* ((theme (fc-user-select "Themes"
-                                (custom-available-themes)))
-         (use-powerline (not *fc-enable-fc-mode-line*))
-         (modeline-separator (and *is-gui*
-                                  use-powerline
-                                  (fc-user-select "Mode separator"
-                                                  '(arrow
-                                                    arrow-fade
-                                                    bar
-                                                    box
-                                                    brace
-                                                    butt
-                                                    chamfer
-                                                    contour
-                                                    curve
-                                                    rounded
-                                                    roundstub
-                                                    slant
-                                                    wave
-                                                    zigzag)))))
-
-    (when (and use-powerline (fc-void-p modeline-separator))
-      (setf modeline-separator (symbol-name powerline-default-separator)))
-
-    (when (fc-void-p theme)
-      (setf theme (symbol-name *fc-current-theme*)))
-
-    (setf theme (intern theme))
-
-    (when use-powerline
-      (setf modeline-separator (intern modeline-separator)))
-
-    (unless (and (or (not use-powerline)
-                     (eql modeline-separator powerline-default-separator))
-                 (eql theme *fc-current-theme*))
-      (fc-load-theme theme
-                     modeline-separator))))
+  (let* ((s (fc-user-select "Themes"
+                            (custom-available-themes)))
+         (theme (when s (intern s))))
+    (when (and theme
+               (not (eql theme *fc-current-theme*)))
+      (fc-load-theme theme))))
 
 (defun fc-init-dir-locals ()
   "Copy default .dir-locals.el."

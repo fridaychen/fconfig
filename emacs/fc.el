@@ -9,7 +9,7 @@
 (require 'iso-transl)
 
 (when (and (fboundp 'native-comp-available-p)
-	   (native-comp-available-p))
+           (native-comp-available-p))
   (setf package-native-compile t))
 
 (setf enable-local-variables :all
@@ -48,7 +48,7 @@
 ;; first step initilization
 (let ((has-battery (fc-has-battery)))
   (setf *is-laptop* has-battery
-	*fc-enable-screen-saver* (not has-battery)))
+        *fc-enable-screen-saver* (not has-battery)))
 
 (when *is-gui*
   (fc-require 'fc-font))
@@ -58,6 +58,7 @@
 (fc-add-env-path (concat (getenv "FCHOME") "/python") nil "PYTHONPATH")
 
 (fc-require 'fc-screen)
+(fc-require 'fc-modeline)
 (fc-modal-global-mode)
 
 (fc-add-hook-func '*fc-after-theme-hook*
@@ -69,6 +70,7 @@
   (fc-dark-theme))
 
 (cl-defun fc-after-restart ()
+  "After restart, load desktop."
   (with-eval-after-load 'fc-boot
     (fc-load-desktop)))
 

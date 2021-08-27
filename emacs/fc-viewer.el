@@ -58,8 +58,6 @@
   (setf *fc-bak-line-spacing* line-spacing
         line-spacing *fc-reading-line-spacing*)
 
-  (setq-local *fc-show-line-col-mode* nil)
-
   (unless buffer-display-table
     (setq-local buffer-display-table #^[nil nil display-table nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil 92 nil nil nil nil]))
 
@@ -76,7 +74,6 @@
   (fc-modal-visual-feedback)
 
   (setf line-spacing *fc-bak-line-spacing*)
-  (setq-local *fc-show-line-col-mode* t)
 
   (set-display-table-slot buffer-display-table 'wrap ?\\))
 

@@ -5,6 +5,8 @@
 
 ;;; Code:
 
+(defvar *fc-narrow-window-threshold* 65 "Criteria for narrow window.")
+(defvar *fc-extreme-narrow-window-threshold* 40 "Criteria for extreme narrow window.")
 (defconst fc--modeline-hi-face 'fc-modeline-highlight-face)
 (defconst fc--mode-hi-sep (fc-text " " :face fc--modeline-hi-face))
 (defconst fc--modeline-hi-inactive-face 'fc-modeline-highlight-inactive-face)
@@ -65,14 +67,14 @@
   "Buffer state segment."
   (if (and (not (fc--extreme-narrow-window-p))
            (fboundp 'fc-modeline-info-func)
-           (fc-void-p fc-viewer-minor-mode))
+           (not fc-viewer-minor-mode))
       (fc-modeline-info-func)
     ""))
 
 (defun fc--major-mode-seg ()
   "The name of the major mode."
   (if (and (fc--wide-window-p)
-           (fc-void-p fc-viewer-minor-mode))
+           (not fc-viewer-minor-mode))
       mode-name
     ""))
 
@@ -119,7 +121,7 @@
 (defun fc--buffer-title-seg ()
   "Buffer title segment."
   (cond
-   ((fc-not-void-p fc-viewer-minor-mode)
+   (fc-viewer-minor-mode
     (fc--viewer-seg))
 
    ((fc--narrow-window-p)
@@ -179,8 +181,7 @@
 
 (defun fc--line-col-seg ()
   "Line column segment."
-  (when (and *fc-show-line-col-mode*
-             (fc--wide-window-p))
+  (when (fc--wide-window-p)
     (cond
      ((eq 'pdfc-view-mode major-mode)
       (if (fboundp #'spaceline--pdfview-page-number)
@@ -210,7 +211,7 @@
 (defun fc--pos-seg ()
   "Position seg."
   (when (or (> (buffer-size) 10240)
-            (fc-not-void-p fc-viewer-minor-mode))
+            fc-viewer-minor-mode)
     (list -3
           (fc-text
            "%p"

@@ -275,9 +275,7 @@
                      (string-width (format-mode-line right))
                      (string-width (format-mode-line most-right))))
          (padding (propertize " "
-                              'display `(space :align-to (- (+ scroll-bar scroll-bar) ,right-len)
-                                               ;; 'face face
-                                               ))))
+                              'display `(space :align-to (- (+ scroll-bar scroll-bar) ,right-len)))))
     (nconc left center
            (list padding)
            right most-right)))

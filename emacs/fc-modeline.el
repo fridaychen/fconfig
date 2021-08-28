@@ -261,7 +261,7 @@
    (fc--work-seg)
    " "
    (fc-text
-    (fc--proj-seg) :face (fc--modeline-get-hi-face))))
+    (fc--proj-seg) :face fc--modeline-hi-face)))
 
 (defun fc--modeline-format-main ()
   "Format modeline."

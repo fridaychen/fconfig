@@ -95,6 +95,9 @@
                 recentf-max-saved-items 200)
 
   :after (progn
+           (fc-add-to-list 'recentf-exclude
+                           "\\.nosync"
+                           "\\.noindex")
            (recentf-mode 1)
            (fc-add-idle-hook #'recentf-save-list)))
 

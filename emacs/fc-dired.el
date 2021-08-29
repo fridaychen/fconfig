@@ -52,6 +52,7 @@
            ("s" fc-dired-sort)
            ("p" fc-dired-preview-file)
            ("w" wdired-change-to-wdired-mode)
+           ("N" make-directory)
            (";" fc-fast-switch-window)
            ("C-o" fc-modal-run)
            ("<tab>" dired-toggle-read-only))))

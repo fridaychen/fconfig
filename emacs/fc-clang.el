@@ -90,6 +90,9 @@ END: end of region."
              (fc-unbind-keys '("M-i" "M-j" "M-k" "M-l" "M-C-i" "M-C-j" "M-C-k" "M-C-l") it)
              (fc-bind-keys `(("TAB" ,(fc-manual (fc-tab-key #'c-indent-line-or-region)))) it))
 
+           (require 'elide-head)
+           (add-hook 'c-mode-common-hook 'elide-head)
+
            (defun fc--setup-c-mode ()
              (c-toggle-electric-state 1)
              (c-toggle-auto-newline 1)

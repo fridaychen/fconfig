@@ -79,11 +79,11 @@ LEVEL: chapter level."
 (defun fc-md-chapter-zh-to-number ()
   "Convert Chinese chapter number to arabic number."
   (fc-replace-regexp
-   "第\\([零一二两三四五六七八九十百千万]+\\)章"
+   "第\\([零一二两三四五六七八九十百千万]+\\)\\([章节回幕]\\)"
    #'(lambda ()
        (replace-match (concat "第"
                               (number-to-string (fc-zh-to-number (match-string 1)))
-                              "章")))))
+                              "\\2")))))
 
 (cl-defun fc-md-convert-latex ()
   "Convert latex to markdown."

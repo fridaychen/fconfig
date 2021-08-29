@@ -4,7 +4,7 @@
 ;;
 
 ;;; Code:
-(defvar *fc-control-mode* '(mouse touch no))
+(defvar *fc-control-mode* '(no touch mouse))
 
 (cl-defun fc-mouse-turn-page (event)
   "Turning page.

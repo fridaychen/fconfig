@@ -9,19 +9,26 @@
 (fc-load 'magit
   :autoload t
   :after (progn
-           (fc-modal-exclude-mode 'magit-status-mode
-                                  'magit-popup-mode)
+	   (fc-modal-exclude-mode 'magit-status-mode
+				  'magit-popup-mode)
 
-           (magit-auto-revert-mode 0)
-           (fullframe magit-status magit-mode-quit-window)
+	   (magit-auto-revert-mode 0)
+	   (fullframe magit-status magit-mode-quit-window)
 
-           (setf magit-diff-arguments "-w")))
+	   (setf magit-diff-arguments "-w")))
 
 (fc-install 'git-messenger 'git-timemachine 'git-lens)
 
-(setf vc-git-diff-switches "-w"
-      ;; disable vc backends, because of performance problem
-      vc-handled-backends '(Git))
+(fc-load 'vc-git
+  :local t
+  :after (progn
+	   (setf vc-git-diff-switches "-w"
+		 ;; disable vc backends, because of performance problem
+		 vc-handled-backends '(Git))
+
+	   (defun fc-vc-git-log-view-mode-func ()
+	     "Mode func."
+	     (fc-modal-head-key "Git Log" 'vc-git-log-view-mode-map))))
 
 (cl-defun fc--run-git-command (&rest args)
   (apply #'fc-exec-command-to-string "git" args))
@@ -64,10 +71,10 @@
 
   (message "Git pulling ...")
   (if (and (boundp 'fc-proj-work)
-           (not *fc-location-work*))
+	   (not *fc-location-work*))
       (shell-command (format
-                      "git pull remote %s"
-                      (magit-get-current-branch)))
+		      "git pull remote %s"
+		      (magit-get-current-branch)))
     (shell-command "git pull")))
 
 (cl-defun fc-git-push ()
@@ -77,17 +84,17 @@
 
   (message "Git pushing ...")
   (if (and (boundp 'fc-proj-work)
-           (not *fc-location-work*))
+	   (not *fc-location-work*))
       (shell-command (format
-                      "git push remote %s"
-                      (magit-get-current-branch)))
+		      "git push remote %s"
+		      (magit-get-current-branch)))
     (shell-command "git push")))
 
 (cl-defun fc-git-diff-repo ()
   (interactive)
 
   (let ((filename (file-name-nondirectory buffer-file-name))
-        (buf "*fit diff*"))
+	(buf "*fit diff*"))
     (fc-exec-command-to-buffer buf "fit" "-s" "-v")
 
     (with-current-buffer buf
@@ -101,7 +108,7 @@
   (interactive)
 
   (let* ((old (file-relative-name buffer-file-name (fc-proj-root)))
-         (new (read-string "New file name : " old)))
+	 (new (read-string "New file name : " old)))
     (unless (equal old new)
       (vc-rename-file old new))))
 

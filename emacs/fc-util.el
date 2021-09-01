@@ -300,14 +300,18 @@ BUFNAME: to be tested."
     (and buf
          (get-buffer-window buf))))
 
-(cl-defun fc--user-select (prompt collection &key fullscreen)
+(cl-defun fc--user-select (prompt collection &key fullscreen mouse)
   "Select a item from the collection.
 PROMPT: user prompt.
 COLLECTION: cadidates collection.
-FULLSCREEN: fullscreen ui mode."
+FULLSCREEN: fullscreen ui mode.
+MOUSE: allow user to select with mouse."
   (defvar helm-full-frame)
 
   (cond
+   (mouse
+    (ivy-read (fc-prompt prompt) collection))
+
    ((and fullscreen (fboundp 'helm))
     (let ((helm-full-frame t))
       (helm :sources
@@ -326,12 +330,13 @@ FULLSCREEN: fullscreen ui mode."
    (t
     (ivy-read (fc-prompt prompt) collection))))
 
-(cl-defun fc-user-select (prompt collection &key always fullscreen)
+(cl-defun fc-user-select (prompt collection &key always fullscreen mouse)
   "Select a item from the collection.
 PROMPT: user prompt.
 COLLECTION: cadidates collection.
 ALWAYS: always ask use to select.
-FULLSCREEN: fullscreen ui mode."
+FULLSCREEN: fullscreen ui mode.
+MOUSE: allow user to select with mouse."
   (when (not collection)
     (cl-return-from fc-user-select nil))
 
@@ -347,12 +352,14 @@ FULLSCREEN: fullscreen ui mode."
       (let* ((names (-map 'car collection))
              (name (fc--user-select prompt
                                     names
-                                    :fullscreen fullscreen)))
+                                    :fullscreen fullscreen
+                                    :mouse mouse)))
         (cdr (--first (equal (car it) name)
                       collection)))
     (fc--user-select prompt
                      collection
-                     :fullscreen fullscreen)))
+                     :fullscreen fullscreen
+                     :mouse mouse)))
 
 (cl-defun fc-user-select-func (prompt collection &key fullscreen default)
   "Select a function to run from collection.
@@ -748,6 +755,14 @@ LIMIT: max text length."
                      args))))
 
 ;; popup-menu
+(cl-defun fc-create-simple-pop-menu (title items)
+  "Create simple pop menu.
+TITLE: menu title.
+ITEMS: menu items."
+  `(,title
+    ,(cons "PANE"
+           items)))
+
 (cl-defun fc-create-pop-menu (title items)
   "Create pop menu.
 TITLE: menu title.
@@ -762,7 +777,7 @@ ITEMS: menu items."
                  'menu-item
                  (cl-second it)
                  t)
-                (cl-subseq it 2))
+                (last it 2))
                acc))
        nil items)))
 

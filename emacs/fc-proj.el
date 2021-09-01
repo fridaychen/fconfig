@@ -254,28 +254,14 @@ DIR: project path."
       (oset *fc-project* last-target target)
       (fc-proj--build *fc-project* target))))
 
-(cl-defun fc--proj-mode-line-str ()
-  (format (if *is-colorful* "⟨%s⟩" "{%s}")
-          *fc-project-name*))
-
-(cl-defun fc-proj-update-mode-line ()
-  "Update mode line."
-
-  (defun -pop-menu ()
-    (interactive)
-
-    (when *fc-projects*
-      (fc--proj-set
-       (fc-pop-menu
-        (fc-create-pop-menu "Projects"
-                            (--map (list (fc-proj--get it :name) it)
-                                   *fc-projects*))))))
-
-  (fc-text (fc--proj-mode-line-str)
-           :face 'bold
-           :keys (fc-make-keymap
-                  `(
-                    ([mode-line down-mouse-1] -pop-menu)))))
+(defun fc-user-select-project ()
+  "Allow user to select project."
+  (let ((proj (fc-user-select (format "Project <%s>" *fc-project-name*)
+                              (--map (cons (fc-proj--get it :name) it)
+                                     *fc-projects*)
+                              :mouse t)))
+    (when proj
+      (fc--proj-set proj))))
 
 (fc-load 'projectile
   :autoload t

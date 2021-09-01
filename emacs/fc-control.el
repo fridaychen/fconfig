@@ -4,7 +4,8 @@
 ;;
 
 ;;; Code:
-(defvar *fc-control-mode* '(no touch mouse))
+(defvar *fc-control-mode* 'no)
+(defvar *fc-control-modes* '(no touch mouse))
 
 (cl-defun fc-mouse-turn-page (event)
   "Turning page.
@@ -23,11 +24,13 @@ EVENT: mouse evnet."
 EVENT: mouse event."
   (interactive "e")
 
-  (pcase (fc-current-control-mode)
+  (message "mouse event %s" event)
+  (pcase *fc-control-mode*
     ('mouse
      (mouse-drag-region event))
 
     ('touch
+     (message "touch mode")
      (let ((f (intern (format "fc-%s-mouse-func"
                               (symbol-name major-mode)))))
        (when (and
@@ -37,15 +40,13 @@ EVENT: mouse event."
 
        (fc-mouse-turn-page event)))))
 
-(defun fc-current-control-mode ()
-  "Get current control mode."
-  (car *fc-control-mode*))
-
-(defun fc-next-control-mode ()
-  "Toggle control mode."
-  (interactive)
-
-  (setf *fc-control-mode* (-rotate 1 *fc-control-mode*)))
+(defun fc-user-select-control-mode ()
+  "Allow user to select control mode."
+  (let ((mode (fc-user-select (format "Control mode <%s>" *fc-control-mode*)
+                              *fc-control-modes*
+                              :mouse t)))
+    (when mode
+      (setf *fc-control-mode* (intern mode)))))
 
 (provide 'fc-control)
 

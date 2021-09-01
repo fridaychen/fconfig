@@ -147,14 +147,6 @@
           (fc-text str :face `(:foreground ,color))
         str))))
 
-(defun fc--control-seg ()
-  "Control mode segment."
-  (fc-text (fc-current-control-mode)
-           :face 'bold
-           :keys (fc-make-keymap
-                  `(
-                    ([mode-line down-mouse-1] fc-next-control-mode)))))
-
 (defun fc--layout-seg ()
   "Layout segment."
   (if (and (fboundp 'fc-layout-current)
@@ -167,11 +159,23 @@
     ""
     ))
 
-(defun fc--proj-seg ()
-  "Project segment."
-  (and (fboundp 'fc-proj-update-mode-line)
+(defconst *fc-menu*
+  (fc-create-pop-menu
+   "Start"
+   '(
+     (fc-user-select-control-mode "Control")
+     (fc-user-select-project "Projects"))))
+
+(defun fc--menu-seg ()
+  "Menu segment."
+  (and (boundp '*fc-project-name*)
        (fc--wide-window-p)
-       (fc-proj-update-mode-line)))
+       (fc-text (format (if *is-colorful* "⟨%s⟩" "{%s}")
+                        *fc-project-name*)
+                :face 'bold
+                :keys (fc-make-keymap
+                       `(([mode-line mouse-1]
+                          ,(lambda () (interactive) (fc-eval-pop-menu *fc-menu*))))))))
 
 (defun fc--work-seg ()
   "Work segment."
@@ -254,14 +258,12 @@
   "Format most right modeline."
   (list
    " "
-   (fc--control-seg)
-   " "
    (fc--layout-seg)
    " "
    (fc--work-seg)
    " "
    (fc-text
-    (fc--proj-seg) :face fc--modeline-hi-face)))
+    (fc--menu-seg) :face fc--modeline-hi-face)))
 
 (defun fc--modeline-format-main ()
   "Format modeline."

@@ -104,7 +104,7 @@
     (unless (equal old new)
       (vc-rename-file old new))))
 
-(cl-defun fc-vc-refresh-repo-state (&rest rest)
+(cl-defun fc-vc-refresh-repo-state (&rest _rest)
   "Refresh vc state for all files in current repo."
   (fc-run-buffer (fc-list-buffer :dir (fc-vc-root))
     (vc-refresh-state)))

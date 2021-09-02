@@ -64,11 +64,12 @@ TEMPLATE: template file path."
 (cl-defun google-speak (&rest rest)
   "Execute google-speak script.
 REST: words."
-  (when (fc-network-connected-p)
-    (apply #'fc-exec-command
-           "google-speak"
-           (--map (replace-regexp-in-string " " "+" it)
-                  rest))))
+  (apply #'fc-exec-command
+         "google-speak"
+         (--map (replace-regexp-in-string " " "+" it)
+                rest)))
+
+(fc-add-network-advice 'google-speak)
 
 ;; open in OS
 (cl-defun fc-open-in-system (&optional (path nil))

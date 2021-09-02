@@ -151,11 +151,9 @@ REST: operations."
                             (fc-resume-signal-handler))))
 
   (defun fc-network-connected-p ()
-    (or
-     (equal 70 (dbus-get-property
-                :system "org.freedesktop.NetworkManager" "/org/freedesktop/NetworkManager"
-                "org.freedesktop.NetworkManager" "State"))
-     (fc-not-void-p (fc-exec-command-to-string *fc-assist-app* "--gateway"))))
+    (equal 70 (dbus-get-property
+               :system "org.freedesktop.NetworkManager" "/org/freedesktop/NetworkManager"
+               "org.freedesktop.NetworkManager" "State")))
 
   (defun fc-network-state-changed (state)
     (pcase state
@@ -183,6 +181,21 @@ REST: operations."
 (unless (fboundp #'fc-network-connected-p)
   (defun fc-network-connected-p ()
     (fc-not-void-p (fc-exec-command-to-string *fc-assist-app* "--gateway"))))
+
+(defun fc-network-advice (orig-fun &rest args)
+  "Setup network advice.
+ORIG-FUN: original function.
+ARGS: original arguments."
+  (interactive)
+
+  (if (fc-network-connected-p)
+      (apply orig-fun args)
+    (message "No network connection !")))
+
+(defun fc-add-network-advice (&rest rest)
+  "Add network advice to functions."
+  (--each rest
+    (advice-add it :around 'fc-network-advice)))
 
 ;; redisplay hook
 (let ((fc-display-hook nil))

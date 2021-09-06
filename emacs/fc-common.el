@@ -104,11 +104,13 @@
                             (fantom . fantom-theme)
                             (gruvbox-dark-hard . gruvbox-theme)
                             (material . material-theme)
+                            (nord . nord-theme)
                             (sanityinc-tomorrow-eighties . color-theme-sanityinc-tomorrow)
                             (srcery . srcery-theme)
                             )
                         '(
                           (gruvbox-dark-soft . gruvbox-theme)
+                          (nord . nord-theme)
                           (sanityinc-tomorrow-eighties . color-theme-sanityinc-tomorrow)
                           )
                         )
@@ -117,11 +119,9 @@
                                  (gotham . gotham-theme)
                                  (hybrid-reverse . hybrid-reverse-theme)
                                  (jazz . jazz-theme)
-                                 (nord . nord-theme)
                                  )
                              '(
                                (jazz . jazz-theme)
-                               (nord . nord-theme)
                                (sanityinc-tomorrow-night . color-theme-sanityinc-tomorrow)
                                ))
       ;; fringe width 2.5mm for laptop, otherwise 3mm

@@ -5,6 +5,11 @@
 
 ;;; Code:
 
+(defvar *fc-modeline-active-hl-bg* "#FEBA07")
+(defvar *fc-modeline-active-hl-fg* "#1E3124")
+(defvar *fc-modeline-dark-active-hl-bg* "#887322")
+(defvar *fc-modeline-dark-active-hl-fg* "#1E3124")
+
 (defvar *fc-narrow-window-threshold* 65 "Criteria for narrow window.")
 (defvar *fc-extreme-narrow-window-threshold* 40 "Criteria for extreme narrow window.")
 (defconst fc--modeline-hi-face 'fc-modeline-highlight-face)
@@ -285,18 +290,27 @@
 (defun fc-modeline-mode ()
   "Setup mode line."
   (unless (facep 'fc-modeline-highlight-face)
-    (make-face 'fc-modeline-highlight-face)
-    (set-face-attribute 'fc-modeline-highlight-face nil
-                        :foreground "#1E3124"
-                        :background "#FEBA07"
-                        :weight 'medium
-                        :inherit 'mode-line))
+    (make-face 'fc-modeline-highlight-face))
 
   (unless (facep 'fc-modeline-highlight-inactive-face)
-    (make-face 'fc-modeline-highlight-inactive-face)
+    (make-face 'fc-modeline-highlight-inactive-face))
+
+  (let* ((deep-dark (> 90000 (fc-color-difference (fc-get-face-attribute 'default :foreground)
+                                                  (fc-get-face-attribute 'default :background))))
+         (bg (if deep-dark
+                 *fc-modeline-dark-active-hl-bg*
+               *fc-modeline-active-hl-bg*))
+         (fg (if deep-dark
+                 *fc-modeline-dark-active-hl-fg*
+               *fc-modeline-active-hl-fg*)))
+    (set-face-attribute 'fc-modeline-highlight-face nil
+                        :foreground fg
+                        :background bg
+                        :weight 'medium
+                        :inherit 'mode-line)
     (set-face-attribute 'fc-modeline-highlight-inactive-face nil
-                        :foreground "#FEBA07"
-                        :background "#1E3124"
+                        :foreground bg
+                        :background fg
                         :weight 'medium
                         :inherit 'mode-line))
 

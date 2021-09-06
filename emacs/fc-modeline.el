@@ -9,6 +9,7 @@
 (defvar *fc-modeline-active-hl-fg* "#1E3124")
 (defvar *fc-modeline-dark-active-hl-bg* "#887322")
 (defvar *fc-modeline-dark-active-hl-fg* "#1E3124")
+(defvar *fc-mode-line-deep-dark-diff-threshold* 90000)
 
 (defvar *fc-narrow-window-threshold* 65 "Criteria for narrow window.")
 (defvar *fc-extreme-narrow-window-threshold* 40 "Criteria for extreme narrow window.")
@@ -295,8 +296,9 @@
   (unless (facep 'fc-modeline-highlight-inactive-face)
     (make-face 'fc-modeline-highlight-inactive-face))
 
-  (let* ((deep-dark (> 90000 (fc-color-difference (fc-get-face-attribute 'default :foreground)
-                                                  (fc-get-face-attribute 'default :background))))
+  (let* ((deep-dark (> *fc-mode-line-deep-dark-diff-threshold*
+                       (fc-color-difference (fc-get-face-attribute 'default :foreground)
+                                            (fc-get-face-attribute 'default :background))))
          (bg (if deep-dark
                  *fc-modeline-dark-active-hl-bg*
                *fc-modeline-active-hl-bg*))

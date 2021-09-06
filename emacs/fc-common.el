@@ -119,6 +119,7 @@
                                  (gotham . gotham-theme)
                                  (hybrid-reverse . hybrid-reverse-theme)
                                  (jazz . jazz-theme)
+                                 (sanityinc-tomorrow-night . color-theme-sanityinc-tomorrow)
                                  )
                              '(
                                (jazz . jazz-theme)

@@ -86,6 +86,15 @@ THEMES: list of themes."
    (color-name-to-rgb
     (face-attribute 'default :background))))
 
+(defvar *fc-theme-deep-dark-diff-threshold* 90000)
+
+(defun fc-deep-dark-theme-p ()
+  "Test if the current theme is deep dark."
+  (and (fc-dark-theme-p)
+       (> *fc-theme-deep-dark-diff-threshold*
+          (fc-color-difference (fc-get-face-attribute 'default :foreground)
+                               (fc-get-face-attribute 'default :background)))))
+
 (when *is-mac*
   (setf ns-use-srgb-colorspace nil))
 

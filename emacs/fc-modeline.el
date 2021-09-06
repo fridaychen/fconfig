@@ -287,16 +287,16 @@
   (unless (facep 'fc-modeline-highlight-face)
     (make-face 'fc-modeline-highlight-face)
     (set-face-attribute 'fc-modeline-highlight-face nil
-                        :foreground "black"
-                        :background "DarkGoldenrod2"
+                        :foreground "#1E3124"
+                        :background "#FEBA07"
                         :weight 'medium
                         :inherit 'mode-line))
 
   (unless (facep 'fc-modeline-highlight-inactive-face)
     (make-face 'fc-modeline-highlight-inactive-face)
     (set-face-attribute 'fc-modeline-highlight-inactive-face nil
-                        :foreground "black"
-                        :background "DarkGoldenrod4"
+                        :foreground "#FEBA07"
+                        :background "#1E3124"
                         :weight 'medium
                         :inherit 'mode-line))
 

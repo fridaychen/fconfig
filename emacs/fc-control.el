@@ -24,7 +24,7 @@ EVENT: mouse evnet."
 EVENT: mouse event."
   (interactive "e")
 
-  (message "mouse event %s" event)
+  ;; (message "mouse event %s" event)
   (pcase *fc-control-mode*
     ('mouse
      (mouse-drag-region event))

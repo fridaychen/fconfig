@@ -65,3 +65,18 @@ function fc-dget() {
         read $* <$file
     fi
 }
+
+function fc-find-name-in-ancestor() {
+    local target=$1
+    local dir=$(realpath .)
+
+    while [[ (! (-f ${dir}/${target} || -d ${dir}/${target})) && ${dir} != "/" ]]; do
+        dir=$(dirname ${dir})
+    done
+
+    if [[ ${dir} == "/" ]]; then
+        return 1
+    fi
+
+    echo ${dir}
+}

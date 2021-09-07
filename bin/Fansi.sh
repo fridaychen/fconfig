@@ -43,17 +43,19 @@ function ansi-output() {
         shift 3
         format=$1
         shift
-        printf "$format" $*
+        printf "$format" "$@"
     else
-        printf '\033[%s;%s;%sm' $1 $(($2 + 30)) $(($3 + 40))
-        shift 3
-        format=$1
-        shift
-        printf "$format" $*
-        printf '\033[0;m'
+        ansi-format "$@"
     fi
+}
 
-    #printf '\033[%s;%s;%sm%s\033[0m' $1 $(($2 + 30)) $(($3 + 40)) $4
+function ansi-format() {
+    printf '\033[%s;%s;%sm' $1 $(($2 + 30)) $(($3 + 40))
+    shift 3
+    format=$1
+    shift
+    printf "$format" "$@"
+    printf '\033[0;m'
 }
 
 function ansi-pos() {

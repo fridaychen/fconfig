@@ -102,8 +102,8 @@ alias cdtr='cd "`find . -type d | sed -e 1d | fzf`"'
 
 alias tree="tree -N"
 
-alias b=build-project
-alias r=chtop
+alias b=proj-build
+alias r=proj-chtop
 alias p='fzf --ansi'
 
 function fzf-run() {
@@ -203,13 +203,6 @@ function ec() {
 
 function install_color_scheme() {
     bash -c "$(wget -qO- https://git.io/vQgMr)"
-}
-
-# repo
-alias R='repo'
-
-function RA() {
-    repo forall -c "$*"
 }
 
 # emacs

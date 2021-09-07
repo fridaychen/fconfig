@@ -1,0 +1,48 @@
+#!/bin/bash
+
+. ${FCHOME}/bin/Fgit.sh
+. ${FCHOME}/bin/Fansi.sh
+
+reporoot=
+branch=
+status=true
+
+while getopts "b:r:S" OPTION; do
+    case $OPTION in
+        b)
+            branch=$OPTARG
+            ;;
+
+        r)
+            reporoot=$OPTARG
+            ;;
+
+        S)
+            status=false
+            ;;
+    esac
+done
+
+output=
+
+if [[ ! -z $branch ]]; then
+    current=$(fit-current-branch)
+
+    if [[ ${current} != ${branch} ]]; then
+        output+=" ${current}"
+    fi
+fi
+
+if [[ $status == true ]]; then
+    count=$(fit-count-changes)
+
+    if [[ count -ne 0 ]]; then
+        output+="[$count]"
+    fi
+fi
+
+if [[ ! -z $output ]]; then
+    echo -n "project"
+    ansi-format $ANSI_HIGHLIGHT $ANSI_BLUE $ANSI_BLACK " %s" "${REPO_PATH}"
+    ansi-format $ANSI_HIGHLIGHT $ANSI_RED $ANSI_BLACK " %s""${output}"
+fi

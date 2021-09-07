@@ -6,4 +6,4 @@
 . $FCHOME/bin/Fproject.sh
 
 echo $*
-build-project $*
+proj-build $*

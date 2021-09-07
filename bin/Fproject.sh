@@ -1,16 +1,16 @@
 #!/bin/bash
 
-function build-project() {
+function proj-build() {
     local old_dir=$(pwd)
 
-    if ! chtop; then
+    if ! proj-chtop; then
         hl-msg "NO TOP, try to do it at here."
     fi
 
     hl-msg "TOP at $(pwd)"
 
     if [[ -f CMakeLists.txt && ! -d build ]]; then
-        cmake-project
+        proj-cmake
     fi
 
     if [[ -f build/build.ninja ]]; then
@@ -33,20 +33,20 @@ function build-project() {
     cd "$old_dir"
 }
 
-function chtop() {
-    local old_dir=$(pwd)
+function proj-root() {
+    fc-find-name-in-ancestor .TOP
+}
 
-    while [[ (! (-f TOP || -f .TOP)) && $(pwd) != "/" ]]; do
-        cd ..
-    done
+function proj-chtop() {
+    local root=$(proj-root)
 
-    if [[ ! (-f TOP || -f .TOP) ]]; then
+    if [[ -z ${root} ]]; then
         ansi-output $ANSI_BLINK $ANSI_YELLOW $ANSI_RED "failed to find TOP"
         echo
-        cd $old_dir
         return 1
     fi
 
+    cd $root
     return 0
 }
 
@@ -61,7 +61,7 @@ function create-project() {
     touch $name/notes
 }
 
-function cmake-project() {
+function proj-cmake() {
     mkdir build
     cd build
     cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -G Ninja

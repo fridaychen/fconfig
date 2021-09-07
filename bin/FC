@@ -12,6 +12,7 @@ fc-include ${FCHOME}/bin/Fcommon.sh \
     ${FCHOME}/bin/Fproject.sh \
     ${FCHOME}/bin/Fmedia.sh \
     ${FCHOME}/bin/Fgit.sh \
+    ${FCHOME}/bin/Frepo.sh \
     ${FCHOME}/bin/Finit.sh \
     ${FCHOME}/bin/Fps.sh
 

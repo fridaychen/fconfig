@@ -2,9 +2,9 @@
 
 import os
 
-s = os.popen("/sbin/route -n | grep ^0\.0\.0\.0").read()
+s = os.popen("ip route | grep default").read()
 
 if len(s) > 0 :
-    gw_ip = s.split()[1]
+    gw_ip = s.split()[2]
 
-    print(os.popen("/usr/sbin/arp -n | grep \"" + gw_ip + " \"").read().split()[2], end="")
+    print(os.popen("ip neigh | grep \"" + gw_ip + " \"").read().split()[4], end="")

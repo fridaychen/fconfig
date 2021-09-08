@@ -16,7 +16,6 @@
 (defconst fc--mode-hi-sep (fc-text " " :face fc--modeline-hi-face))
 (defconst fc--modeline-hi-inactive-face 'fc-modeline-highlight-inactive-face)
 (defconst fc--modeline-hi-inactive-sep (fc-text " " :face fc--modeline-hi-inactive-face))
-(defconst fc--modeline-sep " ")
 
 (defvar *fc-selected-window* (frame-selected-window))
 
@@ -249,9 +248,9 @@
      (fc-text
       (fc--state-seg) :face (fc--modeline-get-hi-face))
      hl-sep
-     fc--modeline-sep
+     " "
      (fc--major-mode-seg)
-     fc--modeline-sep)))
+     " ")))
 
 (defun fc--modeline-format-center ()
   "Format center modeline."

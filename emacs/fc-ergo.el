@@ -56,7 +56,9 @@
                       buffer-file-coding-system
                       (point)
                       (point-max)))
-    ("Branch" ,(magit-get-current-branch))))
+    ("VC" ,(format "%s, %s"
+                   (magit-get-current-branch)
+                   (fc-string (vc-state buffer-file-name))))))
 
 (defun fc-buffer-info ()
   "Create buffer info."

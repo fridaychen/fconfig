@@ -68,13 +68,13 @@ function fc-dget() {
 
 function fc-find-name-in-ancestor() {
     local target=$1
-    local dir=$(realpath .)
+    local dir="$(realpath .)"
 
-    while [[ (! (-f ${dir}/${target} || -d ${dir}/${target})) && ${dir} != "/" ]]; do
-        dir=$(dirname ${dir})
+    while [[ (! (-f "${dir}/${target}" || -d "${dir}/${target}")) && "${dir}" != "/" ]]; do
+        dir=$(dirname "${dir}")
     done
 
-    if [[ ${dir} == "/" ]]; then
+    if [[ "${dir}" == "/" ]]; then
         return 1
     fi
 

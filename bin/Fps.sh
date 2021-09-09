@@ -74,6 +74,23 @@ function ps-resource-overload() {
     esac
 }
 
+function ps-local() {
+    local dir=$(fc-find-name-in-ancestor .localinfo)
+
+    if [[ (! -z ${dir}) && -f "${dir}/.localinfo" ]]; then
+        echo -n " "
+        cat ${dir}/.localinfo | tr -d "\r\n"
+    fi
+
+    dir=$(fc-find-name-in-ancestor .localsh)
+
+    if [[ (! -z ${dir}) && -x "${dir}/.localsh" ]]; then
+        echo -n " "
+        cd ${dir}
+        ./.localsh | tr -d "\r\n"
+    fi
+}
+
 function ps-now() {
     date +%H:%M:%S
 }
@@ -148,6 +165,7 @@ function setup-ps() {
     local PS_LAST="\$(last-command-result)"
     local PS_FIT="\$(ps-fit-info)"
     local PS_OVERLOAD="\$(ps-resource-overload)"
+    local PS_LOCAL="\$(ps-local)"
     local PS_EXEC_TIME="\$(ps-exec-time)"
     local PS_NOW="\$(ps-now)"
     local PS_ART_L0="\$(ps-art-l0)"
@@ -182,6 +200,7 @@ function setup-ps() {
             $FG_GREEN $PS_EXEC_TIME " " \
             $FG_MAGENTA $PS_FIT \
             $FG_WHITE $PS_OVERLOAD \
+            $FG_BLUE $PS_LOCAL \
             "\n"
     )
 

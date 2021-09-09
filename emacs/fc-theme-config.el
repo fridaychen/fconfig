@@ -51,16 +51,17 @@ THEME: new theme."
 (defun fc-theme-auto-select (themes)
   "Auto select and load theme from THEMES.
 THEMES: list of themes."
-  (fc-load-theme
-   (cl-loop
-    with theme = nil
-    do
-    (setf theme (seq-random-elt themes))
-    while (and (> (length themes) 1)
-               (if (consp theme)
-                   (eq (car theme) *fc-current-theme*)
-                 (eq theme *fc-current-theme*)))
-    finally return theme)))
+  (let ((theme (cl-loop
+                with theme = nil
+                do
+                (setf theme (seq-random-elt themes))
+                while (and (> (length themes) 1)
+                           (if (consp theme)
+                               (eq (car theme) *fc-current-theme*)
+                             (eq theme *fc-current-theme*)))
+                finally return theme)))
+    (fc-load-theme theme)
+    (message "Load theme %s" theme)))
 
 (defun fc-light-theme ()
   "Randomly select a light theme."

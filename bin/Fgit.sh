@@ -58,3 +58,22 @@ function fit-switch-branch() {
 function fit-root() {
     git rev-parse --show-toplevel
 }
+
+function fit-top() {
+    local number=1
+    if [[ $# -ne 0 ]]; then
+        number=$1
+    fi
+
+    git log --oneline -${number}
+}
+
+function fit-search() {
+    git log --oneline --grep "$1"
+}
+
+function fit-show() {
+    fzf --ansi --reverse |
+        cut -f1 -d" " |
+        xargs git show
+}

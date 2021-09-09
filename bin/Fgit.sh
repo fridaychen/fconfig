@@ -73,7 +73,13 @@ function fit-search() {
 }
 
 function fit-show() {
-    fzf --ansi --reverse |
-        cut -f1 -d" " |
-        xargs git show
+    if [[ -t 0 ]]; then
+        git log --oneline -1 |
+            cut -f1 -d" " |
+            xargs git show
+    else
+        fzf --ansi --reverse |
+            cut -f1 -d" " |
+            xargs git show
+    fi
 }

@@ -357,11 +357,9 @@ INDENT-FUNC: function for indent."
 (defun fc-navi-error-next-prev-p ()
   "If navi window exists."
   (or (-any? #'fc-buffer-visible-p *fc-navi-buffer-names*)
-      (-first (lambda (x)
-                (let ((name (buffer-name x)))
-                  (--first (string-prefix-p it name)
-                           *fc-navi-buffer-prefixs*)))
-              (mapcar 'window-buffer (window-list)))))
+      (fc-first-window (let ((name (buffer-name (cdr it))))
+                         (--first (string-prefix-p it name)
+                                  *fc-navi-buffer-prefixs*)))))
 
 (defun fc-select-navi-buffer ()
   "List all navi buffers."
@@ -396,6 +394,11 @@ INDENT-FUNC: function for indent."
 
     buf))
 
+(defun fc-find-viewer-window ()
+  (car
+   (fc-first-window (with-current-buffer (cdr it)
+                      fc-viewer-minor-mode))))
+
 (defun fc-navi-prev ()
   "Navi previous."
   (interactive)
@@ -409,6 +412,10 @@ INDENT-FUNC: function for indent."
 
    ((one-window-p)
     (scroll-down-command))
+
+   ((fc-find-viewer-window)
+    (with-selected-window (fc-find-viewer-window)
+      (scroll-down)))
 
    (t
     (scroll-other-window '-))))
@@ -426,6 +433,10 @@ INDENT-FUNC: function for indent."
 
    ((one-window-p)
     (scroll-up-command))
+
+   ((fc-find-viewer-window)
+    (with-selected-window (fc-find-viewer-window)
+      (scroll-up)))
 
    (t
     (scroll-other-window))))

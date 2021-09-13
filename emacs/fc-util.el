@@ -21,19 +21,19 @@ DIR: target dir."
        (eq (car (file-attributes dir)) t)))
 
 (cl-defun fc-create-file-if-not-exists (filename
-                                        &rest rest)
+					&rest rest)
   "Create file if it dose not exist.
 FILENAME: file name.
 REST: contents."
   (unless (file-exists-p filename)
     (with-temp-file filename
       (--each rest
-        (cond
-         ((or (stringp it) (symbolp it))
-          (insert (fc-string it)))
+	(cond
+	 ((or (stringp it) (symbolp it))
+	  (insert (fc-string it)))
 
-         (t
-          (insert (fc-funcall it))))))))
+	 (t
+	  (insert (fc-funcall it))))))))
 
 ;; remove empty
 (defun fc-whitespace-clean ()
@@ -42,8 +42,8 @@ REST: contents."
 
   (save-excursion
     (fc-replace-regexp "[ \t]+$"
-                       ""
-                       :from-start t)))
+		       ""
+		       :from-start t)))
 
 (defun fc-remove-empty-line ()
   "Remove empty lines."
@@ -51,8 +51,8 @@ REST: contents."
 
   (save-excursion
     (fc-replace-regexp "^\n\\{2,\\}"
-                       "\n"
-                       :from-start t)))
+		       "\n"
+		       :from-start t)))
 
 (defun fc-indent-all ()
   "Indent the whole buffer."
@@ -63,10 +63,10 @@ REST: contents."
 (defun auto-setup-charset()
   "Auto setup buffer encoding."
   (let ((coding nil)
-        (revert-without-query '(".")))
+	(revert-without-query '(".")))
     (setf coding (make-symbol "t_auto_char"))
     (setf coding (intern (downcase (shell-command-to-string
-                                    (concat "detect_charset.py '" buffer-file-name "'")))))
+				    (concat "detect_charset.py '" buffer-file-name "'")))))
 
     (unless (string-equal "ascii" coding)
       (revert-buffer-with-coding-system coding))))
@@ -77,9 +77,9 @@ COMMAND: command to run.
 ARGS: arguments for the command."
   (save-window-excursion
     (apply #'call-process (if (string-prefix-p "~" command)
-                              (expand-file-name command)
-                            command)
-           nil 0 nil args)))
+			      (expand-file-name command)
+			    command)
+	   nil 0 nil args)))
 
 (defun fc-exec-command-in-term (command)
   "Exec shell command.
@@ -93,8 +93,8 @@ ARGS: arguments for command."
   (save-window-excursion
     (with-output-to-string
       (with-current-buffer
-          standard-output
-        (apply #'call-process command nil t nil args)))))
+	  standard-output
+	(apply #'call-process command nil t nil args)))))
 
 (cl-defun fc-exec-command-to-buffer (bufname command &rest args)
   "Run specific command and save output to specified buffer.
@@ -132,21 +132,21 @@ PROMPT: prompt for user input."
     (setf ask nil))
 
   (let ((result (if (use-region-p)
-                    (buffer-substring (region-beginning)
-                                      (region-end))
-                  (thing-at-point (if ext 'symbol 'word)))))
+		    (buffer-substring (region-beginning)
+				      (region-end))
+		  (thing-at-point (if ext 'symbol 'word)))))
 
     (when (and deactivate (use-region-p))
       (deactivate-mark))
 
     (if (or confirm
-            (and ask (null result)))
-        (setf result (read-string prompt
-                                  (if (and regq result)
-                                      (regexp-quote result)
-                                    result)))
+	    (and ask (null result)))
+	(setf result (read-string prompt
+				  (if (and regq result)
+				      (regexp-quote result)
+				    result)))
       (when (and regq result)
-        (setf result (regexp-quote result))))
+	(setf result (regexp-quote result))))
 
     result))
 
@@ -171,33 +171,33 @@ PROMPT: user prompt."
 (defun fc-display-width ()
   "Current monitor width."
   (let ((width (display-mm-width))
-        (attrs (frame-monitor-attributes)))
+	(attrs (frame-monitor-attributes)))
     (if (> width 0)
-        width
+	width
       (cl-second (assoc 'mm-size attrs)))))
 
 (defun fc-display-height ()
   "Current monitor height."
   (let ((height (display-mm-height))
-        (attrs (frame-monitor-attributes)))
+	(attrs (frame-monitor-attributes)))
     (if (> height 0)
-        height
+	height
       (cl-third (assoc 'mm-size attrs)))))
 
 (defun fc-display-ppi ()
   "PPI of current monitor."
   (let* ((w (* (fc-display-width) 0.039))
-         (h (* (fc-display-height) 0.039))
-         (di (sqrt (+ (* h h)
-                      (* w w))))
-         (dp (sqrt (+ (expt (x-display-pixel-width) 2)
-                      (expt (x-display-pixel-height) 2)))))
+	 (h (* (fc-display-height) 0.039))
+	 (di (sqrt (+ (* h h)
+		      (* w w))))
+	 (dp (sqrt (+ (expt (x-display-pixel-width) 2)
+		      (expt (x-display-pixel-height) 2)))))
     (truncate (+ 0.5 (/ dp di)))))
 
 (defun fc-has-battery ()
   "Return the system has a battery or not."
   (let ((alist (ignore-errors
-                 (fc-funcall battery-status-function))))
+		 (fc-funcall battery-status-function))))
     (cond
      ((null alist)
       nil)
@@ -207,10 +207,10 @@ PROMPT: user prompt."
 
      (*is-linux*
       (and (boundp 'battery-status-function)
-           (not (null battery-status-function))
-           (not (string-equal
-                 (alist-get ?p (funcall battery-status-function))
-                 "N/A"))))
+	   (not (null battery-status-function))
+	   (not (string-equal
+		 (alist-get ?p (funcall battery-status-function))
+		 "N/A"))))
 
      (*is-mac*
       (not (equal (cdr (assoc ?B alist)) "N/A"))))))
@@ -223,9 +223,9 @@ CREATE-FUNC: function to create buffer when it not exists."
       (bury-buffer)
     (let ((buffer (get-buffer buffer-name)))
       (if buffer
-          (switch-to-buffer buffer)
-        (when create-func
-          (funcall create-func))))))
+	  (switch-to-buffer buffer)
+	(when create-func
+	  (funcall create-func))))))
 
 (defmacro fc-manual (&rest body)
   "Create a command.
@@ -234,8 +234,8 @@ BODY: body."
      (interactive)
      (let ((_ret (progn ,@body)))
        (message (if (and _ret (stringp _ret))
-                    (string-trim _ret)
-                  "")))))
+		    (string-trim _ret)
+		  "")))))
 
 (defmacro fc-manuals (&rest rest)
   "Create a command.
@@ -243,8 +243,8 @@ REST: list of commands."
   `(lambda ()
      (interactive)
      (cl-loop for x in (list ,@rest)
-              do
-              (fc-funcall x))))
+	      do
+	      (fc-funcall x))))
 
 (defmacro fc-region (start end &rest body)
   "Region wrapper.
@@ -275,30 +275,30 @@ MARK-FUNC: call this func when region is not active."
 
      (unless (region-active-p)
        (if (symbolp ',mark-func)
-           (fc-funcall ',mark-func)
-         (fc-funcall ,mark-func))
+	   (fc-funcall ',mark-func)
+	 (fc-funcall ,mark-func))
 
        (unless (region-active-p)
-         (cl-return-from fc-decorate-region))
+	 (cl-return-from fc-decorate-region))
 
        (setf start (region-beginning)
-             end (region-end)))
+	     end (region-end)))
 
      (fc-region start end
        (when ,suffix
-         (goto-char (point-max))
-         (insert (fc-funcall ,suffix)))
+	 (goto-char (point-max))
+	 (insert (fc-funcall ,suffix)))
 
        (when ,prefix
-         (goto-char (point-min))
-         (insert (fc-funcall ,prefix))))))
+	 (goto-char (point-min))
+	 (insert (fc-funcall ,prefix))))))
 
 (defun fc-buffer-visible-p (bufname)
   "Test if a buffer is visible.
 BUFNAME: to be tested."
   (let ((buf (get-buffer bufname)))
     (and buf
-         (get-buffer-window buf))))
+	 (get-buffer-window buf))))
 
 (cl-defun fc--user-select (prompt collection &key fullscreen mouse)
   "Select a item from the collection.
@@ -315,16 +315,16 @@ MOUSE: allow user to select with mouse."
    ((and fullscreen (fboundp 'helm))
     (let ((helm-full-frame t))
       (helm :sources
-            (helm-build-sync-source prompt
-                                    :candidates collection))))
+	    (helm-build-sync-source prompt
+				    :candidates collection))))
 
    ((let ((total_len (apply #'+
-                            (--map
-                             (length (fc-string it))
-                             collection))))
+			    (--map
+			     (length (fc-string it))
+			     collection))))
       (and (> 9 (length collection))
-           (> (- (frame-width) 20 (length prompt))
-              total_len)))
+	   (> (- (frame-width) 20 (length prompt))
+	      total_len)))
     (ido-completing-read (fc-prompt prompt) collection))
 
    (t
@@ -341,25 +341,25 @@ MOUSE: allow user to select with mouse."
     (cl-return-from fc-user-select nil))
 
   (when (and (not always)
-             (= (length collection) 1))
+	     (= (length collection) 1))
     (let* ((proj (car collection)))
       (cl-return-from fc-user-select
-        (if (cl-typep proj 'cons)
-            (cdr proj)
-          proj))))
+	(if (cl-typep proj 'cons)
+	    (cdr proj)
+	  proj))))
 
   (if (cl-typep (cl-first collection) 'cons)
       (let* ((names (-map 'car collection))
-             (name (fc--user-select prompt
-                                    names
-                                    :fullscreen fullscreen
-                                    :mouse mouse)))
-        (cdr (--first (equal (car it) name)
-                      collection)))
+	     (name (fc--user-select prompt
+				    names
+				    :fullscreen fullscreen
+				    :mouse mouse)))
+	(cdr (--first (equal (car it) name)
+		      collection)))
     (fc--user-select prompt
-                     collection
-                     :fullscreen fullscreen
-                     :mouse mouse)))
+		     collection
+		     :fullscreen fullscreen
+		     :mouse mouse)))
 
 (cl-defun fc-user-select-func (prompt collection &key fullscreen default)
   "Select a function to run from collection.
@@ -368,10 +368,10 @@ COLLECTION: cadidates collection.
 FULLSCREEN: fullscreen ui mode.
 DEFAULT: default function."
   (fc-funcall (fc-user-select prompt
-                              collection
-                              :fullscreen fullscreen
-                              :always t)
-              :default default))
+			      collection
+			      :fullscreen fullscreen
+			      :always t)
+	      :default default))
 
 (defun fc--popup-tip-local (title content timeout)
   "Popup top application level.
@@ -379,20 +379,20 @@ CONTENT: buffer content.
 TITLE: buffer title.
 TIMEOUT: buffer show timeout in seconds."
   (if (and (<= 26 emacs-major-version)
-           *is-gui*)
+	   *is-gui*)
       (let ((frame (posframe-show "*fc-tip*"
-                                  :string (concat "[" title "]\n\n" content)
-                                  :poshandler #'posframe-poshandler-frame-center
-                                  :background-color "DarkRed"
-                                  :foreground-color "White")))
-        (if (eq 0 timeout)
-            (read-event)
-          (sit-for timeout))
-        (posframe-hide frame))
+				  :string (concat "[" title "]\n\n" content)
+				  :poshandler #'posframe-poshandler-frame-center
+				  :background-color "DarkRed"
+				  :foreground-color "White")))
+	(if (eq 0 timeout)
+	    (read-event)
+	  (sit-for timeout))
+	(posframe-hide frame))
 
     (let ((lines (s-count-matches "\n" content)))
       (unless (s-suffix? "\n" content)
-        (cl-incf lines))
+	(cl-incf lines))
 
       (popup-tip content :height lines))))
 
@@ -446,9 +446,9 @@ Enter -> default-ans
 Escape -> nil"
   (cl-loop
    with s = (format "%s ? (%s or %s)"
-                    prompt
-                    (if default-ans "Y" "y")
-                    (if default-ans "n" "N"))
+		    prompt
+		    (if default-ans "Y" "y")
+		    (if default-ans "n" "N"))
    do
    (pcase (read-char s)
      (?y (cl-return t))
@@ -470,39 +470,39 @@ Escape -> nil"
   ;; We need the new emacs to be spawned after all kill-emacs-hooks
   ;; have been processed and there is nothing interesting left
   (let ((kill-emacs-hook (append kill-emacs-hook
-                                 (list (if (display-graphic-p)
-                                           #'launch-separate-emacs-under-x
-                                         #'launch-separate-emacs-in-terminal)))))
+				 (list (if (display-graphic-p)
+					   #'launch-separate-emacs-under-x
+					 #'launch-separate-emacs-in-terminal)))))
     (save-buffers-kill-emacs)))
 
 (defun fc-zh-to-number (str)
   "Convert chinese number string to number.
 STR: chinese number string."
   (let ((al '((?零 . 0)
-              (?一 . 1)
-              (?二 . 2)
-              (?两 . 2)
-              (?三 . 3)
-              (?四 . 4)
-              (?五 . 5)
-              (?六 . 6)
-              (?七 . 7)
-              (?八 . 8)
-              (?九 . 9)
-              (?十 . 10)
-              (?百 . 100)
-              (?千 . 1000)
-              (?万 . 10000)))
-        (n 0)
-        (ret 0))
+	      (?一 . 1)
+	      (?二 . 2)
+	      (?两 . 2)
+	      (?三 . 3)
+	      (?四 . 4)
+	      (?五 . 5)
+	      (?六 . 6)
+	      (?七 . 7)
+	      (?八 . 8)
+	      (?九 . 9)
+	      (?十 . 10)
+	      (?百 . 100)
+	      (?千 . 1000)
+	      (?万 . 10000)))
+	(n 0)
+	(ret 0))
     (--each (append str nil)
       (let ((v (cdr (assoc it al))))
-        (if (< v 10)
-            (setf n (+ (* n 10) v))
-          (when (and (= n 0) (= v 10))
-            (setf n 1))
-          (cl-incf ret (* n v))
-          (setf n 0))))
+	(if (< v 10)
+	    (setf n (+ (* n 10) v))
+	  (when (and (= n 0) (= v 10))
+	    (setf n 1))
+	  (cl-incf ret (* n v))
+	  (setf n 0))))
     (+ ret n)))
 
 (defvar *fc-sound-player* (executable-find "mpg123"))
@@ -511,10 +511,10 @@ STR: chinese number string."
   "Play sound file.
 FILE: sound file path."
   (when (and *fc-enable-sound*
-             *fc-sound-player*)
+	     *fc-sound-player*)
     (start-process *fc-sound-player* nil *fc-sound-player*
-                   "-q"
-                   (expand-file-name file))))
+		   "-q"
+		   (expand-file-name file))))
 
 (cl-defun fc-play-sound (sound &optional (volume 25))
   "Play sound.
@@ -522,8 +522,8 @@ SOUND: sound name.
 VOLUME: volume."
   (when *fc-enable-sound*
     (let ((filename (format "%s/sound/%s"
-                            *fc-home*
-                            (seq-random-elt (alist-get sound *fc-sounds*)))))
+			    *fc-home*
+			    (seq-random-elt (alist-get sound *fc-sounds*)))))
       (fc-play-sound-file filename volume))))
 
 (defun fc-job-done (&rest rest)
@@ -542,9 +542,9 @@ KEYS: path."
   (let ((al alist))
     (--each keys
       (let ((l (assoc it al)))
-        (if l
-            (setf al l)
-          (cl-return-from atree-get nil))))
+	(if l
+	    (setf al l)
+	  (cl-return-from atree-get nil))))
     al))
 
 (cl-defun atree-set (alist value &rest keys)
@@ -554,16 +554,16 @@ KEYS: path."
   (let ((al alist))
     (--each keys
       (let ((l (assoc it al)))
-        (if l
-            (setf al l)
-          (nconc al `((,it)))
-          (setf al (assoc it al)))))
+	(if l
+	    (setf al l)
+	  (nconc al `((,it)))
+	  (setf al (assoc it al)))))
     (setcdr al value)))
 
 ;; file utilities
 (cl-defun fc-exists-file-in-path (filename
-                                  &optional
-                                  (dir default-directory))
+				  &optional
+				  (dir default-directory))
   "Test file exists or not under specific dir.
 FILENAME: file name.
 DIR: dir."
@@ -573,13 +573,13 @@ DIR: dir."
 
    ((file-exists-p (concat dir "/" filename))
     (if (string-suffix-p "/" dir)
-        (concat dir filename)
+	(concat dir filename)
       (concat dir "/" filename)))
 
    (t
     (fc-exists-file-in-path filename
-                            (file-name-directory (s-chop-suffix "/"
-                                                                dir))))))
+			    (file-name-directory (s-chop-suffix "/"
+								dir))))))
 
 (cl-defun fc-root-window-p (&optional (window (get-buffer-window)))
   "Test if the window is a root window.
@@ -587,8 +587,8 @@ WINDOW: target window."
   (eq (frame-root-window window) window))
 
 (cl-defun fc-set-window-width (&key (window (get-buffer-window))
-                                    width
-                                    percent)
+				    width
+				    percent)
   "Set the selected window's width.
 WINDOW: target window.
 WIDTH: width in pixel.
@@ -597,19 +597,19 @@ PERCENT: width in percentage."
     (cl-return-from fc-set-window-width))
 
   (let* ((real-width (if percent
-                         (/ (* (frame-width) percent) 100)
-                       width))
-         (delta (- real-width (window-width window))))
+			 (/ (* (frame-width) percent) 100)
+		       width))
+	 (delta (- real-width (window-width window))))
     (when (and (/= delta 0)
-               (= (window-resizable window delta t)
-                  delta))
+	       (= (window-resizable window delta t)
+		  delta))
       (window-resize window
-                     delta
-                     t))))
+		     delta
+		     t))))
 
 (cl-defun fc-set-window-height (&key (window (get-buffer-window))
-                                     height
-                                     percent)
+				     height
+				     percent)
   "Set the selected window's height.
 WINDOW: target window.
 HEIGHT: height in pixel.
@@ -618,14 +618,14 @@ PERCENT: height in percentage."
     (cl-return-from fc-set-window-height))
 
   (let* ((real-height (if percent
-                          (/ (* (frameheighth) percent) 100)
-                        height))
-         (delta (- real-height (window-height window))))
+			  (/ (* (frameheighth) percent) 100)
+			height))
+	 (delta (- real-height (window-height window))))
     (when (and (/= delta 0)
-               (= (window-resizable window delta)
-                  delta))
+	       (= (window-resizable window delta)
+		  delta))
       (window-resize window
-                     delta))))
+		     delta))))
 
 (defvar *fc-big-buffer-threshold* 1048576)
 
@@ -643,22 +643,22 @@ NAME: name of environment."
     (cl-return-from fc-add-env-path))
 
   (let* ((current-path (getenv name))
-         (seperator (if *is-windows* ";" ":"))
-         (offset (cl-search (concat seperator path seperator)
-                            (concat seperator current-path seperator))))
+	 (seperator (if *is-windows* ";" ":"))
+	 (offset (cl-search (concat seperator path seperator)
+			    (concat seperator current-path seperator))))
     (when offset
       (cl-return-from fc-add-env-path))
 
     (setenv name
-            (if to-front
-                (concat path seperator current-path)
-              (concat current-path seperator path)))))
+	    (if to-front
+		(concat path seperator current-path)
+	      (concat current-path seperator path)))))
 
 (cl-defun fc--full-prompt-p (prompt)
   "Test PROMPT is full PROMPT.
 PROMT: user prompt."
   (--first (string-suffix-p it prompt)
-           '(": " "? " ") " "-x ")))
+	   '(": " "? " ") " "-x ")))
 
 (cl-defun fc-add-env-paths (paths)
   "Add multiple compoments to path style environment variable.
@@ -683,16 +683,16 @@ REST: args."
     (cl-return))
 
   (let* ((args (car rest))
-         (lines (split-string (car args) "\n")))
+	 (lines (split-string (car args) "\n")))
     (setf (car (last lines)) (fc-prompt (car (last lines))))
     (setf (car args)
-          (string-join lines "\n"))
+	  (string-join lines "\n"))
     args))
 
 (--each '(read-directory-name
-          read-from-minibuffer
-          read-number
-          read-string)
+	  read-from-minibuffer
+	  read-number
+	  read-string)
   (advice-add it :filter-args #'fc--before-read-obj))
 
 ;; unicode utility
@@ -700,22 +700,22 @@ REST: args."
   "Return the square latin version of str.
 STR: origin str."
   (concat (-map
-           (lambda (c)
-             (cond
-              ((and (>= c ?a) (<= c ?z))
-               (+ c (- ?🄰 ?a)))
+	   (lambda (c)
+	     (cond
+	      ((and (>= c ?a) (<= c ?z))
+	       (+ c (- ?🄰 ?a)))
 
-              ((and (>= c ?A) (<= c ?Z))
-               (+ c (- ?🄰 ?A)))
+	      ((and (>= c ?A) (<= c ?Z))
+	       (+ c (- ?🄰 ?A)))
 
-              ((= ?0 c)
-               ?⓪)
+	      ((= ?0 c)
+	       ?⓪)
 
-              ((and (>= c ?1) (<= c ?9))
-               (+ c (- ?① ?1)))
+	      ((and (>= c ?1) (<= c ?9))
+	       (+ c (- ?① ?1)))
 
-              (t c)))
-           str)))
+	      (t c)))
+	   str)))
 
 ;; propertizer wrapper
 (cl-defun fc-text (obj &key face tip keys pointer (separator " ") limit)
@@ -728,11 +728,11 @@ POINTER: mouse pointer.
 SEPARATOR: sepatator string.
 LIMIT: max text length."
   (let ((obj (if (listp obj)
-                 (s-join separator
-                         (--filter (not (null it))
-                                   obj))
-               (fc-string obj)))
-        (args ()))
+		 (s-join separator
+			 (--filter (not (null it))
+				   obj))
+	       (fc-string obj)))
+	(args ()))
     (when face
       (push (cons 'face face) args))
 
@@ -746,13 +746,13 @@ LIMIT: max text length."
       (push (cons 'pointer pointer) args))
 
     (when (and limit
-               (< limit (string-width obj)))
+	       (< limit (string-width obj)))
       (setf obj (format "%s>"
-                        (truncate-string-to-width obj limit))))
+			(truncate-string-to-width obj limit))))
 
     (apply #'propertize obj
-           (--mapcat (list (car it) (cdr it))
-                     args))))
+	   (--mapcat (list (car it) (cdr it))
+		     args))))
 
 ;; popup-menu
 (cl-defun fc-create-simple-pop-menu (title items)
@@ -761,7 +761,7 @@ TITLE: menu title.
 ITEMS: menu items."
   `(,title
     ,(cons "PANE"
-           items)))
+	   items)))
 
 (cl-defun fc-create-pop-menu (title items)
   "Create pop menu.
@@ -771,14 +771,14 @@ ITEMS: menu items."
     ,title
     ,@(--reduce-r-from
        (progn
-         (cons (append
-                (list
-                 (cl-first it)
-                 'menu-item
-                 (cl-second it)
-                 t)
-                (last it 2))
-               acc))
+	 (cons (append
+		(list
+		 (cl-first it)
+		 'menu-item
+		 (cl-second it)
+		 t)
+		(last it 2))
+	       acc))
        nil items)))
 
 (cl-defun fc-show-pop-menu (menu)
@@ -832,27 +832,27 @@ DIR: target dir."
       dir
     (let ((parent-dir (file-name-directory (directory-file-name dir))))
       (if (= (length parent-dir) 1)
-          nil
-        (fc-locate-file-in-path filenames parent-dir)))))
+	  nil
+	(fc-locate-file-in-path filenames parent-dir)))))
 
 (defun fc-speak (&rest rest)
   "TTS.
 REST: text to be speak."
   (cond
    ((and *is-linux*
-         (fc-network-connected-p))
+	 (fc-network-connected-p))
     (apply #'google-speak rest))
 
    (*is-linux*
     (let ((proc (start-process "espeak-ng" nil
-                               "espeak-ng"
-                               "-s" "140"
-                               "-a" "40"
-                               "-v" "us-mbrola-2"
-                               "--stdin")))
+			       "espeak-ng"
+			       "-s" "140"
+			       "-a" "40"
+			       "-v" "us-mbrola-2"
+			       "--stdin")))
       (--each rest
-        (process-send-string proc it)
-        (process-send-string proc "\n"))
+	(process-send-string proc it)
+	(process-send-string proc "\n"))
       (process-send-eof proc)))
 
    (*is-mac*
@@ -882,9 +882,9 @@ REST: all arguments."
 COLORA: the one color.
 COLORB: another color."
   (cl-loop for i in (color-values colora)
-           for j in (color-values colorb)
-           sum (+ (* i i) (* j j)) into x
-           finally return (sqrt x)))
+	   for j in (color-values colorb)
+	   sum (+ (* i i) (* j j)) into x
+	   finally return (sqrt x)))
 
 (defun fc-line-num ()
   "Get current line number."
@@ -896,6 +896,12 @@ POINT: target point."
   (save-excursion
     (goto-char point)
     (fc-line-num)))
+
+(defmacro fc-first-window (form)
+  "Find first window which form return non-nil."
+  `(--first ,form
+	    (mapcar (lambda (x) (cons x (window-buffer x)))
+		    (window-list))))
 
 (provide 'fc-util)
 

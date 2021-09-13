@@ -292,8 +292,13 @@
            (list padding)
            right most-right)))
 
-(defun fc-modeline-mode ()
+(cl-defun fc-modeline-mode ()
   "Setup mode line."
+  (unless (and (facep 'default)
+               (color-defined-p (face-attribute 'default :background))
+               (color-defined-p (face-attribute 'default :foreground)))
+    (cl-return-from fc-modeline-mode))
+
   (unless (facep 'fc-modeline-highlight-face)
     (make-face 'fc-modeline-highlight-face))
 

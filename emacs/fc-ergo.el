@@ -20,6 +20,7 @@
 (defconst *fc-repeat-orignal-func* #'fc-translate-word)
 
 (defvar *fc-work-themes* '(zenburn monokai))
+(defvar *fc-work-dark-themes* '(sanityinc-tomorrow-night))
 
 (defconst *fc-book-zh-single-quote*
   (fc-decorate-region
@@ -1218,7 +1219,7 @@ STEP: pixels."
      ("L" fc--enlarge-h)
 
      ("T" fc-deep-dark-theme)
-     ("W" fc-dark-theme)
+     ("W" ,(fc-manual (fc-theme-auto-select *fc-work-dark-themes*)))
      )
    "ergo-prefix-quick-map")
   "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: dark theme  w: zenburn  z: suspend  T: deep dark theme  W: dark theme.")

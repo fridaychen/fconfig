@@ -10,9 +10,9 @@
 (defvar *fc-enable-anzu* nil)
 (defvar ns-command-modifier)
 (defvar *fc-dev-mode* nil)
-(defconst *fc-text-scale-modes* '(markdown-mode latex-mode))
+(defvar *fc-text-scale-modes* '(markdown-mode latex-mode))
 
-(defconst *fc-column-limit* 80)
+(defvar *fc-column-limit* 80)
 (defvar *fc-basic-line-spacing* 0)
 
 (setf mouse-autoselect-window nil

@@ -22,7 +22,8 @@
 
 (cl-defun -fc-viewer-display ()
   "View display function."
-  (when fc-viewer-minor-mode
+  (when (and fc-viewer-minor-mode
+             (<= (- (frame-height) (window-height)) 3))
     (hl-line-mode 1)
     (-fc-viewer-adjust-width)))
 

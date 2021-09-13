@@ -34,7 +34,7 @@ function proj-build() {
 }
 
 function proj-root() {
-    fc-find-name-in-ancestor .TOP
+    fc-locate-file-in-path ".TOP" ".top"
 }
 
 function proj-chtop() {

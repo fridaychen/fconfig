@@ -66,17 +66,17 @@ function fc-dget() {
     fi
 }
 
-function fc-find-name-in-ancestor() {
-    local target=$1
+function fc-locate-file-in-path() {
     local dir="$(realpath .)"
 
-    while [[ (! (-f "${dir}/${target}" || -d "${dir}/${target}")) && "${dir}" != "/" ]]; do
+    while [[ "${dir}" != "/" ]]; do
+        for i in "$@"; do
+            if [[ -f "${dir}/$i" || -d "${dir}/$i" ]]; then
+                echo ${dir}
+                return
+            fi
+        done
+
         dir=$(dirname "${dir}")
     done
-
-    if [[ "${dir}" == "/" ]]; then
-        return 1
-    fi
-
-    echo ${dir}
 }

@@ -9,7 +9,7 @@ function fj-repo-forall() {
 }
 
 function fj-repo-check() {
-    local repodir=$(fc-find-name-in-ancestor .repo)
+    local repodir=$(fc-locate-file-in-path .repo)
 
     fc-include ${repodir}/.repo.sh
 

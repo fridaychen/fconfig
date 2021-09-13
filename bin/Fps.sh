@@ -75,14 +75,14 @@ function ps-resource-overload() {
 }
 
 function ps-local() {
-    local dir=$(fc-find-name-in-ancestor .localinfo)
+    local dir=$(fc-locate-file-in-path .localinfo)
 
     if [[ (! -z ${dir}) && -f "${dir}/.localinfo" ]]; then
         echo -n " "
         cat ${dir}/.localinfo | tr -d "\r\n"
     fi
 
-    dir=$(fc-find-name-in-ancestor .localsh)
+    dir=$(fc-locate-file-in-path .localsh)
 
     if [[ (! -z ${dir}) && -x "${dir}/.localsh" ]]; then
         echo -n " "

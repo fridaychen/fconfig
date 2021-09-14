@@ -45,17 +45,15 @@
 
 (defun fc--viewer-seg ()
   "Generate viewer state string."
-  (let* ((which (which-function))
-         (chapter (if (null which) "" which)))
-    (fc-text (list chapter
-                   (file-name-sans-extension
-                    (buffer-name)))
-             :face `(:foreground ,(color-complement-hex
-                                   (fc-get-face-attribute (fc--modeline-base-face) :background))
-                                 :inherit ,(fc--modeline-base-face))
-             :limit (- (window-width) 10)
-             :separator " :"
-             :keys *fc-buffer-id-keymap*)))
+  (fc-text (list (which-function)
+                 (file-name-sans-extension
+                  (buffer-name)))
+           :face `(:foreground ,(color-complement-hex
+                                 (fc-get-face-attribute (fc--modeline-base-face) :background))
+                               :inherit ,(fc--modeline-base-face))
+           :limit (- (window-width) 10)
+           :separator " :"
+           :keys *fc-buffer-id-keymap*))
 
 (defun fc-viewer-enter ()
   "Enter viewer mode."

@@ -71,20 +71,18 @@
 
 (defun fc--state-seg ()
   "Buffer state segment."
-  (if (and *fc-enable-state-seg*
-           (not (fc--extreme-narrow-window-p))
-           (fboundp 'fc-modeline-state-func))
-      (fc-modeline-state-func)
-    ""))
+  (when (and *fc-enable-state-seg*
+             (not (fc--extreme-narrow-window-p))
+             (fboundp 'fc-modeline-state-func))
+    (fc-modeline-state-func)))
 
 (defvar-local *fc-enable-major-mode-seg* t)
 
 (defun fc--major-mode-seg ()
   "The name of the major mode."
-  (if (and *fc-enable-major-mode-seg*
-           (fc--wide-window-p))
-      mode-name
-    ""))
+  (when (and *fc-enable-major-mode-seg*
+             (fc--wide-window-p))
+    mode-name))
 
 (defvar-local *fc-buffer-title-seg* nil)
 
@@ -151,15 +149,13 @@
 
 (defun fc--layout-seg ()
   "Layout segment."
-  (if (and (fboundp 'fc-layout-current)
-           (fc--wide-window-p))
-      (fc-text (format ":%s" (fc-layout-current))
-               :face (list :foreground
-                           (color-complement-hex
-                            (fc-get-face-attribute (fc--modeline-base-face) :background))
-                           :inherit (fc--modeline-base-face)))
-    ""
-    ))
+  (when (and (fboundp 'fc-layout-current)
+             (fc--wide-window-p))
+    (fc-text (format ":%s" (fc-layout-current))
+             :face (list :foreground
+                         (color-complement-hex
+                          (fc-get-face-attribute (fc--modeline-base-face) :background))
+                         :inherit (fc--modeline-base-face)))))
 
 (defconst *fc-menu*
   (fc-create-pop-menu

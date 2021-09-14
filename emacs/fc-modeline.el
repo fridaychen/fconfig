@@ -67,39 +67,31 @@
            (not (window-right (window-parent)))
            (not (window-next-sibling)))))
 
+(defvar-local *fc-enable-state-seg* t)
+
 (defun fc--state-seg ()
   "Buffer state segment."
-  (if (and (not (fc--extreme-narrow-window-p))
-           (fboundp 'fc-modeline-info-func)
-           (not fc-viewer-minor-mode))
-      (fc-modeline-info-func)
+  (if (and *fc-enable-state-seg*
+           (not (fc--extreme-narrow-window-p))
+           (fboundp 'fc-modeline-state-func))
+      (fc-modeline-state-func)
     ""))
+
+(defvar-local *fc-enable-major-mode-seg* t)
 
 (defun fc--major-mode-seg ()
   "The name of the major mode."
-  (if (and (fc--wide-window-p)
-           (not fc-viewer-minor-mode))
+  (if (and *fc-enable-major-mode-seg*
+           (fc--wide-window-p))
       mode-name
     ""))
+
+(defvar-local *fc-buffer-title-seg* nil)
 
 (defun fc--remote-buffer-p ()
   "Test if current buffer is remote."
   (and default-directory
        (file-remote-p default-directory 'host)))
-
-(defun fc--viewer-seg ()
-  "Generate viewer state string."
-  (let* ((which (which-function))
-         (chapter (if (null which) "" which)))
-    (fc-text (list chapter
-                   (file-name-sans-extension
-                    (buffer-name)))
-             :face `(:foreground ,(color-complement-hex
-                                   (fc-get-face-attribute (fc--modeline-base-face) :background))
-                                 :inherit ,(fc--modeline-base-face))
-             :limit (- (window-width) 10)
-             :separator " :"
-             :keys *fc-buffer-id-keymap*)))
 
 (defun fc--buffer-full-id ()
   "Generate buffer full id."
@@ -125,8 +117,8 @@
 (defun fc--buffer-title-seg ()
   "Buffer title segment."
   (cond
-   (fc-viewer-minor-mode
-    (fc--viewer-seg))
+   (*fc-buffer-title-seg*
+    (fc-funcall *fc-buffer-title-seg*))
 
    ((fc--narrow-window-p)
     (fc-text
@@ -224,8 +216,7 @@
 
 (defun fc--pos-seg ()
   "Position seg."
-  (when (or (> (buffer-size) 10240)
-            fc-viewer-minor-mode)
+  (when (> (buffer-size) 10240)
     (list -3
           (fc-text
            "%p"

@@ -126,7 +126,7 @@ FROM-BEGINNING: start from beginnning."
 
     (query-replace-regexp from-str to-str nil nil nil backward)))
 
-(defun fc-modeline-info-func ()
+(defun fc-modeline-state-func ()
   "Mode-line info func."
   (concat (if fc-modal-mode (if *is-colorful* "" "M") "-")
           (if *fc-ergo-prefix* "P" "-")

@@ -43,11 +43,28 @@
 
   (fc-run-hook '*fc-viewer-hook*))
 
+(defun fc--viewer-seg ()
+  "Generate viewer state string."
+  (let* ((which (which-function))
+         (chapter (if (null which) "" which)))
+    (fc-text (list chapter
+                   (file-name-sans-extension
+                    (buffer-name)))
+             :face `(:foreground ,(color-complement-hex
+                                   (fc-get-face-attribute (fc--modeline-base-face) :background))
+                                 :inherit ,(fc--modeline-base-face))
+             :limit (- (window-width) 10)
+             :separator " :"
+             :keys *fc-buffer-id-keymap*)))
+
 (defun fc-viewer-enter ()
   "Enter viewer mode."
   (interactive)
 
-  (setf fc-viewer-minor-mode t)
+  (setf fc-viewer-minor-mode t
+        *fc-enable-state-seg* nil
+        *fc-enable-major-mode-seg* nil
+        *fc-buffer-title-seg* fc--viewer-seg)
 
   (fc-set-window-width :width *fc-reading-fill*)
 
@@ -68,7 +85,11 @@
   "Quit viewer mode."
   (interactive)
 
-  (setf fc-viewer-minor-mode nil)
+  (setf fc-viewer-minor-mode nil
+        *fc-enable-state-seg* t
+        *fc-enable-major-mode-seg* t
+        *fc-buffer-title-seg* nil)
+
   (hl-line-mode -1)
   (read-only-mode -1)
 

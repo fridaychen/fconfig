@@ -17,4 +17,4 @@
 ;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:
 
-;;; fc-music.el ends here
+;;; fc-welcome.el ends here

@@ -9,8 +9,14 @@
 (fc-load 'markdown-mode
   :after
   (progn
+    (setf markdown-hr-strings
+          '("---"))
+
     (defun fc--setup-markdown-mode ()
       (eldoc-mode -1))
+
+    (defun markdown-fontify-hrs (last)
+      )
 
     (defun fc--md-toggle-viewer ()
       (when (derived-mode-p 'markdown-mode)

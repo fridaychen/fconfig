@@ -500,7 +500,9 @@ INDENT-FUNC: function for indent."
   "Translate word."
   (interactive)
 
-  (let ((words (fc-current-thing :ext nil)))
+  (let ((words (if *fc-ergo-prefix*
+                   (fc-current-thing :confirm t :ext nil)
+                 (fc-current-thing :ext nil))))
     (when (fc-not-void-p words)
       (fc-dict-lookup words))))
 

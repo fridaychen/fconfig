@@ -64,7 +64,7 @@
   (setf fc-viewer-minor-mode t
         *fc-enable-state-seg* nil
         *fc-enable-major-mode-seg* nil
-        *fc-buffer-title-seg* fc--viewer-seg)
+        *fc-buffer-title-seg* #'fc--viewer-seg)
 
   (fc-set-window-width :width *fc-reading-fill*)
 

@@ -229,10 +229,10 @@ SIZE: width or height depending on POS."
     (when size
       (cond
        ((member pos '(left right))
-        (fc-set-window-width :window win :width size))
+        (fc-set-window-width win size))
 
        (t
-        (fc-set-window-height :window win :height size))))
+        (fc-set-window-height win size))))
 
     (set-window-parameter win 'no-delete-other-windows t)
     (set-window-dedicated-p win t)))

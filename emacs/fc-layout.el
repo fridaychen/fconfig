@@ -51,6 +51,75 @@ NAME: the name of layout"
     (fc-layout-save current)
     (fc-layout-load name)))
 
+(cl-defun fc-layout-split (&key (h t) size)
+  "Split the current window, and the new window will be selected.
+H: horizontal.
+SIZE: size of the current window."
+  (let* ((func (if h #'split-window-horizontally
+                 #'split-window-vertically))
+         (wsize (cond
+                 ((integerp size)
+                  size)
+                 ((floatp size)
+                  (round (* (if h (frame-width)
+                              (frame-height))
+                            size))))))
+    (select-window (apply func (list wsize)))))
+
+(cl-defun fc-layout-clean (&optional (window (selected-window)))
+  "Clean all windows except specified window.
+WINDOW: the special window need to be reserved."
+  (delete-other-windows window)
+  (selected-window))
+
+(cl-defmacro fc-walk-sibling-windows (init-acc form window)
+  "Walk throuth all sibling windows, do accumulation.
+INIT-ACC: initial accumulation value.
+FORM: the form will run for each sibling.
+WINDOW: the sibling of this window will be iterated."
+  `(cl-loop with it = (window-child (window-parent ,window))
+            with acc = ,init-acc
+            do (setq acc ,form
+                     it (window-next-sibling it))
+            while it
+            finally return acc))
+
+(defun fc-list-sibling-windows (window)
+  "Create a list consist of all sibling windows.
+WINDOW: the sibling of the this specific window will be put into the list."
+  (fc-walk-sibling-windows nil
+                           (cons it acc)
+                           window))
+
+(cl-defun fc--maximize-window-in-box-p (window)
+  "Test if the specific window is maximized in its box.
+WINDOW: target window."
+  (let* ((vertical (window-combined-p window))
+         (test-func (if vertical
+                        (lambda (w) (if (> (window-height w) window-min-height) 1 0))
+                      (lambda (w) (if (> (fc-get-window-width w) window-min-width) 1 0)))))
+    (<= (fc-walk-sibling-windows 0 (+ acc (apply test-func (list it))) window)
+        1)))
+
+(cl-defun fc--maximize-window-in-box (window)
+  "Maximize the window in its box.
+WINDOW: target window."
+  (let* ((vertical (window-combined-p window)))
+    (fc-walk-sibling-windows
+     nil
+     (unless (eq it window)
+       (if vertical
+           (fc-set-window-height window-min-height it)
+         (fc-set-window-width window-min-width it)))
+     window)))
+
+(cl-defun fc-toggle-maximize-window-in-box (&optional (window (selected-window)))
+  "Toggle the maximization state of the window.
+WINDOW: target window."
+  (if (fc--maximize-window-in-box-p window)
+      (balance-windows (window-parent window))
+    (fc--maximize-window-in-box window)))
+
 (provide 'fc-layout)
 
 ;; Local Variables:

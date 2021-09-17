@@ -69,12 +69,16 @@
 
 (defvar-local *fc-enable-state-seg* t)
 
-(defun fc--state-seg ()
+(cl-defun fc--state-seg ()
   "Buffer state segment."
-  (when (and *fc-enable-state-seg*
-             (not (fc--extreme-narrow-window-p))
-             (fboundp 'fc-modeline-state-func))
-    (fc-modeline-state-func)))
+  (unless (and *fc-enable-state-seg*
+               (not (fc--extreme-narrow-window-p)))
+    (cl-return-from fc--state-seg))
+
+  (concat (if buffer-read-only "%%" "-")
+          (if (buffer-modified-p)  "*" "-")
+          (when (fboundp 'fc-modeline-extra-state)
+            (fc-modeline-extra-state))))
 
 (defvar-local *fc-enable-major-mode-seg* t)
 

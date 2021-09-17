@@ -17,7 +17,8 @@
 
 (cl-defun -fc-viewer-adjust-width ()
   "Adjust viewer buffer width."
-  (when (> (window-width) *fc-reading-fill*)
+  (when (and (not (window-combined-p))
+             (> (window-width) *fc-reading-fill*))
     (fc-set-window-width *fc-reading-fill*)))
 
 (cl-defun -fc-viewer-display ()
@@ -64,7 +65,7 @@
         *fc-enable-major-mode-seg* nil
         *fc-buffer-title-seg* #'fc--viewer-seg)
 
-  (fc-set-window-width *fc-reading-fill*)
+  (-fc-viewer-adjust-width)
 
   (hl-line-mode 1)
   (read-only-mode 1)

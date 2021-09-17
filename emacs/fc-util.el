@@ -316,7 +316,7 @@ MOUSE: allow user to select with mouse."
     (let ((helm-full-frame t))
       (helm :sources
             (helm-build-sync-source prompt
-                                    :candidates collection))))
+              :candidates collection))))
 
    ((let ((total_len (apply #'+
                             (--map
@@ -586,6 +586,13 @@ DIR: dir."
 WINDOW: target window."
   (eq (frame-root-window window) window))
 
+(cl-defun fc-get-window-width (&optional (window (get-buffer-window)))
+  "Get the width of a window.
+WINDOW: target window."
+  (if (window-live-p window)
+      (window-width window)
+    (window-total-width window)))
+
 (cl-defun fc-set-window-width (width &optional (window (get-buffer-window)))
   "Set the selected window's width.
 WIDTH: width or percent.
@@ -596,7 +603,7 @@ WINDOW: target window."
   (let* ((real-width (if (floatp width)
                          (round (* (frame-width) width))
                        width))
-         (delta (- real-width (window-width window))))
+         (delta (- real-width (fc-get-window-width window))))
     (when (and (/= delta 0)
                (= (window-resizable window delta t)
                   delta))

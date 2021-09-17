@@ -102,10 +102,7 @@
   (interactive)
 
   (unless (one-window-p)
-    (if (and (> (window-width) (* 0.8 (frame-width)))
-             (> (window-height) (* 0.8 (frame-height))))
-        (balance-windows)
-      (maximize-window))))
+    (fc-toggle-maximize-window-in-box)))
 
 (cl-defun fc--query-replace (&key backward from-beginning)
   "Replace.
@@ -126,13 +123,11 @@ FROM-BEGINNING: start from beginnning."
 
     (query-replace-regexp from-str to-str nil nil nil backward)))
 
-(defun fc-modeline-state-func ()
+(defun fc-modeline-extra-state ()
   "Mode-line info func."
-  (concat (if fc-modal-mode (if *is-colorful* "" "M") "-")
+  (concat (if *fc-dev-mode* "D" "-")
           (if *fc-ergo-prefix* "P" "-")
-          (if *fc-dev-mode* "D" "-")
-          (if buffer-read-only "%%" "-")
-          (if (buffer-modified-p)  "*" "-")))
+          (if fc-modal-mode (if *is-colorful* "" "M") "-")))
 
 (defun fc-ergo-restore ()
   "Restore ergo state."

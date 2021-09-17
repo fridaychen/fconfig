@@ -151,16 +151,6 @@
                    :tip '(fc-vc-seg-tip))
         str))))
 
-(defun fc--layout-seg ()
-  "Layout segment."
-  (when (and (fboundp 'fc-layout-current)
-             (fc--wide-window-p))
-    (fc-text (format ":%s" (fc-layout-current))
-             :face (list :foreground
-                         (color-complement-hex
-                          (fc-get-face-attribute (fc--modeline-base-face) :background))
-                         :inherit (fc--modeline-base-face)))))
-
 (defconst *fc-menu*
   (fc-create-pop-menu
    "Start"
@@ -178,12 +168,6 @@
                 :keys (fc-make-keymap
                        `(([mode-line mouse-1]
                           ,(lambda () (interactive) (fc-eval-pop-menu *fc-menu*))))))))
-
-(defun fc--work-seg ()
-  "Work segment."
-  (when (and (boundp '*fc-tomato-bar*)
-             (fc--wide-window-p))
-    *fc-tomato-bar*))
 
 (defun fc--line-col-seg ()
   "Line column segment."
@@ -258,10 +242,6 @@
 (defun fc--modeline-format-most-right ()
   "Format most right modeline."
   (list
-   " "
-   (fc--layout-seg)
-   " "
-   (fc--work-seg)
    " "
    (fc-text
     (fc--menu-seg) :face fc--modeline-hi-face)))

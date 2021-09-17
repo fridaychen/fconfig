@@ -89,8 +89,10 @@ MODES: modes to be excluded."
   "Enter modal mode."
   (hl-line-mode -1)
   (blink-cursor-mode -1)
+
   (fc-modal-set-cursor-color *fc-modal-command-cursor-color*)
   (fc-modal-set-cursor-shape *fc-modal-command-cursor-shape*)
+
   (--each *fc-modal-fringe-faces*
     (when (facep it)
       (set-face-attribute it nil
@@ -104,8 +106,10 @@ MODES: modes to be excluded."
   "Leave modal mode."
   (hl-line-mode 1)
   (blink-cursor-mode 1)
+
   (fc-modal-set-cursor-color *fc-modal-edit-cursor-color*)
   (fc-modal-set-cursor-shape *fc-modal-edit-cursor-shape*)
+
   (--each *fc-modal-fringe-faces*
     (when (facep it)
       (set-face-attribute it nil
@@ -124,15 +128,15 @@ MODES: modes to be excluded."
 
 (defun fc-modal-after-theme-change ()
   "Hook function for after theme change."
-  (let ((default-bg (face-attribute 'default :background))
-        (bg (or
-             (and (facep 'fringe)
-                  (face-attribute 'fringe :background))
-             (fc-get-face-attribute 'highlight :foreground))))
-    (setf *fc-modal-cur-fringe-color*
-          (if (> (fc-color-difference default-bg bg) 30000)
-              bg
-            *fc-modal-command-fringe-color*)))
+  (let* ((default-bg (face-attribute 'default :background))
+         (bg (or
+              (and (facep 'fringe)
+                   (face-attribute 'fringe :background))
+              (fc-get-face-attribute 'highlight :foreground)))
+         (fringe-bg (if (> (fc-color-difference default-bg bg) 30000)
+                        bg
+                      *fc-modal-command-fringe-color*)))
+    (setf *fc-modal-cur-fringe-color* fringe-bg))
 
   (fc-modal-visual-feedback))
 

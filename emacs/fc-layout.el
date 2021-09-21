@@ -123,7 +123,7 @@ WINDOW: target window."
 (defun fc--layout-modeline ()
   "Layout segment."
   (when (fc--wide-window-p)
-    (fc-text (format ":%s" (fc-layout-current))
+    (fc-text (format " :%s " (fc-layout-current))
              :face (list :foreground
                          (color-complement-hex
                           (fc-get-face-attribute (fc--modeline-base-face) :background))

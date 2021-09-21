@@ -105,6 +105,9 @@
   :keymap *fc-viewer-keymap*
   (fc-viewer-toggle))
 
+(when (< *fc-reading-fill* window-min-width)
+  (setf *fc-reading-fill* window-min-width))
+
 (fc-add-display-hook #'-fc-viewer-display)
 
 (provide 'fc-viewer)

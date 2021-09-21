@@ -202,10 +202,14 @@ FROM-BEGINNING: start from beginnning."
   (interactive)
 
   (cond
-   ((minibufferp (current-buffer))
-    (other-window 1)
-    (deactivate-mark)
-    (minibuffer-keyboard-quit))
+   ((active-minibuffer-window)
+    (if (minibufferp (current-buffer))
+        (progn
+          (other-window 1)
+          (deactivate-mark)
+          (minibuffer-keyboard-quit))
+      (with-selected-window (active-minibuffer-window)
+        (minibuffer-keyboard-quit))))
 
    (iedit-mode
     (iedit-quit)

@@ -316,7 +316,7 @@ MOUSE: allow user to select with mouse."
     (let ((helm-full-frame t))
       (helm :sources
             (helm-build-sync-source prompt
-              :candidates collection))))
+                                    :candidates collection))))
 
    ((let ((total_len (apply #'+
                             (--map
@@ -637,9 +637,9 @@ WINDOW: target window."
 ;; environment variables
 (cl-defun fc-add-env-path (path &optional to-front (name "PATH"))
   "Add componet to path style environment variable.
-  PATH: new component.
-  TO-FRONT: add to front or tail.
-  NAME: name of environment."
+PATH: new component.
+TO-FRONT: add to front or tail.
+NAME: name of environment."
   (unless (fc-dir-exists-p path)
     (cl-return-from fc-add-env-path))
 
@@ -899,7 +899,8 @@ POINT: target point."
     (fc-line-num)))
 
 (defmacro fc-first-window (form)
-  "Find first window which form return non-nil."
+  "Find first window which form return non-nil.
+FORM: test form."
   `(--first ,form
             (mapcar (lambda (x) (cons x (window-buffer x)))
                     (window-list))))

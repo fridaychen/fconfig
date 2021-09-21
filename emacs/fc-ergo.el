@@ -979,7 +979,9 @@ KEYMAP: keymap to run."
      ("e" ,(fc-mode-key
             `((image-mode . image-eob)
               (_ . end-of-buffer))))
-     ("g" ,(fc-manual (fc-switch-to-buffer-re "\\.c$\\|\\.el$\\|\\.go$\\|\\.py$")))
+     ("g" ,(fc-manual
+            (bury-buffer)
+            (fc-switch-to-buffer-re "\\.c$\\|\\.el$\\|\\.go$\\|\\.py$")))
 
      ("i" windmove-up)
      ("j" windmove-left)

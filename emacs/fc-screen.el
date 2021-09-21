@@ -148,6 +148,8 @@
 
   (setf *fc-screensave-backup-winconf* (current-window-configuration))
 
+  (delete-other-windows)
+
   (display-time-mode)
   (fireplace)
   (garbage-collect))

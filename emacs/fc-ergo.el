@@ -205,9 +205,9 @@ FROM-BEGINNING: start from beginnning."
    ((active-minibuffer-window)
     (if (minibufferp (current-buffer))
         (progn
+          (minibuffer-keyboard-quit)
           (other-window 1)
-          (deactivate-mark)
-          (minibuffer-keyboard-quit))
+          (deactivate-mark))
       (with-selected-window (active-minibuffer-window)
         (minibuffer-keyboard-quit))))
 

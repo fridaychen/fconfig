@@ -32,7 +32,7 @@
                        `(([mode-line mouse-1]
                           ,(lambda () (interactive) (fc-eval-pop-menu *fc-menu*))))))))
 
-(add-to-list 'fc-modeline-most-right-string '(t (:eval (fc--menu-seg))))
+(add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--menu-seg))))
 
 (provide 'fc-ergo-seg)
 

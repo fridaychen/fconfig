@@ -221,7 +221,7 @@
    " "
    'global-mode-string))
 
-(defvar fc-modeline-most-right-string nil)
+(defvar *fc-modeline-most-right-string* nil)
 
 (defun fc--modeline-format-main ()
   "Format modeline."
@@ -229,7 +229,7 @@
          (center (fc--modeline-format-center))
          (right (fc--modeline-format-right))
          (most-right (if (fc--right-bottom-window-p)
-                         fc-modeline-most-right-string
+                         *fc-modeline-most-right-string*
                        nil))
          (right-len (+
                      (string-width (format-mode-line right))

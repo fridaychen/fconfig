@@ -123,12 +123,6 @@ FROM-BEGINNING: start from beginnning."
 
     (query-replace-regexp from-str to-str nil nil nil backward)))
 
-(defun fc-modeline-extra-state ()
-  "Mode-line info func."
-  (concat (if *fc-dev-mode* "D" "-")
-          (if *fc-ergo-prefix* "P" "-")
-          (if fc-modal-mode (if *is-colorful* "" "M") "-")))
-
 (defun fc-ergo-restore ()
   "Restore ergo state."
   (interactive)

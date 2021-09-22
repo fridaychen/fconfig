@@ -46,7 +46,8 @@
 
 (defun fc--viewer-seg ()
   "Generate viewer state string."
-  (fc-text (list (which-function)
+  (fc-text (list (if *is-colorful* "📜" "RD")
+                 (which-function)
                  (file-name-sans-extension
                   (buffer-name)))
            :face `(:foreground ,(color-complement-hex

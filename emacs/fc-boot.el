@@ -45,6 +45,7 @@
 
 (fc-require 'fc-control)
 (fc-require 'fc-ergo)
+(fc-require 'fc-ergo-seg)
 (fc-require 'fc-edit)
 
 (when (eq *fc-completion* 'helm)

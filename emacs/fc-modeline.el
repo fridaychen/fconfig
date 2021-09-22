@@ -98,7 +98,7 @@
 (defun fc--buffer-full-id ()
   "Generate buffer full id."
   (let ((rhost (fc--remote-buffer-p))
-        (proj (and (boundp 'fc-proj-name) fc-proj-name)))
+        (proj (fc-modeline-proj-name)))
     (fc-text
      (list
       (when rhost
@@ -150,24 +150,6 @@
           (fc-text str :face `(:foreground ,color)
                    :tip '(fc-vc-seg-tip))
         str))))
-
-(defconst *fc-menu*
-  (fc-create-pop-menu
-   "Start"
-   '(
-     (fc-user-select-control-mode "Control")
-     (fc-user-select-project "Projects"))))
-
-(defun fc--menu-seg ()
-  "Menu segment."
-  (and (boundp '*fc-project-name*)
-       (fc--wide-window-p)
-       (fc-text (format (if *is-colorful* "⟨%s⟩" "{%s}")
-                        *fc-project-name*)
-                :face 'bold
-                :keys (fc-make-keymap
-                       `(([mode-line mouse-1]
-                          ,(lambda () (interactive) (fc-eval-pop-menu *fc-menu*))))))))
 
 (defun fc--line-col-seg ()
   "Line column segment."
@@ -239,12 +221,7 @@
    " "
    'global-mode-string))
 
-(defun fc--modeline-format-most-right ()
-  "Format most right modeline."
-  (list
-   " "
-   (fc-text
-    (fc--menu-seg) :face fc--modeline-hi-face)))
+(defvar fc-modeline-most-right-string nil)
 
 (defun fc--modeline-format-main ()
   "Format modeline."
@@ -252,7 +229,7 @@
          (center (fc--modeline-format-center))
          (right (fc--modeline-format-right))
          (most-right (if (fc--right-bottom-window-p)
-                         (fc--modeline-format-most-right)
+                         fc-modeline-most-right-string
                        nil))
          (right-len (+
                      (string-width (format-mode-line right))

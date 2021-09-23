@@ -902,6 +902,12 @@ COLORB: another color."
   "Get current line number."
   (string-to-number (format-mode-line "%l")))
 
+(cl-defun fc-buffer-lines (&optional (buffer (current-buffer)))
+  "Get current line number."
+  (fc-buffer
+    (goto-char (point-max))
+    (string-to-number (format-mode-line "%l"))))
+
 (defun fc-point-to-line (point)
   "Calautle the line number of POINT.
 POINT: target point."

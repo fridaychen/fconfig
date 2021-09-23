@@ -127,9 +127,9 @@ WINDOW: target window."
              :face (list :foreground
                          (color-complement-hex
                           (fc-get-face-attribute (fc--modeline-base-face) :background))
-                         :inherit (fc--modeline-base-face)))))
+                         :inherit fc--modeline-hi-face))))
 
-(add-to-list 'global-mode-string '(t (:eval (fc--layout-modeline))))
+(add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--layout-modeline))))
 
 (provide 'fc-layout)
 

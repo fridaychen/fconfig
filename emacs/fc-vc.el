@@ -116,6 +116,13 @@
 
   (fc-locate-file-in-path '(".git" ".svn") dir))
 
+(cl-defun fc-vc-branch ()
+  "Return current vc branch."
+  (when vc-mode
+    (let* ((backend (symbol-name (vc-backend (buffer-file-name))))
+           (branch (substring-no-properties vc-mode (+ (length backend) 2))))
+      branch)))
+
 (fc-add-network-advice 'fc-git-pull 'fc-git-push)
 
 (--each '(fc-git-commit)

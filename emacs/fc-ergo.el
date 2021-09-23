@@ -59,7 +59,7 @@
                       (point-max)))
     ("VC" ,(fc-text
             (list
-             (magit-get-current-branch)
+             (fc-vc-branch)
              (fc-string (when buffer-file-name
                           (vc-state buffer-file-name))))
             :separator ", "))))

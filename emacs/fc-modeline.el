@@ -136,8 +136,10 @@
 
 (defun fc-vc-seg-tip()
   "Return VC seg tip message."
-  (fc-string
-   (vc-state buffer-file-name)))
+  (fc-text
+   (list
+    (fc-vc-branch)
+    (vc-state buffer-file-name))))
 
 (defun fc--vc-seg ()
   "VC state segment."
@@ -147,7 +149,8 @@
                    ('edited "#cf6a4c")
                    ((or 'needs-merge 'conflict) "#ff0066"))))
       (if color
-          (fc-text str :face `(:foreground ,color)
+          (fc-text str
+                   :face `(:foreground ,color)
                    :tip '(fc-vc-seg-tip))
         str))))
 

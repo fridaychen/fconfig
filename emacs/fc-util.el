@@ -719,6 +719,21 @@ STR: origin str."
            str)))
 
 ;; propertizer wrapper
+(cl-defun fc--text (separator &rest rest)
+  "Concat strings.
+SEPARATOR: separator between elements.
+REST: strings."
+  (--reduce-from (let ((part (if (listp it)
+                                 (apply #'fc--text separator it)
+                               (fc-string it))))
+                   (if part
+                       (if (string-empty-p acc)
+                           part
+                         (concat acc separator part))
+                     acc))
+                 ""
+                 rest))
+
 (cl-defun fc-text (obj &key face tip keys pointer (separator " ") limit)
   "Format text.
 OBJ: text source.
@@ -728,11 +743,7 @@ KEYS: key bindings.
 POINTER: mouse pointer.
 SEPARATOR: sepatator string.
 LIMIT: max text length."
-  (let ((obj (if (listp obj)
-                 (s-join separator
-                         (--filter (not (null it))
-                                   obj))
-               (fc-string obj)))
+  (let ((obj (fc--text separator obj))
         (args ()))
     (when face
       (push (cons 'face face) args))

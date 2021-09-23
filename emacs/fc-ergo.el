@@ -59,7 +59,8 @@
                       (point-max)))
     ("VC" ,(format "%s, %s"
                    (magit-get-current-branch)
-                   (fc-string (vc-state buffer-file-name))))))
+                   (fc-string (when buffer-file-name
+                                (vc-state buffer-file-name)))))))
 
 (defun fc-buffer-info ()
   "Create buffer info."

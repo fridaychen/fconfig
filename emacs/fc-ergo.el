@@ -57,10 +57,12 @@
                       buffer-file-coding-system
                       (point)
                       (point-max)))
-    ("VC" ,(format "%s, %s"
-                   (magit-get-current-branch)
-                   (fc-string (when buffer-file-name
-                                (vc-state buffer-file-name)))))))
+    ("VC" ,(fc-text
+            (list
+             (magit-get-current-branch)
+             (fc-string (when buffer-file-name
+                          (vc-state buffer-file-name))))
+            :separator ", "))))
 
 (defun fc-buffer-info ()
   "Create buffer info."
@@ -135,6 +137,7 @@ FROM-BEGINNING: start from beginnning."
 (fc-load 'ace-window
   :autoload t
   :after (setf aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+
 (fc-load 'expand-region
   :idle t
   :before (autoload #'er/mark-symbol "expand-region")

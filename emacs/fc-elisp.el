@@ -30,7 +30,7 @@
 (defun fc-add-elisp-header-footer ()
   "Add elisp header and footer."
   (let ((fname (file-name-nondirectory buffer-file-name)))
-    (fc-buffer
+    (fc-whole-buffer
       (goto-char (point-min))
       (insert ";;; " fname " --- DESCRIPTION -*- lexical-binding: t -*-\n\n"
               ";;; Commentary:\n"

@@ -257,12 +257,13 @@ BODY: form body."
        (narrow-to-region ,start ,end)
        ,@body)))
 
-(defmacro fc-buffer (&rest body)
+(defmacro fc-whole-buffer (&rest body)
   "Buffer wrapper.
 BODY: form body."
   (declare (indent defun))
-  `(save-excursion
-     (save-restriction
+  `(save-restriction
+     (widen)
+     (save-excursion
        ,@body)))
 
 (cl-defmacro fc-decorate-region (prefix suffix &key (mark-func #'er/mark-symbol))
@@ -909,7 +910,7 @@ COLORB: another color."
 (defun fc-point-to-line (point)
   "Calautle the line number of POINT.
 POINT: target point."
-  (fc-buffer
+  (fc-whole-buffer
     (goto-char point)
     (fc-line-num)))
 

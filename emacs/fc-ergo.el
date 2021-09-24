@@ -49,11 +49,7 @@
   `(("Name" ,buffer-file-name)
     ("Basic" ,(format "%d bytes, %d lines, %s, point %d, %d"
                       (buffer-size)
-                      (if (buffer-file-name)
-                          (string-to-number
-                           (shell-command-to-string
-                            (format "wc -l '%s'"  buffer-file-name)))
-                        (count-lines (point-min) (point-max)))
+                      (fc-buffer-lines)
                       buffer-file-coding-system
                       (point)
                       (point-max)))

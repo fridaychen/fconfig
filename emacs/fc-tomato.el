@@ -110,13 +110,6 @@
   (defun fc-tomato-init ()
     (fc--tomato-reset-bar)))
 
-(defun fc--tomato-modeline ()
-  "Returns the tomate status."
-  (when (fc--wide-window-p)
-    *fc-tomato-bar*))
-
-(add-to-list 'global-mode-string '(t (:eval (fc--tomato-modeline))))
-
 (provide 'fc-tomato)
 
 ;; Local Variables:

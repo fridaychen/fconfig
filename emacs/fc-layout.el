@@ -120,17 +120,6 @@ WINDOW: target window."
       (balance-windows (window-parent window))
     (fc--maximize-window-in-box window)))
 
-(defun fc--layout-modeline ()
-  "Layout segment."
-  (when (fc--wide-window-p)
-    (fc-text (format " :%s " (fc-layout-current))
-             :face (list :foreground
-                         (color-complement-hex
-                          (fc-get-face-attribute (fc--modeline-base-face) :background))
-                         :inherit fc--modeline-hi-face))))
-
-(add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--layout-modeline))))
-
 (provide 'fc-layout)
 
 ;; Local Variables:

@@ -34,6 +34,24 @@
 
 (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--menu-seg))))
 
+(defun fc--layout-modeline ()
+  "Layout segment."
+  (when (fc--wide-window-p)
+    (fc-text (format " :%s " (fc-layout-current))
+             :face (list :foreground
+                         (color-complement-hex
+                          (fc-get-face-attribute (fc--modeline-base-face) :background))
+                         :inherit fc--modeline-hi-face))))
+
+(add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--layout-modeline))))
+
+(defun fc--tomato-modeline ()
+  "Returns the tomate status."
+  (when (fc--wide-window-p)
+    *fc-tomato-bar*))
+
+(add-to-list 'global-mode-string '(t (:eval (fc--tomato-modeline))))
+
 (provide 'fc-ergo-seg)
 
 ;; Local Variables:

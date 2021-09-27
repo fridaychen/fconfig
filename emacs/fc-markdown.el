@@ -352,7 +352,7 @@ END: end point."
      ("SPC" fc-md-portal))
    "fc-md-map"
    *fc-func-mode-map*)
-  "KEYS a: apply style  f: footnote  l: make list  q: quote  t: search verse  v:add verse  u: do  SPC: portal.")
+  "KEYS  a: apply style  f: footnote  l: make list  q: quote  t: search verse  v: add verse  u: do  SPC: portal.")
 
 (defun fc-markdown-mode-func ()
   "Run markdown mode func."

@@ -75,10 +75,12 @@
                (not (fc--extreme-narrow-window-p)))
     (cl-return-from fc--state-seg))
 
-  (concat (if buffer-read-only "%%" "-")
-          (if (buffer-modified-p)  "*" "-")
-          (when (fboundp 'fc-modeline-extra-state)
-            (fc-modeline-extra-state))))
+  (let* ((state (concat (if buffer-read-only "%%" "-")
+                        (if (buffer-modified-p)  "*" "-"))))
+    (when (fboundp 'fc-modeline-extra-state)
+      (setf state (fc-modeline-extra-state state)))
+
+    state))
 
 (defvar-local *fc-enable-major-mode-seg* t)
 

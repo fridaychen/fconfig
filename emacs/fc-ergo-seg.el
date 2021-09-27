@@ -5,11 +5,13 @@
 
 ;;; Code:
 
-(defun fc-modeline-extra-state ()
+(defun fc-modeline-extra-state (state)
   "Mode-line info func."
-  (concat (if *fc-dev-mode* "D" "-")
+  (concat (if fc-modal-mode (if *is-colorful* "" "M") "-")
           (if *fc-ergo-prefix* "P" "-")
-          (if fc-modal-mode (if *is-colorful* "" "M") "-")))
+          (if *fc-dev-mode* "D" "-")
+          state
+          (upcase (fc-layout-current))))
 
 (defun fc-modeline-proj-name ()
   "Get project name of current buffer."
@@ -33,17 +35,6 @@
                           ,(lambda () (interactive) (fc-eval-pop-menu *fc-menu*))))))))
 
 (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--menu-seg))))
-
-(defun fc--layout-modeline ()
-  "Layout segment."
-  (when (fc--wide-window-p)
-    (fc-text (format " :%s " (fc-layout-current))
-             :face (list :foreground
-                         (color-complement-hex
-                          (fc-get-face-attribute (fc--modeline-base-face) :background))
-                         :inherit fc--modeline-hi-face))))
-
-(add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--layout-modeline))))
 
 (defun fc--tomato-modeline ()
   "Returns the tomate status."

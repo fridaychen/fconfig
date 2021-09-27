@@ -1105,7 +1105,7 @@ KEYMAP: keymap to run."
      ("V" global-visual-line-mode)
      )
    "ergo-mode-map")
-  "KEYS lower-case is local upper-case is global  b: scroll bar  g: golden ratio  h: highlight changs  l: linum  n: nyan  r: rainbow-delimiter  t: transparency  v: visual line  A: anzu  H: highlight changs  L: linum  S: sound  T: tabbar  V: global visual line.")
+  "KEYS  b: scroll bar  g: golden ratio  h: highlight changs  l: linum  n: nyan  r: rainbow-delimiter  t: transparency  v: visual line  A: anzu  H: highlight changs  L: linum  S: sound  T: tabbar  V: global visual line.")
 
 (defconst *ergo-quick-map*
   (fc-make-keymap

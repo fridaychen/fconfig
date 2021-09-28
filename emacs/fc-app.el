@@ -1060,6 +1060,7 @@ REST: commands."
     (fc-user-select-func
      "System"
      `(("location"	  . fc-update-location)
+       ("sound sink"      . fc-app-select-sound-sink)
        ("package"	  . list-packages)
        ("profile startup" . fc-profile-startup)
        (,server-title	  . fc-toggle-server)
@@ -1173,6 +1174,16 @@ END: end of region."
        (message "string is %s"
                 (kill-new (apply #'string numbers))))
      (deactivate-mark))))
+
+;; set sound sink
+(defun fc-app-select-sound-sink ()
+  "Select sound sink."
+  (let ((sink (fc-user-select "Select sound sink"
+                              (split-string
+                               (fc-exec-command-to-string "fc-sound-sink")
+                               "\n" t))))
+    (when sink
+      (fc-exec-command "pactl" "set-default-sink" sink))))
 
 ;; app portal
 (defun fc-app-portal ()

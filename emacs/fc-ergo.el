@@ -1563,7 +1563,9 @@ AUTO: auto select face."
                        :prefix 'query-replace))
    ("|" ,(fc-cond-key :normal 'make-frame
                       :prefix 'delete-frame))
-   ("S-<SPC>" ,(fc-cond-key :normal 'scroll-down-command
+   ("S-<SPC>" ,(fc-cond-key :normal (fc-manual
+                                     (fc-modal-head-key
+                                      "Basic" '*ergo-basic-map*))
                             :prefix *fc-undef-key*
                             :region 'copy-rectangle-as-kill))
    ("M-<SPC>" ,(fc-cond-key :normal 'scroll-down-command

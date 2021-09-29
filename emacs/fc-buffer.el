@@ -15,7 +15,7 @@ BUFFERS: list of buffer."
   (let ((current (current-buffer)))
     (--remove (eq current it) buffers)))
 
-(cl-defun fc-list-buffer (&key not-file dir regex file-regex sort modified filter)
+(cl-defun fc-list-buffer (&key not-file dir regex file-regex sort modified filter mode)
   "List buffer accroding the arguments.
 NOT-FILE: buf is not normal file.
 DIR: buf is under this dir.
@@ -41,6 +41,8 @@ FILTER: func for filter."
                        (string-match file-regex (buffer-file-name buf)))
                    (or (not modified)
                        (buffer-modified-p buf))
+                   (or (not mode)
+                       (member (buffer-local-value 'major-mode buf) mode))
                    (or (not filter)
                        (with-current-buffer buf
                          (fc-funcall filter))))

@@ -17,11 +17,14 @@
 
 (fc-load 'lsp-ui
   :after (progn
+           (add-hook '*fc-ergo-restore-hook* #'lsp-ui-doc-hide)
+
            (setf lsp-ui-sideline-global t
                  lsp-ui-sideline-delay 2
                  lsp-ui-doc-enable t
                  lsp-ui-doc-show-with-cursor nil
                  lsp-ui-doc-show-with-mouse t
+                 lsp-ui-doc-alignment 'window
                  lsp-ui-doc-delay 0.1)))
 
 (provide 'fc-lsp)

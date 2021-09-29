@@ -1042,7 +1042,9 @@ KEYMAP: keymap to run."
                                     (fc-buffer-info))))
      ("c" describe-char)
      ("f" ,(fc-mode-key
-            `((emacs-lisp-mode . describe-function)
+            `(
+              (lsp-mode . lsp-ui-doc-show)
+              (emacs-lisp-mode . describe-function)
               (go-mode . godef-describe)
               (python-mode . python-eldoc-function)
               ((latex-mode markdown-mode org-mode) . fc-ergo-which-function)

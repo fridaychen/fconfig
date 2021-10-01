@@ -27,7 +27,7 @@
 (defun fc--menu-seg ()
   "Menu segment."
   (and (boundp '*fc-project-name*)
-       (fc-text (format (if *is-colorful* "⟨‍%s⟩" "{%s}")
+       (fc-text (format (if *is-colorful* "⟨%s⟩" "{%s}")
                         *fc-project-name*)
                 :face fc--modeline-hi-face
                 :keys (fc-make-keymap

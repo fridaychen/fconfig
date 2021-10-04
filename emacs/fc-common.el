@@ -90,9 +90,6 @@
 ;; completion
 (defvar *fc-completion* 'ivy 'helm)
 
-;; screen
-(setf *fc-enable-hideshowvis* nil)
-
 ;; theme
 (setf *fc-light-theme* '(
                          (gruvbox-light-hard . gruvbox-theme)
@@ -300,16 +297,6 @@ COLOR: background color."
   (setenv "XARGS" "xargs")))
 
 ;; hide-show modes setting
-(defconst *fc-prog-modes* '(c-mode
-                            c++-mode
-                            emacs-lisp-mode
-                            go-mode
-                            haskell-mode
-                            lisp-mode
-                            ocaml-mode
-                            sh-mode
-                            python-mode))
-
 (defconst *fc-doc-modes* '(html-mode
                            latex-mode
                            markdown-mode

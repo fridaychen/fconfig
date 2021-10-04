@@ -325,7 +325,7 @@ func filterType() func(os.FileInfo) bool {
 		addFileExt(extMap, []string{".azw3", ".epub", ".mobi", ".pdf"})
 	}
 	if *codeArg {
-		addFileExt(extMap, []string{".awk", ".c", ".h", ".cpp", ".el", ".go", ".hs", ".rb", ".rst", ".pl", ".py", ".sh", ".vim", ".y", ".zsh"})
+		addFileExt(extMap, []string{".awk", ".c", ".h", ".cpp", ".el", ".go", ".hs", ".lua", ".rb", ".rst", ".pl", ".py", ".sh", ".vim", ".y", ".zsh"})
 	}
 	if *confArg {
 		addFilename(typeFileNameMap, []string{"CMakeLists.txt", "GNUmakefile", "makefile", "Makefile"})

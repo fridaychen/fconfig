@@ -1181,7 +1181,8 @@ END: end of region."
   (let ((sink (fc-user-select "Select sound sink"
                               (split-string
                                (fc-exec-command-to-string "fc-sound-sink")
-                               "\n" t))))
+                               "\n" t)
+                              :mouse t)))
     (when sink
       (fc-exec-command "pactl" "set-default-sink" sink))))
 

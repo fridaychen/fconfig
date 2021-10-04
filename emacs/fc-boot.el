@@ -18,7 +18,7 @@
   :local t
 
   :after(progn
-          (add-hook 'find-file-hook #'fc-hide-show-init)))
+          (add-hook 'find-file-hook #'fc-hs-init)))
 
 (apply #'fc-install *fc-extra-packages*)
 

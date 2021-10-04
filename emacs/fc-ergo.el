@@ -1416,7 +1416,8 @@ AUTO: auto select face."
                       :region (fc-manual (fc--query-replace))
                       :preregion (fc-manual (fc--query-replace
                                              :from-beginning t))))
-   ("s" ,(fc-cond-key :normal 'fc-toggle-hide-show
+
+   ("s" ,(fc-cond-key :normal 'fc-hs-toggle
                       :region 'fc-isearch-dwim
                       :prefix 'fc-toggle-hide-show-all))
    ("t" fc-translate-word)
@@ -1487,7 +1488,7 @@ AUTO: auto select face."
                       :one 'bury-buffer))
    ("R" ,(fc-cond-key :normal 'fc-recentf
                       :region (fc-manual (fc--query-replace :backward t))))
-   ("S" fc-toggle-hide-show-all)
+   ("S" fc-hs-toggle-all)
    ("T" ,*fc-undef-key*)
    ("U" ,(fc-cond-key :normal (fc-manual
                                (fc-search-next nil t))

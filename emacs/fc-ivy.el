@@ -30,6 +30,10 @@
            ("C-k" ivy-previous-line)
            ("C-q" ivy-switch-buffer-kill))))
 
+(fc-load 'ivy-posframe
+  :after (progn
+           (ivy-posframe-mode 1)))
+
 (fc-load 'counsel
   :autoload t
   :before (progn

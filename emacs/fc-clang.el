@@ -96,6 +96,7 @@ END: end of region."
            (defun fc--setup-c-mode ()
              (c-toggle-electric-state 1)
              (c-toggle-auto-newline 1)
+             (c-toggle-hungry-state 1)
 
              (--each '("FIXME:" "TODO:" "ToDo:" "MEMO:"
                        "FIXME :" "TODO :" "MEMO :")

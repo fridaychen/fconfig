@@ -9,13 +9,14 @@
 (fc-load 'company
   :after (progn
            (setf company-backends '(company-elisp company-ispell)
-                 company-idle-delay 0.8
-                 company-minimum-prefix-length 3
+                 company-idle-delay 0.2
+                 company-minimum-prefix-length 2
+                 company-show-numbers t
                  company-auto-complete t)
 
            (defun fc--company-enable ()
              (global-company-mode)
-             (setf company-idle-delay 0.8))
+             (setf company-idle-delay 0))
 
            (defun fc--company-disable ()
              (global-company-mode -1)
@@ -24,6 +25,7 @@
   :bind '((nil
            ("M-/" company-complete))
           (company-active-map
+           ("C-h" company-abort)
            ("M-i" company-select-previous)
            ("M-k" company-select-next)
            ("C-j" company-select-next)

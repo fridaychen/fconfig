@@ -734,6 +734,21 @@ ARGS: list of infos."
       (rename-file name new-name)
       (set-visited-file-name new-name))))
 
+(defun fc-goto-last-change ()
+  (--first
+   (when it
+     (cond
+      ((and (consp it) (integerp (car it)) (integerp (cdr it)))
+       (goto-char (cdr it)))
+
+      ((and (consp it) (stringp (car it)))
+       (goto-char (abs (cdr it))))
+
+      ((integerp it)
+       (goto-char it))))
+   buffer-undo-list)
+  "")
+
 ;; global mode
 (fc-unbind-keys '("C-x C-c"
                   "C-M-i"))
@@ -977,6 +992,8 @@ KEYMAP: keymap to run."
             (bury-buffer)
             (fc-switch-to-buffer-re "\\.c$\\|\\.el$\\|\\.go$\\|\\.py$")))
 
+     ("h" fc-goto-last-change)
+
      ("i" windmove-up)
      ("j" windmove-left)
      ("k" windmove-down)
@@ -1006,7 +1023,8 @@ KEYMAP: keymap to run."
 
      (";" goto-line))
    "ergo-goto-map")
-  "KEYS SPC: last layout  a: to begin of buffer  b: favorite buffer  c: recenter  e: to end of buffer  g: recent code  h: imenu  i: above window  k:  beneath window  j: left window  l: right window  m: switch layout  n: show last navi buf  q: modified buffer  r: all recent file  t: tag  w: all buffer  ;: goto line.")
+  "KEYS SPC: imenu  a: to begin of buffer  b: favorite buffer  c: recenter  e: to end of buffer  g: recent code  h: last change  i: above window  k:  beneath window  j: left window  l: right window  m: switch layout  n: show last navi buf  q: modified buffer  r: all recent file  t: tag  w: all buffer  ;: goto line.")
+
 (defconst *ergo-goto-region-map*
   (fc-make-keymap
    `(("a" beginning-of-buffer)

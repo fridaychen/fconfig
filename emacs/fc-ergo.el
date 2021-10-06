@@ -1474,7 +1474,7 @@ AUTO: auto select face."
    ;; C := VC
    ("C" ,(fc-head-key "VC" '*ergo-vc-map*))
 
-   ("D" ,(fc-cond-key :normal 'kill-this-buffer
+   ("D" ,(fc-cond-key :normal (fc-manual (kill-buffer (current-buffer)))
                       :region 'kill-rectangle))
    ("E" fc-end-of-semantic)
    ("F" ,(fc-cond-key :normal 'fc-find-files

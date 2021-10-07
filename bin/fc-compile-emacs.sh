@@ -28,8 +28,8 @@ function update_package() {
 
 if [[ $(basename $(pwd)) = "emacs" && -d .git ]]; then
     fc-user-confirm "Update source code" && update
-    fc-user-confirm "Compile" && compile
-    fc-user-confirm "Install" && install
+    (fc-user-confirm "Compile" && compile) || exit
+    (fc-user-confirm "Install" && install) || exit
     fc-user-confirm "Update packages" && update_package
 elif fc-user-confirm "Clone emacs"; then
     clone

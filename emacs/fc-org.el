@@ -64,7 +64,7 @@
     (add-hook 'org-capture-mode-hook #'fc--capture-tag)
 
     (add-hook 'org-capture-after-finalize-hook #'fc-modal-global-mode)
-
+    (add-hook 'org-babel-after-execute-hook #'org-redisplay-inline-images)
     (add-hook 'org-mode-hook #'fc--setup-org-mode)))
 
 (cl-defun fc-org-add-header ()

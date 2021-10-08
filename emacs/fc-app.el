@@ -352,6 +352,13 @@ PATTERN: target pattern."
 "))
 
 ;; fc file finder
+(cl-defun fc--rg-ignore (ignore-files)
+  "Generate rg ignore-args.
+IGNORE-FILES: ignore file glob."
+  (--reduce-from (cons "-g" (cons (concat "!" it) acc))
+                 nil
+                 ignore-files))
+
 (cl-defun fc--rg-types (file-types)
   "Generate rg type-args.
 FILE-TYPES: fc style file types."
@@ -420,14 +427,15 @@ SORT: sort files."
     (fc-user-select prompt files)))
 
 ;; fc text retrieve
-(cl-defun fc--internal-ftr-rg (dir pattern file-types)
+(cl-defun fc--internal-ftr-rg (dir pattern file-types &key ignore-files)
   "Ftr with ripgrep.
 DIR: under this dir performing search.
 PATTERN: target regex pattern.
 FILE-TYPES: target file types to be searched."
   (let ((default-directory dir)
         (arg-type (fc--rg-types file-types))
-        (arg-cpu (list "-j" (format "%d" *fc-rg-cpus*))))
+        (arg-cpu (list "-j" (format "%d" *fc-rg-cpus*)))
+        (arg-ignore (fc--rg-ignore ignore-files)))
     (apply #'fc-exec-command-to-buffer
            (current-buffer)
            "rg"
@@ -438,6 +446,7 @@ FILE-TYPES: target file types to be searched."
            pattern
            (seq-concatenate
             'list
+            arg-ignore
             arg-cpu
             arg-type)))
 
@@ -464,7 +473,7 @@ FILE-TYPES: target file types to be searched."
    dir
    pattern))
 
-(defun fc-text-retrieve (dir)
+(defun fc-text-retrieve (dir &key ignore-files)
   "Text retrieve.
 DIR: dir to search."
   (let* ((pattern (fc-current-thing :regq t :confirm t))
@@ -474,7 +483,7 @@ DIR: dir to search."
                      (file-name-nondirectory buffer-file-name))))
     (save-excursion
       (with-current-buffer buf
-        (fc--internal-ftr-rg dir pattern '(code conf doc xml))
+        (fc--internal-ftr-rg dir pattern '(code conf doc xml) :ignore-files ignore-files)
 
         (goto-char (point-min))
 

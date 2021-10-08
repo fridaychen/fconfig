@@ -28,9 +28,11 @@
 (defvar *fc-modal-space-click-count* 0)
 
 (defvar *fc-modal-exclude-modes*
-  '(eshell-mode
-    term-mode
+  '(
+    calc-mode
     dired-mode
+    eshell-mode
+    term-mode
     vc-git-log-edit-mode
     Custom-mode))
 
@@ -279,8 +281,8 @@ TIMEOUT: user input timeout in seconds."
 
   (fc-modal-head-key "Modal"
                      '*fc-modal-keymap*
-                     timeout
-                     t))
+                     :timeout timeout
+                     :repeat t))
 
 (defun fc-modal-input ()
   "Simple input function under modal."

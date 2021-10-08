@@ -166,7 +166,9 @@ FROM-BEGINNING: start from beginnning."
           deft-file-naming-rules '((noslash . "-")
                                    (nospace . "-")
                                    (case-fn . downcase))
-          deft-text-mode 'org-mode)))
+          deft-text-mode 'org-mode))
+  :bind '((deft-mode-map
+            ("<escape>" quit-window))))
 
 (defun fc-switch-layout ()
   "Switch layout."

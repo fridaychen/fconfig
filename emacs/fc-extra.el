@@ -18,8 +18,11 @@
 
 (fc-load 'speed-type)
 
+(defvar *fc-enable-snails* nil)
+
 (fc-load 'snails
   :local t
+  :enable *fc-enable-snails*
   :after (fc-modal-exclude-mode 'snails-mode)
   :bind '((snails-mode-map
            ("C-j" snails-select-next-item)

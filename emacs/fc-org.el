@@ -15,7 +15,8 @@
      "* %?\n  # Wrote on %U")
     ))
 
-(fc-install 'org-superstar)
+(fc-install 'org-superstar
+            'org-link-beautify)
 
 (fc-load 'org
   :after
@@ -31,6 +32,7 @@
 
     (cl-defun fc--setup-org-mode ()
       (org-superstar-mode 1)
+      (org-link-beautify-mode 1)
       (visual-line-mode 1))
 
     (cl-defun fc--capture-copy-region ()

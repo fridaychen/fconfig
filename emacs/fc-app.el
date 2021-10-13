@@ -531,7 +531,7 @@ DIR: dir to search."
      (fc-eshell-pwd)
      (if branch
          (fc-text
-          (format "\n %s %s%s"
+          (format " %s %s%s"
                   (if *is-colorful* "" "^")
                   branch
                   (shell-command-to-string "git status -s | awk -f ${FCHOME}/bin/ps-fit.awk"))
@@ -539,7 +539,8 @@ DIR: dir to search."
      "\n"
      (if *is-colorful* "╍❱ " "-> "))))
 
-(setf eshell-prompt-function #'fc-eshell-prompt-function)
+(setf eshell-prompt-function #'fc-eshell-prompt-function
+      eshell-prompt-regexp (if *is-colorful* "^[^\n]*\n╍❱ " "^[^\n]*\n-> "))
 
 (defun j (&rest args)
   "Fast jump.

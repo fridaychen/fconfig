@@ -1,0 +1,32 @@
+* Abstract
+
+* Sequence chart
+
+#+BEGIN_SRC plantuml :file UNTITLED
+  scale 1
+
+  actor user
+  participant Foo as foo
+  participant Bar as bar
+
+  user->foo : Click button
+  foo -> bar : StartProcess
+  bar --> foo : OK
+
+  |||
+  note over foo : line 1\nline 2
+  |||
+  bar -> foo : Event
+  note right : Asynchronous event
+
+  note over foo : Process done
+
+  hide footbox
+#+END_SRC
+
+#+RESULTS:
+
+#+STARTUP: content
+#+STARTUP: hideblocks
+#+STARTUP: inlineimages
+#+STARTUP: overview

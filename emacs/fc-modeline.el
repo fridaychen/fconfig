@@ -247,6 +247,8 @@
 
 (cl-defun fc-modeline-mode ()
   "Setup mode line."
+  (sit-for 1)
+
   (unless (and (facep 'default)
                (color-defined-p (face-attribute 'default :background))
                (color-defined-p (face-attribute 'default :foreground)))

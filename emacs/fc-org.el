@@ -15,14 +15,17 @@
      "* %?\n  # Wrote on %U")
     ))
 
-(fc-install 'org-superstar
-            'org-link-beautify)
+(fc-install 'gnuplot
+            'org-link-beautify
+            'org-plus-contrib
+            'org-superstar)
 
 (fc-load 'org
   :after
   (progn
     (setf org-hide-emphasis-markers t
           org-log-done t
+          org-export-with-sub-superscripts nil
           )
 
     (require 'org-agenda)
@@ -32,7 +35,7 @@
 
     (cl-defun fc--setup-org-mode ()
       (org-superstar-mode 1)
-      (org-link-beautify-mode 1)
+      (org-link-beautify-mode -1)
       (visual-line-mode 1))
 
     (cl-defun fc--capture-copy-region ()
@@ -193,6 +196,8 @@ PARAM: parameter of block."
 (defconst *fc-org-map*
   (fc-make-keymap
    `(
+     ("9" org-promote)
+     ("0" org-demote)
      ("c" fc--org-ctrl-c-ctrl-c)
      ("i d" org-insert-drawer)
      ("i t" org-time-stamp)

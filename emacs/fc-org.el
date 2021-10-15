@@ -211,6 +211,7 @@ PARAM: parameter of block."
      ("u" fc--org-do)
      ("v t" ,(fc-manual (org-tags-view t)))
      ("v T" org-tags-view)
+     ("y" org-show-todo-tree)
      ("A" org-archive-subtree)
      ("C i" org-clock-in)
      ("C o" org-clock-out)
@@ -224,7 +225,7 @@ PARAM: parameter of block."
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-func-mode-map*)
-  "KEYS c: C-c C-c  i d: drawer  i t: timestamp  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  C i: clock in  C o: clock out  A: archive  D: deadline  E: edit special  S: schedule  T: set tag  -: C-c minus  ^: sort.")
+  "KEYS c: C-c C-c  i d: drawer  i t: timestamp  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  E: edit special  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()
   "FC org-mode func."

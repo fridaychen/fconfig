@@ -175,6 +175,7 @@ PARAM: parameter of block."
                ((null 2nd-elt) 1st-elt)
                (t 2nd-elt))))
     (when (null elt)
+      (org-ctrl-c-ctrl-c)
       (cl-return-from fc--org-do))
 
     ;; (message "context: %s  elt: %s" context elt)

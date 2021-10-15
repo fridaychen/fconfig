@@ -36,7 +36,9 @@
     (cl-defun fc--setup-org-mode ()
       (org-superstar-mode 1)
       (org-link-beautify-mode -1)
-      (visual-line-mode 1))
+      (visual-line-mode 1)
+      (when (= (buffer-size) 0)
+        (fc-org-add-header)))
 
     (cl-defun fc--capture-copy-region ()
       (save-excursion
@@ -76,9 +78,8 @@
   "Add header."
   (goto-char (point-min))
 
-  (insert "#+auther: " (read-string "Author : ") "\n"
-          "#+date <" (read-string "Date : ") ">\n"
-          "#+title " (read-string "Title : ")  "\n"))
+  (insert "#+TITLE " (read-string "Title : ")  "\n"
+          "\n"))
 
 (cl-defun fc-org-add-var ()
   "Add var."

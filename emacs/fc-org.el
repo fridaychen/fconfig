@@ -200,6 +200,7 @@ PARAM: parameter of block."
    `(
      ("9" org-promote)
      ("0" org-demote)
+     ("b" org-emphasize)
      ("c" fc--org-ctrl-c-ctrl-c)
      ("i d" org-insert-drawer)
      ("i t" org-time-stamp)
@@ -225,7 +226,7 @@ PARAM: parameter of block."
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-func-mode-map*)
-  "KEYS c: C-c C-c  i d: drawer  i t: timestamp  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  E: edit special  S: schedule  T: set tag  -: C-c minus  ^: sort.")
+  "KEYS b: emphasize  c: C-c C-c  i d: drawer  i t: timestamp  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  E: edit special  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()
   "FC org-mode func."

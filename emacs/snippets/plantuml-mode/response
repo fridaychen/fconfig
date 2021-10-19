@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: response
+# key: r
+# --
+
+${1:sender} --> ${2:reciever} : ${response}

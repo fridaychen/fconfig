@@ -99,7 +99,7 @@
 #+STARTUP: showeverything
 ")))
 
-(cl-defun fc-org-add-block (type param)
+(cl-defun fc-org-add-block (type &key ask)
   "Add block.
 TYPE: type of block.
 PARAM: parameter of block."
@@ -113,7 +113,10 @@ PARAM: parameter of block."
                                 (region-end))
                    t))
         (point-of-content nil))
-    (insert "#+BEGIN_" type " " param "\n")
+    (insert "#+BEGIN_" type)
+    (when ask
+      (insert (read-string ask) ""))
+    (insert "\n")
     (if content
         (yank)
       (setf point-of-content (point))
@@ -122,11 +125,6 @@ PARAM: parameter of block."
 
     (when point-of-content
       (goto-char point-of-content))))
-
-(cl-defun fc-org-add-source-block ()
-  "Add source block."
-  (let ((lang (read-string "Programming language : ")))
-    (fc-org-add-block "SRC" lang)))
 
 (cl-defun fc-org-portal ()
   "Show org portal."
@@ -203,11 +201,12 @@ PARAM: parameter of block."
      ("b" org-emphasize)
      ("c" fc--org-ctrl-c-ctrl-c)
      ("i d" org-insert-drawer)
+     ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)
      ("l" org-insert-link)
      ("m" org-mark-element)
      ("o" org-open-at-point)
-     ("s" fc-org-add-source-block)
+     ("s" ,(fc-manual (fc-org-add-block "SRC" :ask "Programming language")))
      ("t" org-todo)
      ("u" fc--org-do)
      ("v t" ,(fc-manual (org-tags-view t)))

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: actor
+# key: act
+# --
+
+actor ${1:full-name} as ${2:short-name}

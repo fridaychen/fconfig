@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: participant
+# key: part
+# --
+
+participant ${1:full-name} as ${2:short-name}

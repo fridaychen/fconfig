@@ -697,6 +697,19 @@ REST: args."
           read-string)
   (advice-add it :filter-args #'fc--before-read-obj))
 
+(cl-defun fc-ask (ask)
+  "Ask user to input a string.
+ASK: prompt or (list prompt init-val)."
+  (cond
+   ((null ask)
+    nil)
+
+   ((listp ask)
+    (read-string (cl-first ask) (cl-second ask)))
+
+   (t
+    (read-string ask))))
+
 ;; unicode utility
 (cl-defun fc-unicode-square-string (str)
   "Return the square latin version of str.

@@ -204,6 +204,7 @@ PARAM: parameter of block."
      ("i d" org-insert-drawer)
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)
+     ("i u" ,(fc-manual (fc-org-add-block "SRC plantuml :file" :ask "Output file")))
      ("l" org-insert-link)
      ("m" org-mark-element)
      ("o" org-open-at-point)
@@ -226,7 +227,7 @@ PARAM: parameter of block."
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-func-mode-map*)
-  "KEYS b: emphasize  c: C-c C-c  i d: drawer  i t: timestamp  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  E: edit special  S: schedule  T: set tag  -: C-c minus  ^: sort.")
+  "KEYS b: emphasize  c: C-c C-c  i d: drawer  i q: quote  i t: timestamp  i u: uml  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  E: edit special  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()
   "FC org-mode func."

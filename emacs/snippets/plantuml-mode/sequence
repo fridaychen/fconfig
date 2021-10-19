@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: sequence init
+# key: seq
+# --
+
+hide footbox
+autonumber
+
+title $0

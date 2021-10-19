@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: alt
+# key: alt
+# --
+
+alt $1
+  $0
+else $2
+
+end

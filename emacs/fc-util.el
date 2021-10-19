@@ -727,7 +727,7 @@ REST: strings."
   (--reduce-from (let ((part (if (listp it)
                                  (apply #'fc--text separator it)
                                (fc-string it))))
-                   (if part
+                   (if (and part (not (string-empty-p part)))
                        (if (string-empty-p acc)
                            part
                          (concat acc separator part))

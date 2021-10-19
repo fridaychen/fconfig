@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: note
+# key: n
+# --
+
+note `(fc--insert-note)` : $0

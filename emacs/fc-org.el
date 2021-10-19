@@ -115,8 +115,7 @@ PARAM: parameter of block."
         (point-of-content nil))
     (insert (fc--text " "
                       (concat "#+BEGIN_" type)
-                      (when ask
-                        (read-string ask)))
+                      (fc-ask ask))
             "\n")
     (if content
         (yank)
@@ -204,7 +203,7 @@ PARAM: parameter of block."
      ("i d" org-insert-drawer)
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)
-     ("i u" ,(fc-manual (fc-org-add-block "SRC plantuml :file" :ask "Output file")))
+     ("i u" ,(fc-manual (fc-org-add-block "SRC" :ask '("Output file" "plantuml :file "))))
      ("l" org-insert-link)
      ("m" org-mark-element)
      ("o" org-open-at-point)

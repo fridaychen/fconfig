@@ -113,10 +113,11 @@ PARAM: parameter of block."
                                 (region-end))
                    t))
         (point-of-content nil))
-    (insert "#+BEGIN_" type)
-    (when ask
-      (insert (read-string ask) ""))
-    (insert "\n")
+    (insert (fc--text " "
+                      (concat "#+BEGIN_" type)
+                      (when ask
+                        (read-string ask)))
+            "\n")
     (if content
         (yank)
       (setf point-of-content (point))

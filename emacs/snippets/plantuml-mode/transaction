@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: transaction
+# key: tr
+# --
+
+${1:sender} -> ${2:receiver} : ${3:message}
+$2 --> $1 : ${4:response}

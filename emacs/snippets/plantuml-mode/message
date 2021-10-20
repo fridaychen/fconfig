@@ -3,4 +3,4 @@
 # key: m
 # --
 
-${1:sender} -> ${2:reciever} : ${message}
+${1:sender} -> ${2:receiver} : ${message}

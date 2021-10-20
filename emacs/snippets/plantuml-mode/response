@@ -3,4 +3,4 @@
 # key: r
 # --
 
-${1:sender} --> ${2:reciever} : ${response}
+${1:sender} --> ${2:receiver} : ${response}

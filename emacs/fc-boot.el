@@ -39,7 +39,7 @@
                    :after
                    (progn
                      (fc-org-autoconfig)
-                     (add-hook '*fc-common-fact-act-hook* #'fc--org-toggle-special-edit)
+                     (fc-common-add-fast-act #'fc--org-toggle-special-edit)
                      (fc-require 'fc-plantuml)))))
     ('plantuml-mode (fc-require 'fc-plantuml))
     ('python-mode (fc-require 'fc-python))))

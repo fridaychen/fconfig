@@ -286,7 +286,9 @@ PARAM: parameter of block."
   "Toggle block editor mode."
   (cond
    ((org-src-edit-buffer-p)
-    (org-edit-src-exit))
+    (if *fc-ergo-prefix*
+        (org-edit-src-abort)
+      (org-edit-src-exit)))
 
    ((equal major-mode 'org-mode)
     (org-edit-special))))

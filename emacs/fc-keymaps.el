@@ -117,18 +117,21 @@ MODE-FUNC: mode and function definitions."
 (defconst *fc-func-mode-map*
   (fc-make-keymap
    `(
+     ("7" ,(fc-manual (fc-run-hook '*fc-common-fact-act-hook*)))
+
      ("H" ,(fc-cond-key :normal 'fc-string2hex
                         :region 'fc-hex2string))
      ("L" org-store-link)
-     ("Q" org-edit-src-exit)
      ("T" fc-insert-todo-block)
      ("S" fc-insert-figlet)
      )
-   "Basic func mode"
+   "Basic func map"
    *fc-punctuation-map*))
 
 (cl-defun fc-common-mode-func ()
   (fc-modal-head-key "Common" '*fc-func-mode-map*))
+
+(defvar *fc-common-fact-act-hook* nil "Common fast action hook.")
 
 (provide 'fc-keymaps)
 

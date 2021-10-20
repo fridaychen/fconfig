@@ -217,7 +217,6 @@ PARAM: parameter of block."
      ("C i" org-clock-in)
      ("C o" org-clock-out)
      ("D" org-deadline)
-     ("E" org-edit-special)
      ("L" org-todo-list)
      ("S" org-schedule)
      ("T" org-set-tags-command)
@@ -226,7 +225,7 @@ PARAM: parameter of block."
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-func-mode-map*)
-  "KEYS b: emphasize  c: C-c C-c  i d: drawer  i q: quote  i t: timestamp  i u: uml  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  E: edit special  S: schedule  T: set tag  -: C-c minus  ^: sort.")
+  "KEYS b: emphasize  c: C-c C-c  i d: drawer  i q: quote  i t: timestamp  i u: uml  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()
   "FC org-mode func."
@@ -277,6 +276,17 @@ PARAM: parameter of block."
 (cl-defun fc--before-agenda (&rest _rest)
   "Wrapper function."
   (setf org-agenda-files (directory-files *fc-org-dir* t "^[^#].+org$")))
+
+(cl-defun fc--org-toggle-special-edit ()
+  "Toggle block editor mode."
+  (cond
+   ((org-src-edit-buffer-p)
+    (org-edit-src-exit))
+
+   ((equal major-mode 'org-mode)
+    (org-edit-special))))
+
+(add-hook '*fc-common-fact-act-hook* #'fc--org-toggle-special-edit)
 
 (when (eq major-mode 'org-mode)
   (fc--setup-org-mode))

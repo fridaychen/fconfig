@@ -5,5 +5,7 @@
 
 hide footbox
 autonumber
+skinparam shadowing true
+skinparam backgroundColor #EEEBDC
 
 title $0

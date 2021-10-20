@@ -15,6 +15,8 @@
      "* %?\n  # Wrote on %U")
     ))
 
+(defvar *fc-org-trust-babel-modes* '("plantuml"))
+
 (fc-install 'gnuplot
             'org-link-beautify
             'org-plus-contrib
@@ -32,6 +34,8 @@
     (require 'org-capture)
     (require 'ob-gnuplot)
     (require 'ob-octave)
+    (require 'ob-python)
+    (require 'ob-shell)
 
     (cl-defun fc--setup-org-mode ()
       (org-superstar-mode 1)
@@ -261,7 +265,8 @@ PARAM: parameter of block."
         org-capture-templates nil
         org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
                                       "|"
-                                      "DONE(d)" "SOMEDAY(s)")))
+                                      "DONE(d)" "SOMEDAY(s)"))
+        org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate)
 
   (--each *fc-org-captrue-template*
     (add-to-list 'org-capture-templates
@@ -285,6 +290,10 @@ PARAM: parameter of block."
 
    ((equal major-mode 'org-mode)
     (org-edit-special))))
+
+(defun fc--org-confirm-babel-evaluate (lang _body)
+  "Trust all mode in *fc-org-trust-babel-modes."
+  (not (member lang *fc-org-trust-babel-modes*)))
 
 (when (eq major-mode 'org-mode)
   (fc--setup-org-mode))

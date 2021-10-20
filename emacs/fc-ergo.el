@@ -1501,7 +1501,7 @@ AUTO: auto select face."
    ("F" ,(fc-cond-key :normal 'fc-find-files
                       :region (fc-manual (call-interactively 'iedit-mode)
                                          (fc-modal-global-mode -1))))
-   ("G" ,(fc-cond-key :normal (fc-manual (fc-text-retrieve default-directory) :ignore-files '("compile_commands.json"))
+   ("G" ,(fc-cond-key :normal (fc-manual (fc-text-retrieve default-directory :ignore-files '("compile_commands.json")))
                       :proj (fc-manual (fc-text-retrieve (fc-proj-root) :ignore-files '("compile_commands.json")))
                       :prefix (fc-manual (fc-text-retrieve default-directory) :ignore-files '("compile_commands.json"))))
    ("H" ,(fc-cond-key :normal 'swiper

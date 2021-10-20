@@ -121,7 +121,6 @@ MODE-FUNC: mode and function definitions."
 
      ("H" ,(fc-cond-key :normal 'fc-string2hex
                         :region 'fc-hex2string))
-     ("L" org-store-link)
      ("T" fc-insert-todo-block)
      ("S" fc-insert-figlet)
      )

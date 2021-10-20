@@ -286,8 +286,6 @@ PARAM: parameter of block."
    ((equal major-mode 'org-mode)
     (org-edit-special))))
 
-(add-hook '*fc-common-fact-act-hook* #'fc--org-toggle-special-edit)
-
 (when (eq major-mode 'org-mode)
   (fc--setup-org-mode))
 

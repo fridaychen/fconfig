@@ -36,8 +36,11 @@
     ('org-mode (unless (featurep 'fc-org)
                  (fc-load 'fc-org
                    :local t
-                   :after (fc-org-autoconfig))
-                 (fc-require 'fc-plantuml)))
+                   :after
+                   (progn
+                     (fc-org-autoconfig)
+                     (add-hook '*fc-common-fact-act-hook* #'fc--org-toggle-special-edit)
+                     (fc-require 'fc-plantuml)))))
     ('plantuml-mode (fc-require 'fc-plantuml))
     ('python-mode (fc-require 'fc-python))))
 

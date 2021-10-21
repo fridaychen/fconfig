@@ -7,5 +7,6 @@ hide footbox
 autonumber
 skinparam shadowing true
 skinparam backgroundColor #EEEBDC
+skinparam sequenceMessageAlign center
 
 title $0

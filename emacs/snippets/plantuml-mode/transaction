@@ -4,4 +4,4 @@
 # --
 
 ${1:sender} -> ${2:receiver} : ${3:message}
-$2 --> $1 : ${4:response}
+return : ${4:response}

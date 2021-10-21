@@ -1037,6 +1037,23 @@ REST: commands."
    "font size keymap")
   "KEYS  j: down  k: up.")
 
+;; snippets
+(defun fc-app-create-snippet ()
+  "Create a new snippet."
+  (let* ((mode (read-string "Mode" (fc-string major-mode)))
+         (name (read-string "Name"))
+         (key (read-string "Key"))
+         (buf (generate-new-buffer name)))
+    (switch-to-buffer buf)
+    (setf buffer-file-name (format "%s/emacs/snippets/%s/%s" *fc-home* mode name))
+    (snippet-mode)
+    (insert (format "# -*- mode: snippet -*-
+# name: %s
+# key: %s
+# --\n
+"
+                    name key))))
+
 (defun fc-select-other-func ()
   "Select other function."
   (fc-user-select-func
@@ -1049,6 +1066,7 @@ REST: commands."
      ("insert figleted string"  . fc-insert-figlet)
      ("insert signature"        . fc-insert-signature)
      ("load latest desktop"	. ,(fc-manual (fc-load-desktop)))
+     ("new snippet"             . fc-app-create-snippet)
      ("string2hex"              . fc-c-string2hex)
      ("tabify"                  . ,(fc-manual (tabify (point-min)
                                                       (point-max))))

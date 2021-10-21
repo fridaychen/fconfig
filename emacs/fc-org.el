@@ -28,6 +28,7 @@
     (setf org-hide-emphasis-markers t
           org-log-done t
           org-export-with-sub-superscripts nil
+          org-src-ask-before-returning-to-edit-buffer nil
           )
 
     (require 'org-agenda)

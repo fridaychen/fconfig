@@ -43,7 +43,9 @@
 (cl-defun fc-git-amend (mesg)
   (interactive "MNew message : ")
 
-  (fc--run-git-command "commit" "--amend" "-m" mesg))
+  (if (string-empty-p mesg)
+      (fc--run-git-command "commit" "--amend" "--no-edit")
+    (fc--run-git-command "commit" "--amend" "-m" mesg)))
 
 (cl-defun fc-git-cancel-last-commit ()
   (fc--run-git-command "reset" "@~"))

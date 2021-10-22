@@ -94,7 +94,7 @@ ARGS: arguments for command."
     (with-output-to-string
       (with-current-buffer
           standard-output
-        (apply #'call-process command nil t nil args)))))
+        (apply #'call-process command nil t nil (-flatten args))))))
 
 (cl-defun fc-exec-command-to-buffer (bufname command &rest args)
   "Run specific command and save output to specified buffer.
@@ -107,7 +107,7 @@ ARGS: arguments for command."
       (read-only-mode -1)
       (erase-buffer)
 
-      (apply #'call-process command nil buf nil args)
+      (apply #'call-process command nil buf nil (-flatten args))
 
       buf)))
 

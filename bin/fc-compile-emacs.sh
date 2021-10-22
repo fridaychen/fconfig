@@ -15,7 +15,7 @@ function compile() {
     git clean -xdf
     ./autogen.sh
     ./configure --with-native-compilation --with-json
-    make -j$(nproc)
+    time make -j$(nproc)
 }
 
 function install() {

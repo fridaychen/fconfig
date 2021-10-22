@@ -6,21 +6,25 @@
 ;;; Code:
 (require 'cl-lib)
 
+(defvar *fc-company-normal-delay* 0.4)
+(defvar *fc-company-debug-delay* 1.0)
+(defvar *fc-company-minimum-prefix-len* 3)
+
 (fc-load 'company
   :after (progn
            (setf company-backends '(company-elisp company-ispell)
-                 company-idle-delay 0.2
-                 company-minimum-prefix-length 2
+                 company-idle-delay *fc-company-normal-delay*
+                 company-minimum-prefix-length *fc-company-minimum-prefix-len*
                  company-show-numbers t
                  company-auto-complete t)
 
            (defun fc--company-enable ()
              (global-company-mode)
-             (setf company-idle-delay 0))
+             (setf company-idle-delay *fc-company-debug-delay*))
 
            (defun fc--company-disable ()
              (global-company-mode -1)
-             (setf company-idle-delay 600)))
+             (setf company-idle-delay *fc-company-normal-delay*)))
 
   :bind '((nil
            ("M-/" company-complete))

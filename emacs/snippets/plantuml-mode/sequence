@@ -4,9 +4,10 @@
 # --
 
 hide footbox
-autonumber
+autonumber "<b>0: "
 skinparam shadowing true
 skinparam backgroundColor #EEEBDC
 skinparam sequenceMessageAlign center
+scale 1
 
 title $0

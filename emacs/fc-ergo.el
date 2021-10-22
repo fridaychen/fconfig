@@ -22,6 +22,13 @@
 (defvar *fc-work-themes* '(zenburn monokai))
 (defvar *fc-work-dark-themes* '(sanityinc-tomorrow-night))
 
+(fc-load 'compile
+  :local t
+  :after (progn
+           (setf compilation-scroll-output t
+                 compilation-auto-jump-to-first-error nil
+                 compilation-auto-jump-to-next t)))
+
 (defconst *fc-book-zh-single-quote*
   (fc-decorate-region
    (lambda ()

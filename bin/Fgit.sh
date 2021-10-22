@@ -83,3 +83,7 @@ function fit-show() {
             xargs git show
     fi
 }
+
+function fit-cherry-pick() {
+    git cherry-pick --strategy=recursive -X theirs $@
+}

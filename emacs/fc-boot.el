@@ -47,6 +47,9 @@
 (add-hook 'find-file-hook #'fc-load-mode-config)
 
 (fc-require 'fc-control)
+(fc-load 'fc-next-error
+  :local t
+  :after (add-hook '*fc-ergo-restore-hook* #'fc--clear-next-error-buffer))
 (fc-require 'fc-ergo)
 (fc-require 'fc-ergo-seg)
 (fc-require 'fc-edit)

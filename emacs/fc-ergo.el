@@ -365,55 +365,6 @@ INDENT-FUNC: function for indent."
            (outline-next-heading))
        (forward-sentence))))
 
-(defconst *fc-navi-buffer-names* '("*ggtags-global*"
-                                   "*Flycheck errors*"
-                                   "*grep*"
-                                   "*Occur*"
-                                   "*compilation*"
-                                   "*xref*"
-                                   "*bookmarks*"))
-(defconst *fc-navi-buffer-prefixs* '("*fc text retrieve"))
-
-(defun fc-navi-error-next-prev-p ()
-  "If navi window exists."
-  (or (-any? #'fc-buffer-visible-p *fc-navi-buffer-names*)
-      (fc-first-window (let ((name (buffer-name (cdr it))))
-                         (--first (string-prefix-p it name)
-                                  *fc-navi-buffer-prefixs*)))))
-
-(defun fc-select-navi-buffer ()
-  "List all navi buffers."
-  (fc-switch-to-buffer
-   "Navi buffer"
-   (fc-list-buffer :not-file t
-                   :filter
-                   (lambda ()
-                     (or
-                      (member (buffer-name) *fc-navi-buffer-names*)
-                      (let ((name (buffer-name)))
-                        (-any (lambda (x)
-                                (string-prefix-p x name))
-                              *fc-navi-buffer-prefixs*)))))
-   :error-msg "No navigatable buffer found."
-   :pop t))
-
-(defun fc-show-navi-buffer ()
-  "Find last navi window."
-  (let* ((bufs (fc-list-buffer :not-file t))
-         (buf (or
-               (--first (member (buffer-name it) *fc-navi-buffer-names*)
-                        bufs)
-               (-first (lambda (x)
-                         (let ((bufname (buffer-name x)))
-                           (--first (string-prefix-p it bufname)
-                                    *fc-navi-buffer-prefixs*)))
-                       bufs))))
-    (when buf
-      (save-excursion
-        (fc-pop-buf buf)))
-
-    buf))
-
 (defun fc-find-viewer-window ()
   (car
    (fc-first-window (with-current-buffer (cdr it)
@@ -424,18 +375,18 @@ INDENT-FUNC: function for indent."
   (interactive)
 
   (cond
-   ((fc-navi-error-next-prev-p)
-    (call-interactively 'previous-error))
-
    ((eql major-mode 'image-mode)
     (call-interactively 'image-previous-file))
-
-   ((one-window-p)
-    (scroll-down-command))
 
    ((fc-find-viewer-window)
     (with-selected-window (fc-find-viewer-window)
       (scroll-down)))
+
+   ((fc--next-error-find-buffer)
+    (call-interactively 'previous-error))
+
+   ((one-window-p)
+    (scroll-down-command))
 
    (t
     (scroll-other-window '-))))
@@ -445,18 +396,18 @@ INDENT-FUNC: function for indent."
   (interactive)
 
   (cond
-   ((fc-navi-error-next-prev-p)
-    (call-interactively 'next-error))
-
    ((eql major-mode 'image-mode)
     (call-interactively 'image-next-file))
-
-   ((one-window-p)
-    (scroll-up-command))
 
    ((fc-find-viewer-window)
     (with-selected-window (fc-find-viewer-window)
       (scroll-up)))
+
+   ((fc--next-error-find-buffer)
+    (call-interactively 'next-error))
+
+   ((one-window-p)
+    (scroll-up-command))
 
    (t
     (scroll-other-window))))
@@ -1026,9 +977,9 @@ KEYMAP: keymap to run."
      ("k" windmove-down)
      ("l" windmove-right)
 
-     ("n" ,(fc-cond-key :normal 'fc-show-navi-buffer
-                        :prefix 'fc-select-navi-buffer))
      ("m" fc-switch-layout)
+     ("n" ,(fc-cond-key :normal 'fc-switch-next-error-buffer))
+
      ("o" next-buffer)
      ("p" ,(fc-manual (goto-char (read-number "Point : "))))
      ("q" ,(fc-manual (fc-switch-to-buffer

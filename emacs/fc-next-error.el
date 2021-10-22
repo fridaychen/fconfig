@@ -23,6 +23,9 @@
                  (and (buffer-name next-error-last-buffer)
                       next-error-last-buffer)))
 
+           (defun fc--clear-next-error-buffer ()
+             (setf next-error-last-buffer nil))
+
            (defun fc-switch-next-error-buffer ()
              "Switch a next-error buffer."
              (fc-switch-to-buffer

@@ -235,9 +235,11 @@ DIR: project path."
    "Project properties"
    `(
      (":build-args"     .       ,(fc-edit-property-fn :build-args))
+     (":build-dir"      .       ,(fc-edit-property-fn :build-dir))
      (":capture-tags"   .       ,(fc-edit-property-fn :capture-tags))
      (":define"         .       ,(fc-edit-property-fn :define))
      (":env"            .       ,(fc-edit-property-fn :env))
+     (":error-file"     .       ,(fc-edit-property-fn :error-file))
      (":include"        .       ,(fc-edit-property-fn :include))
      (":local"          .       ,(fc-edit-property-fn :local))
      (":name"           .       ,(fc-edit-property-fn :name))
@@ -253,6 +255,23 @@ DIR: project path."
     (when target
       (oset *fc-project* last-target target)
       (fc-proj--build *fc-project* target))))
+
+(defun fc--load-compilation-error (error-file build-dir)
+  "Load compileation error file.
+ERROR-FILE: error file path.
+BUILD-DIR: compilation dir."
+  (let ((buf (find-file error-file)))
+    (with-current-buffer buf
+      (setf default-directory build-dir)
+      (compilation-mode))))
+
+(cl-defun fc-proj-load-compilation-error ()
+  (fc--load-compilation-error (format "%s/%s"
+                                      (fc-proj--dir *fc-project*)
+                                      (fc-proj--get *fc-project* :error-file))
+                              (format "%s/%s"
+                                      (fc-proj--dir *fc-project*)
+                                      (fc-proj--get *fc-project* :build-dir))))
 
 (defun fc-user-select-project ()
   "Allow user to select project."

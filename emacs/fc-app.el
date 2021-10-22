@@ -865,49 +865,50 @@ REST: commands."
   (fc-user-select-func
    "Project"
    `(
-     ("auto format"		.	,(lambda ()
-                                           (fc-proj--set *fc-project*
-                                                         (fc-user-confirm "Enable auto format")
-                                                         :local nil '*fc-format-at-save*)
-                                           (fc-proj--save *fc-project*)))
-     ("clang style"     .	,(lambda ()
-                                   (fc-proj--set *fc-project*
-                                                 (fc-user-select "Clang style" '("LLVM"
-                                                                                 "Google"
-                                                                                 "Chromium"
-                                                                                 "Mozilla"
-                                                                                 "WebKit"
-                                                                                 "Microsoft"))
-                                                 :local nil 'fc-proj-clang-style)
-                                   (fc-proj--save *fc-project*)))
-     ("close files"     .       ,(lambda ()
-                                   (fc--run-multi-buffer
-                                    (fc-proj-root)
-                                    (lambda () (kill-buffer)))))
-     ("open"            .	fc-proj-open)
-     ("property"        .	fc-proj-select-property-to-edit)
-     ("rename"          .	fc-proj-query-rename)
-     ("refresh"         .       ,(lambda () (fc--run-multi-buffer (fc-proj-root) #'vc-refresh-state)))
-     ("save"            .	,(lambda () (fc-proj--save *fc-project*)))
-     ("switch"          .	fc-proj-switch)
-     ("tab indent mode" .	,(lambda ()
-                                   (fc-proj--set *fc-project*
-                                                 (fc-user-confirm "Enable tab indent mode")
-                                                 :local 'c-mode 'indent-tabs-mode)
-                                   (fc-proj--save *fc-project*)))
-     ("tab width"       .	,(lambda ()
-                                   (let ((tabwidth (string-to-number (read-string "Tab width : "))))
-                                     (fc-proj--set *fc-project* tabwidth :local 'c-mode 'c-basic-offset)
-                                     (fc-proj--set *fc-project* tabwidth :local 'c-mode 'tab-width)
-                                     (fc-proj--save *fc-project*))))
-     ("update local vars"	.	,(lambda ()
-                                           (fc-proj--update-local-vars *fc-project*)
-                                           (fc-proj--save *fc-project*)))
-     ("work"            .	,(lambda ()
-                                   (fc-proj--set *fc-project*
-                                                 (fc-user-confirm "Remote work")
-                                                 :local nil 'fc-proj-work)
-                                   (fc-proj--save *fc-project*))))))
+     ("auto format"	  . ,(lambda ()
+                               (fc-proj--set *fc-project*
+                                             (fc-user-confirm "Enable auto format")
+                                             :local nil '*fc-format-at-save*)
+                               (fc-proj--save *fc-project*)))
+     ("clang style"       . ,(lambda ()
+                               (fc-proj--set *fc-project*
+                                             (fc-user-select "Clang style" '("LLVM"
+                                                                             "Google"
+                                                                             "Chromium"
+                                                                             "Mozilla"
+                                                                             "WebKit"
+                                                                             "Microsoft"))
+                                             :local nil 'fc-proj-clang-style)
+                               (fc-proj--save *fc-project*)))
+     ("close files"       . ,(lambda ()
+                               (fc--run-multi-buffer
+                                (fc-proj-root)
+                                (lambda () (kill-buffer)))))
+     ("load error file"   . fc-proj-load-compilation-error)
+     ("open"              . fc-proj-open)
+     ("property"          . fc-proj-select-property-to-edit)
+     ("rename"            . fc-proj-query-rename)
+     ("refresh"           . ,(lambda () (fc--run-multi-buffer (fc-proj-root) #'vc-refresh-state)))
+     ("save"              . ,(lambda () (fc-proj--save *fc-project*)))
+     ("switch"            . fc-proj-switch)
+     ("tab indent mode"   . ,(lambda ()
+                               (fc-proj--set *fc-project*
+                                             (fc-user-confirm "Enable tab indent mode")
+                                             :local 'c-mode 'indent-tabs-mode)
+                               (fc-proj--save *fc-project*)))
+     ("tab width"         . ,(lambda ()
+                               (let ((tabwidth (string-to-number (read-string "Tab width : "))))
+                                 (fc-proj--set *fc-project* tabwidth :local 'c-mode 'c-basic-offset)
+                                 (fc-proj--set *fc-project* tabwidth :local 'c-mode 'tab-width)
+                                 (fc-proj--save *fc-project*))))
+     ("update local vars" . ,(lambda ()
+                               (fc-proj--update-local-vars *fc-project*)
+                               (fc-proj--save *fc-project*)))
+     ("work"              . ,(lambda ()
+                               (fc-proj--set *fc-project*
+                                             (fc-user-confirm "Remote work")
+                                             :local nil 'fc-proj-work)
+                               (fc-proj--save *fc-project*))))))
 
 ;; desktop
 (require 'desktop)

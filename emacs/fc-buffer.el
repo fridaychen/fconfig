@@ -93,7 +93,8 @@ ERROR-MSG: error message."
                                                                   root)
                                             (buffer-name it))
                                           it)
-                                    buffers))))
+                                    buffers)
+                             :mouse t)))
     (if pop
         (fc-pop-buf buf)
       (switch-to-buffer buf))))

@@ -35,7 +35,12 @@
 
 (cl-defun fc--md-lang ()
   "Get current language."
-  (fc-search "language: *\\(.+\\)" :begin t :sub 1 :bound 128 :default "en-US"))
+  (or
+   (fc-search "language: *\\(.+\\)" :begin t :sub 1 :bound 128 :default nil)
+   (if (seq-some (lambda (x) (eq (aref char-script-table x) 'han))
+                 (buffer-substring 1 128))
+       "zh-CN"
+     "en-US")))
 
 (cl-defun fc-md-add-header (&optional title author date lang)
   "Add header.
@@ -180,6 +185,17 @@ REGEX: regex."
   (save-excursion
     (fc-replace-regexp "\\([^ ]\\) $" "\\1" :from-start t)))
 
+(cl-defun fc-md-update-local-var ()
+  (save-excursion
+    (if (string= (fc--md-lang) "en-US")
+        (add-file-local-variable
+         'visual-line-mode
+         1)
+      (delete-file-local-variable 'visual-line-mode))
+    (add-file-local-variable
+     'text-scale-mode-amount
+     '*fc-reading-scale*)))
+
 (defun fc-md-portal ()
   "Show md portal."
   (fc-user-select-func
@@ -194,7 +210,7 @@ REGEX: regex."
      ("Fix zh single quote"             .       fc-fix-zh-single-qoute)
      ("Format"                          .       fc-book-format)
      ("Init"                            .       fc-book-init)
-     ("Init book var"                   .       fc-add-book-local-var)
+     ("Init book var"                   .       fc-md-update-local-var)
      ("Mark chapter"                    .       fc-md-mark-chapter)
      ("Mark section"                    .       fc-md-mark-section)
      ("Merge lines"                     .       fc-merge-short-line)

@@ -19,7 +19,7 @@ var (
 func _MDConvZhScene(content string) string {
 	re := regexp.MustCompile("(?m)^……+")
 
-	return re.ReplaceAllString(content, "***")
+	return re.ReplaceAllString(content, "---")
 }
 
 func _decodeMosaic(content string) string {

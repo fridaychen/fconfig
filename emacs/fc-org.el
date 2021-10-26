@@ -18,6 +18,7 @@
 (defvar *fc-org-trust-babel-modes* '("plantuml"))
 
 (fc-install 'gnuplot
+            'org-cliplink
             'org-link-beautify
             'org-plus-contrib
             'org-superstar)
@@ -205,6 +206,7 @@ PARAM: parameter of block."
      ("0" org-demote)
      ("b" org-emphasize)
      ("c" fc--org-ctrl-c-ctrl-c)
+     ("i c" org-cliplink)
      ("i d" org-insert-drawer)
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)
@@ -230,7 +232,7 @@ PARAM: parameter of block."
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-func-mode-map*)
-  "KEYS b: emphasize  c: C-c C-c  i d: drawer  i q: quote  i t: timestamp  i u: uml  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
+  "KEYS b: emphasize  c: C-c C-c  i c: clip link  i d: drawer  i q: quote  i t: timestamp  i u: uml  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()
   "FC org-mode func."

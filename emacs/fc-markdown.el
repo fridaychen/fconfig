@@ -233,7 +233,7 @@ REGEX: regex."
         (end (search-forward-regexp "\n*")))
     (delete-region start end))
 
-  (insert "\n***\n\n"))
+  (insert "\n" (cl-first markdown-hr-strings) "\n\n"))
 
 (cl-defun fc-md-quote (start end)
   "Quote region.

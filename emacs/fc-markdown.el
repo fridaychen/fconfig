@@ -15,7 +15,7 @@
     (defun fc--setup-markdown-mode ()
       (eldoc-mode -1))
 
-    (defun markdown-fontify-hrs (last)
+    (defun markdown-fontify-hrs (_last)
       )
 
     (defun fc--md-toggle-viewer ()

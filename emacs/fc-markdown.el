@@ -220,21 +220,6 @@ REGEX: regex."
      ("Remove suffix space"             .       fc-markdown-mode-whitespace-cleanup)
      )))
 
-(cl-defun fc-md-insert-scene-break ()
-  "Insert scene break."
-  (interactive)
-
-  (when (/= (current-column) 0)
-    (end-of-line)
-    (newline))
-
-  ;; remove empty lines
-  (let ((start (point))
-        (end (search-forward-regexp "\n*")))
-    (delete-region start end))
-
-  (insert "\n" (cl-first markdown-hr-strings) "\n\n"))
-
 (cl-defun fc-md-quote (start end)
   "Quote region.
 START: start of region.
@@ -356,7 +341,7 @@ END: end point."
      ("l" fc-md-make-list)
 
      ("q" fc-md-quote)
-     ("s" fc-md-insert-scene-break)
+     ("s" markdown-insert-hr)
 
      ("t" fc-md-search-verse)
 

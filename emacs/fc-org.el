@@ -195,7 +195,7 @@ PARAM: parameter of block."
       (:todo-keyword (org-todo))
       (_ (message "context: %s" context)))))
 
-(defun fc-org-mode-mouse-func (event)
+(defun fc-org-mode-mouse-func (_event)
   (fc--org-do))
 
 (defconst *fc-org-map*

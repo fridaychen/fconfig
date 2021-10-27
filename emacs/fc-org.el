@@ -300,6 +300,13 @@ PARAM: parameter of block."
   "Trust all mode in *fc-org-trust-babel-modes."
   (not (member lang *fc-org-trust-babel-modes*)))
 
+(fc-load 'org-roam
+  :after
+  (progn
+    (setf org-roam-directory "~/org")
+    (org-roam-db-autosync-mode)
+    ))
+
 (when (eq major-mode 'org-mode)
   (fc--setup-org-mode))
 

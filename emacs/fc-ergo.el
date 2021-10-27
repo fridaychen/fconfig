@@ -1511,7 +1511,7 @@ AUTO: auto select face."
    ("$" fc-app-portal)
    ("%" fc-program)
    ("^" ,(fc-manual (join-line 1)))
-   ("&" ,(fc-manual (fc-set-window-width :percent 66)))
+   ("&" ,(fc-manual (fc-set-window-width 0.66)))
    ("*" google-this-search)
    ("(" ,(fc-cond-key :normal 'fc-previous-bookmark
                       :region (fc-decorate-region "(" ")")))

@@ -232,7 +232,7 @@ SIZE: width or height depending on POS."
     (when size
       (cond
        ((member pos '(left right))
-        (fc-set-window-width win size))
+        (fc-set-window-width size win))
 
        (t
         (fc-set-window-height win size))))

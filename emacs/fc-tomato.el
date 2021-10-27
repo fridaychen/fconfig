@@ -46,7 +46,7 @@
     (fc--tomato-update-bar (car (last tomato-bars))))
 
   (defun fc--tomato-state-string ()
-    (if (fc-tomato-running-p)
+    (if (fc--tomato-running-p)
         (format "Start at %s, elapsed %s"
                 (format-time-string "%p %M:%S" tomato-start-time)
                 (format-time-string "%M:%S" (time-subtract (current-time) tomato-start-time)))

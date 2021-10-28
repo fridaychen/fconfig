@@ -175,7 +175,10 @@ FROM-BEGINNING: start from beginnning."
                                    (case-fn . downcase))
           deft-text-mode 'org-mode))
   :bind '((deft-mode-map
-            ("<escape>" quit-window))))
+            ("<escape>" quit-window)
+            ("C-j" next-line)
+            ("C-k" previous-line)
+            )))
 
 (defun fc-switch-layout ()
   "Switch layout."

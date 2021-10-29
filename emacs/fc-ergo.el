@@ -261,7 +261,7 @@ INDENT-FUNC: function for indent."
     (unless (yas-expand)
       (insert "y")))
 
-   ((looking-at "[\"'(){}\\[]\\|\\]")
+   ((looking-at "[\"')}]\\|\\]")
     (forward-char))
 
    ((looking-at-p "[[:space:]]*$")

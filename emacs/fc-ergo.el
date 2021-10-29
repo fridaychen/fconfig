@@ -1019,11 +1019,13 @@ KEYMAP: keymap to run."
      ("3" org-agenda-list)
      ("a" org-agenda)
      ("c" org-capture)
+     ("f" org-roam-node-find)
+     ("j" org-roam-capture)
      ("l" org-store-link)
      ("m" org-tags-view)
      ("t" org-todo-list))
    "ergo-gtd-map")
-  "KEYS a: agenda  c: capture  l: store link  m: view tag  t: todo list.")
+  "KEYS a: agenda  c: capture  f: find node  j: capture node  l: store link  m: view tag  t: todo list.")
 
 (cl-defun fc-ergo-which-function ()
   "Which function wrapper."

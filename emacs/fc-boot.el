@@ -143,12 +143,23 @@
 
 (fc-require 'fc-yasnippet t)
 (fc-require 'fc-global)
-(fc-require 'fc-lsp)
+(fc-load 'fc-lsp
+  :local t
+  :after (add-hook '*fc-ergo-restore-hook* #'lsp-ui-doc-hide))
 (fc-require 'fc-tag)
 
 (fc-require 'fc-math t)
 
-(fc-require 'fc-flycheck)
+(fc-load 'fc-flycheck
+  :local t
+  :after
+  (progn
+    (add-hook '*fc-enable-dev-hook*
+              #'global-flycheck-mode)
+    (add-hook '*fc-disable-dev-hook*
+              #'(lambda ()
+                  (global-flycheck-mode -1)))))
+
 (fc-load 'fc-company
   :local t
   :after (fc--company-enable))

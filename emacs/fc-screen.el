@@ -30,10 +30,8 @@
   (setq-default indicate-buffer-boundaries 'left
                 indicate-empty-lines 1)
 
-  (defun -fc-setup-fringe ()
-    (fringe-mode (cons *fc-fringe-width* 0)))
-
-  (add-hook '*fc-after-theme-hook* #'-fc-setup-fringe))
+  (defun fc--setup-fringe ()
+    (fringe-mode (cons *fc-fringe-width* 0))))
 
 (unless (and *is-mac* *is-gui*)
   (menu-bar-mode -1))
@@ -177,20 +175,19 @@ TITLE: new title."
     (send-string-to-terminal (format "\033]0;%s\007"
                                      title))))
 
-(defun -fc-setup-window-title ()
+(defun fc--setup-window-title ()
   "Hook function."
   (fc-setup-window-title
    (format *fc-window-title-format*
            *fc-project-name*)))
 
-(defun -fc-setup-window-title-before-exit ()
+(defun fc--setup-window-title-before-exit ()
   "Hook function."
   (unless *is-gui*
     (when *is-colorful*
       (fc-setup-window-title "bash"))))
 
-(add-hook '*fc-project-hook* #'-fc-setup-window-title)
-(add-hook 'kill-emacs-hook #'-fc-setup-window-title-before-exit)
+(add-hook 'kill-emacs-hook #'fc--setup-window-title-before-exit)
 (add-hook 'kill-emacs-hook #'(lambda () (fc-modal-set-cursor-shape 'box)))
 
 (unless *is-gui*

@@ -656,7 +656,7 @@ REST: strings."
                  ""
                  rest))
 
-(cl-defun fc-text (obj &key face tip keys pointer (separator " ") limit)
+(cl-defun fc-text (obj &key face tip keys pointer (separator " ") limit display)
   "Format text.
 OBJ: text source.
 FACE: font face.
@@ -664,7 +664,8 @@ TIP: tip message.
 KEYS: key bindings.
 POINTER: mouse pointer.
 SEPARATOR: sepatator string.
-LIMIT: max text length."
+LIMIT: max text length.
+DISPLAY: display property."
   (let ((obj (fc--text separator obj))
         (args ()))
     (when face
@@ -683,6 +684,9 @@ LIMIT: max text length."
                (< limit (string-width obj)))
       (setf obj (format "%s>"
                         (truncate-string-to-width obj limit))))
+
+    (when display
+      (push (cons 'display display) args))
 
     (apply #'propertize obj
            (--mapcat (list (car it) (cdr it))

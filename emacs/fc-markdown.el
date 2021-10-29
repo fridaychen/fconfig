@@ -6,6 +6,8 @@
 ;;; Code:
 (require 'cl-lib)
 
+(defvar-local *fc-md-scale* 1.2)
+
 (fc-load 'markdown-mode
   :after
   (progn
@@ -13,6 +15,14 @@
           '("---"))
 
     (defun fc--setup-markdown-mode ()
+      (when (string= (fc--md-lang) "en-US")
+        (visual-line-mode -1))
+
+      (let ((buf (current-buffer)))
+        (fc-delay
+          (with-current-buffer buf)
+          (text-scale-set *fc-md-scale*)))
+
       (eldoc-mode -1))
 
     (defun markdown-fontify-hrs (_last)
@@ -186,15 +196,7 @@ REGEX: regex."
     (fc-replace-regexp "\\([^ ]\\) $" "\\1" :from-start t)))
 
 (cl-defun fc-md-update-local-var ()
-  (save-excursion
-    (if (string= (fc--md-lang) "en-US")
-        (add-file-local-variable
-         'visual-line-mode
-         1)
-      (delete-file-local-variable 'visual-line-mode))
-    (add-file-local-variable
-     'text-scale-mode-amount
-     '*fc-reading-scale*)))
+  (add-dir-local-variable 'markdown-mode '*fc-md-scale* (read-number "Markdown scale" *fc-md-scale*)))
 
 (defun fc-md-portal ()
   "Show md portal."

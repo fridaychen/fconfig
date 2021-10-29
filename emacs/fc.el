@@ -57,7 +57,14 @@
 
 (fc-add-env-path (concat (getenv "FCHOME") "/python") nil "PYTHONPATH")
 
-(fc-require 'fc-screen)
+(fc-load 'fc-screen
+  :local t
+  :after
+  (progn
+    (when *is-gui*
+      (add-hook '*fc-after-theme-hook* #'fc--setup-fringe))
+    (add-hook '*fc-project-hook* #'fc--setup-window-title)))
+
 (fc-require 'fc-modeline)
 (fc-modal-global-mode)
 

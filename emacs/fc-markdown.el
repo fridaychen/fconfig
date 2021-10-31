@@ -19,9 +19,9 @@
         (visual-line-mode -1))
 
       (let ((buf (current-buffer)))
-        (fc-delay
-          (with-current-buffer buf)
-          (text-scale-set *fc-md-scale*)))
+        (fc-delay-task #'(lambda ()
+                           (with-current-buffer buf
+                             (text-scale-set *fc-md-scale*)))))
 
       (eldoc-mode -1))
 

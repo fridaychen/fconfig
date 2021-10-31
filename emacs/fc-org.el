@@ -208,6 +208,7 @@ PARAM: parameter of block."
      ("c" fc--org-ctrl-c-ctrl-c)
      ("i c" org-cliplink)
      ("i d" org-insert-drawer)
+     ("i n" org-roam-node-insert)
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)
      ("i u" ,(fc-manual (fc-org-add-block "SRC" :ask '("Output file" "plantuml :file "))))

@@ -61,10 +61,8 @@
          srcery-theme
          tuareg
          org
-         powerline
          projectile
          python-mode
-         spaceline
          vimrc-mode
          yasnippet
          yasnippet-snippets

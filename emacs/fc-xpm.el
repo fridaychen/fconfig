@@ -32,6 +32,37 @@ static char * xpm [] = {
                 'xpm t
                 :ascent 'center))
 
+;; helper
+(defun fc--create-xpm-data-with-pattern1 (height data)
+  (cl-loop with data-len = (length data)
+           for x from 0 to (1- height)
+           collect (nth (% x data-len) data)))
+
+(defun fc--create-xpm-data-with-pattern3 (height header center footer)
+  (seq-concatenate 'list
+                   header
+                   (fc--create-xpm-data-with-pattern1 (- height (length header) (length footer))
+                                                      center)
+                   footer))
+
+(defun fc--create-xpm-data-with-pattern (height pattern)
+  (cond
+   ((= (length pattern) 1)
+    (fc--create-xpm-data-with-pattern1 height
+                                       (cl-first pattern)))
+
+   ((= (length pattern) 3)
+    (fc--create-xpm-data-with-pattern3 height
+                                       (cl-first pattern)
+                                       (cl-second pattern)
+                                       (cl-third pattern)))))
+
+(defun fc-make-xpm-with-pattern (width height color-def pattern)
+  (let ((data (fc--create-xpm-data-with-pattern height pattern)))
+    (fc-make-xpm width height color-def
+                 (lambda (line &rest _rest)
+                   (nth (1- line) data)))))
+
 (provide 'fc-xpm)
 
 ;; Local Variables:

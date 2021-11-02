@@ -66,7 +66,11 @@
     (add-hook '*fc-project-hook* #'fc--setup-window-title)))
 
 (fc-require 'fc-xpm)
-(fc-require 'fc-modeline)
+(fc-load 'fc-modeline
+  :local t
+  :after
+  (progn
+    (add-to-list '*fc-after-theme-hook* #'fc-modeline-mode)))
 (fc-modal-global-mode)
 
 (fc-add-hook-func '*fc-after-theme-hook*

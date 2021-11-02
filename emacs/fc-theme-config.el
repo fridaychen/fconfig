@@ -24,8 +24,6 @@
   "Load color theme."
   (load-theme *fc-current-theme* t)
 
-  (fc-modeline-mode)
-
   (fc-run-hook '*fc-after-theme-hook*
                (if *fc-booting* 2 1)))
 

@@ -236,6 +236,9 @@ COLOR: background color."
                               :background "gray30"))
 
       ('zenburn
+       (set-face-attribute 'mode-line nil
+                           :box '(:line-width 1 :style flat))
+
        (fc-set-face-attribute 'fringe nil
                               :background (cdr
                                            (assoc-string "zenburn-orange"

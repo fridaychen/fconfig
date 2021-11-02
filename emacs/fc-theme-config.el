@@ -24,6 +24,8 @@
   "Load color theme."
   (load-theme *fc-current-theme* t)
 
+  (fc-modeline-mode)
+
   (fc-run-hook '*fc-after-theme-hook*
                (if *fc-booting* 2 1)))
 
@@ -44,9 +46,7 @@ THEME: new theme."
 
      (t
       (message "Unknown theme type")
-      (cl-return-from fc-load-theme))))
-
-  (fc-modeline-mode))
+      (cl-return-from fc-load-theme)))))
 
 (defun fc-theme-auto-select (themes)
   "Auto select and load theme from THEMES.

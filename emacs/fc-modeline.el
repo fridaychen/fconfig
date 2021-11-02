@@ -5,6 +5,8 @@
 
 ;;; Code:
 
+(require 'fc-modeline-separator)
+
 (defvar *fc-modeline-active-hl-bg* "#FEBA07")
 (defvar *fc-modeline-active-hl-fg* "#1E3124")
 (defvar *fc-modeline-dark-active-hl-bg* "#887322")
@@ -209,8 +211,7 @@
      hl-sep
      (fc-text
       (fc--state-seg) :face (fc--modeline-get-hi-face))
-     hl-sep
-     " "
+     (fc-ml-left-sep)
      (fc--major-mode-seg)
      " ")))
 
@@ -233,8 +234,10 @@
   (let* ((left (fc--modeline-format-left))
          (center (fc--modeline-format-center))
          (right (fc--modeline-format-right))
+         (most-right-str (cons '(t (:eval (fc-ml-right-sep)))
+                               *fc-modeline-most-right-string*))
          (most-right (if (fc--right-bottom-window-p)
-                         *fc-modeline-most-right-string*
+                         most-right-str
                        nil))
          (right-len (+
                      (string-width (format-mode-line right))
@@ -243,7 +246,8 @@
                               'display `(space :align-to (- (+ scroll-bar scroll-bar) ,right-len)))))
     (nconc left center
            (list padding)
-           right most-right)))
+           right
+           most-right)))
 
 (cl-defun fc-modeline-mode ()
   "Setup mode line."
@@ -259,6 +263,8 @@
 
   (unless (facep 'fc-modeline-highlight-inactive-face)
     (make-face 'fc-modeline-highlight-inactive-face))
+
+  (fc-ml-sep-reset)
 
   (let* ((deep-dark (fc-deep-dark-theme-p))
          (bg (if deep-dark

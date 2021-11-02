@@ -10,7 +10,6 @@
 (defvar *fc-deep-dark-theme* 'wombat "Prefer deep dark theme.")
 (defvar *fc-light-theme* 'tango "Prefer light theme.")
 (defvar *fc-current-theme* nil "Current theme.")
-(defvar *fc-after-theme-hook* nil "After theme hook.")
 
 (defun fc-reset-theme ()
   "Reset color theme."

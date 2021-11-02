@@ -50,6 +50,8 @@
 (autoload #'fc-program "fc-program")
 
 ;; theme
+(defvar *fc-after-theme-hook* nil "After theme hook.")
+
 (autoload #'fc-load-theme "fc-theme-config")
 (autoload #'fc-right-bottom-window-p "fc-theme-config")
 (autoload #'fc-light-theme "fc-theme-config")

@@ -57,9 +57,10 @@ static char * xpm [] = {
                                        (cl-second pattern)
                                        (cl-third pattern)))))
 
-(defun fc-make-xpm-with-pattern (width height color-def pattern)
-  (let ((data (fc--create-xpm-data-with-pattern height pattern)))
-    (fc-make-xpm width height color-def
+(defun fc-make-xpm-with-pattern (height color-def pattern &optional reverse)
+  (let* ((orig-data (fc--create-xpm-data-with-pattern height pattern))
+         (data (if reverse (mapcar #'reverse orig-data) orig-data)))
+    (fc-make-xpm (length (caar pattern)) height color-def
                  (lambda (line &rest _rest)
                    (nth (1- line) data)))))
 

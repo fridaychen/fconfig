@@ -30,6 +30,7 @@ static char * xpm [] = {
 (defun fc-make-xpm (width height color-def func)
   (create-image (fc--xpm-create width height color-def func)
                 'xpm t
+                :scale 1
                 :ascent 'center))
 
 ;; helper

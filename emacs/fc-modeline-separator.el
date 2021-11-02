@@ -24,10 +24,28 @@
      "00000000211"
      "00000000002")))
 
-(defvar *fc-ml-sep-active-left* "")
-(defvar *fc-ml-sep-active-right* "")
-(defvar *fc-ml-sep-inactive-left* "")
-(defvar *fc-ml-sep-inactive-right* "")
+(defconst *fc--sep-zigzag*
+  '(("00111111"
+     "00011111"
+     "00001111"
+     "00000111"
+     "00001111"
+     "00011111")))
+
+(defconst *fc--sep-box*
+  '(("0000001111"
+     "0000001111"
+     "0000001111"
+     "0000111111"
+     "0000111111"
+     "0000111111")))
+
+(defconst *fc--sep-patterns* '(*fc--sep-box* *fc--sep-wave* *fc--sep-zigzag*))
+
+(defvar *fc-ml-sep-active-left* " ")
+(defvar *fc-ml-sep-active-right* " ")
+(defvar *fc-ml-sep-inactive-left* " ")
+(defvar *fc-ml-sep-inactive-right* " ")
 
 (defun fc--gen-colors (face1 face2)
   `(
@@ -36,37 +54,41 @@
     ("2" . ,(fc-get-face-attribute face1 :background))
     ))
 
-(defun fc-ml-sep-reset ()
-  (setf
-   *fc-ml-sep-active-left*
-   (fc-text " " :display
-            (fc-make-xpm-with-pattern
-             (frame-char-height)
-             (fc--gen-colors 'fc-modeline-highlight-face 'mode-line)
-             *fc--sep-wave*))
+(cl-defun fc-ml-sep-reset ()
+  (unless *is-gui*
+    (cl-return-from fc-ml-sep-reset))
 
-   *fc-ml-sep-active-right*
-   (fc-text " " :display
-            (fc-make-xpm-with-pattern
-             (frame-char-height)
-             (fc--gen-colors 'fc-modeline-highlight-face 'mode-line)
-             *fc--sep-wave*
-             t))
+  (let ((pattern (symbol-value (seq-random-elt *fc--sep-patterns*))))
+    (setf
+     *fc-ml-sep-active-left*
+     (fc-text " " :display
+              (fc-make-xpm-with-pattern
+               (frame-char-height)
+               (fc--gen-colors 'fc-modeline-highlight-face 'mode-line)
+               pattern))
 
-   *fc-ml-sep-inactive-left*
-   (fc-text " " :display
-            (fc-make-xpm-with-pattern
-             (frame-char-height)
-             (fc--gen-colors 'fc-modeline-highlight-inactive-face 'mode-line-inactive)
-             *fc--sep-wave*))
+     *fc-ml-sep-active-right*
+     (fc-text " " :display
+              (fc-make-xpm-with-pattern
+               (frame-char-height)
+               (fc--gen-colors 'fc-modeline-highlight-face 'mode-line)
+               pattern
+               t))
 
-   *fc-ml-sep-inactive-right*
-   (fc-text " " :display
-            (fc-make-xpm-with-pattern
-             (frame-char-height)
-             (fc--gen-colors 'fc-modeline-highlight-face 'mode-line-inactive)
-             *fc--sep-wave*
-             t))))
+     *fc-ml-sep-inactive-left*
+     (fc-text " " :display
+              (fc-make-xpm-with-pattern
+               (frame-char-height)
+               (fc--gen-colors 'fc-modeline-highlight-inactive-face 'mode-line-inactive)
+               pattern))
+
+     *fc-ml-sep-inactive-right*
+     (fc-text " " :display
+              (fc-make-xpm-with-pattern
+               (frame-char-height)
+               (fc--gen-colors 'fc-modeline-highlight-face 'mode-line-inactive)
+               pattern
+               t)))))
 
 (defun fc-ml-left-sep ()
   (if (fc--active-window-p)

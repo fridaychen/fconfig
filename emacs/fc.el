@@ -65,6 +65,7 @@
       (add-hook '*fc-after-theme-hook* #'fc--setup-fringe))
     (add-hook '*fc-project-hook* #'fc--setup-window-title)))
 
+(fc-require 'fc-xpm)
 (fc-require 'fc-modeline)
 (fc-modal-global-mode)
 

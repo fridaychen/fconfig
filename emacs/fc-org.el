@@ -304,7 +304,8 @@ PARAM: parameter of block."
 (fc-load 'org-roam
   :after
   (progn
-    (setf org-roam-directory "~/org")
+    (setf org-roam-directory "~/org"
+          org-roam-v2-ack t)
     (org-roam-db-autosync-mode)
     ))
 

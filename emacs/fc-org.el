@@ -7,13 +7,18 @@
 (require 'cl-lib)
 
 (defvar *fc-org-dir* "~/org/")
-(defvar *fc-org-captrue-template*
+(defconst *fc-org-captrue-template*
   `(
-    ("t" "Todo" "remind.org" "Inbox"
-     "* TODO %?\n  %T")
+    ("b" "Book" "book.org" "Inbox"
+     "* Book <<%^{Title of book}>>\n  %T")
+    ("j" "Journal" "journal.org" "Inbox"
+     "* %^{Journal}\n  %T" :immediate-finish t)
     ("k" "Knowledge" "knowledge.org" "Inbox"
      "* %?\n  # Wrote on %U")
+    ("t" "Todo" "remind.org" "Inbox"
+     "* TODO %?\n  %T")
     ))
+(defvar *fc-org-user-capture-templates*)
 
 (defvar *fc-org-trust-babel-modes* '("plantuml"))
 
@@ -257,6 +262,24 @@ PARAM: parameter of block."
   (unless (fc-dir-exists-p *fc-org-dir*)
     (make-directory *fc-org-dir*)))
 
+(setf org-capture-templates nil)
+(fc--org-gen-from-template (nth 1 *fc-org-captrue-template*))
+
+(cl-defun fc--org-gen-template (template)
+  (seq-concatenate 'list
+                   `(,(cl-first template)
+                     ,(cl-second template)
+                     entry
+                     (file+headline
+                      ,(concat *fc-org-dir* (cl-third template))
+                      ,(cl-fourth template))
+                     ,(cl-fifth template))
+                   (nthcdr 5 template)))
+
+(cl-defun fc-org-add-capture-template (templates)
+  (--each templates
+    (add-to-list 'org-capture-templates (fc--org-gen-template it))))
+
 (cl-defun fc-org-autoconfig ()
   "Auto config org."
   (fc--org-init-dir)
@@ -272,15 +295,10 @@ PARAM: parameter of block."
                                       "DONE(d)" "SOMEDAY(s)"))
         org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate)
 
-  (--each *fc-org-captrue-template*
-    (add-to-list 'org-capture-templates
-                 `(,(cl-first it)
-                   ,(cl-second it)
-                   entry
-                   (file+headline
-                    ,(concat *fc-org-dir* (cl-third it))
-                    ,(cl-fourth it))
-                   ,(cl-fifth it)))))
+  (setf *fc-org-captrue-template* nil)
+
+  (fc-org-add-capture-template *fc-org-captrue-template*)
+  (fc-org-add-capture-template *fc-org-user-capture-templates*))
 
 (cl-defun fc--before-agenda (&rest _rest)
   "Wrapper function."
@@ -304,7 +322,7 @@ PARAM: parameter of block."
 (fc-load 'org-roam
   :after
   (progn
-    (setf org-roam-directory "~/org"
+    (setf org-roam-directory "~/org/roam"
           org-roam-v2-ack t)
     (org-roam-db-autosync-mode)
     ))

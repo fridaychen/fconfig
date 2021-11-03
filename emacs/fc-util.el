@@ -535,7 +535,8 @@ WINDOW: target window."
                (= (window-resizable window delta)
                   delta))
       (window-resize window
-                     delta))))
+                     delta
+                     :ignore t))))
 
 (defvar *fc-big-buffer-threshold* 1048576)
 

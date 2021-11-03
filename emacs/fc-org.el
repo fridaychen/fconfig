@@ -16,8 +16,14 @@
     ("k" "Knowledge" "knowledge.org" "Inbox"
      "* %?\n  # Wrote on %U")
     ("t" "Todo" "remind.org" "Inbox"
-     "* TODO %?\n  %T")
+     "* TODO %? %a\n  %T")
     ))
+
+(defconst *fc-org-captrue-raw-templates*
+  `(
+    ("B" "Bookmark" plain (file+headline "bookmarks.org" "Inbox") "[[%(org-cliplink-clipboard-content)][%^{Title}]]\n")
+    ))
+
 (defvar *fc-org-user-capture-templates*)
 
 (defvar *fc-org-trust-babel-modes* '("plantuml"))
@@ -262,9 +268,6 @@ PARAM: parameter of block."
   (unless (fc-dir-exists-p *fc-org-dir*)
     (make-directory *fc-org-dir*)))
 
-(setf org-capture-templates nil)
-(fc--org-gen-from-template (nth 1 *fc-org-captrue-template*))
-
 (cl-defun fc--org-gen-template (template)
   (seq-concatenate 'list
                    `(,(cl-first template)
@@ -295,10 +298,13 @@ PARAM: parameter of block."
                                       "DONE(d)" "SOMEDAY(s)"))
         org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate)
 
-  (setf *fc-org-captrue-template* nil)
+  (setf org-capture-templates nil)
 
   (fc-org-add-capture-template *fc-org-captrue-template*)
-  (fc-org-add-capture-template *fc-org-user-capture-templates*))
+  (fc-org-add-capture-template *fc-org-user-capture-templates*)
+
+  (--each *fc-org-captrue-raw-templates*
+    (add-to-list 'org-capture-templates it)))
 
 (cl-defun fc--before-agenda (&rest _rest)
   "Wrapper function."

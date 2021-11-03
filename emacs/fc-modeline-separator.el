@@ -75,7 +75,8 @@
 (defvar *fc-ml-sep-inactive-left* " ")
 (defvar *fc-ml-sep-inactive-right* " ")
 
-(defvar *fc-ml-height* nil)
+(defvar *fc-ml-sep-height* nil)
+(defvar *fc-ml-sep-enable* t)
 
 (defun fc--gen-colors (face1 face2)
   `(
@@ -85,7 +86,7 @@
     ))
 
 (defun fc--ml-height()
-  (or *fc-ml-height* (frame-char-height)))
+  (or *fc-ml-sep-height* (frame-char-height)))
 
 (defun fc--ml-create (face1 face2 pattern &optional reverse)
   (fc-text " " :display
@@ -96,7 +97,7 @@
             reverse)))
 
 (cl-defun fc-ml-sep-reset ()
-  (unless *is-gui*
+  (unless (and *is-gui* *fc-ml-sep-enable*)
     (cl-return-from fc-ml-sep-reset))
 
   (let ((pattern (symbol-value (seq-random-elt *fc--sep-patterns*))))

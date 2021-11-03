@@ -20,7 +20,8 @@
       (let ((buf (current-buffer)))
         (fc-delay-task #'(lambda ()
                            (with-current-buffer buf
-                             (text-scale-set *fc-md-scale*)))))
+                             (text-scale-set *fc-md-scale*)))
+                       0.1))
 
       (eldoc-mode -1))
 

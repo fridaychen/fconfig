@@ -87,41 +87,24 @@
 (defun fc--ml-height()
   (or *fc-ml-height* (frame-char-height)))
 
+(defun fc--ml-create (face1 face2 pattern &optional reverse)
+  (fc-text " " :display
+           (fc-make-xpm-with-pattern
+            (fc--ml-height)
+            (fc--gen-colors face1 face2)
+            pattern
+            reverse)))
+
 (cl-defun fc-ml-sep-reset ()
   (unless *is-gui*
     (cl-return-from fc-ml-sep-reset))
 
   (let ((pattern (symbol-value (seq-random-elt *fc--sep-patterns*))))
     (setf
-     *fc-ml-sep-active-left*
-     (fc-text " " :display
-              (fc-make-xpm-with-pattern
-               (fc--ml-height)
-               (fc--gen-colors 'fc-modeline-highlight-face 'mode-line)
-               pattern))
-
-     *fc-ml-sep-active-right*
-     (fc-text " " :display
-              (fc-make-xpm-with-pattern
-               (fc--ml-height)
-               (fc--gen-colors 'fc-modeline-highlight-face 'mode-line)
-               pattern
-               t))
-
-     *fc-ml-sep-inactive-left*
-     (fc-text " " :display
-              (fc-make-xpm-with-pattern
-               (fc--ml-height)
-               (fc--gen-colors 'fc-modeline-highlight-inactive-face 'mode-line-inactive)
-               pattern))
-
-     *fc-ml-sep-inactive-right*
-     (fc-text " " :display
-              (fc-make-xpm-with-pattern
-               (fc--ml-height)
-               (fc--gen-colors 'fc-modeline-highlight-face 'mode-line-inactive)
-               pattern
-               t)))))
+     *fc-ml-sep-active-left* (fc--ml-create 'fc-modeline-highlight-face 'mode-line pattern)
+     *fc-ml-sep-active-right* (fc--ml-create 'fc-modeline-highlight-face 'mode-line pattern t)
+     *fc-ml-sep-inactive-left* (fc--ml-create 'fc-modeline-highlight-inactive-face 'mode-line-inactive pattern)
+     *fc-ml-sep-inactive-right* (fc--ml-create 'fc-modeline-highlight-face 'mode-line-inactive pattern t))))
 
 (defun fc-ml-left-sep ()
   (if (fc--active-window-p)

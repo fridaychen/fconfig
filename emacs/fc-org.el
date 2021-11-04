@@ -211,6 +211,24 @@ PARAM: parameter of block."
 (defun fc-org-mode-mouse-func (_event)
   (fc--org-do))
 
+(defun fc--org-convert ()
+  (or
+   (fc-replace-looking-text "\\([0-9]+\\)[年/-]\\([0-9]+\\)[月/-]\\([0-9]+\\)[日号]?"
+     (format "<%d-%02d-%02d>"
+             (string-to-number (match-string 1))
+             (string-to-number (match-string 2))
+             (string-to-number (match-string 3))))
+
+   (fc-replace-looking-text "\\([0-9]+\\)[年/-]\\([0-9]+\\)[月]"
+     (format "<%d-%02d>"
+             (string-to-number (match-string 1))
+             (string-to-number (match-string 2))))
+
+   (fc-replace-looking-text "\\([0-9]+\\)[月/-]\\([0-9]+\\)[日号]?"
+     (format "<%02d-%02d>"
+             (string-to-number (match-string 1))
+             (string-to-number (match-string 2))))))
+
 (defconst *fc-org-map*
   (fc-make-keymap
    `(
@@ -220,6 +238,7 @@ PARAM: parameter of block."
      ("c" fc--org-ctrl-c-ctrl-c)
      ("i c" org-cliplink)
      ("i d" org-insert-drawer)
+     ("i i" fc--org-convert)
      ("i n" org-roam-node-insert)
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)

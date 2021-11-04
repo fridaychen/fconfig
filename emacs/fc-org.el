@@ -96,7 +96,7 @@
   "Add header."
   (goto-char (point-min))
 
-  (insert "#+TITLE " (read-string "Title : ")  "\n"
+  (insert "#+TITLE " (read-string "Org file title")  "\n"
           "\n"))
 
 (cl-defun fc-org-add-var ()

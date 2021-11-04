@@ -24,7 +24,7 @@
     ("B" "Bookmark" plain (file+headline "bookmarks.org" "Inbox") "[[%(org-cliplink-clipboard-content)][%^{Title}]]\n")
     ))
 
-(defvar *fc-org-user-capture-templates*)
+(defvar *fc-org-user-capture-templates* nil)
 
 (defvar *fc-org-trust-babel-modes* '("plantuml"))
 
@@ -49,6 +49,7 @@
     (require 'ob-octave)
     (require 'ob-python)
     (require 'ob-shell)
+    (require 'ol-man)
 
     (cl-defun fc--setup-org-mode ()
       (org-superstar-mode 1)

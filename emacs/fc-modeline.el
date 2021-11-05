@@ -264,8 +264,6 @@
   (unless (facep 'fc-modeline-highlight-inactive-face)
     (make-face 'fc-modeline-highlight-inactive-face))
 
-  (fc-ml-sep-reset)
-
   (let* ((deep-dark (fc-deep-dark-theme-p))
          (bg (if deep-dark
                  *fc-modeline-dark-active-hl-bg*
@@ -283,6 +281,8 @@
                         :background fg
                         :weight 'medium
                         :inherit 'mode-line))
+
+  (fc-ml-sep-reset)
 
   (fc-funcall #'mode-icons-mode :args (list -1))
   (setq-default mode-line-format

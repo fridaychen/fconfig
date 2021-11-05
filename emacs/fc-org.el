@@ -179,23 +179,26 @@ PARAM: parameter of block."
 
   (fc-modal-global-mode-off))
 
-(cl-defun fc--org-do ()
-  "Execute action according to current context."
-  (let* ((context (org-context))
-         (1st-elt (caar context))
-         (2nd-elt (caadr context))
-         (elt (cond
-               ((null 1st-elt) nil)
-               ((and (eq 1st-elt :item-bullet)
-                     (eq 2nd-elt :item))
-                :item-bullet)
-               ((null 2nd-elt) 1st-elt)
-               (t 2nd-elt))))
-    (when (null elt)
-      (org-ctrl-c-ctrl-c)
-      (cl-return-from fc--org-do))
+(cl-defmacro fc--org-smart-action (default &rest body)
+  (declare (indent 1))
+  `(let* ((context (org-context))
+          (1st-elt (caar context))
+          (2nd-elt (caadr context))
+          (elt (cond
+                ((null 1st-elt) nil)
+                ((and (eq 1st-elt :item-bullet)
+                      (eq 2nd-elt :item))
+                 :item-bullet)
+                ((null 2nd-elt) 1st-elt)
+                (t 2nd-elt))))
+     (if (null elt)
+         (progn
+           (fc-funcall ,default)
+           (cl-return-from fc--org-smart-action))
+       ,@body)))
 
-    ;; (message "context: %s  elt: %s" context elt)
+(cl-defun fc--org-do ( )
+  (fc--org-smart-action #'org-ctrl-c-ctrl-c
     (pcase elt
       (:checkbox (org-ctrl-c-ctrl-c))
       (:headline (org-insert-heading-respect-content))
@@ -234,6 +237,17 @@ PARAM: parameter of block."
              (string-to-number (match-string 1))
              (string-to-number (match-string 2))))))
 
+(defun fc--org-occur ()
+  (org-occur (fc-current-thing :ask t :regq t :confirm "Org match")))
+
+(defun fc--org-sparse-tree ()
+  (fc--org-smart-action #'org-sparse-tree
+    (pcase elt
+      (:headline (fc--org-occur))
+      (:tags (fc-funcall #'org-match-sparse-tree))
+      (:todo-keyword (fc-funcall #'org-show-todo-tree))
+      (_ (fc-funcall #'org-sparse-tree)))))
+
 (defconst *fc-org-map*
   (fc-make-keymap
    `(
@@ -256,7 +270,8 @@ PARAM: parameter of block."
      ("u" fc--org-do)
      ("v t" ,(fc-manual (org-tags-view t)))
      ("v T" org-tags-view)
-     ("y" org-show-todo-tree)
+     ("y" ,(fc-cond-key :normal 'fc--org-sparse-tree
+                        :region 'fc--org-occur))
      ("A" org-archive-subtree)
      ("C i" org-clock-in)
      ("C o" org-clock-out)

@@ -847,7 +847,7 @@ FORM: test form."
             (mapcar (lambda (x) (cons x (window-buffer x)))
                     (window-list))))
 
-(defmacro fc-process-looking-text (regex &rest body)
+(defmacro fc-do-looking-at (regex &rest body)
   (declare (indent 1))
   `(when (looking-at ,regex)
      (let* ((start (match-beginning 0))
@@ -856,10 +856,8 @@ FORM: test form."
 
 (defmacro fc-replace-looking-text (regex &rest body)
   (declare (indent 1))
-  `(when (looking-at ,regex)
-     (let* ((start (match-beginning 0))
-            (end (match-end 0))
-            (new-text (progn ,@body)))
+  `(fc-do-looking-at ,regex
+     (let ((new-text (progn ,@body)))
        (delete-region start end)
        (insert new-text))))
 

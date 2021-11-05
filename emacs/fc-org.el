@@ -211,21 +211,26 @@ PARAM: parameter of block."
 (defun fc-org-mode-mouse-func (_event)
   (fc--org-do))
 
+(defvar *fc--org-last-year* "")
+
 (defun fc--org-convert ()
   (or
    (fc-replace-looking-text "\\([0-9]+\\)[年/-]\\([0-9]+\\)[月/-]\\([0-9]+\\)[日号]?"
+     (setf *fc--org-last-year* (string-to-number (match-string 1)))
      (format "<%d-%02d-%02d>"
              (string-to-number (match-string 1))
              (string-to-number (match-string 2))
              (string-to-number (match-string 3))))
 
    (fc-replace-looking-text "\\([0-9]+\\)[年/-]\\([0-9]+\\)[月]"
+     (setf *fc--org-last-year* (string-to-number (match-string 1)))
      (format "<%d-%02d>"
              (string-to-number (match-string 1))
              (string-to-number (match-string 2))))
 
    (fc-replace-looking-text "\\([0-9]+\\)[月/-]\\([0-9]+\\)[日号]?"
-     (format "<%02d-%02d>"
+     (format "<%d-%02d-%02d>"
+             *fc--org-last-year*
              (string-to-number (match-string 1))
              (string-to-number (match-string 2))))))
 

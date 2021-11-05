@@ -70,6 +70,7 @@
 
 (defconst *fc--sep-patterns* '(*fc--sep-box* *fc--sep-brace* *fc--sep-wave* *fc--sep-zigzag*))
 
+(defvar *fc-ml-sep* nil)
 (defvar *fc-ml-sep-active-left* " ")
 (defvar *fc-ml-sep-active-right* " ")
 (defvar *fc-ml-sep-inactive-left* " ")
@@ -102,7 +103,8 @@
   (unless (and *is-gui* *fc-ml-sep-enable*)
     (cl-return-from fc-ml-sep-reset))
 
-  (let ((pattern (symbol-value (seq-random-elt *fc--sep-patterns*))))
+  (let ((pattern (symbol-value (or *fc-ml-sep*
+                                   (seq-random-elt *fc--sep-patterns*)))))
     (setf
      *fc-ml-sep-active-left* (fc--ml-create 'fc-modeline-highlight-face 'mode-line pattern)
      *fc-ml-sep-active-right* (fc--ml-create 'fc-modeline-highlight-face 'mode-line pattern t)

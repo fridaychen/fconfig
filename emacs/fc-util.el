@@ -859,7 +859,8 @@ FORM: test form."
   `(fc-do-looking-at ,regex
      (let ((new-text (progn ,@body)))
        (delete-region start end)
-       (insert new-text))))
+       (insert new-text)
+       new-text)))
 
 (provide 'fc-util)
 

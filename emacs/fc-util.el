@@ -868,6 +868,18 @@ FORM: test form."
           text)
     map))
 
+(defun fc-detect-has-wide-char (text)
+  (let ((map (fc-detect-char-script text)))
+    (--first (gethash it map)
+             '(han kana emoji))))
+
+(cl-defun fc-detect-buf-has-wide-char (&optional (buf (current-buffer)) (max 128))
+  (with-current-buffer buf
+    (fc-detect-has-wide-char (buffer-substring 1 max))))
+
+(defun fc-set-visual-line-mode ()
+  (visual-line-mode (if (fc-detect-buf-has-wide-char) 1 -1)))
+
 (provide 'fc-util)
 
 ;; Local Variables:

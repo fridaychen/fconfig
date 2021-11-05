@@ -15,7 +15,7 @@
           '("---"))
 
     (defun fc--setup-markdown-mode ()
-      (visual-line-mode (if (string= (fc--md-lang) "en-US") 1 -1))
+      (fc-set-visual-line-mode)
 
       (let ((buf (current-buffer)))
         (fc-delay-task #'(lambda ()

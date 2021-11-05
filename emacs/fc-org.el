@@ -54,7 +54,8 @@
     (cl-defun fc--setup-org-mode ()
       (org-superstar-mode 1)
       (org-link-beautify-mode -1)
-      (visual-line-mode 1)
+      (org-overview)
+      (visual-line-mode (if (gethash 'han (fc-detect-char-script (buffer-substring 1 128))) 1 -1))
       (when (= (buffer-size) 0)
         (fc-org-add-header)))
 

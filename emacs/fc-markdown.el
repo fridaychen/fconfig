@@ -47,8 +47,7 @@
   "Get current language."
   (or
    (fc-search "language: *\\(.+\\)" :begin t :sub 1 :bound 128 :default nil)
-   (if (seq-some (lambda (x) (eq (aref char-script-table x) 'han))
-                 (buffer-substring 1 128))
+   (if (gethash 'han (fc-detect-char-script (buffer-substring 1 128)))
        "zh-CN"
      "en-US")))
 

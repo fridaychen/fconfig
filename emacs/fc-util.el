@@ -862,6 +862,12 @@ FORM: test form."
        (insert new-text)
        new-text)))
 
+(defun fc-detect-char-script (text)
+  (let ((map (make-hash-table)))
+    (mapc (lambda (x) (puthash (aref char-script-table x) t map))
+          text)
+    map))
+
 (provide 'fc-util)
 
 ;; Local Variables:

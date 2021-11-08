@@ -179,7 +179,9 @@ COLOR: background color."
        (fc-set-face-attribute 'default nil
                               :background (color-darken-name
                                            (fc-get-face-attribute 'default :background)
-                                           2)))
+                                           4))
+       (fc-set-face-attribute 'fringe nil
+                              :background "coral"))
 
       ('fantom
        (fc-set-face-attribute 'fringe nil

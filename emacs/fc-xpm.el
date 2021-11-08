@@ -40,11 +40,23 @@ static char * xpm [] = {
            collect (nth (% x data-len) data)))
 
 (defun fc--create-xpm-data-with-pattern3 (height header center footer)
-  (fc-concat
-   header
-   (fc--create-xpm-data-with-pattern1 (- height (length header) (length footer))
-                                      center)
-   footer))
+  (cond
+   ((eq (length center) 1)
+    (fc-concat
+     header
+     (fc--create-xpm-data-with-pattern1 (- height (length header) (length footer))
+                                        center)
+     footer))
+
+   ((and (eq (length header) 1)
+         (eq (length footer) 1))
+    (let* ((center-count (/ height (length center)))
+           (header-count (/ (- height (* center-count (length center))) 2))
+           (footer-count (- height header-count (* center-count (length center)))))
+      (fc-concat
+       (fc--create-xpm-data-with-pattern1 header-count header)
+       (fc--create-xpm-data-with-pattern1 (* center-count (length center)) center)
+       (fc--create-xpm-data-with-pattern1 footer-count footer))))))
 
 (defun fc--create-xpm-data-with-pattern5 (height header pattern center second-pattern footer)
   (let* ((pattern-len (/ (- height (length header) (length footer) (length center)) 2))

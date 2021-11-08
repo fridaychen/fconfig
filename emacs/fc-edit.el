@@ -50,6 +50,9 @@
     :after (xclip-mode)))
 
 (fc-add-hook 'find-file-hook
+  (when (member major-mode *fc-doc-modes*)
+    (fc-set-visual-line-mode))
+
   ;; setup default line-space
   (setf line-spacing *fc-basic-line-spacing*)
   ;; hightlight ending whitespace

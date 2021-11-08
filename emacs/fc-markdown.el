@@ -15,8 +15,6 @@
           '("---"))
 
     (defun fc--setup-markdown-mode ()
-      (fc-set-visual-line-mode)
-
       (let ((buf (current-buffer)))
         (fc-delay-task #'(lambda ()
                            (with-current-buffer buf

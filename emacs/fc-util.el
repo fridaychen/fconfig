@@ -878,7 +878,7 @@ FORM: test form."
     (fc-detect-has-wide-char (buffer-substring 1 max))))
 
 (defun fc-set-visual-line-mode ()
-  (visual-line-mode (if (fc-detect-buf-has-wide-char) 1 -1)))
+  (visual-line-mode (if (fc-detect-buf-has-wide-char) -1 1)))
 
 (provide 'fc-util)
 

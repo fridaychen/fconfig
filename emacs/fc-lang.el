@@ -86,12 +86,12 @@ OBJ: object"
          (format "%S" obj))))
 
 (cl-defun fc-concat (&rest rest)
-  (if (null (cl-first rest))
-      (apply #'seq-concatenate 'list rest)
-    (pcase (type-of (cl-first rest))
-      ('string (apply #'concat rest))
-      ('cons (apply #'seq-concatenate 'list rest))
-      (_ (mapconcat #'fc-string rest "")))))
+  (let ((x (--first (not (null it)) rest)))
+    (when x
+      (pcase (type-of x)
+        ('string (apply #'concat rest))
+        ('cons (apply #'seq-concatenate 'list rest))
+        (_ (mapconcat #'fc-string rest ""))))))
 
 (cl-defun fc--search (regex &key sub bound count begin (default ""))
   (when begin

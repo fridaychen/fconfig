@@ -95,6 +95,22 @@ static char * xpm [] = {
                  (lambda (line &rest _rest)
                    (nth (1- line) data)))))
 
+(defun fc-make-xpm-with-gradient (width height color1 color2 &optional reverse)
+  (let* ((chars (append (mapcar 'number-to-string (number-sequence 0 9))
+                        (mapcar 'char-to-string (number-sequence ?a ?z))
+                        (mapcar 'char-to-string (number-sequence ?A ?Z))))
+         (colors (mapcar #'(lambda (&rest rest)
+                             (apply #'color-rgb-to-hex (car rest)))
+                         (color-gradient (color-name-to-rgb color1)
+                                         (color-name-to-rgb color2)
+                                         width)))
+         (color-def (cl-mapcar #'cons chars colors))
+         (orig-data (substring (apply #'fc-concat chars) 0 width))
+         (data (if reverse (reverse orig-data) orig-data)))
+    (fc-make-xpm width height color-def
+                 (lambda (&rest _rest)
+                   data))))
+
 (provide 'fc-xpm)
 
 ;; Local Variables:

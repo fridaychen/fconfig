@@ -64,8 +64,7 @@
 
 (defconst *fc--sep-zigzag*
   '(("002211111111")
-    ("002211111111"
-     "000221111111"
+    ("000221111111"
      "000022111111"
      "000002211111"
      "000000221111"
@@ -74,7 +73,7 @@
      "000221111111")
     ("002211111111")))
 
-(defconst *fc--sep-patterns* '(*fc--sep-box* *fc--sep-brace* *fc--sep-wave* *fc--sep-zigzag*))
+(defconst *fc--sep-patterns* '(*fc--sep-box* *fc--sep-brace* *fc--sep-gradient* *fc--sep-wave* *fc--sep-zigzag*))
 
 (defvar *fc-ml-sep* nil)
 (defvar *fc-ml-sep-active-left* " ")
@@ -105,17 +104,34 @@
             pattern
             reverse)))
 
+(defun fc--ml-create-gradient (face1 face2 &optional reverse)
+  (fc-text " " :display
+           (fc-make-xpm-with-gradient
+            (frame-char-width)
+            (fc--ml-height)
+            (fc-get-face-attribute face1 :background)
+            (fc-get-face-attribute face2 :background)
+            reverse)))
+
 (cl-defun fc-ml-sep-reset ()
   (unless (and *is-gui* *fc-ml-sep-enable*)
     (cl-return-from fc-ml-sep-reset))
 
-  (let ((pattern (symbol-value (or *fc-ml-sep*
-                                   (seq-random-elt *fc--sep-patterns*)))))
-    (setf
-     *fc-ml-sep-active-left* (fc--ml-create 'fc-modeline-highlight-face 'mode-line pattern)
-     *fc-ml-sep-active-right* (fc--ml-create 'fc-modeline-highlight-face 'mode-line pattern t)
-     *fc-ml-sep-inactive-left* (fc--ml-create 'fc-modeline-highlight-inactive-face 'mode-line-inactive pattern)
-     *fc-ml-sep-inactive-right* (fc--ml-create 'fc-modeline-highlight-face 'mode-line-inactive pattern t))))
+  (let* ((sep (or *fc-ml-sep*
+                  (seq-random-elt *fc--sep-patterns*)))
+         (pattern (unless (eq sep '*fc--sep-gradient*)
+                    (symbol-value sep))))
+    (if (eq sep '*fc--sep-gradient*)
+        (setf
+         *fc-ml-sep-active-left* (fc--ml-create-gradient 'fc-modeline-highlight-face 'mode-line)
+         *fc-ml-sep-active-right* (fc--ml-create-gradient 'fc-modeline-highlight-face 'mode-line t)
+         *fc-ml-sep-inactive-left* (fc--ml-create-gradient 'fc-modeline-highlight-inactive-face 'mode-line-inactive)
+         *fc-ml-sep-inactive-right* (fc--ml-create-gradient 'fc-modeline-highlight-face 'mode-line-inactive t))
+      (setf
+       *fc-ml-sep-active-left* (fc--ml-create 'fc-modeline-highlight-face 'mode-line pattern)
+       *fc-ml-sep-active-right* (fc--ml-create 'fc-modeline-highlight-face 'mode-line pattern t)
+       *fc-ml-sep-inactive-left* (fc--ml-create 'fc-modeline-highlight-inactive-face 'mode-line-inactive pattern)
+       *fc-ml-sep-inactive-right* (fc--ml-create 'fc-modeline-highlight-face 'mode-line-inactive pattern t)))))
 
 (defun fc-ml-left-sep ()
   (if (fc--active-window-p)

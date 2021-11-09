@@ -76,6 +76,7 @@
 (defconst *fc--sep-patterns* '(*fc--sep-box* *fc--sep-brace* *fc--sep-gradient* *fc--sep-wave* *fc--sep-zigzag*))
 
 (defvar *fc-ml-sep* nil)
+(defvar *fc-ml-sep-string* " ")
 (defvar *fc-ml-sep-active-left* " ")
 (defvar *fc-ml-sep-active-right* " ")
 (defvar *fc-ml-sep-inactive-left* " ")
@@ -109,7 +110,7 @@
   (or *fc-ml-sep-height* (frame-char-height)))
 
 (defun fc--ml-create (face1 face2 pattern &optional reverse)
-  (fc-text " " :display
+  (fc-text *fc-ml-sep-string* :display
            (fc-make-xpm-with-pattern
             (fc--ml-height)
             (fc--gen-colors face1 face2)
@@ -117,9 +118,9 @@
             reverse)))
 
 (defun fc--ml-create-gradient (face1 face2 &optional reverse)
-  (fc-text " " :display
+  (fc-text *fc-ml-sep-string* :display
            (fc-make-xpm-with-gradient
-            (frame-char-width)
+            (* (length *fc-ml-sep-string*) (frame-char-width))
             (fc--ml-height)
             (fc-get-face-attribute face1 :background)
             (fc-get-face-attribute face2 :background)

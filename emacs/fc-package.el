@@ -51,13 +51,13 @@ REST: include :package :local :enable :bind :before :after :autoload :run"
             (,before (plist-get ,l :before))
             (,after (plist-get ,l :after)))
        (when (or (null ,enable)
-                 (and ,enable (eval ,enable)))
+                 (and ,enable (eval ,enable t)))
          (when ,before
-           (eval ,before))
+           (eval ,before t))
 
          (cond
           ;; load locally
-          ((and ,local (eval ,local))
+          ((and ,local (eval ,local t))
            (require ,n))
 
           ;; load package
@@ -65,7 +65,7 @@ REST: include :package :local :enable :bind :before :after :autoload :run"
            (when (not (package-installed-p (or ,pkg ,n)))
              (package-install (if (null ,pkg)
                                   ,n
-                                (eval ,pkg))))
+                                (eval ,pkg t))))
 
            (cond
             ((featurep ,n))
@@ -81,10 +81,10 @@ REST: include :package :local :enable :bind :before :after :autoload :run"
 
          (with-eval-after-load ,name
            (when ,after
-             (eval ,after))
+             (eval ,after t))
 
            (when ,bind
-             (--each (eval ,bind)
+             (--each (eval ,bind t)
                (fc-bind-keys (cl-rest it)
                              (symbol-value (car it))))))))))
 

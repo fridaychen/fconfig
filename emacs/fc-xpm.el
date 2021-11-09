@@ -69,24 +69,12 @@ static char * xpm [] = {
      footer)))
 
 (defun fc--create-xpm-data-with-pattern (height pattern)
-  (cond
-   ((= (length pattern) 1)
-    (fc--create-xpm-data-with-pattern1 height
-                                       (cl-first pattern)))
-
-   ((= (length pattern) 3)
-    (fc--create-xpm-data-with-pattern3 height
-                                       (cl-first pattern)
-                                       (cl-second pattern)
-                                       (cl-third pattern)))
-
-   ((= (length pattern) 5)
-    (fc--create-xpm-data-with-pattern5 height
-                                       (cl-first pattern)
-                                       (cl-second pattern)
-                                       (cl-third pattern)
-                                       (cl-fourth pattern)
-                                       (cl-fifth pattern)))))
+  (apply
+   (pcase (length pattern)
+     (1 #'fc--create-xpm-data-with-pattern1)
+     (3 #'fc--create-xpm-data-with-pattern3)
+     (5 #'fc--create-xpm-data-with-pattern5))
+   height pattern))
 
 (defun fc-make-xpm-with-pattern (height color-def pattern &optional reverse)
   (let* ((orig-data (fc--create-xpm-data-with-pattern height pattern))

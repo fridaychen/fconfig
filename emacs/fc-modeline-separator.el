@@ -6,42 +6,42 @@
 ;;; Code:
 
 (defconst *fc--sep-box*
-  '(("00021111111")
-    ("00021111111"
-     "00022222111"
-     "00000002111"
-     "00000002111"
-     "00000002111"
-     "00000002111"
-     "00022222111"
-     "00021111111")
-    ("00021111111")))
+  '(("21111")
+    ("21111"
+     "22222"
+     "00002"
+     "00002"
+     "00002"
+     "00002"
+     "22222"
+     "21111")
+    ("21111")))
 
 (defconst *fc--sep-brace*
-  '(("21111111111"
-     "21111111111"
-     "21111111111"
-     "02111111111")
-    ("00211111111")
-    ("00211111111"
-     "00021111111"
-     "00021111111"
-     "00002111111"
-     "00002111111"
-     "00000221111"
-     "00000002111"
-     "00000002111"
-     "00000221111"
-     "00002111111"
-     "00002111111"
-     "00021111111"
-     "00021111111"
-     "00211111111")
-    ("00211111111")
-    ("02111111111"
-     "21111111111"
-     "21111111111"
-     "21111111111")))
+  '(("21111111"
+     "21111111"
+     "21111111"
+     "02111111")
+    ("00211111")
+    ("00211111"
+     "00021111"
+     "00021111"
+     "00002111"
+     "00002111"
+     "00000221"
+     "00000002"
+     "00000002"
+     "00000221"
+     "00002111"
+     "00002111"
+     "00021111"
+     "00021111"
+     "00211111")
+    ("00211111")
+    ("02111111"
+     "21111111"
+     "21111111"
+     "21111111")))
 
 (defconst *fc--sep-wave*
   '(("21111111111"
@@ -63,15 +63,15 @@
      "00000000002")))
 
 (defconst *fc--sep-zigzag*
-  '(("002211111111")
-    ("000221111111"
-     "000022111111"
-     "000002211111"
-     "000000221111"
-     "000002211111"
-     "000022111111"
-     "000221111111")
-    ("002211111111")))
+  '(("221111")
+    ("022111"
+     "002211"
+     "000221"
+     "000022"
+     "000221"
+     "002211"
+     "022111")
+    ("221111")))
 
 (defconst *fc--sep-patterns* '(*fc--sep-box* *fc--sep-brace* *fc--sep-gradient* *fc--sep-wave* *fc--sep-zigzag*))
 
@@ -84,7 +84,19 @@
 (defvar *fc-ml-sep-height* nil)
 (defvar *fc-ml-sep-enable* t)
 
+(defun fc--pad-pattern (width left-pad-char right-pad-char pattern)
+  "Add padding data to left and right side of pattern."
+  (let* ((len (length (caar pattern)))
+         (left-pad-len (/ (- width len) 2))
+         (right-pad-len (- width len left-pad-len))
+         (left-pad (make-string left-pad-len left-pad-char))
+         (right-pad (make-string right-pad-len right-pad-char)))
+    (mapcar (lambda (x)
+              (mapcar (lambda (y) (fc-concat left-pad y right-pad)) x))
+            pattern)))
+
 (defun fc--gen-colors (face1 face2)
+  "Generate XPM color by faces."
   (let ((bg1 (fc-get-face-attribute face1 :background))
         (bg2 (fc-get-face-attribute face2 :background)))
     `(
@@ -120,7 +132,7 @@
   (let* ((sep (or *fc-ml-sep*
                   (seq-random-elt *fc--sep-patterns*)))
          (pattern (unless (eq sep '*fc--sep-gradient*)
-                    (symbol-value sep))))
+                    (fc--pad-pattern (frame-char-width) ?0 ?1 (symbol-value sep)))))
     (if (eq sep '*fc--sep-gradient*)
         (setf
          *fc-ml-sep-active-left* (fc--ml-create-gradient 'fc-modeline-highlight-face 'mode-line)

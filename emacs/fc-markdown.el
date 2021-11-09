@@ -17,7 +17,6 @@
     (defun fc--setup-markdown-mode ()
       (let ((buf (current-buffer)))
         (fc-delay-task #'(lambda ()
-                           (message "Setup markdown %s" buf)
                            (with-current-buffer buf
                              (text-scale-set *fc-md-scale*)))
                        0.1))

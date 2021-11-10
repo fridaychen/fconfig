@@ -13,11 +13,12 @@
      ("f" eval-defun)
      ("l" ,(fc-manual (when buffer-file-name
                         (load buffer-file-name))))
+     ("x" transpose-sexps)
      ("SPC" fc-elisp-portal)
      )
    "fc-emacs-lisp-map"
    *fc-func-mode-map*)
-  "KEYS e: eval  f: eval fun  l: load current file  E: org edit exit  SPC: portal.")
+  "KEYS e: eval  f: eval fun  l: load current file  x: transpose sexps  E: org edit exit  SPC: portal.")
 
 (defun fc-elisp-portal ()
   "Show elisp portal."

@@ -5,75 +5,57 @@
 
 ;;; Code:
 
-(defconst *fc--sep-box*
-  '(("21111")
-    ("21111"
-     "22222"
-     "00002"
-     "00002"
-     "00002"
-     "00002"
-     "22222"
-     "21111")
-    ("21111")))
+(defconst *fc--sep-round*
+  '(("h2311"
+     "0h231"
+     "00h23")
+    ("00h23")
+    ("00h23"
+     "0h231"
+     "h2311")))
 
-(defconst *fc--sep-brace*
-  '(("21111111"
-     "21111111"
-     "21111111"
-     "02111111")
-    ("00211111")
-    ("00211111"
-     "00021111"
-     "00021111"
-     "00002111"
-     "00002111"
-     "00000221"
-     "00000002"
-     "00000002"
-     "00000221"
-     "00002111"
-     "00002111"
-     "00021111"
-     "00021111"
-     "00211111")
-    ("00211111")
-    ("02111111"
-     "21111111"
-     "21111111"
-     "21111111")))
+(defconst *fc--sep-box*
+  '(("h23111")
+    ("h23111"
+     "hhhh23"
+     "000h23"
+     "000h23"
+     "000h23"
+     "hhhh23"
+     "h23111")
+    ("h23111")))
 
 (defconst *fc--sep-wave*
-  '(("21111111111"
-     "00211111111"
-     "00021111111"
-     "00021111111"
-     "00002111111"
-     "00002111111"
-     "00000211111"
-     "00000211111"
-     "00000211111")
-    ("00000021111")
-    ("00000021111"
-     "00000002111"
-     "00000002111"
-     "00000002111"
-     "00000000211"
-     "00000000211"
-     "00000000002")))
+  '(("h2311111111"
+     "0h231111111"
+     "00h23111111"
+     "00h23111111"
+     "000h2311111"
+     "000h2311111"
+     "0000h231111"
+     "0000h231111"
+     "0000h233111")
+    ("00000h23111")
+    ("00000h23311"
+     "000000h2311"
+     "000000h2311"
+     "000000h2311"
+     "0000000h231"
+     "0000000h231"
+     "00000000hh2")))
 
 (defconst *fc--sep-zigzag*
-  '(("221111")
-    ("022111"
-     "002211"
-     "000221"
-     "000022"
-     "000221"
-     "002211"
-     "022111")
-    ("221111")))
+  '(("h223311")
+    ("0h22311"
+     "00h2231"
+     "000h223"
+     "0000h22"
+     "000h223"
+     "00h2231"
+     "0h22311")
+    ("h223311")))
 
-(defconst *fc--sep-patterns* '(*fc--sep-box* *fc--sep-brace* *fc--sep-gradient* *fc--sep-wave* *fc--sep-zigzag*))
+(defconst *fc--sep-patterns* '(*fc--sep-box* *fc--sep-gradient* *fc--sep-round* *fc--sep-wave* *fc--sep-zigzag*))
 
 (defvar *fc-ml-sep* nil)
 (defvar *fc-ml-sep-string* " ")
@@ -85,8 +67,11 @@
 (defvar *fc-ml-sep-height* nil)
 (defvar *fc-ml-sep-enable* t)
 
-(defun fc--pad-pattern (width left-pad-char right-pad-char pattern)
+(cl-defun fc--pad-pattern (width left-pad-char right-pad-char pattern)
   "Add padding data to left and right side of pattern."
+  (unless (> width (length (caar pattern)))
+    (cl-return-from fc--pad-pattern pattern))
+
   (let* ((len (length (caar pattern)))
          (left-pad-len (/ (- width len) 2))
          (right-pad-len (- width len left-pad-len))
@@ -96,15 +81,24 @@
               (mapcar (lambda (y) (fc-concat left-pad y right-pad)) x))
             pattern)))
 
+(defun fc--cal-middle-color (color1 color2)
+  (apply #'color-rgb-to-hex (car
+                             (color-gradient (color-name-to-rgb color1)
+                                             (color-name-to-rgb color2)
+                                             1))))
+
 (defun fc--gen-colors (face1 face2)
   "Generate XPM color by faces."
-  (let ((bg1 (fc-get-face-attribute face1 :background))
-        (bg2 (fc-get-face-attribute face2 :background)))
-    `(
-      ("0" . ,bg1)
+  (let* ((bg1 (fc-get-face-attribute face1 :background))
+         (bg2 (fc-get-face-attribute face2 :background))
+         (c2 (fc--cal-middle-color bg1 bg2))
+         (c3 (fc--cal-middle-color c2 bg2))
+         (h (fc-get-face-attribute 'fc-modeline-highlight-face :background)))
+    `(("0" . ,bg1)
       ("1" . ,bg2)
-      ("2" . ,(colir-blend (color-values bg1) (color-values bg2)))
-      )))
+      ("2" . ,c2)
+      ("3" . ,c3)
+      ("h" . ,h))))
 
 (defun fc--ml-height()
   (or *fc-ml-sep-height* (frame-char-height)))

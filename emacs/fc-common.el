@@ -154,7 +154,7 @@ COLOR: background color."
       (fc-set-face-attribute it nil :background new-bg))))
 
 (defvar *fc-soothe-dark-percent* -4)
-(defvar *fc-soothe-light-percent* 5)
+(defvar *fc-soothe-light-percent* 10)
 
 (defconst *fc-soothe-color* (make-hash-table))
 (--each '((material "gray20")

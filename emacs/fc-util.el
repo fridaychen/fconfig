@@ -822,7 +822,7 @@ COLORA: the one color.
 COLORB: another color."
   (cl-loop for i in (color-values colora)
            for j in (color-values colorb)
-           sum (+ (* i i) (* j j)) into x
+           sum (expt (- i j) 2) into x
            finally return (sqrt x)))
 
 (defun fc-line-num ()

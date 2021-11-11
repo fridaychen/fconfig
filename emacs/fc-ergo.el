@@ -1229,7 +1229,10 @@ STEP: pixels."
      ("r" ,(fc-manual (when (fc-user-confirm "Restart Emacs")
                         (fc-save-desktop)
                         (restart-emacs))))
-     ("t" fc-dark-theme)
+     ("t" ,(fc-manual (fc-user-select-func "Select theme style"
+                                           `(("dark"  . fc-dark-theme)
+                                             ("deep dark" . fc-deep-dark-theme)
+                                             ("light" . fc-light-theme)))))
      ("w" ,(fc-manual (fc-theme-auto-select *fc-work-themes*)))
      ("z" suspend-emacs)
 
@@ -1238,11 +1241,10 @@ STEP: pixels."
      ("K" fc--reduce-v)
      ("L" fc--enlarge-h)
 
-     ("T" fc-deep-dark-theme)
      ("W" ,(fc-manual (fc-theme-auto-select *fc-work-dark-themes*)))
      )
    "ergo-prefix-quick-map")
-  "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: dark theme  w: zenburn  z: suspend  T: deep dark theme  W: dark theme.")
+  "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: select theme  w: work theme  z: suspend  T: deep dark theme.")
 
 (defconst *ergo-vc-map*
   (fc-make-keymap

@@ -229,6 +229,10 @@ COLOR: background color."
        (fc-set-face-attribute 'fringe nil
                               :background "#de935f"))
 
+      ('sanityinc-tomorrow-night
+       (fc-set-face-attribute 'default nil
+                              :background "#303030"))
+
       ('tango-dark
        (fc-set-face-attribute 'default nil
                               :background "#203420")

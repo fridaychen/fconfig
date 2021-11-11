@@ -92,10 +92,9 @@
 
 ;; theme
 (setf *fc-light-theme* '(
+                         (acme . acme-theme)
                          (gruvbox-light-hard . gruvbox-theme)
                          (material-light . material-theme)
-                         (sanityinc-tomorrow-day . color-theme-sanityinc-tomorrow)
-                         tango
                          )
       *fc-dark-theme* (if *is-gui*
                           '(

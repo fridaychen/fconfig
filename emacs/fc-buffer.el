@@ -9,6 +9,13 @@
 (defvar *fc-buffer-count-threshold* 4)
 
 ;; buffer extension
+(defun fc-buffer-visible-p (bufname)
+  "Test if a buffer is visible.
+BUFNAME: to be tested."
+  (let ((buf (get-buffer bufname)))
+    (and buf
+         (get-buffer-window buf))))
+
 (cl-defun fc-rm-current-buf (buffers)
   "Remove current buffer from list buffers.
 BUFFERS: list of buffer."

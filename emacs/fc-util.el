@@ -8,7 +8,6 @@
 (ignore-errors
   (require 'battery))
 (require 'notifications)
-(require 'fc-ui)
 
 (cl-defun fc-file-first-exists (files)
   "Find first existing file.
@@ -59,18 +58,7 @@ REST: contents."
   "Indent the whole buffer."
   (interactive)
 
-  (indent-region 0 (point-max)))
-
-(defun auto-setup-charset()
-  "Auto setup buffer encoding."
-  (let ((coding nil)
-        (revert-without-query '(".")))
-    (setf coding (make-symbol "t_auto_char"))
-    (setf coding (intern (downcase (shell-command-to-string
-                                    (concat "detect_charset.py '" buffer-file-name "'")))))
-
-    (unless (string-equal "ascii" coding)
-      (revert-buffer-with-coding-system coding))))
+  (indent-region (point-min) (point-max)))
 
 (defun fc-exec-command (command &rest args)
   "Exec command.
@@ -295,13 +283,6 @@ MARK-FUNC: call this func when region is not active."
          (goto-char (point-min))
          (insert (fc-funcall ,prefix))))))
 
-(defun fc-buffer-visible-p (bufname)
-  "Test if a buffer is visible.
-BUFNAME: to be tested."
-  (let ((buf (get-buffer bufname)))
-    (and buf
-         (get-buffer-window buf))))
-
 (defun fc--popup-tip-local (title content timeout)
   "Popup top application level.
 CONTENT: buffer content.
@@ -383,36 +364,6 @@ OBJ: object to be written."
                                            #'launch-separate-emacs-under-x
                                          #'launch-separate-emacs-in-terminal)))))
     (save-buffers-kill-emacs)))
-
-(defun fc-zh-to-number (str)
-  "Convert chinese number string to number.
-STR: chinese number string."
-  (let ((al '((?零 . 0)
-              (?一 . 1)
-              (?二 . 2)
-              (?两 . 2)
-              (?三 . 3)
-              (?四 . 4)
-              (?五 . 5)
-              (?六 . 6)
-              (?七 . 7)
-              (?八 . 8)
-              (?九 . 9)
-              (?十 . 10)
-              (?百 . 100)
-              (?千 . 1000)
-              (?万 . 10000)))
-        (n 0)
-        (ret 0))
-    (--each (append str nil)
-      (let ((v (cdr (assoc it al))))
-        (if (< v 10)
-            (setf n (+ (* n 10) v))
-          (when (and (= n 0) (= v 10))
-            (setf n 1))
-          (cl-incf ret (* n v))
-          (setf n 0))))
-    (+ ret n)))
 
 (defvar *fc-sound-player* (executable-find "mpg123"))
 
@@ -847,6 +798,7 @@ FORM: test form."
             (mapcar (lambda (x) (cons x (window-buffer x)))
                     (window-list))))
 
+;; looing-at utilities
 (defmacro fc-do-looking-at (regex &rest body)
   (declare (indent 1))
   `(when (looking-at ,regex)
@@ -861,24 +813,6 @@ FORM: test form."
        (delete-region start end)
        (insert new-text)
        new-text)))
-
-(defun fc-detect-char-script (text)
-  (let ((map (make-hash-table)))
-    (mapc (lambda (x) (puthash (aref char-script-table x) t map))
-          text)
-    map))
-
-(defun fc-detect-has-wide-char (text)
-  (let ((map (fc-detect-char-script text)))
-    (--first (gethash it map)
-             '(han kana emoji))))
-
-(cl-defun fc-detect-buf-has-wide-char (&optional (buf (current-buffer)) (max 128))
-  (with-current-buffer buf
-    (fc-detect-has-wide-char (buffer-substring 1 max))))
-
-(defun fc-set-visual-line-mode ()
-  (visual-line-mode (if (fc-detect-buf-has-wide-char) -1 1)))
 
 (provide 'fc-util)
 

@@ -90,6 +90,17 @@
 (autoload #'yas-expand "yasnippet")
 (autoload #'yas-describe-tables "yasnippet")
 
+;; user interface
+(autoload #'fc-user-select "fc-ui")
+(autoload #'fc-user-select-func "fc-ui")
+(autoload #'fc-user-confirm "fc-ui")
+
+;; lanugage
+(autoload #'fc-zh-to-number "fc-language")
+(autoload #'fc-detect-char-script "fc-language")
+(autoload #'fc-detect-has-wide-char "fc-language")
+(autoload #'fc-detect-buf-has-wide-char "fc-language")
+
 (provide 'fc-autoload)
 
 ;; Local Variables:

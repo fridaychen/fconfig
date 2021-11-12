@@ -49,9 +49,12 @@
     :idle t
     :after (xclip-mode)))
 
+(defun fc--set-visual-line-mode ()
+  (visual-line-mode (if (fc-detect-buf-has-wide-char) -1 1)))
+
 (fc-add-hook 'find-file-hook
   (when (member major-mode *fc-doc-modes*)
-    (fc-set-visual-line-mode))
+    (fc--set-visual-line-mode))
 
   ;; setup default line-space
   (setf line-spacing *fc-basic-line-spacing*)

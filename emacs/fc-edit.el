@@ -25,6 +25,13 @@
 (set-selection-coding-system 'utf-8)
 (set-next-selection-coding-system 'ctext)
 
+(fc-load 'rime
+  :after
+  (progn
+    (setf rime-show-candidate 'posframe)
+
+    (add-to-list '*fc-input-methods* 'rime)))
+
 (fc-load 'mozc
   :enable (executable-find "mozc_emacs_helper")
   :idle t

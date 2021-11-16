@@ -71,7 +71,7 @@
   :after
   (progn
     (add-to-list '*fc-after-theme-hook* #'fc-modeline-mode)))
-(fc-modal-global-mode)
+(fc-modal-enable)
 
 (fc-add-hook-func '*fc-after-theme-hook*
   #'fc-modal-after-theme-change

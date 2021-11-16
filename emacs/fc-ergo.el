@@ -237,7 +237,7 @@ FROM-BEGINNING: start from beginnning."
 
    (iedit-mode
     (iedit-quit)
-    (fc-modal-global-mode 1))
+    (fc-modal-enable))
 
    ((region-active-p)
     (kill-region (region-beginning) (region-end)))
@@ -305,7 +305,7 @@ INDENT-FUNC: function for indent."
   (newline-and-indent)
 
   (when fc-modal-global-mode
-    (fc-modal-global-mode -1)))
+    (fc-modal-disable)))
 
 ;; shell
 (defalias 'fc-show-hide-term (fc-manual (fc-show-hide-buffer "*ansi-term*"
@@ -576,7 +576,7 @@ NOT-SAVE: save to KILL-RING or nor."
                    'kill-region))
      (save-excursion
        (indent-for-tab-command))
-     (fc-modal-global-mode -1)))
+     (fc-modal-disable)))
 
 (defun fc-narrow-widen (arg)
   "Narrow/widen automatically.
@@ -1403,7 +1403,7 @@ AUTO: auto select face."
    ("o" ,(fc-cond-key :normal (fc-manual
                                (end-of-line)
                                (newline-and-indent)
-                               (fc-modal-global-mode -1))
+                               (fc-modal-disable))
                       :region 'fc-occur-dwim))
 
    ;; p := Player
@@ -1465,7 +1465,7 @@ AUTO: auto select face."
    ("E" fc-end-of-semantic)
    ("F" ,(fc-cond-key :normal 'fc-find-files
                       :region (fc-manual (call-interactively 'iedit-mode)
-                                         (fc-modal-global-mode -1))))
+                                         (fc-modal-disable))))
    ("G" ,(fc-cond-key :normal (fc-manual (fc-text-retrieve default-directory :ignore-files '("compile_commands.json")))
                       :proj (fc-manual (fc-text-retrieve (fc-proj-root) :ignore-files '("compile_commands.json")))
                       :prefix (fc-manual (fc-text-retrieve default-directory) :ignore-files '("compile_commands.json"))))
@@ -1485,7 +1485,7 @@ AUTO: auto select face."
                     (newline-and-indent)
                     (forward-line -1)
                     (indent-for-tab-command)
-                    (fc-modal-global-mode -1)))
+                    (fc-modal-disable)))
    ("P" ,*fc-undef-key*)
    ("Q" ,(fc-cond-key :normal 'delete-window
                       :prefix 'ace-delete-window
@@ -1612,7 +1612,7 @@ FUNC: new repeat func."
 
 (cl-defun fc-modal-global-mode-off (&rest _rest)
   "Turn off global model."
-  (fc-modal-global-mode -1))
+  (fc-modal-disable))
 
 (--each '(rpn-calc)
   (advice-add it :before #'fc-modal-global-mode-off))

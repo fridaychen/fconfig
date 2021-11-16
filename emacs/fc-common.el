@@ -93,6 +93,7 @@
 ;; theme
 (setf *fc-light-theme* '(
                          (acme . acme-theme)
+                         (faff . faff-theme)
                          (gruvbox-light-hard . gruvbox-theme)
                          (material-light . material-theme)
                          )

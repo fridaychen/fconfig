@@ -44,7 +44,8 @@
 (autoload #'fc-layout-switch "fc-layout")
 
 ;; modal
-(autoload #'fc-modal-global-mode "fc-modal")
+(autoload #'fc-modal-enable "fc-modal")
+(autoload #'fc-modal-disable "fc-modal")
 
 ;; program
 (autoload #'fc-program "fc-program")

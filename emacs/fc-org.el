@@ -81,14 +81,14 @@
 
     (cl-defun fc--capture-edit ()
       (insert " ")
-      (fc-modal-global-mode -1))
+      (fc-modal-disable))
 
     (add-hook 'org-capture-mode-hook #'fc--capture-edit)
     (add-hook 'org-capture-mode-hook #'fc--capture-copy-region)
     (add-hook 'org-capture-mode-hook #'org-align-all-tags)
     (add-hook 'org-capture-mode-hook #'fc--capture-tag)
 
-    (add-hook 'org-capture-after-finalize-hook #'fc-modal-global-mode)
+    (add-hook 'org-capture-after-finalize-hook #'fc-modal-disable)
     (add-hook 'org-babel-after-execute-hook #'org-redisplay-inline-images)
     (add-hook 'org-mode-hook #'fc--setup-org-mode)))
 
@@ -177,7 +177,7 @@ PARAM: parameter of block."
       (org-insert-item t)
     (org-insert-item))
 
-  (fc-modal-global-mode-off))
+  (fc-modal-disable))
 
 (cl-defmacro fc--org-smart-action (default &rest body)
   (declare (indent 1))
@@ -199,17 +199,17 @@ PARAM: parameter of block."
 
 (cl-defun fc--org-do ( )
   (fc--org-smart-action #'org-ctrl-c-ctrl-c
-    (pcase elt
-      (:checkbox (org-ctrl-c-ctrl-c))
-      (:headline (org-insert-heading-respect-content))
-      (:item (fc--org-do-intert-item))
-      (:item-bullet (org-ctrl-c-minus))
-      (:link (org-open-at-point))
-      (:src-block (org-ctrl-c-ctrl-c))
-      (:tags (org-set-tags-command))
-      (:timestamp (fc-funcall #'org-time-stamp))
-      (:todo-keyword (org-todo))
-      (_ (message "context: %s" context)))))
+                        (pcase elt
+                          (:checkbox (org-ctrl-c-ctrl-c))
+                          (:headline (org-insert-heading-respect-content))
+                          (:item (fc--org-do-intert-item))
+                          (:item-bullet (org-ctrl-c-minus))
+                          (:link (org-open-at-point))
+                          (:src-block (org-ctrl-c-ctrl-c))
+                          (:tags (org-set-tags-command))
+                          (:timestamp (fc-funcall #'org-time-stamp))
+                          (:todo-keyword (org-todo))
+                          (_ (message "context: %s" context)))))
 
 (defun fc-org-mode-mouse-func (_event)
   (fc--org-do))
@@ -242,11 +242,11 @@ PARAM: parameter of block."
 
 (defun fc--org-sparse-tree ()
   (fc--org-smart-action #'org-sparse-tree
-    (pcase elt
-      (:headline (fc--org-occur))
-      (:tags (fc-funcall #'org-match-sparse-tree))
-      (:todo-keyword (fc-funcall #'org-show-todo-tree))
-      (_ (fc-funcall #'org-sparse-tree)))))
+                        (pcase elt
+                          (:headline (fc--org-occur))
+                          (:tags (fc-funcall #'org-match-sparse-tree))
+                          (:todo-keyword (fc-funcall #'org-show-todo-tree))
+                          (_ (fc-funcall #'org-sparse-tree)))))
 
 (defconst *fc-org-map*
   (fc-make-keymap

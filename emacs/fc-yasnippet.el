@@ -23,7 +23,7 @@
   (interactive)
 
   (insert name)
-  (fc-modal-global-mode -1)
+  (fc-modal-disable)
   (yas-expand))
 
 (provide 'fc-yasnippet)

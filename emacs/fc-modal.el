@@ -22,6 +22,7 @@
                                     flycheck-fringe-info
                                     flycheck-fringe-warning))
 
+(defvar *fc-modal-hook* nil)
 (defvar *fc-modal-idle-timeout* 60)
 (defvar *fc-modal-keymap* (fc-make-keymap nil "fc-modal") "Keymap of Modal mode.")
 
@@ -45,11 +46,18 @@
   "Modalnomic kyeboard mode."
   :global nil
   :lighter " Modal"
-  :keymap *fc-modal-keymap*)
+  :keymap *fc-modal-keymap*
+
+  (if fc-modal-mode
+      (progn
+        (hl-line-mode -1)
+        (blink-cursor-mode -1))
+    (hl-line-mode 1)
+    (blink-cursor-mode 1)))
 
 (defun fc-modal-exclude-mode (&rest modes)
   "Exclude mode.
-MODES: modes to be excluded."
+  MODES: modes to be excluded."
   (--each modes
     (add-to-list '*fc-modal-exclude-modes* it)))
 
@@ -65,6 +73,16 @@ MODES: modes to be excluded."
 (define-globalized-minor-mode fc-modal-global-mode fc-modal-mode fc-modal-activate)
 (add-to-list 'emulation-mode-map-alists `((fc-modal-mode . ,*fc-modal-keymap*)))
 
+(defun fc-modal-enable ()
+  (fc-modal-global-mode 1)
+  (fc--modal-global-visual-feedback-enter)
+  (fc-run-hook '*fc-modal-hook*))
+
+(defun fc-modal-disable ()
+  (fc-modal-global-mode -1)
+  (fc--modal-global-visual-feedback-leave)
+  (fc-run-hook '*fc-modal-hook*))
+
 (defun fc-modal-set-cursor-color (color)
   "Set cursor COLOR."
   (cond (*is-gui*
@@ -74,10 +92,10 @@ MODES: modes to be excluded."
          (send-string-to-terminal
           (format "\033]12;%s\007" color)))))
 
-(setf *ansi-cursor-map*
-      #s(hash-table
-         data (
-               box 0 hbar 3 nil 4)))
+(defconst *ansi-cursor-map*
+  #s(hash-table
+     data (
+           box 0 hbar 3 nil 4)))
 
 (defun fc-modal-set-cursor-shape (shape)
   "Set cursor SHAPE."
@@ -87,11 +105,8 @@ MODES: modes to be excluded."
      (format "\033[%d q"
              (gethash shape *ansi-cursor-map* 5)))))
 
-(defun fc--modal-visual-feedback-enter ()
+(defun fc--modal-global-visual-feedback-enter ()
   "Enter modal mode."
-  (hl-line-mode -1)
-  (blink-cursor-mode -1)
-
   (fc-modal-set-cursor-color *fc-modal-command-cursor-color*)
   (fc-modal-set-cursor-shape *fc-modal-command-cursor-shape*)
 
@@ -104,11 +119,8 @@ MODES: modes to be excluded."
                           (apply #'color-rgb-to-hex
                                  (color-complement *fc-modal-cur-fringe-color*))))))
 
-(defun fc--modal-visual-feedback-leave ()
+(defun fc--modal-global-visual-feedback-leave ()
   "Leave modal mode."
-  (hl-line-mode 1)
-  (blink-cursor-mode 1)
-
   (fc-modal-set-cursor-color *fc-modal-edit-cursor-color*)
   (fc-modal-set-cursor-shape *fc-modal-edit-cursor-shape*)
 
@@ -122,11 +134,9 @@ MODES: modes to be excluded."
 
 (defun fc-modal-visual-feedback ()
   "Setup modal mode ui on GUI."
-  (interactive)
-
-  (if fc-modal-mode
-      (fc--modal-visual-feedback-enter)
-    (fc--modal-visual-feedback-leave)))
+  (if fc-modal-global-mode
+      (fc--modal-global-visual-feedback-enter)
+    (fc--modal-global-visual-feedback-leave)))
 
 (defun fc-modal-after-theme-change ()
   "Hook function for after theme change."
@@ -142,20 +152,10 @@ MODES: modes to be excluded."
 
   (fc-modal-visual-feedback))
 
-(defun fc-modal-advice (orig-fun &rest args)
-  "Setup modal advice.
-ORIG-FUN: original function.
-ARGS: original arguments."
-  (interactive)
-
-  (let ((rval (apply orig-fun args)))
-    (fc-modal-visual-feedback)
-    rval))
-
 (defun fc-modal-idle-timer ()
   "IDLE timer function."
-  (unless fc-modal-mode
-    (fc-modal-global-mode)))
+  (unless fc-modal-global-mode
+    (fc-modal-enable)))
 
 (defun fc-modal-keys (keydefs)
   "Bind keys.
@@ -330,8 +330,6 @@ TIMEOUT: user input timeout in seconds."
 
 ;; setup
 (run-with-idle-timer *fc-modal-idle-timeout* t 'fc-modal-idle-timer)
-
-(advice-add 'fc-modal-mode :around 'fc-modal-advice)
 
 ;; (global-set-key (kbd "SPC") 'fc--modal-handle-space-press)
 

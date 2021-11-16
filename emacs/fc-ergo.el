@@ -243,10 +243,10 @@ FROM-BEGINNING: start from beginnning."
     (kill-region (region-beginning) (region-end)))
 
    (fc-modal-global-mode
-    (fc-modal-global-mode -1))
+    (fc-modal-disable))
 
    ((not fc-modal-global-mode)
-    (fc-modal-global-mode 1))))
+    (fc-modal-enable))))
 
 (cl-defun fc-tab-key (&optional (indent-func #'indent-for-tab-command))
   "Tab key function.

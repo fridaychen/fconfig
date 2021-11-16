@@ -5,6 +5,48 @@
 
 ;;; Code:
 
+;; input methmod
+
+(defvar *fc-input-methods* nil "Enabled input methods list.")
+
+(fc-load 'rime
+  :after
+  (progn
+    (setf rime-show-candidate 'posframe)
+
+    (add-to-list '*fc-input-methods* 'rime)))
+
+(fc-load 'mozc
+  :enable (executable-find "mozc_emacs_helper")
+  :idle t
+  :before (setq mozc-leim-title "あ")
+  :after (add-to-list '*fc-input-methods* 'japanese-mozc))
+
+(defun fc-next-input-method ()
+  "Switch to next input method."
+  (interactive)
+
+  (unless (null *fc-input-methods*)
+    (setf *fc-input-methods* (-rotate 1 *fc-input-methods*))
+    (set-input-method (cl-first *fc-input-methods*))))
+
+(defun fc-disable-input-method ()
+  (set-input-method nil))
+
+(defvar *fc-input-method-bak* nil)
+
+(defun fc--auto-toggle-input-method ()
+  (if fc-modal-mode
+      (progn
+        (setf *fc-input-method-bak* current-input-method)
+        (when current-input-method
+          (fc-disable-input-method)))
+    (set-input-method *fc-input-method-bak*)))
+
+(add-hook '*fc-modal-hook* #'fc--auto-toggle-input-method)
+
+;; utilities
+
 (defun fc-zh-to-number (str)
   "Convert chinese number string to number.
 STR: chinese number string."

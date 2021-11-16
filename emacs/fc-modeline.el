@@ -225,7 +225,8 @@
   "Format right modeline."
   (list
    " "
-   'global-mode-string))
+   'global-mode-string
+   current-input-method-title))
 
 (defvar *fc-modeline-most-right-string* nil)
 

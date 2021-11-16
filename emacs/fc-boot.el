@@ -164,6 +164,11 @@
   :local t
   :after (fc--company-enable))
 
+(fc-load 'fc-language
+  :local t
+  :autoload t
+  :after (add-hook '*fc-modal-hook* #'fc--auto-toggle-input-method))
+
 (setf *fc-booting* nil
       gc-cons-threshold (* 20 1024 1024))
 

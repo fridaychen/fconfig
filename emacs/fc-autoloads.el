@@ -25,6 +25,9 @@
 
 ;; dict
 (autoload #'fc-dict-lookup "fc-dict")
+(autoload #'fc-translate "fc-dict")
+
+;; keymaps
 (autoload #'fc-make-keymap "fc-keymaps")
 
 ;; font
@@ -54,10 +57,7 @@
 (defvar *fc-after-theme-hook* nil "After theme hook.")
 
 (autoload #'fc-load-theme "fc-theme-config")
-(autoload #'fc-right-bottom-window-p "fc-theme-config")
-(autoload #'fc-light-theme "fc-theme-config")
-(autoload #'fc-dark-theme "fc-theme-config")
-(autoload #'fc-deep-dark-theme "fc-theme-config")
+(autoload #'fc-theme-auto-select "fc-theme-config")
 
 ;; util
 (autoload #'fc-has-battery "fc-util")
@@ -97,10 +97,14 @@
 (autoload #'fc-user-confirm "fc-ui")
 
 ;; lanugage
+(autoload #'fc-next-input-method "fc-language")
 (autoload #'fc-zh-to-number "fc-language")
 (autoload #'fc-detect-char-script "fc-language")
 (autoload #'fc-detect-has-wide-char "fc-language")
 (autoload #'fc-detect-buf-has-wide-char "fc-language")
+
+;; modeline
+(autoload #'fc-modeline-mode "fc-modeline")
 
 (provide 'fc-autoload)
 

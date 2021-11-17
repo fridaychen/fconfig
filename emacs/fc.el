@@ -51,9 +51,13 @@
         *fc-enable-screen-saver* (not has-battery)))
 
 (when *is-gui*
-  (fc-require 'fc-font))
+  (fc-require 'fc-font)
+  (fc-add-hook-func '*fc-after-theme-hook* #'fc-setup-font)
+      )
 
 (fc-auto-config)
+(when *is-gui*
+(fc-setup-font))
 
 (fc-add-env-path (concat (getenv "FCHOME") "/python") nil "PYTHONPATH")
 
@@ -75,11 +79,7 @@
 
 (fc-add-hook-func '*fc-after-theme-hook*
   #'fc-modal-after-theme-change
-  (when *is-gui* #'fc-setup-font)
   #'fc-patch-theme)
-
-(unless *is-mac*
-  (fc-dark-theme))
 
 (cl-defun fc-after-restart ()
   "After restart, load desktop."
@@ -88,10 +88,6 @@
 
 (fc-delay-task
  (lambda ()
-   (when *is-gui*
-     (fc-setup-font))
-   (fc-dark-theme)
-
    (when *fc-boot*
      (fc-require 'fc-boot))
    ;; enable server mode

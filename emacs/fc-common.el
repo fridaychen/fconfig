@@ -92,11 +92,13 @@
 
 ;; theme
 (setf *fc-light-theme* '(
-                         (acme . acme-theme)
                          (faff . faff-theme)
                          (gruvbox-light-hard . gruvbox-theme)
-                         (material-light . material-theme)
                          )
+      *fc-very-light-theme* '(
+                              (acme . acme-theme)
+                              (material-light . material-theme)
+                              )
       *fc-dark-theme* (if *is-gui*
                           '(
                             (fantom . fantom-theme)

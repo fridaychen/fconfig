@@ -60,24 +60,6 @@ THEMES: list of themes."
     (fc-load-theme theme)
     (message "Load theme %s" theme)))
 
-(defun fc-light-theme ()
-  "Randomly select a light theme."
-  (interactive)
-
-  (fc-theme-auto-select *fc-light-theme*))
-
-(defun fc-dark-theme ()
-  "Randomly select a dark theme."
-  (interactive)
-
-  (fc-theme-auto-select *fc-dark-theme*))
-
-(defun fc-deep-dark-theme ()
-  "Randomly select a deep dark theme."
-  (interactive)
-
-  (fc-theme-auto-select *fc-deep-dark-theme*))
-
 (defun fc-dark-theme-p ()
   "Test if the current theme is dark."
   (color-dark-p
@@ -95,13 +77,6 @@ THEMES: list of themes."
 
 (when *is-mac*
   (setf ns-use-srgb-colorspace nil))
-
-(let ((install-theme (lambda (x)
-                       (and (consp x)
-                            (fc-install (cdr x))))))
-  (-each *fc-dark-theme* install-theme)
-  (-each *fc-deep-dark-theme* install-theme)
-  (-each *fc-light-theme* install-theme))
 
 (provide 'fc-theme-config)
 

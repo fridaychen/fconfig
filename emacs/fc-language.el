@@ -30,18 +30,18 @@
     (setf *fc-input-methods* (-rotate 1 *fc-input-methods*))
     (set-input-method (cl-first *fc-input-methods*))))
 
-(defun fc-disable-input-method ()
+(defun fc--disable-input-method ()
   (set-input-method nil))
 
-(defvar *fc-input-method-bak* nil)
+(defvar *fc--input-method-bak* nil)
 
 (defun fc--auto-toggle-input-method ()
   (if fc-modal-mode
       (progn
-        (setf *fc-input-method-bak* current-input-method)
+        (setf *fc--input-method-bak* current-input-method)
         (when current-input-method
-          (fc-disable-input-method)))
-    (set-input-method *fc-input-method-bak*)))
+          (fc--disable-input-method)))
+    (set-input-method *fc--input-method-bak*)))
 
 (add-hook '*fc-modal-hook* #'fc--auto-toggle-input-method)
 

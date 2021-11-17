@@ -814,6 +814,20 @@ FORM: test form."
        (insert new-text)
        new-text)))
 
+(cl-defun fc-visible (o default)
+  "Return o if every char of o is displayable, otherwise return default."
+  (pcase (type-of o)
+    ('integer
+     (if (char-displayable-p o)
+         o
+       default))
+
+    ('string
+     (dotimes (i (length o))
+       (unless (char-displayable-p (aref o i))
+         (cl-return-from fc-visible default)))
+     o)))
+
 (provide 'fc-util)
 
 ;; Local Variables:

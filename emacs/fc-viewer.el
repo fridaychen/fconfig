@@ -46,7 +46,7 @@
 
 (defun fc--viewer-seg ()
   "Generate viewer state string."
-  (fc-text (list (if *is-colorful* "📜" "RD")
+  (fc-text (list (fc-visible "📜" "RD")
                  (which-function)
                  (file-name-sans-extension
                   (buffer-name)))

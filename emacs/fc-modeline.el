@@ -148,7 +148,7 @@
 (defun fc--vc-seg ()
   "VC state segment."
   (when vc-mode
-    (let ((str (if *is-colorful* "" "VC"))
+    (let ((str (fc-visible "" "VC"))
           (color (pcase (vc-state buffer-file-name)
                    ('edited "#cf6a4c")
                    ((or 'needs-merge 'conflict) "#ff0066"))))

@@ -5,9 +5,11 @@
 
 ;;; Code:
 
+(defvar *fc--modal-mark* (fc-visible "" "M"))
+
 (defun fc-modeline-extra-state (state)
   "Mode-line info func."
-  (concat (if fc-modal-mode (if *is-colorful* "" "M") "-")
+  (concat (if fc-modal-mode *fc--modal-mark* "-")
           (if *fc-ergo-prefix* "P" "-")
           (if *fc-dev-mode* "D" "-")
           state
@@ -24,10 +26,12 @@
      (fc-user-select-control-mode "Control")
      (fc-user-select-project "Projects"))))
 
+(defvar *fc--menu-seg-format* (fc-visible "⟨%s⟩" "{%s}"))
+
 (defun fc--menu-seg ()
   "Menu segment."
   (and (boundp '*fc-project-name*)
-       (fc-text (format (if *is-colorful* "⟨%s⟩" "{%s}")
+       (fc-text (format *fc--menu-seg-format*
                         *fc-project-name*)
                 :face fc--modeline-hi-face
                 :keys (fc-make-keymap

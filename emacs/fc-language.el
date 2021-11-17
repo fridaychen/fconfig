@@ -91,7 +91,7 @@ STR: chinese number string."
 
 (cl-defun fc-detect-buf-has-wide-char (&optional (buf (current-buffer)) (max 128))
   (with-current-buffer buf
-    (fc-detect-has-wide-char (buffer-substring 1 max))))
+    (fc-detect-has-wide-char (buffer-substring 1 (min max (point-max))))))
 
 (provide 'fc-language)
 

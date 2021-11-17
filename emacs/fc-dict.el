@@ -63,6 +63,9 @@ WORDS: target words."
      (*is-mac* (osx-lib-say words))
      (t (google-speak words)))))
 
+(cl-defun fc-translate (string &optional (lang "zh-CN"))
+  (fc-exec-command-to-string "trans" "-brief" (concat ":" lang) string))
+
 (provide 'fc-dict)
 
 ;; Local Variables:

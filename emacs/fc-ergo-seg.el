@@ -47,6 +47,37 @@
 
 (add-to-list 'global-mode-string '(t (:eval (fc--tomato-modeline))))
 
+(defun fc--player-tip ()
+  (let ((meta (fc-player--get-metadata *fc-player*)))
+    (fc--text "\n"
+              (alist-get 'artist meta)
+              (alist-get 'album meta)
+              (alist-get 'title meta)
+              (fc-player--get-volume *fc-player*))))
+
+(defconst *fc--player-seg-keymap*
+  (fc-make-keymap
+   `(
+     ([mode-line mouse-1] ,(fc-manual (fc-player--play-pause *fc-player*)))
+     ([mode-line mouse-2] ,(fc-manual (fc-player--next *fc-player*)))
+     ([mode-line mouse-3] ,(fc-manual (fc-player--previous *fc-player*)))
+     ([mode-line mouse-4] ,(fc-manual (fc-player--volume-up *fc-player*)))
+     ([mode-line mouse-5] ,(fc-manual (fc-player--volume-down *fc-player*)))
+     )
+   "fc-player-keymap"))
+
+(defun fc--player-modeline ()
+  "Returns the player states."
+  (when (and *is-gui* (fc--right-bottom-window-p) (fc--wide-window-p) *fc-player*)
+    (fc-text (pcase (fc-player--get-play-status *fc-player*)
+               ("Playing" "⏸️")
+               ("Paused" "▶️")
+               (_ ""))
+             :tip '(fc--player-tip)
+             :keys *fc--player-seg-keymap*)))
+
+(add-to-list 'global-mode-string '(t (:eval (fc--player-modeline))))
+
 (provide 'fc-ergo-seg)
 
 ;; Local Variables:

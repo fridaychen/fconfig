@@ -6,9 +6,6 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defvar *fc-dark-theme* 'wombat "Prefer dark theme.")
-(defvar *fc-deep-dark-theme* 'wombat "Prefer deep dark theme.")
-(defvar *fc-light-theme* 'tango "Prefer light theme.")
 (defvar *fc-current-theme* nil "Current theme.")
 
 (defun fc-reset-theme ()
@@ -19,46 +16,45 @@
 
   (fc-run-hook '*fc-after-theme-hook*))
 
-(defun fc--after-load-theme ()
+(defun fc--do-load-theme ()
   "Load color theme."
+  (-map #'disable-theme custom-enabled-themes)
   (load-theme *fc-current-theme* t)
-
-  (fc-run-hook '*fc-after-theme-hook*
-               (if *fc-booting* 2 1)))
+  (fc-run-hook '*fc-after-theme-hook*)
+  (force-mode-line-update)
+  (message "Load theme %s" *fc-current-theme*))
 
 (cl-defun fc-load-theme (theme)
   "Load theme.
 THEME: new theme."
-  (when theme
-    (-map #'disable-theme custom-enabled-themes)
+  (unless theme
+    (cl-return-from fc-load-theme))
 
-    (cond
-     ((symbolp theme)
-      (setf *fc-current-theme* theme)
-      (fc--after-load-theme))
+  (cond
+   ((symbolp theme)
+    (setq *fc-current-theme* theme)
+    (fc--do-load-theme))
 
-     ((consp theme)
-      (setf *fc-current-theme* (car theme))
-      (fc--after-load-theme))
+   ((consp theme)
+    (setq *fc-current-theme* (car theme))
+    (fc--do-load-theme))
 
-     (t
-      (message "Unknown theme type")
-      (cl-return-from fc-load-theme)))))
+   (t
+    (message "Unknown theme type"))))
 
 (defun fc-theme-auto-select (themes)
   "Auto select and load theme from THEMES.
 THEMES: list of themes."
   (let ((theme (cl-loop
-                with theme = nil
-                do
-                (setf theme (seq-random-elt themes))
-                while (and (> (length themes) 1)
-                           (if (consp theme)
-                               (eq (car theme) *fc-current-theme*)
-                             (eq theme *fc-current-theme*)))
-                finally return theme)))
-    (fc-load-theme theme)
-    (message "Load theme %s" theme)))
+		with theme = nil
+		do
+		(setf theme (seq-random-elt themes))
+		while (and (> (length themes) 1)
+			   (if (consp theme)
+			       (eq (car theme) *fc-current-theme*)
+			     (eq theme *fc-current-theme*)))
+		finally return theme)))
+    (fc-load-theme theme)))
 
 (defun fc-dark-theme-p ()
   "Test if the current theme is dark."
@@ -72,8 +68,8 @@ THEMES: list of themes."
   "Test if the current theme is deep dark."
   (and (fc-dark-theme-p)
        (> *fc-theme-deep-dark-diff-threshold*
-          (fc-color-difference (fc-get-face-attribute 'default :foreground)
-                               (fc-get-face-attribute 'default :background)))))
+	  (fc-color-difference (fc-get-face-attribute 'default :foreground)
+			       (fc-get-face-attribute 'default :background)))))
 
 (when *is-mac*
   (setf ns-use-srgb-colorspace nil))

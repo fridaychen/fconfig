@@ -8,6 +8,8 @@
 
 (declare-function fc-manual "fc-util.el")
 
+(defvar *fc-location* nil)
+
 (defconst *fc-cloud-home* "~/Google Drive/Emacs/")
 (defconst *fc-computer-path* "~/.emacs.d/fconfig/computers/")
 (defconst *fc-chinese-fonts* '("Microsoft Yahei"))
@@ -29,16 +31,12 @@
 (cl-defun fc-update-location ()
   (defconst *fc-gateway-mac*
     (fc-exec-command-to-string *fc-assist-app* "--gateway"))
-  (defconst *fc-location-work*
-    (and (boundp '*fc-work-gateway-mac*)
-         (--first (fc--eth-addr-eql *fc-gateway-mac* it)
-                  *fc-work-gateway-mac*)))
-  (if *fc-location-work*
-      (defconst *fc-location-home* nil)
-    (defconst *fc-location-home*
-      (and (boundp '*fc-home-gateway-mac*)
-           (--first (fc--eth-addr-eql *fc-gateway-mac* it)
-                    *fc-home-gateway-mac*)))))
+
+  (defvar *fc-location-gateway* nil)
+
+  (setf *fc-location*
+        (car (--first (fc--eth-addr-eql *fc-gateway-mac* (cdr it))
+                      *fc-location-gateway*))))
 
 (defun fc-do-auto-config ()
   "Auto config implementation."

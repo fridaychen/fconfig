@@ -38,6 +38,7 @@
 
 (autoload #'fc-fmt-buffer "fc-format")
 (autoload #'fc-add-fmt "fc-format")
+(autoload #'fc-indent-all "fc-format")
 
 ;; ifdef
 (autoload #'mark-ifdef "ifdef")

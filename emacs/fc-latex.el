@@ -143,7 +143,6 @@ END: end point."
      ("Mark section"                    .       fc-latex-mark-section)
      ("Merge lines"                     .       fc-merge-short-line)
      ("Recheck"                         .       fc-recheck-book)
-     ("Remove empty line"               .       fc-remove-empty-line)
      ("Remove extra space"              .       fc-remove-extra-whitespace))))
 
 (defconst *fc-latex-map*

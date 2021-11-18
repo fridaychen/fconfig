@@ -45,21 +45,6 @@ REST: contents."
                        ""
                        :from-start t)))
 
-(defun fc-remove-empty-line ()
-  "Remove empty lines."
-  (interactive)
-
-  (save-excursion
-    (fc-replace-regexp "^\n\\{2,\\}"
-                       "\n"
-                       :from-start t)))
-
-(defun fc-indent-all ()
-  "Indent the whole buffer."
-  (interactive)
-
-  (indent-region (point-min) (point-max)))
-
 (defun fc-exec-command (command &rest args)
   "Exec command.
 COMMAND: command to run.

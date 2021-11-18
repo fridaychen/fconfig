@@ -8,6 +8,18 @@
 (defconst *fc-fmt* (make-hash-table))
 (defconst *fc-fmt-verbose* nil)
 
+(defun fc-indent-all ()
+  "Indent the whole buffer."
+  (interactive)
+
+  (indent-region (point-min) (point-max)))
+
+(defun fc--remove-empty-line ()
+  "Remove empty lines."
+  (fc-replace-regexp "^\n\\{2,\\}"
+                     "\n"
+                     :from-start t))
+
 (cl-defun fc--default-fmt ()
   "Default file formatter, clean extra space and emtry line."
   (let ((f (intern (format "fc-%s-whitespace-cleanup"
@@ -15,7 +27,9 @@
         (g (intern (format "fc-%s-remove-empty-line"
                            (symbol-name major-mode)))))
     (fc-funcall f :default 'whitespace-cleanup)
-    (fc-funcall g :default 'fc-remove-empty-line)))
+    (fc-funcall g :default 'fc--remove-empty-line))
+
+  (fc--remove-empty-line))
 
 (cl-defun fc--run-external-fmt (command-args)
   "Run external tool to format buffer.

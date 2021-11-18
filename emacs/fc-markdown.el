@@ -214,7 +214,6 @@ REGEX: regex."
      ("Mark section"                    .       fc-md-mark-section)
      ("Merge lines"                     .       fc-merge-short-line)
      ("Recheck"                         .       fc-recheck-book)
-     ("Remove empty line"               .       fc-remove-empty-line)
      ("Remove extra space"              .       fc-remove-extra-whitespace)
      ("Remove suffix space"             .       fc-markdown-mode-whitespace-cleanup)
      )))

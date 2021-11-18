@@ -7,20 +7,22 @@
 (require 'cl-lib)
 (require 'hi-lock)
 
-(defconst *fc-undef-key* '(lambda () (interactive)))
-(defconst *ergo-head-key-timeout* 3)
+(defconst *fc--undef-key* '(lambda () (interactive)))
 (defconst *ergo-prefix-timeout* 1)
+(defconst *ergo--head-key-timeout* 3)
 
 (defvar *fc-ergo-prefix* nil)
 (defvar *fc-ergo-prefix-timer* nil)
 (defvar *fc-ergo-pre-cursor-color* "#cc0000")
 (defvar *fc-ergo-restore-hook* nil)
 
-(defconst *fc-repeat-key* "t")
-(defconst *fc-repeat-orignal-func* #'fc-translate-word)
+(defconst *fc--repeat-key* "t")
+(defconst *fc--repeat-orignal-func* #'fc-translate-word)
 
-(defvar *fc-work-themes* '(zenburn monokai))
-(defvar *fc-work-dark-themes* '(sanityinc-tomorrow-night))
+(defvar *fc--work-themes* '(zenburn monokai))
+(defvar *fc--work-dark-themes* '(sanityinc-tomorrow-night))
+
+(defvar *fc--ignore-files* '("compile_commands.json"))
 
 (fc-load 'compile
   :local t
@@ -292,7 +294,7 @@ INDENT-FUNC: function for indent."
       (fc-modal-head-key
        "Basic"
        '*ergo-basic-map*
-       *ergo-head-key-timeout*)))
+       *ergo--head-key-timeout*)))
 
    (t
     (scroll-down-command))))
@@ -749,7 +751,7 @@ KEYMAP: keymap to run."
   `(lambda ()
      (interactive)
 
-     (fc-modal-head-key ,prompt ,keymap :timeout *ergo-head-key-timeout*)))
+     (fc-modal-head-key ,prompt ,keymap :timeout *ergo--head-key-timeout*)))
 
 (defmacro fc-head-key-repeat (prompt keymap)
   "Run head key.
@@ -758,7 +760,7 @@ KEYMAP: keymap to run."
   `(lambda ()
      (interactive)
 
-     (fc-modal-head-key ,prompt ,keymap :timeout *ergo-head-key-timeout* :repeat t)))
+     (fc-modal-head-key ,prompt ,keymap :timeout *ergo--head-key-timeout* :repeat t)))
 
 (defconst *fc-common-function-keys*
   `(("<f1>"  neotree-toggle)
@@ -1118,7 +1120,7 @@ KEYMAP: keymap to run."
   (fc-make-keymap
    `(("SPC" fc-app-portal)
      ("a" align)
-     ("b" ,*fc-undef-key*)
+     ("b" ,*fc--undef-key*)
      ("c" ,(fc-cond-key :normal 'quick-calc
                         :region (fc-manual (calc-eval (fc-current-thing)))))
      ("d" fc-dev-mode-toggle)
@@ -1231,7 +1233,7 @@ STEP: pixels."
                          ("deep dark" . (lambda () (fc-theme-auto-select *fc-deep-dark-theme*)))
                          ("light" . (lambda () (fc-theme-auto-select *fc-light-theme*)))
                          ("very light" . (lambda () (fc-theme-auto-select *fc-very-light-theme*)))))))
-     ("w" ,(fc-manual (fc-theme-auto-select *fc-work-themes*)))
+     ("w" ,(fc-manual (fc-theme-auto-select *fc--work-themes*)))
      ("z" suspend-emacs)
 
      ("I" fc--enlarge-v)
@@ -1239,7 +1241,7 @@ STEP: pixels."
      ("K" fc--reduce-v)
      ("L" fc--enlarge-h)
 
-     ("W" ,(fc-manual (fc-theme-auto-select *fc-work-dark-themes*)))
+     ("W" ,(fc-manual (fc-theme-auto-select *fc--work-dark-themes*)))
      )
    "ergo-prefix-quick-map")
   "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: select theme  w: work theme  z: suspend  T: deep dark theme.")
@@ -1267,11 +1269,11 @@ STEP: pixels."
 
 (defconst *ergo-layout-map*
   (fc-make-keymap
-   `(("l" ,(fc-manual (let ((name (read-char "Load layout : " nil *ergo-head-key-timeout*)))
+   `(("l" ,(fc-manual (let ((name (read-char "Load layout : " nil *ergo--head-key-timeout*)))
                         (if name (fc-layout-load name) (message "")))))
      ("q" fc-layout-push)
      ("p" fc-layout-pop)
-     ("s" ,(fc-manual (let ((name (read-char "Save layout : " nil *ergo-head-key-timeout*)))
+     ("s" ,(fc-manual (let ((name (read-char "Save layout : " nil *ergo--head-key-timeout*)))
                         (if name (fc-layout-save name) (message ""))))))
    "ergo-layout-map")
   "KEYS l: load  p: pop  q: push  s: save.")
@@ -1464,9 +1466,9 @@ AUTO: auto select face."
    ("F" ,(fc-cond-key :normal 'fc-find-files
                       :region (fc-manual (call-interactively 'iedit-mode)
                                          (fc-modal-disable))))
-   ("G" ,(fc-cond-key :normal (fc-manual (fc-text-retrieve default-directory :ignore-files '("compile_commands.json")))
-                      :proj (fc-manual (fc-text-retrieve (fc-proj-root) :ignore-files '("compile_commands.json")))
-                      :prefix (fc-manual (fc-text-retrieve default-directory) :ignore-files '("compile_commands.json"))))
+   ("G" ,(fc-cond-key :normal (fc-manual (fc-text-retrieve default-directory :ignore-files *fc--ignore-files*))
+                      :proj (fc-manual (fc-text-retrieve (fc-proj-root) :ignore-files *fc--ignore-files*))
+                      :prefix (fc-manual (fc-text-retrieve default-directory :ignore-files *fc--ignore-files*son))))
    ("H" ,(fc-cond-key :normal 'swiper
                       :region (fc-manual
                                (swiper (fc-current-thing :ask nil)))))
@@ -1484,7 +1486,7 @@ AUTO: auto select face."
                     (forward-line -1)
                     (indent-for-tab-command)
                     (fc-modal-disable)))
-   ("P" ,*fc-undef-key*)
+   ("P" ,*fc--undef-key*)
    ("Q" ,(fc-cond-key :normal 'delete-window
                       :prefix 'ace-delete-window
                       :one 'bury-buffer))
@@ -1559,7 +1561,7 @@ AUTO: auto select face."
                       :region (fc-decorate-region "[" "]")))
    ("]" ,(fc-cond-key :normal 'fc-navi-next
                       :prefix *fc-increase-display-brightness*
-                      :region *fc-undef-key*))
+                      :region *fc--undef-key*))
    ("{" ,(fc-cond-key :normal 'previous-error
                       :region (fc-decorate-region "{" "}")))
    ("}" next-error)
@@ -1579,10 +1581,10 @@ AUTO: auto select face."
    ("S-<SPC>" ,(fc-cond-key :normal (fc-manual
                                      (fc-modal-head-key
                                       "Basic" '*ergo-basic-map*))
-                            :prefix *fc-undef-key*
+                            :prefix *fc--undef-key*
                             :region 'copy-rectangle-as-kill))
    ("M-<SPC>" ,(fc-cond-key :normal 'scroll-down-command
-                            :prefix *fc-undef-key*
+                            :prefix *fc--undef-key*
                             :region 'copy-rectangle-as-kill))
    ("SPC" ,(fc-cond-key :normal 'scroll-up-command
                         :region 'kill-ring-save
@@ -1606,7 +1608,7 @@ AUTO: auto select face."
 (defun fc-ergo-repeat-func (func)
   "Set ergo repeat func.
 FUNC: new repeat func."
-  (fc-bind-keys `((,*fc-repeat-key* ,func)) *fc-modal-keymap*))
+  (fc-bind-keys `((,*fc--repeat-key* ,func)) *fc-modal-keymap*))
 
 (cl-defun fc-modal-global-mode-off (&rest _rest)
   "Turn off global model."
@@ -1652,7 +1654,7 @@ FUNC: new repeat func."
 (fc-add-to-hook '*fc-ergo-restore-hook*
                 #'fc-ergo-prefix-off
                 #'(lambda ()
-                    (fc-ergo-repeat-func *fc-repeat-orignal-func*))
+                    (fc-ergo-repeat-func *fc--repeat-orignal-func*))
                 #'fc-search-stop)
 
 ;; install theme packages
@@ -1663,7 +1665,7 @@ FUNC: new repeat func."
   (-each *fc-deep-dark-theme* install-theme)
   (-each *fc-light-theme* install-theme))
 
-(fc-theme-auto-select *fc-work-themes*)
+(fc-theme-auto-select *fc--work-themes*)
 
 (provide 'fc-ergo)
 

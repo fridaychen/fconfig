@@ -289,8 +289,7 @@
   (setq-default mode-line-format
                 '("%e"
                   (:eval
-                   (fc--modeline-format-main))))
-  (force-mode-line-update))
+                   (fc--modeline-format-main)))))
 
 (defun fc-modeline-set-selected-window (&rest _)
   "Set the variable `*fc-selected-window*' appropriately."

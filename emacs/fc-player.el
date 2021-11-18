@@ -130,6 +130,12 @@ TRACK: current track name."
   (cl-defmethod fc-player--set-volume ((x fc-player-mpris) vol)
     (fc-dbus--set x "Volume" (/ vol 100.0)))
 
+  (cl-defmethod fc-player--get-metadata ((x fc-player-mpris))
+    (let ((data (fc-dbus--get x "Metadata")))
+      `((artist ,(cl-second (assoc "xesam:artist" data)))
+        (album ,(cl-second (assoc "xesam:album" data)))
+        (title ,(cl-second (assoc "xesam:title" data))))))
+
   (cl-defmethod fc-player--show-metadata ((x fc-player-mpris))
     (let ((data (fc-dbus--get x "Metadata")))
       (cl-call-next-method x

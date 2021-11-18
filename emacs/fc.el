@@ -52,12 +52,12 @@
 
 (when *is-gui*
   (fc-require 'fc-font)
-  (fc-add-hook-func '*fc-after-theme-hook* #'fc-setup-font)
-      )
+  (fc-add-hook-func '*fc-after-theme-hook* #'fc-setup-font))
 
 (fc-auto-config)
+
 (when *is-gui*
-(fc-setup-font))
+  (fc-setup-font))
 
 (fc-add-env-path (concat (getenv "FCHOME") "/python") nil "PYTHONPATH")
 

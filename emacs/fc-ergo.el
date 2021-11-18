@@ -613,18 +613,14 @@ N: number."
 
 (defun fc-sys-info ()
   "Create sys info."
-  (let ((user (format "%s@%s" user-login-name (system-name)))
-        (loc (cond
-              (*fc-location-work* "work")
-              (*fc-location-home* "home")
-              (t "unknown"))))
+  (let ((user (format "%s@%s" user-login-name (system-name))))
     (if *is-gui*
         `(
           ("Emacs" ,(format "%s, DPI %d, fringe %d"
                             emacs-version
                             (fc-display-ppi) *fc-fringe-width*))
           ("User" ,user)
-          ("Loc" ,loc)
+          ("Loc" ,*fc-location*)
           ("Font" ,(format "%s, %s, %d"
                            *fc-default-font*
                            *fc-font-weight-of-default*
@@ -654,7 +650,7 @@ INFO: info obj."
   (--reduce-from (concat acc
                          "│"
                          (fc-text (format "%11s" (cl-first it))
-                                  :face '(:foreground "tomato"))
+                                  :face '(:foreground "tomato" :inherit bold))
                          (format " : %s\n" (fc-string (cl-second it))))
                  ""
                  info))

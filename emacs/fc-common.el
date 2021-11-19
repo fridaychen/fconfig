@@ -94,6 +94,7 @@
 (setf *fc-light-theme* '(
                          (faff . faff-theme)
                          (gruvbox-light-hard . gruvbox-theme)
+                         (plan9 . plan9-theme)
                          )
       *fc-very-light-theme* '(
                               (acme . acme-theme)
@@ -172,7 +173,7 @@ COLOR: background color."
     (pcase *fc-current-theme*
       ('adwaita
        (fc-set-face-attribute 'default nil
-                              :background "#F0FFF0")
+                              :background "#EFEFD8")
        (fc-set-face-attribute 'fringe nil
                               :background "#ff9800"))
 
@@ -227,6 +228,12 @@ COLOR: background color."
                               :foreground "gray80")
        (fc-set-face-attribute 'font-lock-doc-face nil
                               :foreground "gray80"))
+
+      ('plan9
+       (fc-set-face-attribute 'default nil
+                              :background (color-darken-name
+                                           (fc-get-face-attribute 'default :background)
+                                           8)))
 
       ('sanityinc-tomorrow-eighties
        (fc-set-face-attribute 'fringe nil

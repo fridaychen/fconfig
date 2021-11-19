@@ -7,7 +7,6 @@
 (require 'cl-lib)
 (ignore-errors
   (require 'battery))
-(require 'notifications)
 
 (cl-defun fc-file-first-exists (files)
   "Find first existing file.
@@ -267,45 +266,6 @@ MARK-FUNC: call this func when region is not active."
        (when ,prefix
          (goto-char (point-min))
          (insert (fc-funcall ,prefix))))))
-
-(defun fc--popup-tip-local (title content timeout)
-  "Popup top application level.
-CONTENT: buffer content.
-TITLE: buffer title.
-TIMEOUT: buffer show timeout in seconds."
-  (if (and (<= 26 emacs-major-version)
-           *is-gui*)
-      (let ((frame (posframe-show "*fc-tip*"
-                                  :string (concat "[" title "]\n\n" content)
-                                  :poshandler #'posframe-poshandler-frame-center
-                                  :background-color "DarkRed"
-                                  :foreground-color "White")))
-        (if (eq 0 timeout)
-            (read-event)
-          (sit-for timeout))
-        (posframe-hide frame))
-
-    (let ((lines (s-count-matches "\n" content)))
-      (unless (s-suffix? "\n" content)
-        (cl-incf lines))
-
-      (popup-tip content :height lines))))
-
-(cl-defun fc-popup-tip (content &key (title "*fc-tip*") (timeout 0) os)
-  "Popup top.
-CONTENT: buffer content.
-TITLE: buffer title.
-TIMEOUT: buffer show timeout in seconds.
-OS: os level or app level."
-  (if os
-      (notifications-notify :title title :body content :urgency "critical" :sound-name )
-    (fc--popup-tip-local title content timeout)))
-
-(defun fc-popup-hide-tip ()
-  "Hide popup tip buffer."
-  (posframe-hide "*fc-tip*"))
-
-(add-hook '*fc-ergo-restore-hook* #'fc-popup-hide-tip)
 
 (defun fc-get-string-from-file (filename)
   "Read file contents into string.

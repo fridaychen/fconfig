@@ -100,6 +100,7 @@
 (autoload #'fc-create-pop-menu "fc-ui")
 (autoload #'fc-show-pop-menu "fc-ui")
 (autoload #'fc-eval-pop-menu "fc-ui")
+(autoload #'fc-popup-tip "fc-ui")
 
 ;; lanugage
 (autoload #'fc-next-input-method "fc-language")

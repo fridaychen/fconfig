@@ -49,11 +49,12 @@
 
 (defun fc--player-tip ()
   (let ((meta (fc-player--get-metadata *fc-player*)))
-    (fc--text "\n"
+    (fc--text "\n│ "
+              *fc-player*
               (alist-get 'artist meta)
               (alist-get 'album meta)
               (alist-get 'title meta)
-              (fc-player--get-volume *fc-player*))))
+              (format "Volume %d" (fc-player--get-volume *fc-player*)))))
 
 (defconst *fc--player-seg-keymap*
   (fc-make-keymap
@@ -71,7 +72,7 @@
   (when (and *is-gui* (fc--right-bottom-window-p) (fc--wide-window-p) *fc-player*)
     (fc-text (pcase (fc-player--get-play-status *fc-player*)
                ("Playing" "⏸️")
-               ("Paused" "▶️")
+               ((or "Paused" "Stopped") "▶️")
                (_ ""))
              :tip '(fc--player-tip)
              :keys *fc--player-seg-keymap*)))

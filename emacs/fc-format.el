@@ -97,7 +97,8 @@ COMMAND-ARGS: command args."
             (fc-pop-buf errbuf)))))
 
     (when internal
-      (funcall internal))))
+      (save-excursion
+        (funcall internal)))))
 
 (cl-defun fc--fmt-hook-func ()
   "Hook function for save."

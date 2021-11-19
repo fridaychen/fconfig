@@ -51,6 +51,8 @@
     (require 'ob-shell)
     (require 'ol-man)
 
+    (require 'fc-org-ext)
+
     (cl-defun fc--setup-org-mode ()
       (org-superstar-mode 1)
       (org-link-beautify-mode -1)

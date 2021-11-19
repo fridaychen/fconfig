@@ -27,9 +27,7 @@
         (g (intern (format "fc-%s-remove-empty-line"
                            (symbol-name major-mode)))))
     (fc-funcall f :default 'whitespace-cleanup)
-    (fc-funcall g :default 'fc--remove-empty-line))
-
-  (fc--remove-empty-line))
+    (fc-funcall g :default 'fc--remove-empty-line)))
 
 (cl-defun fc--run-external-fmt (command-args)
   "Run external tool to format buffer.

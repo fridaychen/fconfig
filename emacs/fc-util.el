@@ -629,43 +629,6 @@ DISPLAY: display property."
            (--mapcat (list (car it) (cdr it))
                      args))))
 
-;; popup-menu
-(cl-defun fc-create-simple-pop-menu (title items)
-  "Create simple pop menu.
-TITLE: menu title.
-ITEMS: menu items."
-  `(,title
-    ,(cons "PANE"
-           items)))
-
-(cl-defun fc-create-pop-menu (title items)
-  "Create pop menu.
-TITLE: menu title.
-ITEMS: menu items."
-  `(keymap
-    ,title
-    ,@(--reduce-r-from
-       (progn
-         (cons (append
-                (list
-                 (cl-first it)
-                 'menu-item
-                 (cl-second it)
-                 t)
-                (last it 2))
-               acc))
-       nil items)))
-
-(cl-defun fc-show-pop-menu (menu)
-  "Popup menu.
-MENU: menu."
-  (x-popup-menu t menu))
-
-(cl-defun fc-eval-pop-menu (menu)
-  "Run popup menu.
-MENU: menu."
-  (fc-funcall (fc-show-pop-menu menu)))
-
 ;; insert text
 (cl-defun fc-insert-text (after-fun &rest rest)
   "Insert text then run AFTER-FUN on the region.

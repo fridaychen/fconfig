@@ -5,6 +5,7 @@
 
 ;;; Code:
 
+;; UI selector
 (defun fc--list-string-width (collection)
   (cl-loop for x in collection sum (string-width x)))
 
@@ -24,7 +25,7 @@ MOUSE: allow user to select with mouse."
     (let ((helm-full-frame t))
       (helm :sources
             (helm-build-sync-source prompt
-              :candidates collection))))
+                                    :candidates collection))))
 
    ((and (> 9 (length collection))
          (> (- (frame-width) 20 (length prompt))
@@ -78,6 +79,7 @@ DEFAULT: default function."
                               :always t)
               :default default))
 
+;; UI yes-or-no
 (cl-defun fc-user-confirm (prompt &optional (default-ans t))
   "Ask user 'y or n' question.
 PROMPT: user prompt.
@@ -97,6 +99,44 @@ Escape -> nil"
      (?n (cl-return nil))
      (13 (cl-return default-ans))
      (27 (keyboard-quit)))))
+
+;; UI menu
+;; popup-menu
+(cl-defun fc-create-simple-pop-menu (title items)
+  "Create simple pop menu.
+TITLE: menu title.
+ITEMS: menu items."
+  `(,title
+    ,(cons "PANE"
+           items)))
+
+(cl-defun fc-create-pop-menu (title items)
+  "Create pop menu.
+TITLE: menu title.
+ITEMS: menu items."
+  `(keymap
+    ,title
+    ,@(--reduce-r-from
+       (progn
+         (cons (append
+                (list
+                 (cl-first it)
+                 'menu-item
+                 (cl-second it)
+                 t)
+                (last it 2))
+               acc))
+       nil items)))
+
+(cl-defun fc-show-pop-menu (menu)
+  "Popup menu.
+MENU: menu."
+  (x-popup-menu t menu))
+
+(cl-defun fc-eval-pop-menu (menu)
+  "Run popup menu.
+MENU: menu."
+  (fc-funcall (fc-show-pop-menu menu)))
 
 (provide 'fc-ui)
 

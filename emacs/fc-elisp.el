@@ -62,9 +62,9 @@
 
   :after (progn
            (cl-defun fc-format-emacs-lisp ()
-             (whitespace-cleanup)
-             (fc-remove-empty-line)
-             (indent-region (point-min) (point-max)))
+             (indent-region (point-min) (point-max))
+
+             (fc--default-fmt))
 
            (fc-unbind-keys '("C-M-i") emacs-lisp-mode-map)
 

@@ -96,6 +96,10 @@
 (autoload #'fc-user-select "fc-ui")
 (autoload #'fc-user-select-func "fc-ui")
 (autoload #'fc-user-confirm "fc-ui")
+(autoload #'fc-create-simple-pop-menu "fc-ui")
+(autoload #'fc-create-pop-menu "fc-ui")
+(autoload #'fc-show-pop-menu "fc-ui")
+(autoload #'fc-eval-pop-menu "fc-ui")
 
 ;; lanugage
 (autoload #'fc-next-input-method "fc-language")

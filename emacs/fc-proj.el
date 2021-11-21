@@ -363,7 +363,7 @@ ROOT: project path."
 
   (fc-funcall (pcase fc-proj-tag
                 ('global #'fc-proj-query-replace-with-ggtags)
-                ('lsp #'lsp-rename)
+                ((and 'lsp (guard (lsp--capability :renameProvider))) #'lsp-rename)
                 (_ #'fc-proj-query-replace-with-dired))))
 
 (defvar *fc-project-hook* nil)

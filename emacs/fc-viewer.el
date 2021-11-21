@@ -44,9 +44,11 @@
 
   (fc-run-hook '*fc-viewer-hook*))
 
+(defvar *fc--viewer-mark* (fc-visible "📜" "RD"))
+
 (defun fc--viewer-seg ()
   "Generate viewer state string."
-  (fc-text (list (fc-visible "📜" "RD")
+  (fc-text (list *fc--viewer-mark*
                  (which-function)
                  (file-name-sans-extension
                   (buffer-name)))

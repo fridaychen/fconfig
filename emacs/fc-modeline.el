@@ -145,18 +145,19 @@
     (fc-vc-branch)
     (vc-state buffer-file-name))))
 
+(defvar *fc--vc-mark* (fc-visible "" "VC"))
+
 (defun fc--vc-seg ()
   "VC state segment."
   (when vc-mode
-    (let ((str (fc-visible "" "VC"))
-          (color (pcase (vc-state buffer-file-name)
+    (let ((color (pcase (vc-state buffer-file-name)
                    ('edited "#cf6a4c")
                    ((or 'needs-merge 'conflict) "#ff0066"))))
       (if color
-          (fc-text str
+          (fc-text *fc--vc-mark*
                    :face `(:foreground ,color)
                    :tip '(fc-vc-seg-tip))
-        str))))
+        *fc--vc-mark*))))
 
 (defun fc--line-col-seg ()
   "Line column segment."

@@ -140,12 +140,12 @@ REST: operations."
     (dbus-set-property :session (oref x service) (oref x path) (oref x intf) prop value))
 
   (cl-defmethod fc-dbus--register-signal ((x fc-dbus-intf) prop func)
-    (dbus-regiter-signal :session (oref x service) (oref x path) (oref x prop-intf) prop func))
+    (dbus-register-signal :session (oref x service) (oref x path) (oref x prop-intf) prop func))
 
   ;; suspend/resume singal
   (dbus-register-signal :system "org.freedesktop.login1" "/org/freedesktop/login1"
                         "org.freedesktop.login1.Manager" "PrepareForSleep"
-                        (lambda(sleep)
+                        (lambda (sleep)
                           (if sleep
                               (fc-sleep-signal-handler)
                             (fc-resume-signal-handler))))

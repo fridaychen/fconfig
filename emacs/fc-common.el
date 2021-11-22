@@ -98,6 +98,7 @@
                          )
       *fc-very-light-theme* '(
                               (acme . acme-theme)
+                              (leuven . leuven-theme)
                               (material-light . material-theme)
                               )
       *fc-dark-theme* (if *is-gui*

@@ -201,17 +201,17 @@ PARAM: parameter of block."
 
 (cl-defun fc--org-do ( )
   (fc--org-smart-action #'org-ctrl-c-ctrl-c
-                        (pcase elt
-                          (:checkbox (org-ctrl-c-ctrl-c))
-                          (:headline (org-insert-heading-respect-content))
-                          (:item (fc--org-do-intert-item))
-                          (:item-bullet (org-ctrl-c-minus))
-                          (:link (org-open-at-point))
-                          (:src-block (org-ctrl-c-ctrl-c))
-                          (:tags (org-set-tags-command))
-                          (:timestamp (fc-funcall #'org-time-stamp))
-                          (:todo-keyword (org-todo))
-                          (_ (message "context: %s" context)))))
+    (pcase elt
+      (:checkbox (org-ctrl-c-ctrl-c))
+      (:headline (org-insert-heading-respect-content))
+      (:item (fc--org-do-intert-item))
+      (:item-bullet (org-ctrl-c-minus))
+      (:link (org-open-at-point))
+      (:src-block (org-ctrl-c-ctrl-c))
+      (:tags (org-set-tags-command))
+      (:timestamp (fc-funcall #'org-time-stamp))
+      (:todo-keyword (org-todo))
+      (_ (message "context: %s" context)))))
 
 (defun fc-org-mode-mouse-func (_event)
   (fc--org-do))
@@ -244,11 +244,11 @@ PARAM: parameter of block."
 
 (defun fc--org-sparse-tree ()
   (fc--org-smart-action #'org-sparse-tree
-                        (pcase elt
-                          (:headline (fc--org-occur))
-                          (:tags (fc-funcall #'org-match-sparse-tree))
-                          (:todo-keyword (fc-funcall #'org-show-todo-tree))
-                          (_ (fc-funcall #'org-sparse-tree)))))
+    (pcase elt
+      (:headline (fc--org-occur))
+      (:tags (fc-funcall #'org-match-sparse-tree))
+      (:todo-keyword (fc-funcall #'org-show-todo-tree))
+      (_ (fc-funcall #'org-sparse-tree)))))
 
 (defconst *fc-org-map*
   (fc-make-keymap
@@ -368,12 +368,12 @@ PARAM: parameter of block."
   (not (member lang *fc-org-trust-babel-modes*)))
 
 (fc-load 'org-roam
+  :before (setf org-roam-v2-ack t)
   :after
   (progn
-    (setf org-roam-directory "~/org/roam"
-          org-roam-v2-ack t)
-    (org-roam-db-autosync-mode)
-    ))
+    (setf org-roam-directory "~/org/roam")
+
+    (org-roam-db-autosync-mode)))
 
 (when (eq major-mode 'org-mode)
   (fc--setup-org-mode))

@@ -6,4 +6,4 @@
 ;;; Code:
 (cond
  (*is-linux*
-  (shell-command "~/.emacs.d/fconfig/linux/set-keyboard.sh --hhkb")))
+  (shell-command (fc-home-path "fconfig/linux/set-keyboard.sh --hhkb"))))

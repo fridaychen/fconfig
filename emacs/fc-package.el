@@ -12,8 +12,8 @@
   (unless (featurep name)
     (if run
         (fc-run
-          (load (concat "~/.emacs.d/fconfig/" (symbol-name name)) t t))
-      (load (concat "~/.emacs.d/fconfig/" (symbol-name name)) t t))))
+          (load (fc-home-path (concat "fconfig/" (symbol-name name))) t t))
+      (load (fc-home-path (concat "fconfig/" (symbol-name name))) t t))))
 
 (cl-defun fc-install (&rest rest)
   (mapcar

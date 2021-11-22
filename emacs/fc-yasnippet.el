@@ -10,8 +10,7 @@
 
 (with-eval-after-load 'yasnippet
   (add-to-list 'yas-snippet-dirs
-               (expand-file-name
-                "~/.emacs.d/fconfig/snippets"))
+               (fc-home-path "fconfig/snippets"))
 
   (fc-unbind-keys '("TAB" "<tab>") yas-minor-mode-map)
 

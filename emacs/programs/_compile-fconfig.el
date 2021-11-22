@@ -4,8 +4,8 @@
 ;;
 
 ;;; Code:
-(if (file-exists-p "~/.emacs.d/fconfig/fc-init.elc")
-    (byte-recompile-directory "~/.emacs.d/fconfig")
+(if (file-exists-p (fc-home-path "fconfig/fc-init.elc"))
+    (byte-recompile-directory (fc-home-path "fconfig"))
   (dolist (x '("fc-book"
                "fc-calendar" "fc-company" "fc-computer"
                "fc-dict" "fc-dired"
@@ -26,4 +26,4 @@
                "fc-buffer" "fc-ivy"
                "fc-java" "fc-facility"
                "fc-config"))
-    (byte-compile-file (concat "~/.emacs.d/fconfig/" x ".el"))))
+    (byte-compile-file (fc-home-path (concat "fconfig/" x ".el")))))

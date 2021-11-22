@@ -11,7 +11,7 @@
 (defvar *fc-location* nil)
 
 (defconst *fc-cloud-home* "~/Google Drive/Emacs/")
-(defconst *fc-computer-path* "~/.emacs.d/fconfig/computers/")
+(defconst *fc-computer-path* (fc-home-path "fconfig/computers/"))
 (defconst *fc-chinese-fonts* '("Microsoft Yahei"))
 (defconst *fc-japanese-fonts* '("Microsoft Yahei"))
 (defconst *fc-english-fonts* '("Monaco"))
@@ -19,9 +19,9 @@
 
 (defconst *fc-assist-app*
   (cond
-   (*is-mac* "~/.emacs.d/fconfig/mac/assist.sh")
-   (*is-linux* "~/.emacs.d/fconfig/linux/assist.sh")
-   (*is-cygwin* "~/.emacs.d/fconfig/win/assist.sh")))
+   (*is-mac* fc-home-path "fconfig/mac/assist.sh")
+   (*is-linux* (fc-home-path "fconfig/linux/assist.sh"))
+   (*is-cygwin* (fc-home-path "fconfig/win/assist.sh"))))
 
 (cl-defun fc--eth-addr-eql (addr1 addr2)
   (equal

@@ -4,7 +4,7 @@
 ;;
 
 ;;; Code:
-(defvar *fc-bookmark-file* "~/.emacs.d/fbookmarks")
+(defvar *fc-bookmark-file* (fc-home-path "fbookmarks"))
 
 (defvar *fc-active-bookmarks* '((:name "bookmark")) "active bookmarks (tree)")
 (defvar *fc-active-bookmarks-count* 0)
@@ -57,8 +57,8 @@
 
 (defun fc-active-bookmark-list ()
   (apply #'append
-	 (-map #'cl-rest
-	       (cl-rest *fc-active-bookmarks*))))
+         (-map #'cl-rest
+               (cl-rest *fc-active-bookmarks*))))
 
 (cl-defun fc--next-error-function (n &optional reset)
   (forward-line n)
@@ -67,8 +67,8 @@
     (when (< (length raw) 3)
       (cl-return-from fc--next-error-function))
     (let* ((data (s-split ":" raw t))
-	   (file (cl-first data))
-	   (pos (cl-second data)))
+           (file (cl-first data))
+           (pos (cl-second data)))
 
       (switch-to-buffer (find-buffer-visiting file))
       (goto-char (string-to-number pos))
@@ -78,24 +78,24 @@
   (interactive)
 
   (let ((buf (get-buffer-create "*bookmarks*"))
-	(all (fc-active-bookmark-list)))
+        (all (fc-active-bookmark-list)))
     (with-current-buffer buf
       (erase-buffer)
       (insert "\n")
       (--each all
-	(insert (propertize (format "%s:%d: %s\n"
-				    (buffer-file-name (overlay-buffer it))
-				    (overlay-start it)
-				    (overlay-get it 'fannotation))
-			    'face (if (overlay-get it 'fpersist)
-				      'bm-persistent-face
-				    'bm-face))))
+        (insert (propertize (format "%s:%d: %s\n"
+                                    (buffer-file-name (overlay-buffer it))
+                                    (overlay-start it)
+                                    (overlay-get it 'fannotation))
+                            'face (if (overlay-get it 'fpersist)
+                                      'bm-persistent-face
+                                    'bm-face))))
       (insert "\n")
       (goto-char (point-min))
 
       (setf next-error-function #'fc--next-error-function
-	    next-error-move-function #'fc--next-error-move-function
-	    next-error-last-buffer buf))
+            next-error-move-function #'fc--next-error-move-function
+            next-error-last-buffer buf))
 
     (display-buffer buf)))
 
@@ -103,13 +103,13 @@
   (interactive)
 
   (let* ((all (--map (cons (format "%s : %s"
-				   (file-relative-name (buffer-file-name (overlay-buffer it)))
-				   (overlay-get it 'fannotation))
-			   it)
-		     (fc-active-bookmark-list)))
-	 (ol (if all
-		 (fc-user-select "Select bookmark" all :fullscreen t)
-	       nil)))
+                                   (file-relative-name (buffer-file-name (overlay-buffer it)))
+                                   (overlay-get it 'fannotation))
+                           it)
+                     (fc-active-bookmark-list)))
+         (ol (if all
+                 (fc-user-select "Select bookmark" all :fullscreen t)
+               nil)))
     (cond
      ((not all)
       (message "No bookmark !!!"))
@@ -125,37 +125,37 @@
     (setf *fc-current-bookmark-buffer* (car (cl-second *fc-active-bookmarks*))))
 
   (let* ((all (if (> direction 0) (fc-active-bookmark-list) (reverse (fc-active-bookmark-list))))
-	 (head (car all)))
+         (head (car all)))
     (if (null *fc-current-bookmark*)
-	head
+        head
       (let ((l (cdr (member *fc-current-bookmark* all))))
-	(cond
-	 ((null l) head)
+        (cond
+         ((null l) head)
 
-	 ((eq head *fc-current-bookmark*)
-	  (cl-second all))
+         ((eq head *fc-current-bookmark*)
+          (cl-second all))
 
-	 (t head))))))
+         (t head))))))
 
 (cl-defun fc-find-bookmark (direction)
   (if (eq *fc-active-bookmarks-count* 0)
       (cl-return-from fc-find-bookmark nil))
 
   (let* ((all (if (> direction 0) (fc-active-bookmark-list) (reverse (fc-active-bookmark-list))))
-	 (head (car all)))
+         (head (car all)))
     (cond
      ((null *fc-current-bookmark*)
       head)
 
      (t
       (let ((l (cdr (member *fc-current-bookmark* all))))
-	(cond
-	 ((null l) head)
+        (cond
+         ((null l) head)
 
-	 ((eq head *fc-current-bookmark*)
-	  (cl-second all))
+         ((eq head *fc-current-bookmark*)
+          (cl-second all))
 
-	 (t head)))))))
+         (t head)))))))
 
 (defun fc-next-bookmark ()
   (interactive)
@@ -177,49 +177,49 @@
 
 (defun fc-current-bookmark (beginning &optional end)
   (-first (lambda (x) (equal (overlay-get x 'category) 'fbm))
-	  (if end
-	      (overlays-in beginning end)
-	    (overlays-at beginning))))
+          (if end
+              (overlays-in beginning end)
+            (overlays-at beginning))))
 
 (defun fc-delete-bookmark (beginning &optional end)
   (let* ((x (fc-current-bookmark beginning end))
-	 (filename buffer-file-name)
-	 (x-list (cl-rest (atree-get *fc-active-bookmarks* filename))))
+         (filename buffer-file-name)
+         (x-list (cl-rest (atree-get *fc-active-bookmarks* filename))))
     (when x
       (setf x-list (delq x x-list))
       (atree-set *fc-active-bookmarks* x-list filename)
 
       (let ((m-list (cl-rest (atree-get *fc-bookmark-metadata* filename))))
-	(setf m-list (delete (list (overlay-start x)
-				   (overlay-end x)
-				   (overlay-get x 'fannotation))
-			     m-list))
+        (setf m-list (delete (list (overlay-start x)
+                                   (overlay-end x)
+                                   (overlay-get x 'fannotation))
+                             m-list))
 
-	(atree-set *fc-bookmark-metadata*
-		   m-list
-		   filename))
+        (atree-set *fc-bookmark-metadata*
+                   m-list
+                   filename))
 
       (cl-decf *fc-active-bookmarks-count*)
       (delete-overlay x))))
 
 (defun fc--create-annotation (ol annotation)
   (let* ((width (string-width (buffer-substring
-			       (line-beginning-position)
-			       (line-end-position))))
-	 (align (if (>= width 90) 4 (- 90 width))))
+                               (line-beginning-position)
+                               (line-end-position))))
+         (align (if (>= width 90) 4 (- 90 width))))
     (overlay-put ol
-		 'after-string
-		 (concat (propertize (concat (make-string align ? ) " ➠ ")
-				     'cursor t)
+                 'after-string
+                 (concat (propertize (concat (make-string align ? ) " ➠ ")
+                                     'cursor t)
 
-			 (propertize annotation
-				     'face 'bm-annotation-face
-				     'cursor t)))))
+                         (propertize annotation
+                                     'face 'bm-annotation-face
+                                     'cursor t)))))
 
 (defun fc--add-bookmark (beginning end annotation persist &optional meta)
   (let* ((x (make-overlay beginning end))
-	 (filename buffer-file-name)
-	 (x-list (cl-rest (atree-get *fc-active-bookmarks* filename))))
+         (filename buffer-file-name)
+         (x-list (cl-rest (atree-get *fc-active-bookmarks* filename))))
     (overlay-put x 'face (if persist 'bm-persistent-face 'bm-face))
     (overlay-put x 'category 'fbm)
     (overlay-put x 'fpersist persist)
@@ -228,20 +228,20 @@
     (fc--create-annotation x annotation)
 
     (setf x-list (if x-list
-		     (sort (append x-list (list x))
-			   (lambda (x y) (< (overlay-start x)
-					    (overlay-start y))))
-		   (list x)))
+                     (sort (append x-list (list x))
+                           (lambda (x y) (< (overlay-start x)
+                                            (overlay-start y))))
+                   (list x)))
 
     (atree-set *fc-active-bookmarks* x-list filename)
     (when (and meta persist)
       (let ((m-list (cl-rest (atree-get *fc-bookmark-metadata* filename)))
-	    (new (list (list beginning end annotation))))
-	(setf m-list (if m-list (append m-list new) new))
+            (new (list (list beginning end annotation))))
+        (setf m-list (if m-list (append m-list new) new))
 
-	(atree-set *fc-bookmark-metadata*
-		   m-list
-		   filename)))
+        (atree-set *fc-bookmark-metadata*
+                   m-list
+                   filename)))
 
     (cl-incf *fc-active-bookmarks-count*)))
 
@@ -277,33 +277,33 @@
   (interactive)
 
   (let* ((x (fc-current-bookmark (point)))
-	 (a (if x (fc--read-annotation) "")))
+         (a (if x (fc--read-annotation) "")))
     (fc--create-annotation x a)))
 
 (defun fc-restore-bookmark ()
   (let* ((meta (assoc buffer-file-name *fc-bookmark-metadata*)))
     (--each (cl-rest meta)
       (fc--add-bookmark (cl-first it)
-			(cl-second it)
-			(cl-third it)
-			t))))
+                        (cl-second it)
+                        (cl-third it)
+                        t))))
 
 (defun fc-remove-active-bookmark ()
   (let ((data (atree-get *fc-active-bookmarks* buffer-file-name)))
     (when (and data
-	       (< 1 (length data)))
+               (< 1 (length data)))
       (atree-set *fc-active-bookmarks* nil buffer-file-name))))
 
 (defun fc-save-bookmark ()
   (setf *fc-bookmark-metadata*
-	(--filter (or (not (listp it))
-		      (> (length it) 1))
-		  *fc-bookmark-metadata*))
+        (--filter (or (not (listp it))
+                      (> (length it) 1))
+                  *fc-bookmark-metadata*))
   (fc-serialize *fc-bookmark-file* *fc-bookmark-metadata*))
 
 (defun fc-load-bookmark ()
   (setf *fc-bookmark-metadata*
-	(car (fc-unserialize *fc-bookmark-file* '((:name "bookmark") nil)))))
+        (car (fc-unserialize *fc-bookmark-file* '((:name "bookmark") nil)))))
 
 (fc-load-bookmark)
 

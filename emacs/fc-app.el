@@ -684,8 +684,9 @@ ARGS: args for ff."
   (text-mode)
 
   (insert-file-contents (fc-file-first-exists
-                         '("~/.emacs.d/welcome.txt"
-                           "~/.emacs.d/fconfig/welcome.txt")))
+                         (list
+                          (fc-home-path "welcome.txt")
+                          (fc-home-path "fconfig/welcome.txt"))))
 
   (if *is-gui*
       (text-scale-decrease *fc-welcome-scale*)))
@@ -917,11 +918,11 @@ REST: commands."
   "Get desktop path."
   (let ((dir (cond
               (*is-gui*
-               "~/.emacs.d/desktop-gui")
+               (fc-home-path "desktop-gui"))
               (*is-colorful*
-               "~/.emacs.d/desktop-colorful")
+               (fc-home-path "desktop-colorful"))
               (t
-               "~/.emacs.d/desktop-linux"))))
+               (fc-home-path "desktop-linux")))))
     (unless (fc-dir-exists-p dir)
       (make-directory dir))
     dir))

@@ -208,6 +208,10 @@ FUNC: new function."
                (run-hooks 'fc-display-hook)))
     (add-function :after pre-redisplay-function #'f)))
 
+(defun fc-home-path (path)
+  (expand-file-name
+   (concat user-emacs-directory path)))
+
 (provide 'fc-facility)
 
 ;; Local Variables:

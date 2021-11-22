@@ -9,16 +9,21 @@
 (defclass fc-player-mpris (fc-player fc-dbus-intf)
   ((play-state :initarg :play-state
                :initform nil
-               :type symbol)))
+               :type symbol)
+   (meta :initarg :meta
+         :initform nil
+         :type list)))
 
-(cl-defun fc-player-dbus-cb (x changes)
-  (cl-multiple-value-bind (state value) changes
-    (pcase (intern state)
-      ('PlaybackStatus
-       (oset x play-state (intern (car value))))
+(cl-defun fc-player-dbus-cb (x prop value)
+  (pcase (intern prop)
+    ('PlaybackStatus
+     (oset x play-state (intern (car value))))
 
-      ('Volume
-       (oset *fc-player* volume (round (* (car value) 100))))))
+    ('Volume
+     (oset *fc-player* volume (round (* (car value) 100))))
+
+    ('Metadata
+     (oset *fc-player* meta (car value))))
 
   (when (eq x *fc-player*)
     (run-hooks '*fc-player-hook*)))
@@ -31,9 +36,14 @@
   (fc-dbus--register-signal x
                             "PropertiesChanged"
                             #'(lambda (intf changes _)
-                                (apply #'fc-player-dbus-cb x changes)))
+                                (--each changes
+                                  (apply #'fc-player-dbus-cb x it))))
   (oset x volume
-        (round (* (fc-dbus--get x "Volume") 100))))
+        (round (* (fc-dbus--get x "Volume") 100)))
+  (oset x play-state
+        (intern (fc-dbus--get x "PlaybackStatus")))
+  (oset x meta
+        (fc-dbus--get x "Metadata")))
 
 (cl-defmethod fc-player--play-pause ((x fc-player-mpris))
   (fc-dbus--call x "PlayPause")
@@ -51,19 +61,19 @@
   (oref x volume))
 
 (cl-defmethod fc-player--get-play-status ((x fc-player-mpris))
-  (fc-dbus--get x "PlaybackStatus"))
+  (oref x play-state))
 
 (cl-defmethod fc-player--set-volume ((x fc-player-mpris) vol)
   (fc-dbus--set x "Volume" (/ vol 100.0)))
 
 (cl-defmethod fc-player--get-metadata ((x fc-player-mpris))
-  (let ((data (fc-dbus--get x "Metadata")))
+  (let ((data (oref x meta)))
     `((artist ,(cl-second (assoc "xesam:artist" data)))
       (album ,(cl-second (assoc "xesam:album" data)))
       (title ,(cl-second (assoc "xesam:title" data))))))
 
 (cl-defmethod fc-player--show-metadata ((x fc-player-mpris))
-  (let ((data (fc-dbus--get x "Metadata")))
+  (let ((data (oref x meta)))
     (cl-call-next-method x
                          (cl-first (cl-second (assoc "xesam:artist" data)))
                          (cl-first (cl-second (assoc "xesam:album" data)))

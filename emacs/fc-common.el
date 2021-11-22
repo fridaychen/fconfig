@@ -275,17 +275,16 @@ COLOR: background color."
   (unless *fc-enable-player*
     (cl-return-from fc-init-user-player))
 
-  (setf *fc-players* (cond
-                      (*is-linux*
-                       (list (fc-player-mpris :name "Lollypop")
-                             (fc-player-mpris :name "quodlibet")
-                             (fc-player-mpris :name "rhythmbox")))
+  (cond
+   (*is-linux*
+    (setf *fc-prefer-players*
+          '("Lollypop" "quodlibet" "rhythmbox")))
 
-                      (*is-cygwin*
-                       (list (fc-player-foobar :name "foobar")))
+   (*is-cygwin*
+    (setf *fc-player* (fc-player-foobar :name "foobar")))
 
-                      (*is-mac*
-                       (list (fc-player-itunes :name "iTunes")))))
+   (*is-mac*
+    (setf *fc-player* (fc-player-itunes :name "iTunes"))))
 
   (when (fboundp #'fc-player-auto-select)
     (fc-idle-delay

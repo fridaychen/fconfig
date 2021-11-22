@@ -77,7 +77,12 @@
              :tip '(fc--player-tip)
              :keys *fc--player-seg-keymap*)))
 
-(add-to-list 'global-mode-string '(t (:eval (fc--player-modeline))))
+(defun fc--player-modeline-cb ()
+  (force-mode-line-update))
+
+(when (and *is-gui* *fc-enable-dbus*)
+  (add-hook '*fc-player-hook* #'fc--player-modeline-cb)
+  (add-to-list 'global-mode-string '(t (:eval (fc--player-modeline)))))
 
 (provide 'fc-ergo-seg)
 

@@ -7,8 +7,9 @@
 (require 'cl-lib)
 
 (defvar *fc-enable-player* t)
-(defvar *fc-players* nil)
+(defvar *fc-prefer-players* nil)
 (defvar *fc-player* nil)
+(defvar *fc-player-hook* nil)
 
 (defclass fc-player ()
   ((name :initarg :name
@@ -85,11 +86,11 @@ TRACK: current track name."
 
 (when (and *is-linux* *fc-enable-player*)
   (defun fc-player-auto-select ()
-    (setf *fc-player*
-          (let ((names (--filter (string-prefix-p "org.mpris.MediaPlayer2" it)
-                                 (dbus-list-names :session))))
-            (--first (member (oref it service) names)
-                     *fc-players*))))
+    (let ((names (--filter (string-prefix-p "org.mpris.MediaPlayer2" it)
+                           (dbus-list-names :session))))
+      (--first (when (member (concat "org.mpris.MediaPlayer2." it) names)
+                 (setf *fc-player* (fc-player-mpris :name it)))
+               *fc-prefer-players*)))
 
   (defun fc-player-user-select ()
     (setf *fc-player*
@@ -104,10 +105,32 @@ TRACK: current track name."
   (defclass fc-player-mpris (fc-player fc-dbus-intf)
     ())
 
+  (cl-defun fc-player-dbus-cb (x changes)
+    (unless (eq x *fc-player*)
+      (cl-return-from fc-player-dbus-cb))
+
+    (cl-multiple-value-bind (state value) changes
+      (pcase (intern state)
+        ('PlaybackStatus
+         (message "playstate -> %s" (intern (car value))))
+
+        ('Volume
+         (message "volume -> %f" (car value)))
+
+        (_
+         (message "Unknown state %s" state))))
+
+    (run-hooks '*fc-player-hook*))
+
   (cl-defmethod initialize-instance :after ((x fc-player-mpris) &rest args)
     (oset x path "/org/mpris/MediaPlayer2")
     (oset x intf "org.mpris.MediaPlayer2.Player")
-    (oset x service (concat "org.mpris.MediaPlayer2." (oref x :name))))
+    (oset x prop-intf "org.freedesktop.DBus.Properties")
+    (oset x service (concat "org.mpris.MediaPlayer2." (oref x :name)))
+    (fc-dbus--register-signal x
+                              "PropertiesChanged"
+                              #'(lambda (intf changes _)
+                                  (apply #'fc-player-dbus-cb x changes))))
 
   (cl-defmethod fc-player--play-pause ((x fc-player-mpris))
     (fc-dbus--call x "PlayPause")

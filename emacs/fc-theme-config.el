@@ -46,14 +46,14 @@ THEME: new theme."
   "Auto select and load theme from THEMES.
 THEMES: list of themes."
   (let ((theme (cl-loop
-		with theme = nil
-		do
-		(setf theme (seq-random-elt themes))
-		while (and (> (length themes) 1)
-			   (if (consp theme)
-			       (eq (car theme) *fc-current-theme*)
-			     (eq theme *fc-current-theme*)))
-		finally return theme)))
+                with theme = nil
+                do
+                (setf theme (seq-random-elt themes))
+                while (and (> (length themes) 1)
+                           (if (consp theme)
+                               (eq (car theme) *fc-current-theme*)
+                             (eq theme *fc-current-theme*)))
+                finally return theme)))
     (fc-load-theme theme)))
 
 (defun fc-dark-theme-p ()
@@ -64,12 +64,12 @@ THEMES: list of themes."
 
 (defvar *fc-theme-deep-dark-diff-threshold* 70000)
 
-(defun fc-deep-dark-theme-p ()
+(cl-defun fc-deep-dark-theme-p (&optional (threshold *fc-theme-deep-dark-diff-threshold*))
   "Test if the current theme is deep dark."
   (and (fc-dark-theme-p)
-       (> *fc-theme-deep-dark-diff-threshold*
-	  (fc-color-difference (fc-get-face-attribute 'default :foreground)
-			       (fc-get-face-attribute 'default :background)))))
+       (> threshold
+          (fc-color-difference (fc-get-face-attribute 'default :foreground)
+                               (fc-get-face-attribute 'default :background)))))
 
 (when *is-mac*
   (setf ns-use-srgb-colorspace nil))

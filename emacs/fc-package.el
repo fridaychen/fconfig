@@ -93,8 +93,6 @@ REST: include :package :local :enable :bind :before :after :autoload :run"
   :after (progn
            (add-to-list 'package-archives
                         '("melpa" . "http://melpa.org/packages/"))
-           (add-to-list 'package-archives
-                        '("org" . "http://orgmode.org/elpa/"))
 
            (setf package-enable-at-startup nil)
            (package-initialize)

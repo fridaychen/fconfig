@@ -28,6 +28,14 @@
    (--map (string-to-number it 16) (s-split ":" addr1))
    (--map (string-to-number it 16) (s-split ":" addr2))))
 
+(cl-defun fc-location-p (sym)
+  (cond
+   ((listp *fc-location*)
+    (member sym *fc-location*))
+
+   ((symbolp *fc-location*)
+    (eq sym *fc-location*))))
+
 (cl-defun fc-update-location ()
   (defconst *fc-gateway-mac*
     (fc-exec-command-to-string *fc-assist-app* "--gateway"))

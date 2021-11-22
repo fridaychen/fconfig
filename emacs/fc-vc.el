@@ -68,7 +68,7 @@
   "Pull current repo."
   (message "Git pulling ...")
   (if (and (boundp 'fc-proj-work)
-           (not *fc-location-work*))
+           (not (fc-location-p 'work)))
       (shell-command (format
                       "git pull remote %s"
                       (magit-get-current-branch)))
@@ -78,7 +78,7 @@
   "Push current repo."
   (message "Git pushing ...")
   (if (and (boundp 'fc-proj-work)
-           (not *fc-location-work*))
+           (not (fc-location-p 'work)))
       (shell-command (format
                       "git push remote %s"
                       (magit-get-current-branch)))

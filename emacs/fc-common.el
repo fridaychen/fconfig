@@ -88,7 +88,7 @@
                                  "terminator.mp3")))
 
 ;; completion
-(defvar *fc-completion* 'ivy 'helm)
+(defvar *fc-completion* 'ivy)
 
 ;; theme
 (setf *fc-light-theme* '(

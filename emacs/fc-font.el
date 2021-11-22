@@ -143,8 +143,6 @@ FONT: to be tested."
       text-scale-mode-step 1.1
       inhibit-compacting-font-caches t)
 
-;;(global-font-lock-mode)
-
 (provide 'fc-font)
 
 ;; Local Variables:

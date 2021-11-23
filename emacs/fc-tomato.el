@@ -14,7 +14,7 @@
 (defvar *fc-tomato-rest-hook* nil)
 (defvar *fc-tomato-done-hook* nil)
 
-(defconst *fc--tomato-work-stages*
+(defconst *fc--tomato-work-steps*
   '(("█" . "#ffff66")
     ("▇" . "#ffcc66")
     ("▆" . "#cc9966")
@@ -24,7 +24,7 @@
     ("▂" . "#ff3366")
     ("▁" . "#ff0066")))
 
-(defconst *fc--tomato-rest-stages*
+(defconst *fc--tomato-rest-steps*
   '(("▁" . "#00cc66")
     ("▂" . "#33cc66")
     ("▃" . "#66cc66")
@@ -35,7 +35,7 @@
     ("█" . "#ccff66")))
 
 (defvar *fc--tomato-phases* nil)
-(defvar *fc--tomato-stages* nil)
+(defvar *fc--tomato-steps* nil)
 (defvar *fc--tomato-timer* nil)
 
 (cl-defun fc-tomato ()
@@ -46,12 +46,12 @@
     (cl-return-from fc-tomato))
 
   (setf *fc--tomato-phases*
-        (list (cons (/ (car *fc-tomato-cycle*) (length *fc--tomato-work-stages*))
-                    *fc--tomato-work-stages*)
-              (cons (/ (cdr *fc-tomato-cycle*) (length *fc--tomato-rest-stages*))
-                    *fc--tomato-rest-stages*))
+        (list (cons (/ (car *fc-tomato-cycle*) (length *fc--tomato-work-steps*))
+                    *fc--tomato-work-steps*)
+              (cons (/ (cdr *fc-tomato-cycle*) (length *fc--tomato-rest-steps*))
+                    *fc--tomato-rest-steps*))
         *fc--tomato-timer* nil
-        *fc--tomato-stages* nil)
+        *fc--tomato-steps* nil)
 
   (fc--tomato-next-phase))
 
@@ -66,20 +66,21 @@
     (setf *fc--tomato-timer* nil))
 
   (if *fc--tomato-phases*
-      (setq *fc--tomato-stages* (cdar *fc--tomato-phases*)
-            *fc--tomato-timer* (run-at-time nil (caar *fc--tomato-phases*) #'fc--tomato-next-stage)
+      (setq *fc--tomato-steps* (cdar *fc--tomato-phases*)
+            *fc--tomato-timer* (run-at-time nil (caar *fc--tomato-phases*) #'fc--tomato-next-step)
             *fc--tomato-phases* (cdr *fc--tomato-phases*))
     (setq *fc-tomato-bar* nil)))
 
-(cl-defun fc--tomato-next-stage ()
-  (unless *fc--tomato-stages*
+(cl-defun fc--tomato-next-step ()
+  (unless *fc--tomato-steps*
     (fc--tomato-next-phase))
 
-  (setq *fc-tomato-bar* (fc-text
-                         (concat " " (caar *fc--tomato-stages*) " ")
-                         :face `(:foreground ,(cdar *fc--tomato-stages*)))
-        *fc--tomato-stages* (cdr *fc--tomato-stages*))
-  (force-mode-line-update))
+  (when *fc--tomato-steps*
+    (setq *fc-tomato-bar* (fc-text
+                           (concat " " (caar *fc--tomato-steps*) " ")
+                           :face `(:foreground ,(cdar *fc--tomato-steps*)))
+          *fc--tomato-steps* (cdr *fc--tomato-steps*))
+    (force-mode-line-update)))
 
 (provide 'fc-tomato)
 

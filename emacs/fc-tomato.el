@@ -8,107 +8,78 @@
 
 (defvar *fc-tomato-bar* nil)
 
-(defvar *fc-tomato-work-interval* (* 60 25)
-  "Interval of time you will be working, in seconds.")
-(defvar *fc-tomato-rest-interval* (* 60 5)
-  "Interval of time you will be resting, in seconds.")
+(defvar *fc-tomato-cycle* (cons (* 60 25) (* 60 5)))
 
 (defvar *fc-tomato-start-hook* nil)
 (defvar *fc-tomato-rest-hook* nil)
 (defvar *fc-tomato-done-hook* nil)
 
-(let* ((tomato-steps 8.0)
-       (tomato-workbar-interval (/ *fc-tomato-work-interval* tomato-steps))
-       (tomato-restbar-interval (/ *fc-tomato-rest-interval* tomato-steps))
-       (tomato-start-time nil)
-       (tomato-timer nil)
-       (tomato-bars
-        `((,tomato-workbar-interval "█" "#ffff66")
-          (,tomato-workbar-interval "▇" "#ffcc66")
-          (,tomato-workbar-interval "▆" "#cc9966")
-          (,tomato-workbar-interval "▅" "#ff9966")
-          (,tomato-workbar-interval "▄" "#cc6666")
-          (,tomato-workbar-interval "▃" "#ff6666")
-          (,tomato-workbar-interval "▂" "#ff3366")
-          (,tomato-workbar-interval "▁" "#ff0066")
+(defconst *fc--tomato-work-stages*
+  '(("█" . "#ffff66")
+    ("▇" . "#ffcc66")
+    ("▆" . "#cc9966")
+    ("▅" . "#ff9966")
+    ("▄" . "#cc6666")
+    ("▃" . "#ff6666")
+    ("▂" . "#ff3366")
+    ("▁" . "#ff0066")))
 
-          (,tomato-restbar-interval "▁" "#00cc66")
-          (,tomato-restbar-interval "▂" "#33cc66")
-          (,tomato-restbar-interval "▃" "#66cc66")
-          (,tomato-restbar-interval "▄" "#00ff66")
-          (,tomato-restbar-interval "▅" "#33ff66")
-          (,tomato-restbar-interval "▆" "#66ff66")
-          (,tomato-restbar-interval "▇" "#99ff66")
-          (,tomato-restbar-interval "█" "#ccff66")
-          (nil nil nil))))
+(defconst *fc--tomato-rest-stages*
+  '(("▁" . "#00cc66")
+    ("▂" . "#33cc66")
+    ("▃" . "#66cc66")
+    ("▄" . "#00ff66")
+    ("▅" . "#33ff66")
+    ("▆" . "#66ff66")
+    ("▇" . "#99ff66")
+    ("█" . "#ccff66")))
 
-  (defun fc--tomato-reset-bar ()
-    (fc--tomato-update-bar (car (last tomato-bars))))
+(defvar *fc--tomato-phases* nil)
+(defvar *fc--tomato-stages* nil)
+(defvar *fc--tomato-timer* nil)
 
-  (defun fc--tomato-state-string ()
-    (if (fc--tomato-running-p)
-        (format "Start at %s, elapsed %s"
-                (format-time-string "%p %M:%S" tomato-start-time)
-                (format-time-string "%M:%S" (time-subtract (current-time) tomato-start-time)))
-      "Not running"))
+(cl-defun fc-tomato ()
+  (when *fc--tomato-timer*
+    (cancel-timer *fc--tomato-timer*)
+    (setf *fc--tomato-timer* nil
+          *fc-tomato-bar* nil)
+    (cl-return-from fc-tomato))
 
-  (cl-defun fc--tomato-propertize (bar bar-color)
-    "Propertize BAR with BAR-COLOR, help echo, and click action."
-    (unless bar
-      (cl-return-from fc--tomato-propertize ""))
-    (fc-text (concat " " bar " ")
-             :face `(:foreground ,bar-color)
-             :tip '(fc--tomato-state-string)
-             :pointer 'hand
-             :keys (fc-make-keymap
-                    `(
-                      ([mode-line down-mouse-1] fc-tomato)))))
+  (setf *fc--tomato-phases*
+        (list (cons (/ (car *fc-tomato-cycle*) (length *fc--tomato-work-stages*))
+                    *fc--tomato-work-stages*)
+              (cons (/ (cdr *fc-tomato-cycle*) (length *fc--tomato-rest-stages*))
+                    *fc--tomato-rest-stages*))
+        *fc--tomato-timer* nil
+        *fc--tomato-stages* nil)
 
-  (defun fc--tomato-update-bar (bar-def)
-    (setf *fc-tomato-bar* (fc--tomato-propertize (cl-second bar-def)
-                                                 (cl-third bar-def))))
+  (fc--tomato-next-phase))
 
-  (defun fc-tomato-timer-func (bars)
-    (fc--tomato-update-bar (car bars))
+(cl-defun fc--tomato-next-phase ()
+  (run-hooks (pcase (length *fc--tomato-phases*)
+               (2 '*fc-tomato-start-hook*)
+               (1 '*fc-tomato-rest-hook*)
+               (0 '*fc-tomato-done-hook*)))
 
-    (when (equal (cl-third (car bars)) "#00cc66")
-      (run-hooks '*fc-tomato-rest-hook*))
+  (when *fc--tomato-timer*
+    (cancel-timer *fc--tomato-timer*)
+    (setf *fc--tomato-timer* nil))
 
-    (let ((time (caar bars)))
-      (if time
-          (setf tomato-timer
-                (run-at-time time
-                             nil
-                             #'fc-tomato-timer-func
-                             (cdr bars)))
-        (fc--tomato-reset-bar)
-        (setf tomato-timer nil)
-        (run-hooks '*fc-tomato-done-hook*)))
-    (force-mode-line-update t))
+  (if *fc--tomato-phases*
+      (setq *fc--tomato-stages* (cdar *fc--tomato-phases*)
+            *fc--tomato-timer* (run-at-time nil (caar *fc--tomato-phases*) #'fc--tomato-next-stage)
+            *fc--tomato-phases* (cdr *fc--tomato-phases*))
+    (setq *fc-tomato-bar* nil)))
 
-  (defun fc--tomato-start ()
-    (run-hooks '*fc-tomato-start-hook*)
-    (setf tomato-start-time (current-time))
-    (fc-tomato-timer-func tomato-bars))
+(cl-defun fc--tomato-next-stage ()
+  (unless *fc--tomato-stages*
+    (fc--tomato-next-phase))
 
-  (defun fc--tomato-stop ()
-    (cancel-timer tomato-timer)
-    (setf tomato-timer nil)
-    (fc--tomato-reset-bar))
-
-  (defun fc--tomato-running-p ()
-    tomato-timer)
-
-  (defun fc-tomato ()
-    "start or stop tomato timer."
-    (interactive)
-
-    (if (fc--tomato-running-p)
-        (fc--tomato-stop)
-      (fc--tomato-start)))
-
-  (defun fc-tomato-init ()
-    (fc--tomato-reset-bar)))
+  (setq *fc-tomato-bar* (fc-text
+                         (concat " " (caar *fc--tomato-stages*) " ")
+                         :face `(:foreground ,(cdar *fc--tomato-stages*)))
+        *fc--tomato-stages* (cdr *fc--tomato-stages*))
+  (force-mode-line-update))
 
 (provide 'fc-tomato)
 

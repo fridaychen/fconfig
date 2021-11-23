@@ -67,10 +67,10 @@ TRACK: current track name."
 (cl-defmethod fc-player--play-pause ((x fc-player))
   (if (fc-player--playing x)
       (fc-player--show-metadata x)
-    (message (fc-player--get-play-status x))))
+    (message "%s" (fc-player--get-play-status x))))
 
 (cl-defmethod fc-player--playing ((x fc-player))
-  (equal "Playing" (fc-player--get-play-status x)))
+  (eq 'Playing (fc-player--get-play-status x)))
 
 (cl-defmethod fc-player--next ((x fc-player))
   (fc-player--show-metadata x))
@@ -116,8 +116,8 @@ TRACK: current track name."
 
   (cl-defmethod fc-player--get-play-status ((x fc-player-foobar))
     (if (oref x playing)
-        "Playing"
-      "Paused"))
+        'Playing
+      'Paused))
 
   (cl-defmethod fc-player--set-volume ((x fc-player-foobar) vol)
     (oset x vol vol)

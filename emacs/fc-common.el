@@ -54,29 +54,6 @@
   '((:family "Sarasa Mono Slab SC")
     ))
 
-(when *is-gui*
-  (create-fontset-from-fontset-spec
-   "-*-*-*-*-*-*-*-*-*-*-*-*-fontset-fc,
-    ascii:-*-monaco-*-*-*-*-*-*-*-*-*-*-iso8859-1,
-    japanese-jisx0208:-*-kaiti-*-*-*-*-*-*-*-*-*-*-*-*,
-    chinese-gbk:-*-kaiti-*-*-*-*-*-*-*-*-*-*-*-*")
-  (cond
-   (*is-mac*
-    (create-fontset-from-fontset-spec
-     "-*-*-*-*-*-*-*-*-*-*-*-*-fontset-read,
-   ascii:-*-monaco-*-*-*-*-*-*-*-*-*-*-iso8859-1,
-   chinese-gbk:-*-stfangsong-*-*-*-*-*-*-*-*-*-*-*-*"))
-   (*is-linux*
-    (create-fontset-from-fontset-spec
-     "-*-*-*-*-*-*-*-*-*-*-*-*-fontset-read,
-   ascii:-*-baskerville-*-*-*-*-*-*-*-*-*-*-iso8859-1,
-   chinese-gbk:-*-方正宋刻本秀楷简补全-*-*-*-*-*-*-*-*-*-*-*-*"))
-   (t
-    (create-fontset-from-fontset-spec
-     "-*-*-*-*-*-*-*-*-*-*-*-*-fontset-read,
-   ascii:-*-monaco-*-*-*-*-*-*-*-*-*-*-iso8859-1,
-   chinese-gbk:-*-microsoft yahei-*-*-*-*-*-*-*-*-*-*-*-*"))))
-
 ;; sounds
 (defconst *fc-sounds* '((welcome "startrek.mp3")
                         (incoming "incomingmsg.mp3")

@@ -8,6 +8,11 @@
   (fc-make-keymap
    `(
      ("c" plantuml-preview)
+
+     ("f b" ,(fc-decorate-region "**" "**"))
+     ("f i" ,(fc-decorate-region "//" "//"))
+     ("f u" ,(fc-decorate-region "__" "__"))
+
      ("D" plantuml-download-jar)
      )
    "fc-plant-uml-map"

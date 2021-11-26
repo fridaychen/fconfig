@@ -257,6 +257,11 @@ PARAM: parameter of block."
      ("0" org-demote)
      ("b" org-emphasize)
      ("c" fc--org-ctrl-c-ctrl-c)
+
+     ("f b" ,(fc-decorate-region "*" "*"))
+     ("f i" ,(fc-decorate-region "/" "/"))
+     ("f u" ,(fc-decorate-region "_" "_"))
+
      ("i c" org-cliplink)
      ("i d" org-insert-drawer)
      ("i i" fc--org-convert)
@@ -264,6 +269,7 @@ PARAM: parameter of block."
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)
      ("i u" ,(fc-manual (fc-org-add-block "SRC" :ask '("Output file" "plantuml :file "))))
+
      ("l" org-insert-link)
      ("m" org-mark-element)
      ("o" org-open-at-point)

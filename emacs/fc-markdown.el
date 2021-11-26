@@ -335,7 +335,12 @@ END: end point."
      ("4" ,(fc-decorate-region "#### " ""))
 
      ("a" fc-md-style)
-     ("f" fc-md-insert-footnote)
+     ("b" fc-md-insert-footnote)
+
+     ("f b" ,(fc-decorate-region "**" "**"))
+     ("f i" ,(fc-decorate-region "*" "*"))
+     ("f u" ,(fc-decorate-region "__" "__"))
+
      ("l" fc-md-make-list)
 
      ("q" fc-md-quote)
@@ -351,7 +356,7 @@ END: end point."
      ("SPC" fc-md-portal))
    "fc-md-map"
    *fc-func-mode-map*)
-  "KEYS  a: apply style  f: footnote  l: make list  q: quote  t: search verse  v: add verse  u: do  SPC: portal.")
+  "KEYS  a: apply style  b: footnote  l: make list  q: quote  t: search verse  v: add verse  u: do  SPC: portal.")
 
 (defun fc-markdown-mode-func ()
   "Run markdown mode func."

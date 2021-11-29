@@ -31,7 +31,6 @@
 (fc-install 'gnuplot
             'org-cliplink
             'org-link-beautify
-            'org-plus-contrib
             'org-superstar)
 
 (fc-load 'org

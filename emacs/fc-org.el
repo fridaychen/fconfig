@@ -202,7 +202,8 @@ PARAM: parameter of block."
   (fc--org-smart-action #'org-ctrl-c-ctrl-c
     (pcase elt
       (:checkbox (org-ctrl-c-ctrl-c))
-      (:headline (org-insert-heading-respect-content))
+      (:headline (org-insert-heading-respect-content)
+                 (fc-modal-disable))
       (:item (fc--org-do-intert-item))
       (:item-bullet (org-ctrl-c-minus))
       (:link (org-open-at-point))

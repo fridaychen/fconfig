@@ -49,6 +49,10 @@
                 (concat " " (read-string "Actor/Participant")))))
     (concat pos arg)))
 
+(cl-defun fc--insert-component-note ()
+  "return note command."
+  (fc-user-select "Note type" '("top" "left" "right" "bottom")))
+
 (provide 'fc-plantuml)
 
 ;; Local Variables:

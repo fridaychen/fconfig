@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: component note
+# key: cn
+# --
+
+note `(fc--insert-component-note)` of $1
+$0
+end note

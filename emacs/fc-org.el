@@ -198,7 +198,7 @@ PARAM: parameter of block."
            (cl-return-from fc--org-smart-action))
        ,@body)))
 
-(cl-defun fc--org-do ( )
+(cl-defun fc--org-do ()
   (fc--org-smart-action #'org-ctrl-c-ctrl-c
     (pcase elt
       (:checkbox (org-ctrl-c-ctrl-c))
@@ -211,6 +211,18 @@ PARAM: parameter of block."
       (:tags (org-set-tags-command))
       (:timestamp (fc-funcall #'org-time-stamp))
       (:todo-keyword (org-todo))
+      (_ (message "context: %s" context)))))
+
+(defun fc--org-beginning ()
+  (fc--org-smart-action nil
+    (pcase elt
+      (:src-block (re-search-backward "^ *#\\+BEGIN"))
+      (_ (message "context: %s" context)))))
+
+(defun fc--org-end ()
+  (fc--org-smart-action nil
+    (pcase elt
+      (:src-block (re-search-forward "^ *#\\+END"))
       (_ (message "context: %s" context)))))
 
 (defun fc-org-mode-mouse-func (_event)
@@ -255,8 +267,10 @@ PARAM: parameter of block."
    `(
      ("9" org-promote)
      ("0" org-demote)
+     ("a" fc--org-beginning)
      ("b" org-emphasize)
      ("c" fc--org-ctrl-c-ctrl-c)
+     ("e" fc--org-end)
 
      ("f b" ,(fc-decorate-region "*" "*"))
      ("f i" ,(fc-decorate-region "/" "/"))

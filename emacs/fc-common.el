@@ -77,6 +77,7 @@
                               (acme . acme-theme)
                               (leuven . leuven-theme)
                               (material-light . material-theme)
+                              (modus-operandi . modus-themes)
                               )
       *fc-dark-theme* (if *is-gui*
                           '(

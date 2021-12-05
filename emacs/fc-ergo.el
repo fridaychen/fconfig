@@ -1233,6 +1233,7 @@ STEP: pixels."
                          ("deep dark" . (lambda () (fc-theme-auto-select *fc-deep-dark-theme*)))
                          ("light" . (lambda () (fc-theme-auto-select *fc-light-theme*)))
                          ("very light" . (lambda () (fc-theme-auto-select *fc-very-light-theme*)))))))
+     ("v" fc-tomato-customize)
      ("w" ,(fc-manual (fc-theme-auto-select *fc--work-themes*)))
      ("z" suspend-emacs)
 

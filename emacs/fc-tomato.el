@@ -38,6 +38,12 @@
 (defvar *fc--tomato-steps* nil)
 (defvar *fc--tomato-timer* nil)
 
+(cl-defun fc-tomato-customize (work-time rest-time)
+  (interactive (list (read-number "Work time" (/ (car *fc-tomato-cycle*) 60))
+                     (read-number "Rest time" (/ (cdr *fc-tomato-cycle*) 60))))
+
+  (setq  *fc-tomato-cycle* (cons (* 60 work-time) (* 60 rest-time))))
+
 (cl-defun fc-tomato ()
   (when *fc--tomato-timer*
     (cancel-timer *fc--tomato-timer*)

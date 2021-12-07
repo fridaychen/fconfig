@@ -56,6 +56,10 @@
       (org-superstar-mode 1)
       (org-link-beautify-mode -1)
       (org-overview)
+
+      (add-hook 'write-contents-functions
+                (lambda () (org-update-statistics-cookies t)) nil t)
+
       (when (= (buffer-size) 0)
         (fc-org-add-header)))
 
@@ -91,7 +95,9 @@
 
     (add-hook 'org-capture-after-finalize-hook #'fc-modal-disable)
     (add-hook 'org-babel-after-execute-hook #'org-redisplay-inline-images)
-    (add-hook 'org-mode-hook #'fc--setup-org-mode)))
+    (add-hook 'org-mode-hook #'fc--setup-org-mode)
+
+    (add-hook 'after-save-hook #'check-parens nil t)))
 
 (cl-defun fc-org-add-header ()
   "Add header."

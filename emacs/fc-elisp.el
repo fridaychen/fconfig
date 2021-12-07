@@ -70,10 +70,11 @@
 
            (fc-add-fmt 'emacs-lisp-mode nil #'fc-format-emacs-lisp)
 
-           (add-hook 'emacs-lisp-mode-hook (lambda ()
-                                             (setf indent-tabs-mode nil)))
-           (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
-           (add-hook 'after-save-hook #'check-parens nil t)))
+           (add-hook 'emacs-lisp-mode-hook
+                     (lambda ()
+                       (setf indent-tabs-mode nil)
+                       (add-hook 'write-contents-functions 'check-parens nil t)))
+           (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)))
 
 (provide 'fc-elisp)
 

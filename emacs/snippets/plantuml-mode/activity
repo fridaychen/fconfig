@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: activity init
+# key: acti
+# --
+
+@startuml
+
+start
+
+$0
+
+stop
+
+@enduml

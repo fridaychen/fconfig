@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: package
+# key: pkg
+# --
+
+package "${1:package-name}" {
+	["${2:component-title}" as ${3:short-name}]$0
+}

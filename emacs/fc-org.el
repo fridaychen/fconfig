@@ -231,6 +231,16 @@ PARAM: parameter of block."
       (:src-block (re-search-forward "^ *#\\+END"))
       (_ (message "context: %s" context)))))
 
+(defun fc--org-current-cell ()
+  (org-table-get (org-table-current-line)
+                 (org-table-current-column)))
+
+(defun fc--org-copy ()
+  (fc--org-smart-action nil
+    (pcase elt
+      (:table (kill-new (fc--org-current-cell)))
+      (_ (message "context: %s" context)))))
+
 (defun fc-org-mode-mouse-func (_event)
   (fc--org-do))
 
@@ -281,6 +291,8 @@ PARAM: parameter of block."
      ("f b" ,(fc-decorate-region "*" "*"))
      ("f i" ,(fc-decorate-region "/" "/"))
      ("f u" ,(fc-decorate-region "_" "_"))
+
+     ("g" fc--org-copy)
 
      ("i c" org-cliplink)
      ("i d" org-insert-drawer)

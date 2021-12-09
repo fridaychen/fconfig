@@ -156,10 +156,12 @@ PARAM: parameter of block."
   (fc-user-select-func
    "Org portal"
    `(
-     ("Add header"              .       fc-org-add-header)
-     ("Init org var"            .       fc-org-add-var)
-     ("Publish to html"         .       org-html-export-to-html)
-     ("Publish to markdownad"   .       org-md-export-to-markdown)
+     ("Add header"          . fc-org-add-header)
+     ("Init org var"        . fc-org-add-var)
+     ("Publish to html"     . org-html-export-to-html)
+     ("Publish to markdown" . org-md-export-to-markdown)
+     ("Update dblock"       . org-update-all-dblocks)
+     ("Update source block" . org-babel-execute-buffer)
      )))
 
 (cl-defun fc--org-ctrl-c-ctrl-c ()

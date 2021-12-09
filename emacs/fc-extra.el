@@ -16,6 +16,17 @@
            ("k" 2048-down)
            ("l" 2048-right))))
 
+(fc-load 'tetris
+  :local t
+  (progn
+    (add-to-list '*fc-modal-exclude-modes*
+                 'tetris-mode))
+  :bind '((tetris-mode-map
+           ("i" tetris-rotate-prev)
+           ("j" tetris-move-left)
+           ("k" tetris-move-down)
+           ("l" tetris-move-right))))
+
 (fc-load 'speed-type)
 
 (defvar *fc-enable-snails* nil)

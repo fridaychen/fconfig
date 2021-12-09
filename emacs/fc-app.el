@@ -1061,6 +1061,7 @@ REST: commands."
   (fc-user-select-func
    "Other"
    `(
+     ("2048"                    . 2048-game)
      ("de-ansi esc color"	. fc-decode-ansi-esc-code)
      ("dos2unix"		. dos2unix)
      ("hex2string"              . fc-c-hex2string)

@@ -1,0 +1,186 @@
+#+STARTUP: content
+#+STARTUP: hideblocks
+#+STARTUP: inlineimages
+#+STARTUP: overview
+
+* Sequence diagram example
+
+#+BEGIN_SRC plantuml :file ~/tmp/uml-seq-1.svg
+  scale 1
+  /'
+   ' skinparam monochrome true
+   '/
+  /'
+   ' skinparam monochrome reverse
+   '/
+  /'
+   ' skinparam backgroundColor #888888
+   '/
+  skinparam handwritten false
+
+  actor user
+  participant Accesory as hd
+  participant AlexaApp as app
+
+  user -> hd : "alexa, what time is it"
+
+  activate hd
+  hd -> app : StartSpeech
+  app --> hd : OK
+  app -> hd : NotifySpeechState(LISTENING)
+
+  app -> hd : hello world
+  hd --> app : OK
+
+  hd -> app : <math>x = (-b+-sqrt1(b^2-4ac))/(2a)</math>
+  |||
+
+  hd -> app : Voice Data(opus)
+  |||
+  note over hd : The voice data has confirmed,\n by extracting from BT HCI LOG
+  |||
+  hd -> app : Voice Data(opus)
+
+  alt sucsess
+	  app -> hd : Endpoint
+	  note right : AlexaApp stops the speech\nafter about 10 seconds
+	  hd --> app :  OK
+
+	  app -> hd : NotifySpeechState(PROCESSING)
+  else stopped-by-user
+	  user -> hd : Tap
+	  hd -> app : StopSpeech(USER_CANCELED)
+	  app --> hd : OK
+	  app -> hd : NotifySpeechState(IDLE)
+  end
+
+  deactivate hd
+
+  note over app : AlexaApp does not update\n speech state to IDLE
+  note over hd : All log message related to ama\n has been confirmed, no problem\n was found
+  hide footbox
+#+END_SRC
+
+#+RESULTS:
+[[file:~/tmp/uml-seq-1.svg]]
+
+* State diagram
+
+#+BEGIN_SRC plantuml :file ~/tmp/uml-state-1.svg
+  /'
+   ' scale 600 width
+   '/
+
+  [*] -> State1
+  State1 --> State2 : Succeeded
+  State1 --> [*] : Aborted
+  State2 --> State3 : Succeeded
+  State2 --> [*] : Aborted
+
+  state State3 {
+	  state "Accumulate Enough Data\nLong State Name" as long1
+	  long1 : Just a test
+	  [*] --> long1
+	  long1 --> long1 : New Data
+	  long1 --> ProcessData : Enough Data
+  }
+
+  State3 --> State3 : Failed
+  State3 --> [*] : Succeeded / Save Result
+  State3 --> [*] : Aborted
+#+END_SRC
+
+#+RESULTS:
+[[file:~/tmp/uml-state-1.svg]]
+
+* User case diagram
+
+#+BEGIN_SRC plantuml :file ~/tmp/uml-use-case-1.svg
+:User: --> (Use)
+"Main Administator" as Admin
+"Use the application" as (Use)
+Admin --> (Admin the application)
+#+END_SRC
+#+RESULTS:
+[[file:~/tmp/uml-use-case-1.svg]]
+
+* Component diagram
+#+BEGIN_SRC plantuml :file ~/tmp/uml-com.svg
+  @startuml
+  scale 1
+
+  package "App" {
+  [AMA App] as ama
+  }
+
+  package "middleware" {
+  [AMA lib] as lib
+  [VA Model] as vam
+  [Audio] as audio
+  [Audio Manager] as ami
+  [Sink] as sink
+  }
+
+  package "service" {
+  [Mux] as mux
+  }
+
+  ama --> vam
+  ama --> lib
+  ama --> audio
+  ama --> ami
+  ama --> sink
+  lib --> mux
+
+  note top of ama
+  Implement AMA function, except audio processing
+  ,* process AMA command
+  ,* process ACTI command
+  ,* provide battery-related stubs for AMAlib
+  ,* dummy WWE
+      if Alexa does not connect, after recognized wakeword, play VP only
+  ,* handling button operation
+  ,* handling APP internal event of NCASM, audio jack
+  ,* handling AMA app layer RHO
+  ,* monitor HFP state change
+  end note
+
+  @enduml
+#+END_SRC
+
+#+RESULTS:
+[[file:~/tmp/uml-com.svg]]
+
+* Activity chart
+#+BEGIN_SRC plantuml :file ~/tmp/uml-act-1.svg
+@startuml
+
+start
+
+:audio_record_control_get_share_buf_data_byte_count();
+note right : Read PCM data size
+:audio_codec_buffer_mode_get_output_data_length();
+note right : Get opus data size in codec
+
+repeat
+	:**encode OPUS data**\naudio_record_control_read_data()\naudio_codec_buffer_mode_process();
+repeat while (Has enouch PCM data to encode?\n\tAND\nCodec has space for input data?) is (yes)
+
+repeat
+:AMA_Target_VoiceStreamSinkClaim();
+note right : Claim memory space in Sink\nfor sending packet
+
+:**copy data from codec to Sink**\naudio_codec_buffer_mode_get_read_information()\naudio_codec_buffer_mode_read_done();
+
+:AMA_Target_VoiceStreamSinkFlush();
+note right : Flush Sink/Sending data to bt stack
+repeat while (Has more OPUS data?) is (yes)
+
+stop
+
+@enduml
+
+#+END_SRC
+
+#+RESULTS:
+[[file:~/tmp/uml-act-1.svg]]

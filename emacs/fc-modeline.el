@@ -304,6 +304,9 @@
     (setq *fc-selected-window* nil)
     (force-mode-line-update)))
 
+(set-face-attribute 'mode-line-active nil :inherit 'mode-line)
+(set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
+
 (add-hook 'after-make-frame-functions #'fc-modeline-set-selected-window)
 (add-hook 'buffer-list-update-hook #'fc-modeline-set-selected-window)
 (add-hook 'window-configuration-change-hook #'fc-modeline-set-selected-window)

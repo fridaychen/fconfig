@@ -14,7 +14,7 @@ function update() {
 function compile() {
     git clean -xdf
     ./autogen.sh
-    ./configure --with-native-compilation --with-json
+    ./configure --with-native-compilation --with-json --with-pgtk
     time make -j$(nproc)
 }
 

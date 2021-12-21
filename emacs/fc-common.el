@@ -169,6 +169,9 @@ COLOR: background color."
        (fc-set-face-attribute 'fringe nil
                               :background "#F2A4AC"))
 
+      ('leuven
+       (setf soothe-percent 6))
+
       ('material
        (fc-set-face-attribute 'fringe nil
                               :background "#ff9800")
@@ -209,6 +212,7 @@ COLOR: background color."
                               :foreground "gray80"))
 
       ('plan9
+       (setf soothe-percent -3)
        (fc-set-face-attribute 'default nil
                               :background (color-darken-name
                                            (fc-get-face-attribute 'default :background)

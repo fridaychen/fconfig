@@ -38,7 +38,7 @@ FROM-START: non-nil means starts from beginning."
 
   (cl-loop while (search-forward from nil t) do
            (replace-match to-string)
-           count))
+           count 1))
 
 (cl-defun fc-replace-regexp (regex to &key from-start)
   "REGEXP String replacement.
@@ -52,7 +52,7 @@ FROM-START: non-nil means starts from beginning."
            (if (stringp to)
                (replace-match to)
              (fc-funcall to))
-           count))
+           count 1))
 
 (cl-defun fc--replace-text (pos del-n sub)
   (goto-char pos)

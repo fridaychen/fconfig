@@ -36,11 +36,9 @@ FROM-START: non-nil means starts from beginning."
   (when from-start
     (goto-char (point-min)))
 
-  (let ((count 0))
-    (while (search-forward from nil t)
-      (cl-incf count)
-      (replace-match to-string))
-    count))
+  (cl-loop while (search-forward from nil t) do
+           (replace-match to-string)
+           count))
 
 (cl-defun fc-replace-regexp (regex to &key from-start)
   "REGEXP String replacement.

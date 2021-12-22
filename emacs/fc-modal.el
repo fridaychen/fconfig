@@ -162,8 +162,8 @@
 KEYDEFS: new key definitions for modal."
   (--each keydefs
     (define-key *fc-modal-keymap*
-      (kbd (cl-first it))
-      (cl-second it))))
+                (kbd (cl-first it))
+                (cl-second it))))
 
 (defun fc-parse-head-key-doc (keymap)
   "Generate KEYMAP help string."
@@ -173,8 +173,7 @@ KEYDEFS: new key definitions for modal."
     (save-excursion
       (goto-char (point-min))
       (when (looking-at "KEYS")
-        (mark-word)
-        (kill-region (region-beginning) (region-end))))
+        (delete-region (match-beginning 0) (match-end 0))))
 
     (fc-replace-regexp "\\([^ \n:]+\\): +" "\\1→" :from-start t)
 

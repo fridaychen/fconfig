@@ -13,7 +13,8 @@
            (require 'lsp-mode)
 
            (setq lsp-headerline-breadcrumb-enable nil
-                 lsp-progress-via-spinner nil)))
+                 lsp-progress-via-spinner nil
+                 lsp-enable-on-type-formatting nil)))
 
 (fc-load 'lsp-ui
   :after (progn

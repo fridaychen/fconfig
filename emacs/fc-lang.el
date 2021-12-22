@@ -50,13 +50,11 @@ FROM-START: non-nil means starts from beginning."
   (when from-start
     (goto-char (point-min)))
 
-  (let ((count 0))
-    (while (re-search-forward regex nil t)
-      (cl-incf count)
-      (if (stringp to)
-          (replace-match to)
-        (fc-funcall to)))
-    count))
+  (cl-loop while (re-search-forward regex nil t) do
+           (if (stringp to)
+               (replace-match to)
+             (fc-funcall to))
+           count))
 
 (cl-defun fc--replace-text (pos del-n sub)
   (goto-char pos)

@@ -8,6 +8,7 @@
 (fc-load '2048-game
   :after
   (progn
+    (advice-add #'2048-init :after #'(lambda () (text-scale-set 3)))
     (add-to-list '*fc-modal-exclude-modes*
                  '2048-mode))
   :bind '((2048-mode-map

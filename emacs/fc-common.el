@@ -150,6 +150,9 @@ COLOR: background color."
                             *fc-soothe-dark-percent*
                           *fc-soothe-light-percent*)))
     (pcase *fc-current-theme*
+      ('acme
+       (setf soothe-percent 6))
+
       ('adwaita
        (fc-set-face-attribute 'default nil
                               :background "#EFEFD8")

@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: gantt init
+# key: gant
+# --
+
+@startuml
+language en
+
+Project starts $1
+
+$0
+
+@enduml

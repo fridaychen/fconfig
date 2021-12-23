@@ -88,8 +88,8 @@ TO-STRING: new string."
            (when (or (and (null left-quote) (null right-quote))
                      (and (null left-quote) right-quote)
                      (and left-quote right-quote (< left-quote right-quote)))
-             (fc-replace-text start 1 "“")
-             (fc-replace-text end -1 "”"))
+             (fc-replace-region start (1+ start) "“")
+             (fc-replace-region (1- end) end "”"))
            (goto-char end)))
      :from-start t)))
 
@@ -231,9 +231,9 @@ TO-STRING: new string."
                                    :bound 20480)))
          (if ft-text
              (progn
-               (fc-replace-text start
-                                (- end start)
-                                (concat "\\footnote{" ft-text "}"))
+               (fc-replace-region start
+                                  end
+                                  (concat "\\footnote{" ft-text "}"))
                (goto-char (line-beginning-position))
                (delete-char (- (line-end-position) (line-beginning-position)))
                (goto-char end))

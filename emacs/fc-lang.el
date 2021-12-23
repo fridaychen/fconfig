@@ -54,6 +54,13 @@ FROM-START: non-nil means starts from beginning."
              (fc-funcall to))
            count 1))
 
+(cl-defun fc-replace-region (start end to)
+  (delete-region start end)
+  (goto-char start)
+  (if (stringp to)
+      (insert to)
+    (fc-funcall to)))
+
 (cl-defun fc--replace-text (pos del-n sub)
   (goto-char pos)
   (delete-char del-n)

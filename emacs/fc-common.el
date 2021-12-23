@@ -130,10 +130,10 @@ COLOR: background color."
             font-lock-variable-name-face
             font-lock-type-face
             font-lock-constant-face)
-    (let* ((new-bg (if color color
-                     (color-darken-name
-                      (fc-get-face-attribute it :background)
-                      percent))))
+    (let* ((new-bg (or color
+                       (color-darken-name
+                        (fc-get-face-attribute it :background)
+                        percent))))
       (fc-set-face-attribute it nil :background new-bg))))
 
 (defvar *fc-soothe-dark-percent* -4)
@@ -193,8 +193,7 @@ COLOR: background color."
          (fc-set-face-attribute 'fringe nil
                                 :background monokai-orange)
          (fc-set-face-attribute 'default nil
-                                :background "#282a3a"))
-       )
+                                :background "#282a3a")))
 
       ('monokai-pro
        (fc-set-face-attribute 'minibuffer-prompt nil

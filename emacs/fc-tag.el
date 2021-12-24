@@ -139,6 +139,21 @@
 
 (defvar *fc-tag-lsp* (make-instance 'fc-tag-lsp))
 
+(cl-defun fc-auto-select-tag ()
+  (let* ((root (fc-proj-root)))
+    (cond
+     ((not root)
+      *fc-tag-global*)
+
+     ((file-exists-p (format "%s/compile_commands.json" root))
+      *fc-tag-lsp*)
+
+     ((file-exists-p (format "%s/GTAGS" root))
+      *fc-tag-global*)
+
+     (t
+      *fc-tag-global*))))
+
 (cl-defun fc-find-tag ()
   (let ((instance (gethash major-mode *fc-tag*)))
     (when instance
@@ -157,7 +172,7 @@
    ((member fc-proj-tag '(lsp cquery ccls))
     *fc-tag-lsp*)
 
-   (t *fc-tag-global*)))
+   (t (fc-auto-select-tag))))
 
 (defun fc-tag-find-definitions (id)
   (fc-tag--find-definitions (fc-find-tag) id))

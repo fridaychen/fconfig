@@ -29,18 +29,18 @@
 (defvar *fc-org-trust-babel-modes* '("plantuml"))
 
 (fc-install 'gnuplot
-            'org-cliplink
-            'org-link-beautify
-            'org-superstar)
+	    'org-cliplink
+	    'org-link-beautify
+	    'org-superstar)
 
 (fc-load 'org
   :after
   (progn
     (setf org-hide-emphasis-markers t
-          org-log-done t
-          org-export-with-sub-superscripts nil
-          org-src-ask-before-returning-to-edit-buffer nil
-          )
+	  org-log-done t
+	  org-export-with-sub-superscripts nil
+	  org-src-ask-before-returning-to-edit-buffer nil
+	  )
 
     (require 'org-agenda)
     (require 'org-capture)
@@ -58,31 +58,36 @@
       (org-overview)
 
       (add-hook 'write-contents-functions
-                (lambda () (org-update-statistics-cookies t)) nil t)
+		(lambda () (org-update-statistics-cookies t)) nil t)
 
-      (when (= (buffer-size) 0)
-        (fc-org-add-header)))
+      (when (and (not (org-roam-capture-p))
+		 (= (buffer-size) 0))
+	(fc-org-add-header)))
 
     (cl-defun fc--capture-copy-region ()
       (save-excursion
-        (let ((data nil))
-          (with-current-buffer (plist-get org-capture-plist :original-buffer)
-            (when (region-active-p)
-              (setf data (buffer-substring (region-beginning)
-                                           (region-end)))
-              (deactivate-mark)))
-          (when data
-            (goto-char (point-max))
-            (when (/= (current-column) 0)
-              (insert "\n"))
-            (insert data)))))
+	(let ((data nil))
+	  (with-current-buffer (plist-get org-capture-plist :original-buffer)
+	    (when (region-active-p)
+	      (setf data (buffer-substring (region-beginning)
+					   (region-end)))
+	      (deactivate-mark)))
+	  (when data
+	    (goto-char (point-max))
+	    (when (/= (current-column) 0)
+	      (insert "\n"))
+	    (insert data)))))
 
     (cl-defun fc--capture-tag ()
+      (when (org-roam-capture-p)
+	(message "roam capture")
+	(cl-return-from fc--capture-tag))
+
       (let ((tags
-             (with-current-buffer (plist-get org-capture-plist :original-buffer)
-               (when (boundp 'fc-capture-tags)
-                 fc-capture-tags))))
-        (org-set-tags (fc-string tags))))
+	     (with-current-buffer (plist-get org-capture-plist :original-buffer)
+	       (when (boundp 'fc-capture-tags)
+		 fc-capture-tags))))
+	(org-set-tags (fc-string tags))))
 
     (cl-defun fc--capture-edit ()
       (insert " ")
@@ -104,7 +109,7 @@
   (goto-char (point-min))
 
   (insert "#+TITLE " (read-string "Org file title")  "\n"
-          "\n"))
+	  "\n"))
 
 (cl-defun fc-org-add-var ()
   "Add var."
@@ -129,21 +134,21 @@
 TYPE: type of block.
 PARAM: parameter of block."
   (when (and (not (region-active-p))
-             (/= (current-column) 0))
+	     (/= (current-column) 0))
     (end-of-line)
     (insert "\n\n"))
 
   (let ((content (when (region-active-p)
-                   (kill-region (region-beginning)
-                                (region-end))
-                   t))
-        (point-of-content nil))
+		   (kill-region (region-beginning)
+				(region-end))
+		   t))
+	(point-of-content nil))
     (insert (fc--text " "
-                      (concat "#+BEGIN_" type)
-                      (fc-ask ask))
-            "\n")
+		      (concat "#+BEGIN_" type)
+		      (fc-ask ask))
+	    "\n")
     (if content
-        (yank)
+	(yank)
       (setf point-of-content (point))
       (insert "\n"))
     (insert "#+END_" type "\n")
@@ -168,11 +173,11 @@ PARAM: parameter of block."
   "Org ctrl-c ctrl-c wrapper."
   (cond
    ((and (boundp 'org-agenda-mode)
-         org-agenda-mode)
+	 org-agenda-mode)
     (org-agenda-ctrl-c-ctrl-c))
 
    ((and (boundp 'org-capture-mode)
-         org-capture-mode)
+	 org-capture-mode)
     (org-capture-finalize))
 
    (t
@@ -181,8 +186,8 @@ PARAM: parameter of block."
 (cl-defun fc--org-do-intert-item ()
   "Insert item."
   (if (save-excursion
-        (beginning-of-line)
-        (looking-at-p " +- \\[[ X]\\]"))
+	(beginning-of-line)
+	(looking-at-p " +- \\[[ X]\\]"))
       (org-insert-item t)
     (org-insert-item))
 
@@ -191,19 +196,19 @@ PARAM: parameter of block."
 (cl-defmacro fc--org-smart-action (default &rest body)
   (declare (indent 1))
   `(let* ((context (org-context))
-          (1st-elt (caar context))
-          (2nd-elt (caadr context))
-          (elt (cond
-                ((null 1st-elt) nil)
-                ((and (eq 1st-elt :item-bullet)
-                      (eq 2nd-elt :item))
-                 :item-bullet)
-                ((null 2nd-elt) 1st-elt)
-                (t 2nd-elt))))
+	  (1st-elt (caar context))
+	  (2nd-elt (caadr context))
+	  (elt (cond
+		((null 1st-elt) nil)
+		((and (eq 1st-elt :item-bullet)
+		      (eq 2nd-elt :item))
+		 :item-bullet)
+		((null 2nd-elt) 1st-elt)
+		(t 2nd-elt))))
      (if (null elt)
-         (progn
-           (fc-funcall ,default)
-           (cl-return-from fc--org-smart-action))
+	 (progn
+	   (fc-funcall ,default)
+	   (cl-return-from fc--org-smart-action))
        ,@body)))
 
 (cl-defun fc--org-do ()
@@ -211,7 +216,7 @@ PARAM: parameter of block."
     (pcase elt
       (:checkbox (org-ctrl-c-ctrl-c))
       (:headline (org-insert-heading-respect-content)
-                 (fc-modal-disable))
+		 (fc-modal-disable))
       (:item (fc--org-do-intert-item))
       (:item-bullet (org-ctrl-c-minus))
       (:link (org-open-at-point))
@@ -235,7 +240,7 @@ PARAM: parameter of block."
 
 (defun fc--org-current-cell ()
   (org-table-get (org-table-current-line)
-                 (org-table-current-column)))
+		 (org-table-current-column)))
 
 (defun fc--org-copy ()
   (fc--org-smart-action nil
@@ -253,21 +258,21 @@ PARAM: parameter of block."
    (fc-replace-looking-text "\\([0-9]+\\)[年/-]\\([0-9]+\\)[月/-]\\([0-9]+\\)[日号]?"
      (setf *fc--org-last-year* (string-to-number (match-string 1)))
      (format "[%d-%02d-%02d]"
-             (string-to-number (match-string 1))
-             (string-to-number (match-string 2))
-             (string-to-number (match-string 3))))
+	     (string-to-number (match-string 1))
+	     (string-to-number (match-string 2))
+	     (string-to-number (match-string 3))))
 
    (fc-replace-looking-text "\\([0-9]+\\)[年/-]\\([0-9]+\\)[月]"
      (setf *fc--org-last-year* (string-to-number (match-string 1)))
      (format "[%d-%02d]"
-             (string-to-number (match-string 1))
-             (string-to-number (match-string 2))))
+	     (string-to-number (match-string 1))
+	     (string-to-number (match-string 2))))
 
    (fc-replace-looking-text "\\([0-9]+\\)[月/-]\\([0-9]+\\)[日号]?"
      (format "[%d-%02d-%02d]"
-             *fc--org-last-year*
-             (string-to-number (match-string 1))
-             (string-to-number (match-string 2))))))
+	     *fc--org-last-year*
+	     (string-to-number (match-string 1))
+	     (string-to-number (match-string 2))))))
 
 (defun fc--org-occur ()
   (org-occur (fc-current-thing :ask t :regq t :confirm "Org match")))
@@ -313,7 +318,7 @@ PARAM: parameter of block."
      ("v t" ,(fc-manual (org-tags-view t)))
      ("v T" org-tags-view)
      ("y" ,(fc-cond-key :normal 'fc--org-sparse-tree
-                        :region 'fc--org-occur))
+			:region 'fc--org-occur))
      ("A" org-archive-subtree)
      ("C i" org-clock-in)
      ("C o" org-clock-out)
@@ -352,14 +357,14 @@ PARAM: parameter of block."
 
 (cl-defun fc--org-gen-template (template)
   (seq-concatenate 'list
-                   `(,(cl-first template)
-                     ,(cl-second template)
-                     entry
-                     (file+headline
-                      ,(concat *fc-org-dir* (cl-third template))
-                      ,(cl-fourth template))
-                     ,(cl-fifth template))
-                   (nthcdr 5 template)))
+		   `(,(cl-first template)
+		     ,(cl-second template)
+		     entry
+		     (file+headline
+		      ,(concat *fc-org-dir* (cl-third template))
+		      ,(cl-fourth template))
+		     ,(cl-fifth template))
+		   (nthcdr 5 template)))
 
 (cl-defun fc-org-add-capture-template (templates)
   (--each templates
@@ -370,15 +375,15 @@ PARAM: parameter of block."
   (fc--org-init-dir)
 
   (--each '(org-agenda
-            org-agenda-list)
+	    org-agenda-list)
     (advice-add it :before #'fc--before-agenda))
 
   (setf org-agenda-files (directory-files *fc-org-dir* t "org$")
-        org-capture-templates nil
-        org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
-                                      "|"
-                                      "DONE(d)" "SOMEDAY(s)"))
-        org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate)
+	org-capture-templates nil
+	org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
+				      "|"
+				      "DONE(d)" "SOMEDAY(s)"))
+	org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate)
 
   (setf org-capture-templates nil)
 
@@ -397,7 +402,7 @@ PARAM: parameter of block."
   (cond
    ((org-src-edit-buffer-p)
     (if *fc-ergo-prefix*
-        (org-edit-src-abort)
+	(org-edit-src-abort)
       (org-edit-src-exit)))
 
    ((equal major-mode 'org-mode)

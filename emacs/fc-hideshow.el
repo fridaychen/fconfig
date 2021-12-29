@@ -6,6 +6,8 @@
 ;;; Code:
 (require 'cl-lib)
 
+(defconst *fc-hs-init-hide-all-modes* '(org-mode))
+
 (defvar *fc-doc-modes* nil)
 
 (defvar *fc-hs-show-all* t)
@@ -23,6 +25,9 @@
        outline-minor-mode))
 
 (defun fc-hs-init ()
+  (when (member major-mode *fc-hs-init-hide-all-modes*)
+    (setf *fc-hs-show-all* nil))
+
   (cond
    ((derived-mode-p 'prog-mode)
     (hs-minor-mode 1))

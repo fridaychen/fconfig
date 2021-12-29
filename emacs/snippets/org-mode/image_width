@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: image width
+# key: iw
+# --
+
+#+ATTR_ORG: :width ${2:width-in-pixel}
+$0

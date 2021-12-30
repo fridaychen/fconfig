@@ -58,6 +58,7 @@
       (org-superstar-mode 1)
       (org-link-beautify-mode -1)
       (org-content)
+      (org-hide-block-all)
 
       (add-hook 'write-contents-functions
                 (lambda () (org-update-statistics-cookies t)) nil t))

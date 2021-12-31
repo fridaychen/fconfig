@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: startup
+# key: stu
+# --
+
+#+startup: inlineimages

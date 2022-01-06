@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: packet
+# key: pkt
+# --
+
+#+BEGIN_SRC packetdiag :file ${1:foo.svg}
+{
+    node_width = 60
+    node_height = 40
+    default_fontsize = 13
+    default_textcolor = green
+    default_linecolor = red
+    default_node_color = lightyellow
+    colwidth = ${2:32}
+
+    $0
+}
+#+END_SRC

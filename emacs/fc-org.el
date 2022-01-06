@@ -26,9 +26,14 @@
 
 (defvar *fc-org-user-capture-templates* nil)
 
-(defvar *fc-org-trust-babel-modes* '("plantuml"))
+(defvar *fc-org-trust-babel-modes* '("blockdiag"
+                                     "packetdiag"
+                                     "plantuml"
+                                     "shell"))
 
-(fc-install 'gnuplot
+(fc-install 'blockdiag-mode
+            'gnuplot
+            'ob-blockdiag
             'org-cliplink
             'org-link-beautify
             'org-superstar
@@ -46,6 +51,7 @@
 
     (require 'org-agenda)
     (require 'org-capture)
+    (require 'ob-blockdiag)
     (require 'ob-gnuplot)
     (require 'ob-octave)
     (require 'ob-python)

@@ -11,6 +11,7 @@ setup(
         "imdbpy",
         "jsoncomment",
         "mutagen",
+        "nwdiag",
         "pretty-errors",
         "python-Levenshtein",
         "python-language-server",

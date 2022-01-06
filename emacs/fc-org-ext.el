@@ -17,7 +17,7 @@
   '(
     (:results . "file")
     (:exports . "results")
-    (:tool    . "packetdiag3")
+    (:tool    . "packetdiag")
     (:transparency . t)
     (:antialias . nil)
     (:font    . nil)

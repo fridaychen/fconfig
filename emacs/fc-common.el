@@ -168,6 +168,9 @@ COLOR: background color."
        (fc-set-face-attribute 'fringe nil
                               :background "coral"))
 
+      ('faff
+       (setf soothe-percent 4))
+
       ('fantom
        (fc-set-face-attribute 'fringe nil
                               :background "#F2A4AC"))

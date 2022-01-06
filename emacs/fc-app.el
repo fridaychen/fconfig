@@ -523,19 +523,20 @@ DIR: dir to search."
       (fc-eshell-dirtrim pwd prompt_dirtrim "" ".../")))))
 
 (defun fc-eshell-prompt-function ()
-  (let ((branch (magit-get-current-branch)))
+  (let ((branch (magit-get-current-branch))
+        (fg (color-complement-hex (fc-get-face-attribute 'default :background))))
     (concat
      "\n"
-     (fc-text (user-login-name) :face '(:foreground "SkyBlue"))
-     (fc-text ":" :face '(:foreground "red"))
-     (fc-eshell-pwd)
+     (fc-text (fc-eshell-pwd) :face `(:foreground ,fg :underline t))
      (if branch
-         (fc-text
-          (format " %s %s%s"
-                  (fc-visible "" "^")
-                  branch
-                  (shell-command-to-string "git status -s | awk -f ${FCHOME}/bin/ps-fit.awk"))
-          :face '(:foreground "OrangeRed" :inherit bold)))
+         (concat
+          " "
+          (fc-text
+           (format "%s %s%s"
+                   (fc-visible "" "^")
+                   branch
+                   (shell-command-to-string "git status -s | awk -f ${FCHOME}/bin/ps-fit.awk"))
+           :face `(:foreground ,fg :inherit bold :box t))))
      " "
      (fc-visible "╍❱ " "-> "))))
 
@@ -642,6 +643,7 @@ ARGS: args for ff."
   (eshell/alias "cd.." "cd ..")
   (eshell/alias "cd-" "cd -")
 
+  (eshell/alias "fj-rm-bak" "find . -name \"*~\" -delete")
   (eshell/alias "gp" "git pull $*")
   (eshell/alias "gq" "git push $*")
 

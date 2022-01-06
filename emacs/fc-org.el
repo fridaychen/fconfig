@@ -164,6 +164,7 @@ PARAM: parameter of block."
      ("Init var"               . fc-org-add-var)
      ("Publish to html"        . org-html-export-to-html)
      ("Publish to markdown"    . org-md-export-to-markdown)
+     ("Roam sync"              . org-roam-db-sync)
      ("Redisplay inline image" . org-redisplay-inline-images)
      ("Update dblock"          . org-update-all-dblocks)
      ("Update source block"    . org-babel-execute-buffer)

@@ -536,11 +536,11 @@ DIR: dir to search."
                   branch
                   (shell-command-to-string "git status -s | awk -f ${FCHOME}/bin/ps-fit.awk"))
           :face '(:foreground "OrangeRed" :inherit bold)))
-     "\n"
+     " "
      (fc-visible "╍❱ " "-> "))))
 
 (setf eshell-prompt-function #'fc-eshell-prompt-function
-      eshell-prompt-regexp (fc-visible "^[^\n]*\n╍❱ " "^[^\n]*\n-> "))
+      eshell-prompt-regexp (fc-visible "^[^\n]* ╍❱ " "^[^\n]* -> "))
 
 (defun j (&rest args)
   "Fast jump.

@@ -329,10 +329,10 @@ END: end point."
 (defconst *fc-md-map*
   (fc-make-keymap
    `(
-     ("1" ,(fc-decorate-region "# " ""))
-     ("2" ,(fc-decorate-region "## " ""))
-     ("3" ,(fc-decorate-region "### " ""))
-     ("4" ,(fc-decorate-region "#### " ""))
+     ("1" ,(fc-decorate-region "# " "" :mark #'fc-mark-line))
+     ("2" ,(fc-decorate-region "## " "" :mark #'fc-mark-line))
+     ("3" ,(fc-decorate-region "### " "" :mark #'fc-mark-line))
+     ("4" ,(fc-decorate-region "#### " "" :mark #'fc-mark-line))
 
      ("a" fc-md-style)
      ("b" fc-md-insert-footnote)

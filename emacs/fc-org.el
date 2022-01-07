@@ -291,6 +291,12 @@ PARAM: parameter of block."
    `(
      ("9" org-promote)
      ("0" org-demote)
+
+     ("1" ,(fc-decorate-region "* " "" :mark #'fc-mark-line))
+     ("2" ,(fc-decorate-region "** " "" :mark #'fc-mark-line))
+     ("3" ,(fc-decorate-region "*** " "" :mark #'fc-mark-line))
+     ("4" ,(fc-decorate-region "**** " "" :mark #'fc-mark-line))
+
      ("a" fc--org-beginning)
      ("b" org-emphasize)
      ("c" fc--org-ctrl-c-ctrl-c)

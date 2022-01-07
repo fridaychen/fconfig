@@ -137,7 +137,7 @@ COLOR: background color."
       (fc-set-face-attribute it nil :background new-bg))))
 
 (defvar *fc-soothe-dark-percent* -4)
-(defvar *fc-soothe-light-percent* 10)
+(defvar *fc-soothe-light-percent* 8)
 
 (defconst *fc-soothe-color* (make-hash-table))
 (--each '((material "gray20")
@@ -176,6 +176,9 @@ COLOR: background color."
                               :background "#F2A4AC"))
 
       ('leuven
+       (setf soothe-percent 6))
+
+      ((or 'gruvbox-light-soft 'gruvbox-light-medium 'gruvbox-light-hard)
        (setf soothe-percent 6))
 
       ('material

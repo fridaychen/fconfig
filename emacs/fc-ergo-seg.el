@@ -19,11 +19,19 @@
   "Get project name of current buffer."
   (and (boundp 'fc-proj-name) fc-proj-name))
 
+(defun fc-user-select-theme-mode ()
+  (let ((mode (fc-user-select (format "Theme mode")
+                              '(dark light)
+                              :mouse t)))
+    (when mode
+      (setf *fc-theme-mode* (intern mode)))))
+
 (defconst *fc-menu*
   (fc-create-pop-menu
    "Start"
    '(
      (fc-user-select-control-mode "Control")
+     (fc-user-select-theme-mode "Theme mode")
      (fc-user-select-project "Projects"))))
 
 (defvar *fc--menu-seg-format* (fc-visible "⟨%s⟩" "{%s}"))

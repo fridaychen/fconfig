@@ -239,18 +239,18 @@ BODY: form body."
      (save-excursion
        ,@body)))
 
-(cl-defmacro fc-decorate-region (prefix suffix &key (mark-func #'er/mark-symbol))
+(cl-defmacro fc-decorate-region (prefix suffix &key (mark #'er/mark-symbol))
   "Decorate region.
 PREFIX: region prefix.
 SUFFIX: region suffix.
-MARK-FUNC: call this func when region is not active."
+MARK: call this func when region is not active."
   `(lambda (start end)
      (interactive "r")
 
      (unless (region-active-p)
-       (if (symbolp ',mark-func)
-           (fc-funcall ',mark-func)
-         (fc-funcall ,mark-func))
+       (if (symbolp ',mark)
+           (fc-funcall ',mark)
+         (fc-funcall ,mark))
 
        (unless (region-active-p)
          (cl-return-from fc-decorate-region))

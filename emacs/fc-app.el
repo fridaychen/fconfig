@@ -536,7 +536,7 @@ DIR: dir to search."
                    (fc-visible "" "^")
                    branch
                    (shell-command-to-string "git status -s | awk -f ${FCHOME}/bin/ps-fit.awk"))
-           :face `(:foreground ,fg :inherit bold :box t))))
+           :face `(:foreground ,fg :inherit bold :overline t))))
      " "
      (fc-visible "╍❱ " "-> "))))
 

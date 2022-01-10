@@ -3,5 +3,5 @@
 # key: iw
 # --
 
-#+ATTR_ORG: :width ${2:width-in-pixel}
+#+ATTR_ORG: :width ${1:width-in-pixel}
 $0

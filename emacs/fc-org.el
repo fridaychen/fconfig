@@ -41,6 +41,12 @@
             'org-superstar
             'valign)
 
+(cl-defun fc--org-theme-changed ()
+  "Update color after theme changed."
+  (plist-put org-format-latex-options
+             :foreground
+             (fc-get-face-attribute 'font-lock-keyword-face :foreground)))
+
 (fc-load 'org
   :after
   (progn
@@ -53,6 +59,7 @@
           )
 
     (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
+    (plist-put org-format-latex-options :foreground (fc-get-face-attribute 'font-lock-keyword-face :foreground))
 
     (require 'org-agenda)
     (require 'org-capture)
@@ -218,6 +225,7 @@ PARAM: parameter of block."
        ,@body)))
 
 (cl-defun fc--org-do ()
+  "Smart do."
   (when (looking-at-p "\\$[^\\$]+\\$")
     (org-latex-preview)
     (cl-return-from fc--org-do))
@@ -229,7 +237,8 @@ PARAM: parameter of block."
                  (fc-modal-disable))
       (:item (fc--org-do-intert-item))
       (:item-bullet (org-ctrl-c-minus))
-      (:latex-preview (org-latex-preview))
+      ((or :latex-fragment :latex-preview)
+       (org-latex-preview))
       (:link (org-open-at-point))
       (:src-block (org-ctrl-c-ctrl-c))
       (:tags (org-set-tags-command))

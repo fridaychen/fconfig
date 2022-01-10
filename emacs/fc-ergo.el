@@ -1522,7 +1522,8 @@ AUTO: auto select face."
                       :region 'shell-command-on-region))
    ("@" ,(fc-manual (push-mark (point))))
    ("#" comment-dwim)
-   ("$" fc-app-portal)
+   ("$" ,(fc-cond-key :normal 'fc-app-portal
+                      :region (fc-decorate-region "$" "$")))
    ("%" fc-program)
    ("^" ,(fc-manual (join-line 1)))
    ("&" ,(fc-manual (fc-set-window-width 0.66)))

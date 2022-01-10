@@ -7,9 +7,9 @@
 (require 'cl-lib)
 
 (fc-load (if (and *is-gui*
-		  (<= 26 emacs-major-version))
-	     'posframe
-	   'popup))
+                  (<= 26 emacs-major-version))
+             'posframe
+           'popup))
 (fc-load 'fullframe :autoload t)
 (when *is-mac*
   (fc-load 'osx-lib :autoload t))
@@ -18,7 +18,7 @@
   :local t
 
   :after(progn
-	  (add-hook 'find-file-hook #'fc-hs-init)))
+          (add-hook 'find-file-hook #'fc-hs-init)))
 
 (apply #'fc-install *fc-extra-packages*)
 
@@ -34,13 +34,14 @@
     ('markdown-mode (fc-require 'fc-markdown))
     ('ocaml-mode (fc-require 'fc-ocaml))
     ('org-mode (unless (featurep 'fc-org)
-		 (fc-load 'fc-org
-		   :local t
-		   :after
-		   (progn
-		     (fc-org-autoconfig)
-		     (fc-common-add-fast-act #'fc--org-toggle-special-edit)
-		     (fc-require 'fc-plantuml)))))
+                 (fc-load 'fc-org
+                   :local t
+                   :after
+                   (progn
+                     (add-hook '*fc-after-theme-hook* #'fc--org-theme-changed)
+                     (fc-org-autoconfig)
+                     (fc-common-add-fast-act #'fc--org-toggle-special-edit)
+                     (fc-require 'fc-plantuml)))))
     ('plantuml-mode (fc-require 'fc-plantuml))
     ('python-mode (fc-require 'fc-python))))
 
@@ -64,9 +65,9 @@
   :run t
 
   :bind '((ido-common-completion-map
-	   ("<tab>" ido-next-match)
-	   ("C-j" ido-next-match)
-	   ("C-k" ido-prev-match))))
+           ("<tab>" ido-next-match)
+           ("C-j" ido-next-match)
+           ("C-k" ido-prev-match))))
 
 ;; (fc-require 'fc-bookmark t)
 
@@ -76,42 +77,42 @@
   :enable (not *fc-lightweight*)
 
   :after (progn
-	   (setf midnight-period 10
-		 clean-buffer-list-delay-special 20)
+           (setf midnight-period 10
+                 clean-buffer-list-delay-special 20)
 
-	   (add-to-list 'clean-buffer-list-kill-regexps
-			"\\`\\*Customize .*\\*\\'")))
+           (add-to-list 'clean-buffer-list-kill-regexps
+                        "\\`\\*Customize .*\\*\\'")))
 
 (fc-load 'fc-tomato
   :local t
   :run t
 
   :after (progn
-	   (fc-add-to-hook '*fc-tomato-rest-hook*
-			   (lambda ()
-			     (fc-speak "take a break")
-			     (fc-popup-tip "Take a break !"
-					   :title "Tomato"
-					   :timeout 3)))
+           (fc-add-to-hook '*fc-tomato-rest-hook*
+                           (lambda ()
+                             (fc-speak "take a break")
+                             (fc-popup-tip "Take a break !"
+                                           :title "Tomato"
+                                           :timeout 3)))
 
-	   (fc-add-to-hook '*fc-tomato-start-hook*
-			   #'(lambda ()
-			       (fc-speak "tomato started")))
+           (fc-add-to-hook '*fc-tomato-start-hook*
+                           #'(lambda ()
+                               (fc-speak "tomato started")))
 
-	   (fc-add-to-hook '*fc-tomato-done-hook*
-			   #'fc-job-done
-			   (lambda ()
-			     (fc-speak "tomato done")
-			     (fc-popup-tip "Circle done !"
-					   :title "Tomato")))
+           (fc-add-to-hook '*fc-tomato-done-hook*
+                           #'fc-job-done
+                           (lambda ()
+                             (fc-speak "tomato done")
+                             (fc-popup-tip "Circle done !"
+                                           :title "Tomato")))
 
-	   (when *fc-enable-screen-saver*
-	     (add-hook '*fc-tomato-start-hook*
-		       (lambda ()
-			 (setf *fc-enable-screen-saver* nil)))
-	     (add-hook '*fc-tomato-done-hook*
-		       (lambda ()
-			 (setf *fc-enable-screen-saver* t))))))
+           (when *fc-enable-screen-saver*
+             (add-hook '*fc-tomato-start-hook*
+                       (lambda ()
+                         (setf *fc-enable-screen-saver* nil)))
+             (add-hook '*fc-tomato-done-hook*
+                       (lambda ()
+                         (setf *fc-enable-screen-saver* t))))))
 
 (fc-load 'exec-path-from-shell
   :before (setf exec-path-from-shell-check-startup-files nil)
@@ -123,7 +124,7 @@
 (fc-load 'fc-player
   :local t
   :after (progn
-	   (fc-init-user-player)))
+           (fc-init-user-player)))
 
 ;; (fc-require 'fc-welcome)
 
@@ -153,10 +154,10 @@
   :after
   (progn
     (add-hook '*fc-enable-dev-hook*
-	      #'global-flycheck-mode)
+              #'global-flycheck-mode)
     (add-hook '*fc-disable-dev-hook*
-	      #'(lambda ()
-		  (global-flycheck-mode -1)))))
+              #'(lambda ()
+                  (global-flycheck-mode -1)))))
 
 (fc-load 'fc-company
   :local t

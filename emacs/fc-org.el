@@ -305,6 +305,16 @@ PARAM: parameter of block."
       (:todo-keyword (fc-funcall #'org-show-todo-tree))
       (_ (fc-funcall #'org-sparse-tree)))))
 
+(defun fc--org-insert-formula ()
+  "Insert latex formula."
+  (let (last-point
+        (displayed (zerop (current-column))))
+    (insert (if displayed "\\[" "$"))
+    (setq last-point (point))
+    (insert (if displayed "\\]" "$"))
+    (goto-char last-point)
+    (fc-modal-disable)))
+
 (defconst *fc-org-map*
   (fc-make-keymap
    `(
@@ -329,6 +339,7 @@ PARAM: parameter of block."
 
      ("i c" org-cliplink)
      ("i d" org-insert-drawer)
+     ("i f" fc--org-insert-formula)
      ("i i" fc--org-convert)
      ("i n" org-roam-node-insert)
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
@@ -358,7 +369,7 @@ PARAM: parameter of block."
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-func-mode-map*)
-  "KEYS b: emphasize  c: C-c C-c  i c: clip link  i d: drawer  i q: quote  i t: timestamp  i u: uml  i T: insert title  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
+  "KEYS b: emphasize  c: C-c C-c  i c: clip link  i d: drawer  i f: formula  i q: quote  i t: timestamp  i u: uml  i T: insert title  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()
   "FC org-mode func."

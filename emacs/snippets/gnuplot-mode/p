@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: plot
+# key: p
+# --
+
+plot ${1:[xrange] [yrange]} ${2: functions or data files}
+$0

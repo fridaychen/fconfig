@@ -6,6 +6,7 @@
 ;;; Code:
 (require 'cl-lib)
 
+(defvar *fc-org-latex-preview-scale* 2.2)
 (defvar *fc-org-dir* "~/org/")
 (defconst *fc-org-captrue-template*
   `(
@@ -27,6 +28,7 @@
 (defvar *fc-org-user-capture-templates* nil)
 
 (defvar *fc-org-trust-babel-modes* '("blockdiag"
+                                     "gnuplot"
                                      "packetdiag"
                                      "plantuml"
                                      "shell"))
@@ -47,7 +49,10 @@
           org-export-with-sub-superscripts nil
           org-src-ask-before-returning-to-edit-buffer nil
           org-image-actual-width nil
+          org-preview-latex-image-directory "output/"
           )
+
+    (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
 
     (require 'org-agenda)
     (require 'org-capture)
@@ -213,6 +218,10 @@ PARAM: parameter of block."
        ,@body)))
 
 (cl-defun fc--org-do ()
+  (when (looking-at-p "\\$[^\\$]+\\$")
+    (org-latex-preview)
+    (cl-return-from fc--org-do))
+
   (fc--org-smart-action #'org-ctrl-c-ctrl-c
     (pcase elt
       (:checkbox (org-ctrl-c-ctrl-c))
@@ -220,12 +229,13 @@ PARAM: parameter of block."
                  (fc-modal-disable))
       (:item (fc--org-do-intert-item))
       (:item-bullet (org-ctrl-c-minus))
+      (:latex-preview (org-latex-preview))
       (:link (org-open-at-point))
       (:src-block (org-ctrl-c-ctrl-c))
       (:tags (org-set-tags-command))
       (:timestamp (fc-funcall #'org-time-stamp))
       (:todo-keyword (org-todo))
-      (_ (message "context: %s" context)))))
+      (_ (message "context: %s elt: %s" context elt)))))
 
 (defun fc--org-beginning ()
   (fc--org-smart-action nil

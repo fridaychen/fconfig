@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: 2D
+# key: 2d
+# --
+
+set title "${1:title}"
+set xlabel "${2:xlabel}"
+set ylabel "${3:xlabel}"
+
+set xzeroaxis
+set yzeroaxis
+set grid
+
+$0

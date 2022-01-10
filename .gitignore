@@ -19,6 +19,7 @@ notes
 .dir-locals.el
 .clang_complete
 dist/
+output/
 site/
 tmp
 .DS_Store

@@ -43,14 +43,14 @@
            (flycheck-plantuml-setup)))
 
 (cl-defun fc--insert-note ()
-  "return note command."
+  "Return note command."
   (let* ((pos (fc-user-select "Note type" '("left" "over" "right")))
          (arg (when (string= pos "over")
                 (concat " " (read-string "Actor/Participant")))))
     (concat pos arg)))
 
 (cl-defun fc--insert-component-note ()
-  "return note command."
+  "Return note command."
   (fc-user-select "Note type" '("top" "left" "right" "bottom")))
 
 (provide 'fc-plantuml)

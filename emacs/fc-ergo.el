@@ -989,7 +989,9 @@ KEYMAP: keymap to run."
      ("q" ,(fc-manual (fc-switch-to-buffer
                        "Modified buffers"
                        (fc-list-buffer :modified t))))
-     ("r" fc-recentf)
+     ("r" ,(fc-cond-key :proj 'fc-proj-recentf
+                        :normal 'fc-recentf
+                        :prefix 'fc-recentf))
      ("s" ace-swap-window)
      ("t" ,(fc-manual (fc-tag-list)))
      ("u" previous-buffer)
@@ -1582,7 +1584,9 @@ AUTO: auto select face."
    ("/" ,(fc-cond-key :normal 'isearch-forward-regexp
                       :prefix 'fc-isearch-dwim))
    ("\\" ,(fc-cond-key :normal 'query-replace-regexp
-                       :region 'fc-query-replace
+                       :region 'fc--query-replace
+                       :preregion (fc-manual (fc--query-replace
+                                              :from-beginning t))
                        :prefix 'query-replace))
    ("|" ,(fc-cond-key :normal 'make-frame
                       :prefix 'delete-frame))

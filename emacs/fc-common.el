@@ -156,6 +156,8 @@ COLOR: background color."
       ('adwaita
        (setf soothe-percent 3)
        (fc-set-face-attribute 'default nil
+                              :foreground "black")
+       (fc-set-face-attribute 'default nil
                               :background "gray80")
        (fc-set-face-attribute 'fringe nil
                               :background "#ee9800"))

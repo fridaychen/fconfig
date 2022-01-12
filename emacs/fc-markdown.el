@@ -184,8 +184,8 @@ REGEX: regex."
     (fc-replace-regexp "\\([^\n]\\)\n+#"
                        "\\1\n\n#" :from-start t)
 
-    (fc-replace-regexp "^#\\([^\n]+\\)\n+\\([^\n]\\)"
-                       "#\\1\n\n\\2")) :from-start t)
+    (fc-replace-regexp "^#\\([^\n]+\\)\n+\\([^#\n]\\)"
+                       "#\\1\n\n\\2" :from-start t)))
 
 (cl-defun fc-markdown-mode-whitespace-cleanup ()
   "Clean whitespace."

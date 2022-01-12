@@ -14,7 +14,7 @@ setup(
         "nwdiag",
         "pretty-errors",
         "python-Levenshtein",
-        "python-language-server",
+        "python-lsp-server",
         "wikipedia",
         "ydiff",
         "youtube_dl",

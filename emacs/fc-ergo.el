@@ -180,10 +180,10 @@ FROM-BEGINNING: start from beginnning."
                                    (case-fn . downcase))
           deft-text-mode 'org-mode))
   :bind '((deft-mode-map
-            ("<escape>" quit-window)
-            ("C-j" next-line)
-            ("C-k" previous-line)
-            )))
+           ("<escape>" quit-window)
+           ("C-j" next-line)
+           ("C-k" previous-line)
+           )))
 
 (defun fc-switch-layout ()
   "Switch layout."
@@ -1344,8 +1344,7 @@ AUTO: auto select face."
                       :prefix 'split-window-horizontally))
    ("3" ,(fc-cond-key :normal (fc-head-key "GTD" '*ergo-gtd-map*)
                       :prefix 'split-window-vertically))
-   ("4" ,(fc-cond-key :normal 'ivy-switch-buffer
-                      :region 'comment-dwim))
+   ("4" ,(fc-cond-key :normal 'ivy-switch-buffer))
    ("5" toggle-frame-fullscreen)
    ("6" fc-toggle-window-maximize)
    ("7" ,(fc-cond-key :normal 'compile
@@ -1369,7 +1368,8 @@ AUTO: auto select face."
 
    ;; d := Delete
    ("d" ,(fc-cond-key :normal (fc-head-key "Delete" '*ergo-delete-map*)
-                      :region 'kill-region))
+                      :region 'kill-region
+                      :preregion 'kill-rectangle))
 
    ("e" ,(fc-mode-key
           `((image-mode . image-eol)
@@ -1433,7 +1433,7 @@ AUTO: auto select face."
                       :region 'fc-isearch-dwim
                       :prefix 'fc-toggle-hide-show-all))
    ("t" fc-translate-word)
-   ("u" ,(fc-cond-key :normal 'fc-mode-func-key))
+   ("u" fc-mode-func-key)
    ("v" ,(fc-cond-key :normal 'set-mark-command
                       :region (fc-manual (er/expand-region 1))))
    ("C-v" ,(fc-cond-key :normal 'er/mark-symbol
@@ -1470,7 +1470,8 @@ AUTO: auto select face."
    ("C" ,(fc-head-key "VC" '*ergo-vc-map*))
 
    ("D" ,(fc-cond-key :normal (fc-manual (kill-buffer (current-buffer)))
-                      :region 'kill-rectangle))
+                      :region 'delete-region
+                      :preregion 'delete-rectangle))
    ("E" fc-end-of-semantic)
    ("F" ,(fc-cond-key :normal 'fc-find-files
                       :region (fc-manual (call-interactively 'iedit-mode)

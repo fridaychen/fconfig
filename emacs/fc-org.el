@@ -78,6 +78,7 @@
       (org-link-beautify-mode -1)
       (org-content)
       (org-hide-block-all)
+      (org-hide-drawer-all)
 
       (add-hook 'write-contents-functions
                 (lambda () (org-update-statistics-cookies t)) nil t))

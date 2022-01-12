@@ -56,7 +56,7 @@
           org-src-ask-before-returning-to-edit-buffer nil
           org-image-actual-width nil
           org-preview-latex-image-directory "output/"
-          org-startup-indented t
+          org-startup-indented nil
           )
 
     (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)

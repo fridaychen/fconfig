@@ -106,6 +106,17 @@ alias b=proj-build
 alias r=proj-chtop
 alias p='fzf --ansi'
 
+function fargs() {
+    local cmd=${1}
+
+    [[ ! ${cmd} == "*{}*" ]] && cmd="${cmd} {}"
+
+    xargs --no-run-if-empty \
+        -d "\n" \
+        -I {} \
+        -o ${cmd}
+}
+
 function fzf-run() {
     local cmd=${1}
 

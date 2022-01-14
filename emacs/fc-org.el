@@ -311,9 +311,11 @@ PARAM: parameter of block."
   "Insert latex formula."
   (let (last-point
         (displayed (zerop (current-column))))
+    (unless (looking-back " " 1)
+      (insert " "))
     (insert (if displayed "\\[" "$"))
     (setq last-point (point))
-    (insert (if displayed "\\]" "$"))
+    (insert (if displayed "\\] " "$ "))
     (goto-char last-point)
     (fc-modal-disable)))
 

@@ -161,6 +161,8 @@ COLOR: background color."
                               :background "#cccca8")
        (fc-set-face-attribute 'fringe nil
                               :background "#ee9800")
+       (fc-set-face-attribute 'font-lock-constant-face nil
+                              :foreground "#C52A2A")
        (fc-set-face-attribute 'mode-line nil
                               :background "cornsilk3")
        (fc-set-face-attribute 'mode-line-inactive nil

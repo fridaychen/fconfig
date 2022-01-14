@@ -154,13 +154,19 @@ COLOR: background color."
        (setf soothe-percent 6))
 
       ('adwaita
-       (setf soothe-percent 3)
+       (setf soothe-percent 4)
        (fc-set-face-attribute 'default nil
                               :foreground "black")
        (fc-set-face-attribute 'default nil
-                              :background "gray80")
+                              :background "#cccca8")
        (fc-set-face-attribute 'fringe nil
-                              :background "#ee9800"))
+                              :background "#ee9800")
+       (fc-set-face-attribute 'mode-line nil
+                              :background "cornsilk3")
+       (fc-set-face-attribute 'mode-line-inactive nil
+                              :background "cornsilk3")
+       (fc-set-face-attribute 'mode-line-inactive nil
+                              :foreground "gray40"))
 
       ('classic
        (setf soothe-percent -2)

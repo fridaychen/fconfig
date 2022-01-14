@@ -989,9 +989,7 @@ KEYMAP: keymap to run."
      ("q" ,(fc-manual (fc-switch-to-buffer
                        "Modified buffers"
                        (fc-list-buffer :modified t))))
-     ("r" ,(fc-cond-key :proj 'fc-proj-recentf
-                        :normal 'fc-recentf
-                        :prefix 'fc-recentf))
+     ("r" fc-recentf)
      ("s" ace-swap-window)
      ("t" ,(fc-manual (fc-tag-list)))
      ("u" previous-buffer)

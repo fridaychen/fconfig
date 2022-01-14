@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: table caption
+# key: tc
+# --
+
+#+CAPTION: $0

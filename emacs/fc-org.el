@@ -130,21 +130,6 @@
     (insert "#+title: " title  "\n"
 	    "\n")))
 
-(cl-defun fc-org-add-var ()
-  "Add var."
-  (save-excursion
-    (goto-char (point-max))
-
-    (when (/= (current-column) 0)
-      (end-of-line)
-      (newline))
-
-    (insert "
-#+startup: inlineimages
-#+startup: showall
-#+startup: showeverything
-")))
-
 (cl-defun fc-org-add-block (type &key ask)
   "Add block.
 TYPE: type of block.
@@ -177,7 +162,6 @@ PARAM: parameter of block."
   (fc-user-select-func
    "Org portal"
    `(
-     ("Init var"               . fc-org-add-var)
      ("Publish to html"        . org-html-export-to-html)
      ("Publish to markdown"    . org-md-export-to-markdown)
      ("Roam sync"              . org-roam-db-sync)
@@ -235,32 +219,32 @@ PARAM: parameter of block."
     (cl-return-from fc--org-do))
 
   (fc--org-smart-action #'org-ctrl-c-ctrl-c
-			(pcase elt
-			  (:checkbox (org-ctrl-c-ctrl-c))
-			  (:headline (org-insert-heading-respect-content)
-				     (fc-modal-disable))
-			  (:item (fc--org-do-intert-item))
-			  (:item-bullet (org-ctrl-c-minus))
-			  ((or :latex-fragment :latex-preview)
-			   (org-latex-preview))
-			  (:link (org-open-at-point))
-			  (:src-block (org-ctrl-c-ctrl-c))
-			  (:tags (org-set-tags-command))
-			  (:timestamp (fc-funcall #'org-time-stamp))
-			  (:todo-keyword (org-todo))
-			  (_ (message "context: %s elt: %s" context elt)))))
+    (pcase elt
+      (:checkbox (org-ctrl-c-ctrl-c))
+      (:headline (org-insert-heading-respect-content)
+		 (fc-modal-disable))
+      (:item (fc--org-do-intert-item))
+      (:item-bullet (org-ctrl-c-minus))
+      ((or :latex-fragment :latex-preview)
+       (org-latex-preview))
+      (:link (org-open-at-point))
+      (:src-block (org-ctrl-c-ctrl-c))
+      (:tags (org-set-tags-command))
+      (:timestamp (fc-funcall #'org-time-stamp))
+      (:todo-keyword (org-todo))
+      (_ (message "context: %s elt: %s" context elt)))))
 
 (defun fc--org-beginning ()
   (fc--org-smart-action nil
-			(pcase elt
-			  (:src-block (re-search-backward "^ *#\\+BEGIN"))
-			  (_ (message "context: %s" context)))))
+    (pcase elt
+      (:src-block (re-search-backward "^ *#\\+BEGIN"))
+      (_ (message "context: %s" context)))))
 
 (defun fc--org-end ()
   (fc--org-smart-action nil
-			(pcase elt
-			  (:src-block (re-search-forward "^ *#\\+END"))
-			  (_ (message "context: %s" context)))))
+    (pcase elt
+      (:src-block (re-search-forward "^ *#\\+END"))
+      (_ (message "context: %s" context)))))
 
 (defun fc--org-current-cell ()
   (org-table-get (org-table-current-line)
@@ -268,9 +252,9 @@ PARAM: parameter of block."
 
 (defun fc--org-copy ()
   (fc--org-smart-action nil
-			(pcase elt
-			  (:table (kill-new (fc--org-current-cell)))
-			  (_ (message "context: %s" context)))))
+    (pcase elt
+      (:table (kill-new (fc--org-current-cell)))
+      (_ (message "context: %s" context)))))
 
 (defun fc-org-mode-mouse-func (_event)
   (fc--org-do))
@@ -303,11 +287,11 @@ PARAM: parameter of block."
 
 (defun fc--org-sparse-tree ()
   (fc--org-smart-action #'org-sparse-tree
-			(pcase elt
-			  (:headline (fc--org-occur))
-			  (:tags (fc-funcall #'org-match-sparse-tree))
-			  (:todo-keyword (fc-funcall #'org-show-todo-tree))
-			  (_ (fc-funcall #'org-sparse-tree)))))
+    (pcase elt
+      (:headline (fc--org-occur))
+      (:tags (fc-funcall #'org-match-sparse-tree))
+      (:todo-keyword (fc-funcall #'org-show-todo-tree))
+      (_ (fc-funcall #'org-sparse-tree)))))
 
 (defun fc--org-insert-formula ()
   "Insert latex formula."

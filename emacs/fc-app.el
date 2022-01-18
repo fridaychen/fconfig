@@ -557,7 +557,7 @@ ARGS: args for fast jump."
   (cl-loop
    with dir = default-directory
    do
-   (when (--first (file-exists-p (concat dir it)) '("TOP" ".TOP"))
+   (when (--first (file-exists-p (concat dir it)) '(".cricket" "TOP" ".TOP"))
      (cd dir)
      (cl-return))
 

@@ -164,7 +164,7 @@ COLOR: background color."
        (fc-set-face-attribute 'font-lock-constant-face nil
                               :foreground "#C52A2A")
        (fc-set-face-attribute 'font-lock-string-face nil
-                              :foreground "green")
+                              :foreground "dark green")
        (fc-set-face-attribute 'whitespace-trailing nil
                               :background "red4")
        (fc-set-face-attribute 'mode-line nil

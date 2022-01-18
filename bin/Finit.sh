@@ -7,9 +7,7 @@ if app-exists fasd; then
     eval "$(fasd --init auto)"
     export _FASD_FUZZY=16
     alias j='fasd_cd -d'
-elif [[ -f /usr/share/autojump/autojump.bash || -f \
-    /usr/share/autojump/autojump.sh || -f \
-    /usr/local/share/autojump/autojump.bash ]]; then
+elif [[ -f /usr/share/autojump/autojump.bash || -f /usr/share/autojump/autojump.sh || -f /usr/local/share/autojump/autojump.bash ]]; then
     fc-include \
         /usr/share/autojump/autojump.bash \
         /usr/share/autojump/autojump.sh \
@@ -67,6 +65,8 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 
 export BAT_PAGER="less -RF"
+
+fc-add-path ${HOME}/.local/bin
 
 #
 alias info=pinfo

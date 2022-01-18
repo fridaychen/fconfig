@@ -333,6 +333,8 @@ END: end point."
      ("2" ,(fc-decorate-region "## " "" :mark #'fc-mark-line))
      ("3" ,(fc-decorate-region "### " "" :mark #'fc-mark-line))
      ("4" ,(fc-decorate-region "#### " "" :mark #'fc-mark-line))
+     ("5" ,(fc-decorate-region "##### " "" :mark #'fc-mark-line))
+     ("6" ,(fc-decorate-region "###### " "" :mark #'fc-mark-line))
 
      ("a" fc-md-style)
      ("b" fc-md-insert-footnote)

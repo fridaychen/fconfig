@@ -654,8 +654,7 @@ N: number."
 INFO: info obj."
   (--reduce-from (concat acc
                          "│"
-                         (fc-text (format "%11s" (cl-first it))
-                                  :face '(:foreground "tomato" :inherit bold))
+                         (fc-text (format "%11s" (cl-first it)) :face 'font-lock-keyword-face)
                          (format " : %s\n" (fc-string (cl-second it))))
                  ""
                  info))

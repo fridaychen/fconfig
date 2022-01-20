@@ -209,6 +209,11 @@ COLOR: background color."
        (fc-set-face-attribute 'org-level-2 nil
                               :height 1.1))
 
+      ('modus-operandi
+       (setf soothe-percent 6)
+       (fc-set-face-attribute 'default nil :background "cornsilk2")
+       (fc-set-face-attribute 'markdown-code-face nil :background "gray90"))
+
       ('monokai
        (when *is-gui*
          (fc-set-face-attribute 'fringe nil

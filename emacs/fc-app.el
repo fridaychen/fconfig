@@ -956,6 +956,21 @@ REST: commands."
 
   (esup))
 
+(cl-defun fc-select-bg-color ()
+  "Select background color."
+  (let ((bg (fc-user-select "Background color"
+                            '(
+                              "blanched almond"
+                              "cornsilk1"
+                              "cornsilk2"
+                              "cornsilk3"
+                              "DarkSeaGreen1"
+                              "DarkSeaGreen2"
+                              "linen"))))
+    (when bg
+      (setq *fc-common-light-theme-bg* bg)
+      (fc-reset-theme))))
+
 ;; theme
 (cl-defun fc-select-theme ()
   "Allow user to select theme."
@@ -1103,12 +1118,14 @@ REST: commands."
   "Select system function."
   (fc-user-select-func
    "UI"
-   `(("font"         . fc-config-font)
-     ("font size"    . ,(fc-head-key-repeat "Adjust font size"
-                                            '*fc-app-font-size-map*))
-     ("line space"   . fc-config-line-space)
-     ("theme"        . fc-select-theme)
-     ("theme reset"  . fc-reset-theme)
+   `(
+     ("bg color"    . fc-select-bg-color)
+     ("font"        . fc-config-font)
+     ("font size"   . ,(fc-head-key-repeat "Adjust font size"
+                                           '*fc-app-font-size-map*))
+     ("line space"  . fc-config-line-space)
+     ("theme"       . fc-select-theme)
+     ("theme reset" . fc-reset-theme)
      )))
 
 (advice-add 'package-utils-upgrade-all :after #'fc-job-done)

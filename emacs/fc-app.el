@@ -960,12 +960,12 @@ REST: commands."
   "Select background color."
   (let ((bg (fc-user-select "Background color"
                             '(
+                              "beige"
+                              "bisque"
                               "blanched almond"
                               "cornsilk1"
                               "cornsilk2"
                               "cornsilk3"
-                              "DarkSeaGreen1"
-                              "DarkSeaGreen2"
                               "linen"))))
     (when bg
       (setq *fc-common-light-theme-bg* bg)

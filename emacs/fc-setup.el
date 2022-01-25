@@ -35,6 +35,7 @@
          company-posframe
          company-quickhelp
          counsel
+         faff-theme
          fantom-theme
          flycheck
          fireplace
@@ -45,6 +46,7 @@
          haskell-mode
          helm
          ivy
+         leuven-theme
          lsp-mode
          magit
          markdown-mode

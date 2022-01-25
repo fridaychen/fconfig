@@ -29,6 +29,9 @@
     (setf *fc-hs-show-all* nil))
 
   (cond
+   ((eq major-mode 'org-mode)
+    )
+
    ((derived-mode-p 'prog-mode)
     (hs-minor-mode 1))
 
@@ -38,6 +41,9 @@
 (defun fc-hs--show-all ()
   "Show all levels."
   (cond
+   ((eq major-mode 'org-mode)
+    (org-show-all '(headings)))
+
    ((fc-hs--is-hideshow)
     (hs-show-all))
 
@@ -47,6 +53,11 @@
 (defun fc-hs--hide-all ()
   "Hide leafs at too level."
   (cond
+   ((eq major-mode 'org-mode)
+    (org-content)
+    (org-hide-block-all)
+    (org-hide-drawer-all))
+
    ((fc-hs--is-hideshow)
     (hs-hide-all))
 

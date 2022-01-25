@@ -15,6 +15,8 @@
           '("---"))
 
     (defun fc--setup-markdown-mode ()
+      (markdown-display-inline-images)
+
       (outline-hide-sublevels 3)
 
       (let ((buf (current-buffer)))

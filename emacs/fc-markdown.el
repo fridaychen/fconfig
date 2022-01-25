@@ -15,6 +15,8 @@
           '("---"))
 
     (defun fc--setup-markdown-mode ()
+      (outline-hide-sublevels 3)
+
       (let ((buf (current-buffer)))
         (fc-delay-task #'(lambda ()
                            (with-current-buffer buf

@@ -6,7 +6,7 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defconst *fc-hs-init-hide-all-modes* '(org-mode))
+(defconst *fc-hs-init-hide-all-modes* '(markdown-mode org-mode))
 
 (defvar *fc-doc-modes* nil)
 

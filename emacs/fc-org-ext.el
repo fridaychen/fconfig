@@ -19,19 +19,29 @@
                          :follow #'fc--mybook-open)
 
 (defun -find-book (filename)
-  (let ((default-directory *fc-mybook-home*))
-    (s-trim
-     (fc-exec-command-to-string
-      "ff"
-      (list
-       "-nocolor"
-       filename)))))
+  "Find book by filename."
+  (s-trim
+   (fc-exec-command-to-string
+    "ff"
+    (list
+     "-nocolor"
+     filename))))
 
 (defun fc--mybook-open (path _)
-  (let ((file (-find-book path)))
-    (if (s-blank? file)
-        (message "Mybook %s is not found" path)
-      (find-file (format "%s/%s" *fc-mybook-home* file)))))
+  "Open file in mybook."
+  (let* ((default-directory *fc-mybook-home*)
+         (filename (-find-book path))
+         (ext (downcase (file-name-extension filename))))
+    (cond
+     ((s-blank? filename)
+      (message "Mybook %s is not found" path))
+
+     ((member ext '("md" "org" "txt"))
+      (find-file (format "%s/%s" *fc-mybook-home* filename)))
+
+     (t
+      (message "open with a external app %s" filename)
+      (fc-exec-command "fj" "--open" filename)))))
 
 (defvar org-babel-default-header-args:packetdiag
   '(

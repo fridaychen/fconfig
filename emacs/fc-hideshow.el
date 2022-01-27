@@ -29,9 +29,6 @@
     (setf *fc-hs-show-all* nil))
 
   (cond
-   ((eq major-mode 'org-mode)
-    )
-
    ((derived-mode-p 'prog-mode)
     (hs-minor-mode 1))
 

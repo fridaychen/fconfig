@@ -56,67 +56,67 @@
 
 ;; sounds
 (defconst *fc-sounds* '((welcome "startrek.mp3")
-			(incoming "incomingmsg.mp3")
-			(sweep "sweep.mp3")
-			(ringtong "ctu24.mp3")
-			(intercom "intercom.mp3")
-			(cheerup "mission_impossible_theme.mp3"
-				 "the_imperial_march.mp3"
-				 "terminator.mp3")))
+                        (incoming "incomingmsg.mp3")
+                        (sweep "sweep.mp3")
+                        (ringtong "ctu24.mp3")
+                        (intercom "intercom.mp3")
+                        (cheerup "mission_impossible_theme.mp3"
+                                 "the_imperial_march.mp3"
+                                 "terminator.mp3")))
 
 ;; completion
 (defvar *fc-completion* 'ivy)
 
 ;; theme
 (setf *fc-light-theme* '(
-			 (faff . faff-theme)
-			 (gruvbox-light-hard . gruvbox-theme)
-			 (plan9 . plan9-theme)
-			 )
+                         (faff . faff-theme)
+                         (gruvbox-light-hard . gruvbox-theme)
+                         (plan9 . plan9-theme)
+                         )
       *fc-very-light-theme* '(
-			      (acme . acme-theme)
-			      (leuven . leuven-theme)
-			      (material-light . material-theme)
-			      (modus-operandi . modus-themes)
-			      )
+                              (acme . acme-theme)
+                              (leuven . leuven-theme)
+                              (material-light . material-theme)
+                              (modus-operandi . modus-themes)
+                              )
       *fc-dark-theme* (if *is-gui*
-			  '(
-			    (fantom . fantom-theme)
-			    (gruvbox-dark-hard . gruvbox-theme)
-			    (material . material-theme)
-			    (nord . nord-theme)
-			    (sanityinc-tomorrow-eighties . color-theme-sanityinc-tomorrow)
-			    (srcery . srcery-theme)
-			    )
-			'(
-			  (gruvbox-dark-soft . gruvbox-theme)
-			  (nord . nord-theme)
-			  (sanityinc-tomorrow-eighties . color-theme-sanityinc-tomorrow)
-			  )
-			)
+                          '(
+                            (fantom . fantom-theme)
+                            (gruvbox-dark-hard . gruvbox-theme)
+                            (material . material-theme)
+                            (nord . nord-theme)
+                            (sanityinc-tomorrow-eighties . color-theme-sanityinc-tomorrow)
+                            (srcery . srcery-theme)
+                            )
+                        '(
+                          (gruvbox-dark-soft . gruvbox-theme)
+                          (nord . nord-theme)
+                          (sanityinc-tomorrow-eighties . color-theme-sanityinc-tomorrow)
+                          )
+                        )
       *fc-deep-dark-theme* (if *is-gui*
-			       '(
-				 (gotham . gotham-theme)
-				 (hybrid-reverse . hybrid-reverse-theme)
-				 (jazz . jazz-theme)
-				 (sanityinc-tomorrow-night . color-theme-sanityinc-tomorrow)
-				 )
-			     '(
-			       (jazz . jazz-theme)
-			       (sanityinc-tomorrow-night . color-theme-sanityinc-tomorrow)
-			       ))
+                               '(
+                                 (gotham . gotham-theme)
+                                 (hybrid-reverse . hybrid-reverse-theme)
+                                 (jazz . jazz-theme)
+                                 (sanityinc-tomorrow-night . color-theme-sanityinc-tomorrow)
+                                 )
+                             '(
+                               (jazz . jazz-theme)
+                               (sanityinc-tomorrow-night . color-theme-sanityinc-tomorrow)
+                               ))
       ;; fringe width 2.5mm for laptop, otherwise 3mm
       *fc-fringe-width* (if *is-gui*
-			    (truncate (* (fc-display-ppi)
-					 (/ (if *is-laptop* 2.5 3) 24.5)))
-			  0)
+                            (truncate (* (fc-display-ppi)
+                                         (/ (if *is-laptop* 2.5 3) 24.5)))
+                          0)
       ;; font height 145 for laptop, otherwiseo 160
       *fc-font-height* (if *is-laptop* 145
-			 (cond
-			  (*is-mac* 180)
-			  (*is-linux* 142)
-			  (*is-cygwin* 142)
-			  (*is-windows* 142)))
+                         (cond
+                          (*is-mac* 180)
+                          (*is-linux* 142)
+                          (*is-cygwin* 142)
+                          (*is-windows* 142)))
       *fc-font-mode-line-delta* 0)
 
 (require 'classic-theme)
@@ -126,14 +126,14 @@
 PERCENT: produce background color by darken this percent.
 COLOR: background color."
   (--each '(font-lock-keyword-face
-	    font-lock-function-name-face
-	    font-lock-variable-name-face
-	    font-lock-type-face
-	    font-lock-constant-face)
+            font-lock-function-name-face
+            font-lock-variable-name-face
+            font-lock-type-face
+            font-lock-constant-face)
     (let* ((new-bg (or color
-		       (color-darken-name
-			(fc-get-face-attribute it :background)
-			percent))))
+                       (color-darken-name
+                        (fc-get-face-attribute it :background)
+                        percent))))
       (fc-set-face-attribute it nil :background new-bg))))
 
 (defvar *fc-common-light-theme-bg* "cornsilk2")
@@ -143,14 +143,14 @@ COLOR: background color."
 
 (defconst *fc-soothe-color* (make-hash-table))
 (--each '((material "gray20")
-	  (tango-dark "gray23"))
+          (tango-dark "gray23"))
   (puthash (cl-first it) (cl-second it) *fc-soothe-color*))
 
 (defun fc-patch-theme ()
   "Patch theme."
   (let ((soothe-percent (if (fc-dark-theme-p)
-			    *fc-soothe-dark-percent*
-			  *fc-soothe-light-percent*)))
+                            *fc-soothe-dark-percent*
+                          *fc-soothe-light-percent*)))
     (pcase *fc-current-theme*
       ('acme
        (setf soothe-percent 6))
@@ -158,133 +158,133 @@ COLOR: background color."
       ('adwaita
        (setf soothe-percent 4)
        (fc-set-face-attribute 'default nil
-			      :foreground "black")
+                              :foreground "black")
        (fc-set-face-attribute 'default nil
-			      :background *fc-common-light-theme-bg*)
+                              :background *fc-common-light-theme-bg*)
        (fc-set-face-attribute 'fringe nil
-			      :background "#ee9800")
+                              :background "#ee9800")
        (fc-set-face-attribute 'font-lock-constant-face nil
-			      :foreground "#C52A2A")
+                              :foreground "#C52A2A")
        (fc-set-face-attribute 'font-lock-string-face nil
-			      :foreground "dark green")
+                              :foreground "dark green")
        (fc-set-face-attribute 'whitespace-trailing nil
-			      :background "red4")
+                              :background "red4")
        (fc-set-face-attribute 'mode-line nil
-			      :background "cornsilk3")
+                              :background "cornsilk3")
        (fc-set-face-attribute 'mode-line-inactive nil
-			      :background "cornsilk3")
+                              :background "cornsilk3")
        (fc-set-face-attribute 'mode-line-inactive nil
-			      :foreground "gray40"))
+                              :foreground "gray40"))
 
       ('classic
        (setf soothe-percent -2)
        (fc-set-face-attribute 'default nil
-			      :background (color-darken-name
-					   (fc-get-face-attribute 'default :background)
-					   4))
+                              :background (color-darken-name
+                                           (fc-get-face-attribute 'default :background)
+                                           4))
        (fc-set-face-attribute 'fringe nil
-			      :background "coral"))
+                              :background "coral"))
 
       ('faff
        (setf soothe-percent 4)
        (fc-set-face-attribute 'default nil
-			      :background *fc-common-light-theme-bg*))
+                              :background *fc-common-light-theme-bg*))
 
       ('fantom
        (fc-set-face-attribute 'fringe nil
-			      :background "#F2A4AC"))
+                              :background "#F2A4AC"))
 
       ('leuven
        (setf soothe-percent 6)
        (fc-set-face-attribute 'default nil
-			      :background *fc-common-light-theme-bg*))
+                              :background *fc-common-light-theme-bg*))
 
       ((or 'gruvbox-light-soft 'gruvbox-light-medium 'gruvbox-light-hard)
        (setf soothe-percent 6))
 
       ('material
        (fc-set-face-attribute 'fringe nil
-			      :background "#ff9800")
+                              :background "#ff9800")
        (fc-set-face-attribute 'default nil
-			      :foreground "#dfdfdf"
-			      :background "#102a20")
+                              :foreground "#dfdfdf"
+                              :background "#102a20")
        (fc-set-face-attribute 'markdown-header-face-1 nil
-			      :height 1.2)
+                              :height 1.2)
        (fc-set-face-attribute 'org-level-1 nil
-			      :height 1.2)
+                              :height 1.2)
        (fc-set-face-attribute 'org-level-2 nil
-			      :height 1.1))
+                              :height 1.1))
 
       ('modus-operandi
        (setf soothe-percent 6)
-       (fc-set-face-attribute 'default nil :background "blanched almond")
+       (fc-set-face-attribute 'default nil :background *fc-common-light-theme-bg*)
        (fc-set-face-attribute 'markdown-code-face nil :background "gray90"))
 
       ('monokai
        (when *is-gui*
-	 (fc-set-face-attribute 'fringe nil
-				:background monokai-orange)
-	 (fc-set-face-attribute 'default nil
-				:background "#282a3a")))
+         (fc-set-face-attribute 'fringe nil
+                                :background monokai-orange)
+         (fc-set-face-attribute 'default nil
+                                :background "#282a3a")))
 
       ('monokai-pro
        (fc-set-face-attribute 'minibuffer-prompt nil
-			      :foreground (fc-get-face-attribute
-					   'font-lock-keyword-face
-					   :foreground))
+                              :foreground (fc-get-face-attribute
+                                           'font-lock-keyword-face
+                                           :foreground))
        (fc-set-face-attribute 'vertical-border nil
-			      :foreground "gray50"))
+                              :foreground "gray50"))
 
       ('monokai-pro-octagon
        (fc-set-face-attribute 'minibuffer-prompt nil
-			      :foreground (fc-get-face-attribute
-					   'font-lock-keyword-face
-					   :foreground))
+                              :foreground (fc-get-face-attribute
+                                           'font-lock-keyword-face
+                                           :foreground))
        (fc-set-face-attribute 'font-lock-comment-face nil
-			      :foreground "gray80")
+                              :foreground "gray80")
        (fc-set-face-attribute 'font-lock-doc-face nil
-			      :foreground "gray80"))
+                              :foreground "gray80"))
 
       ('plan9
        (setf soothe-percent -3)
        (fc-set-face-attribute 'default nil
-			      :background (color-darken-name
-					   (fc-get-face-attribute 'default :background)
-					   8)))
+                              :background (color-darken-name
+                                           (fc-get-face-attribute 'default :background)
+                                           8)))
 
       ('sanityinc-tomorrow-eighties
        (fc-set-face-attribute 'fringe nil
-			      :background "#de935f"))
+                              :background "#de935f"))
 
       ('sanityinc-tomorrow-night
        (fc-set-face-attribute 'default nil
-			      :background "#303030"))
+                              :background "#303030"))
 
       ('tango-dark
        (fc-set-face-attribute 'default nil
-			      :background "#203420")
+                              :background "#203420")
        (fc-set-face-attribute 'hl-line nil
-			      :foreground "LightPink2"
-			      :background "gray30"))
+                              :foreground "LightPink2"
+                              :background "gray30"))
 
       ('zenburn
        (set-face-attribute 'mode-line nil
-			   :box '(:line-width 1 :style flat))
+                           :box '(:line-width 1 :style flat))
 
        (fc-set-face-attribute 'fringe nil
-			      :background (cdr
-					   (assoc-string "zenburn-orange"
-							 zenburn-default-colors-alist)))
+                              :background (cdr
+                                           (assoc-string "zenburn-orange"
+                                                         zenburn-default-colors-alist)))
        (fc-set-face-attribute 'default nil
-			      :background "#383838")
+                              :background "#383838")
        (fc-set-face-attribute 'hl-line nil
-			      :background (cond (*is-gui* "#1E3124")
-						(*is-colorful* "#505050")
-						(t "white")))))
+                              :background (cond (*is-gui* "#1E3124")
+                                                (*is-colorful* "#505050")
+                                                (t "white")))))
 
     (fc-soothe-theme soothe-percent
-		     (gethash *fc-current-theme*
-			      *fc-soothe-color*))))
+                     (gethash *fc-current-theme*
+                              *fc-soothe-color*))))
 
 ;; players
 (cl-defun fc-init-user-player ()
@@ -295,7 +295,7 @@ COLOR: background color."
   (cond
    (*is-linux*
     (setf *fc-prefer-players*
-	  '("Lollypop" "quodlibet" "rhythmbox")))
+          '("Lollypop" "quodlibet" "rhythmbox")))
 
    (*is-cygwin*
     (setf *fc-player* (fc-player-foobar :name "foobar")))
@@ -312,11 +312,11 @@ COLOR: background color."
 (defconst *fc-ignore-file* '("TOP" "GRTAGS" "GTAGS" "GPATH" "\\.DS_Store" "\\.o\$" "\\.pyc\$" "\\.mobi\$" "\\.azw3\$" "\\.pdf\$" "\\.bin\$" "\\.d\$" "\\.elc\$" "\\.old\$" "\\.bak\$" "~\$" "#\$"))
 
 (fc-add-to-list 'completion-ignored-extensions
-		".DS_Store"
-		".mobi" ".azw3" ".epub" ".pdf"
-		".bin" ".d" ".pyc" ".o" ".elc"
-		".old" ".bak"
-		"TOP" "GRTAGS" "GTAGS" "GPATH")
+                ".DS_Store"
+                ".mobi" ".azw3" ".epub" ".pdf"
+                ".bin" ".d" ".pyc" ".o" ".elc"
+                ".old" ".bak"
+                "TOP" "GRTAGS" "GTAGS" "GPATH")
 
 ;; environment
 (cond
@@ -332,11 +332,11 @@ COLOR: background color."
 
 ;; hide-show modes setting
 (defconst *fc-doc-modes* '(html-mode
-			   latex-mode
-			   markdown-mode
-			   org-mode
-			   yaml-mode
-			   xml-mode))
+                           latex-mode
+                           markdown-mode
+                           org-mode
+                           yaml-mode
+                           xml-mode))
 
 (provide 'fc-common)
 

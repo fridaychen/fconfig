@@ -967,7 +967,7 @@ REST: commands."
                               "cornsilk2"
                               "cornsilk3"
                               "linen"))))
-    (when bg
+    (when (and bg (color-defined-p bg))
       (setq *fc-common-light-theme-bg* bg)
       (fc-reset-theme))))
 

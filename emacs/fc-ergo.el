@@ -180,10 +180,10 @@ FROM-BEGINNING: start from beginnning."
 				   (case-fn . downcase))
 	  deft-text-mode 'org-mode))
   :bind '((deft-mode-map
-	    ("<escape>" quit-window)
-	    ("C-j" next-line)
-	    ("C-k" previous-line)
-	    )))
+	   ("<escape>" quit-window)
+	   ("C-j" next-line)
+	   ("C-k" previous-line)
+	   )))
 
 (defun fc-switch-layout ()
   "Switch layout."
@@ -1339,7 +1339,7 @@ AUTO: auto select face."
 			       #'other-window
 			       #'fc-switch-to-recent-buffer)
 		      :prefix 'split-window-horizontally))
-   ("3" ,(fc-cond-key :normal (fc-head-key "GTD" '*ergo-gtd-map*)
+   ("3" ,(fc-cond-key :normal (fc-head-key "ORG" '*ergo-gtd-map*)
 		      :prefix 'split-window-vertically))
    ("4" ,(fc-cond-key :normal 'ivy-switch-buffer))
    ("5" toggle-frame-fullscreen)

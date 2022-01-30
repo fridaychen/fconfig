@@ -126,7 +126,7 @@
   :after (progn
            (fc-init-user-player)))
 
-;; (fc-require 'fc-welcome)
+(fc-require 'fc-welcome)
 
 (fc-layout-save "a")
 (fc-layout-save "s")

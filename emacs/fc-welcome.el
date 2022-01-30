@@ -7,7 +7,7 @@
 
 (setf inhibit-startup-message t)
 
-(text-mode)
+(org-mode)
 
 (insert (emacs-init-time))
 

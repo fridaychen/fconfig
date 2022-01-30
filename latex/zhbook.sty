@@ -1,0 +1,353 @@
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesPackage{zhbook}
+
+\usepackage{ifthen}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{xargs}
+
+\newif\ifchno\chnofalse
+\newif\ifzhchno\zhchnofalse
+
+\DeclareOption{chno}{\chnotrue}
+\DeclareOption{chno=true}{\chnotrue}
+\DeclareOption{chno=false}{\chnofalse}
+
+\DeclareOption{zhchno}{\zhchnotrue}
+\DeclareOption{zhchno=true}{\zhchnotrue}
+\DeclareOption{zhchno=false}{\zhchnofalse}
+
+\DeclareOption{pc}{
+  \newcommand{\mypaperheight}{297mm}
+  \newcommand{\mypaperwidth}{210mm}
+
+  \newcommand{\mytotalheight}{287mm}
+  \newcommand{\mytotalwidth}{200mm}
+
+  \newcommand{\myfontsize}{12pt}
+
+  \definecolor{myfg}{RGB}{0,0,0}
+  \definecolor{mybg}{RGB}{143,188,143}
+
+  \renewcommand\baselinestretch{1.2}
+}
+
+\DeclareOption{ipad}{
+  \newcommand{\mypaperheight}{200mm}
+  \newcommand{\mypaperwidth}{150mm}
+
+  \newcommand{\mytotalheight}{198mm}
+  \newcommand{\mytotalwidth}{148mm}
+
+  \newcommand{\myfontsize}{12pt}
+
+  \definecolor{myfg}{RGB}{0,0,0}
+  \definecolor{mybg}{RGB}{143,188,143}
+
+  \renewcommand\baselinestretch{1.2}
+}
+
+\DeclareOption{kindle}{
+  \newcommand{\mypaperheight}{120mm}
+  \newcommand{\mypaperwidth}{90mm}
+
+  \newcommand{\mytotalheight}{119mm}
+  \newcommand{\mytotalwidth}{89mm}
+
+  \newcommand{\myfontsize}{12pt}
+
+  \definecolor{myfg}{RGB}{0,0,0}
+  \definecolor{mybg}{RGB}{255,255,255}
+
+  \renewcommand\baselinestretch{1.2}
+}
+
+\ProcessOptions
+
+\usepackage{makeidx}
+
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+
+%\setlength\paperheight{\mypaperheight}
+%\setlength\paperwidth{\mypaperwidth}
+
+%\usepackage{showframe}
+%\usepackage[total={\mypaperwidth,\mypaperheight}, top=\mytop, bottom=\mybottom, left=\myleft, right=\myright]{geometry}
+\usepackage[papersize={\mypaperwidth,\mypaperheight},total={\mytotalwidth, \mytotalheight}]{geometry}
+
+% math
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newcommand{\ud}{
+  \mathrm{d}
+}
+
+\renewcommand{\contentsname}{目  录}
+
+% Font
+\usepackage[cm-default]{fontspec}
+\usepackage{xunicode,xltxtra}
+\usepackage[slantfont,boldfont,CJKnumber]{xeCJK}
+\usepackage{CJKfntef}
+\punctstyle{banjiao}
+\xeCJKallowbreakbetweenpuncts
+
+%\setmainfont[BoldFont=WenQuanYi Micro Hei Mono]{STZhongsong}
+%\setsansfont[BoldFont=WenQuanYi Micro Hei Mono]{STXihei}
+%\setmonofont[BoldFont=WenQuanYi Micro Hei Mono]{WenQuanYi Micro Hei Mono}
+
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+
+\setCJKfamilyfont{kai}{DFKai-SB}
+\setCJKfamilyfont{fangsong}{FZYaSong-M-GBK}
+\setCJKfamilyfont{hei}{STXihei}
+\setCJKfamilyfont{mono}{WenQuanYi Micro Hei Mono}
+
+%\setCJKmainfont{FZYaSong-M-GBK}
+\setCJKmainfont{方正宋刻本秀楷简补全}
+%\setCJKmainfont{方正宋刻本秀楷繁体}
+\setCJKsansfont{STXihei}
+\setCJKmonofont{WenQuanYi Micro Hei Mono}
+
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+
+% Space
+\setlength\parskip{.5\baselineskip
+        plus .1\baselineskip
+        minus .4\baselineskip
+}
+
+\newcommand{\zhbook}{
+  \renewcommand{\baselinestretch}{1.0}
+  \fontsize{\myfontsize}{\baselineskip}\selectfont
+
+  \maketitle
+
+  \tableofcontents
+}
+
+\newcommand{\zhtraditional}{
+  \setCJKmainfont{DFKai-SB}
+}
+
+\pagecolor{mybg}
+\color{myfg}
+
+% Title
+\usepackage{titlesec,titletoc}
+\usepackage{xCJKnumb}
+
+\setcounter{tocdepth}{1}
+\assignpagestyle{\chapter}{empty}
+
+\contentsmargin{6em}
+
+\usepackage{tocloft}
+\renewcommand{\cftsecfont}{WenQuanYi Micro Hei Mono}
+\renewcommand*\l@part{\@dottedtocline{0}{0em}{0em}}
+\renewcommand*\l@chapter{\@dottedtocline{1}{1em}{0em}}
+\renewcommand*\l@section{\@dottedtocline{2}{2em}{0em}}
+\renewcommand*\l@subsection{\@dottedtocline{3}{3em}{0em}}
+
+% toc中不显示secnumber
+\def\numberline#1{}
+
+\ifchno
+\ifzhchno
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{(\alph{subsection})}
+
+\titleformat{\chapter}{\LARGE}{\raisebox{-0.3em}{\color{MidnightBlue}\rule{1.5em}{1.5em}}\;\;第\xCJKnumber{\thechapter}章}{1em}{}
+\titleformat{\section}{\Large}{\raisebox{-0.1em}{\color{MidnightBlue}\rule{1em}{1em}}\;\;第\xCJKnumber{\thesection}节}{1em}{}
+\titleformat{\subsection}{\large}{\color{MidnightBlue}\rule{0.6em}{0.6em}\;\thesubsection}{1em}{}
+
+\else
+
+\titleformat{\chapter}{\LARGE}{\color{MidnightBlue}\raisebox{-0.3em}{\rule{1.5em}{1.5em}}\;\;\thechapter}{1em}{}
+\titleformat{\section}{\Large}{\color{MidnightBlue}\raisebox{-0.1em}{\rule{1em}{1em}}\;\thesection}{1em}{}
+\titleformat{\subsection}{\large}{\color{MidnightBlue}\rule{0.6em}{0.6em}\;\thesubsection}{1em}{}
+
+\fi
+
+\else
+
+\titleformat{\chapter}{\large\bf}{\color{MidnightBlue}\raisebox{-0.3em}{\rule{1.5em}{1.5em}}}{1em}{\parbox{0.8\textwidth}}
+\titleformat{\section}{\large}{\color{MidnightBlue}\raisebox{-0.1em}{\rule{1em}{1em}}}{1em}{\parbox{0.8\textwidth}}
+\titleformat{\subsection}{\normalsize}{\color{MidnightBlue}\rule{0.6em}{0.6em}}{1em}{\parbox{0.8\textwidth}}
+
+\fi
+
+\titlespacing{\chapter}{0pt}{*0}{*3}
+\titlespacing{\section}{0pt}{*1}{*1}
+\titlespacing{\subsection}{0pt}{*1}{*1}
+\titlespacing{\subsubsection}{0pt}{*1}{*1}
+
+% Util
+\newenvironment{fempty}{
+}{
+}
+
+% Verse
+\usepackage{verse}
+
+\setlength\vindent{0em}
+
+% Graphic
+\usepackage{picinpar}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+
+% \sfigure[filename][scale][angle][caption]
+\newcommandx{\sfigure}[4][1=0,2=nocaption]{
+  \begin{figure}[ht]
+    \centering
+
+    \includegraphics[scale=#4,angle=#1]{#3}
+
+    \ifthenelse{\equal{#2}{nocaption}}{}{\caption{#2}}
+  \end{figure}
+}
+
+% verse
+\newenvironment{zhverse}{
+  \begin{verse}
+    \CJKfamily{kai}
+}
+{
+    \normalfont
+  \end{verse}
+}
+
+\newenvironment{zhqoute}{
+  \begin{quotation}
+      \CJKfamily{kai}
+}
+{
+      \normalfont
+  \end{quotation}
+}
+
+% Letter
+%\usepackage{framed}
+
+\newenvironment{sletter}{
+  \begin{quotation}
+      \CJKfamily{kai}
+}
+{
+      \normalfont
+  \end{quotation}
+}
+
+\newcommand{\saddress}[1]{
+  \begin{fempty} \footnotesize\noindent #1 \end{fempty}
+  \vspace{0.5em}
+
+}
+
+\newcommand{\sopening}[1]{
+  \noindent \textbf{\underline{#1}}
+  \vspace{0.5em}
+
+}
+
+\newcommand{\sclosing}[1]{
+  \vspace{0.5em}
+  \begin{center} #1 \end{center}
+}
+
+\newcommand{\sps}[1]{
+  \vspace{0.5em}
+  \noindent #1
+}
+
+\newcommand{\stitle}[1]{
+  \begin{center}
+    \textbf{#1}
+  \end{center}
+
+  \vspace{0.5em}
+}
+
+\newcommand{\stitlel}[1]{
+  \noindent\textbf{#1}
+
+}
+
+% Table
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{multicol}
+
+\newenvironment{stable}[2]{
+  \begin{center}
+    \begin{footnotesize}
+      \begin{longtable}{#2}
+        \caption{#1}\\
+        \hline
+}
+{
+      \end{longtable}
+    \end{footnotesize}
+  \end{center}
+}
+
+\usepackage{rotating}
+
+\usepackage[pdfusetitle]{hyperref}
+\hypersetup{colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=black
+}
+\usepackage{bookmark}
+
+% twocolumn
+\setlength{\columnsep}{8mm}
+\setlength{\columnseprule}{1pt}
+
+% Tikz
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,calc,chains,positioning,matrix,shapes.multipart,shadows,backgrounds}
+
+\tikzstyle{nude}==[minimum width=1.5cm, minimum height=1cm]
+\tikzstyle{boxnode}=[draw, minimum width=1.5cm, minimum height=1cm, rounded corners, fill=blue!20, drop shadow={opacity=0.3}]
+\tikzstyle{diamondnode}=[draw, minimum width=1.5cm, minimum height=1cm, shape=diamond, rounded corners, fill=blue!20, drop shadow={opacity=0.3}]
+\tikzstyle{circlenode}=[draw, minimum width=1.5cm, minimum height=1cm, shape=circle, fill=blue!20, drop shadow={opacity=0.3}]
+
+\pgfdeclarelayer{l1}
+\pgfdeclarelayer{l2}
+\pgfdeclarelayer{l3}
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,l3,l2,l1,main,foreground}
+
+%\usepackage{gnuplottex}
+
+% postil
+\newcommand{\postil}[2][BrickRed]{{\footnotesize\CJKfamily{kai}\color{#1} #2}}
+
+\newenvironment{postilpar}[1][blue]{
+  \begin{fempty}
+    \CJKfamily{kai}
+    \color{#1}\footnotesize
+}{
+  \end{fempty}
+}
+
+% ※
+\newcommand{\zhchangescene}{
+  \begin{center}
+    ＊ \qquad ＊ \qquad ＊ \qquad ＊ \qquad ＊
+  \end{center}
+}
+
+\usepackage[stable]{footmisc}
+
+\sloppy

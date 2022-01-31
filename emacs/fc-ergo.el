@@ -630,11 +630,12 @@ N: number."
                            *fc-default-font*
                            *fc-font-weight-of-default*
                            *fc-font-height*))
-          ("Theme" ,(format "%s, %s"
+          ("Theme" ,(format "%s, %s, %s"
                             *fc-current-theme*
                             (if (fboundp 'fc-modeline-mode)
                                 "fc-modeline"
-                              (symbol-name powerline-default-separator)))))
+                              (symbol-name powerline-default-separator))
+                            *fc-common-light-theme-bg*)))
       `(
         ("Emacs" ,(format "%s, colorful %S" emacs-version *is-colorful*))
         ("User" ,user)

@@ -185,6 +185,7 @@ ASK: allow user to input parameter of block."
   (fc-user-select-func
    "Org portal"
    `(
+     ("Conervt to table"       . fc--org-convert-table)
      ("Publish to html"        . org-html-export-to-html)
      ("Publish to markdown"    . org-md-export-to-markdown)
      ("Roam sync"              . org-roam-db-sync)
@@ -325,6 +326,26 @@ ASK: allow user to input parameter of block."
     (insert (if displayed "\\] " "$ "))
     (goto-char last-point)
     (fc-modal-disable)))
+
+(defun fc--org-convert-table ()
+  (interactive)
+
+  (fc-region (region-beginning) (region-end)
+    (let ((columns (read-number "Org table column")))
+      (fc-replace-regexp "\n\\{1,\\}"
+                         "\n"
+                         :from-start t)
+
+      (fc-replace-regexp "^\\(.\\)" "|\\1" :from-start t)
+
+      (goto-char (point-min))
+
+      (cl-loop
+       do
+       (join-line columns)
+       (forward-line)
+       until (or (eq (point) (point-max))
+                 (looking-at-p "^$"))))))
 
 (defconst *fc-org-map*
   (fc-make-keymap

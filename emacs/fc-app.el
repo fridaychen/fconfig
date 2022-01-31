@@ -960,6 +960,7 @@ REST: commands."
   "Select background color."
   (let ((bg (fc-user-select "Background color"
                             '(
+                              "NIL"
                               "beige"
                               "bisque"
                               "blanched almond"
@@ -967,9 +968,15 @@ REST: commands."
                               "cornsilk2"
                               "cornsilk3"
                               "linen"))))
-    (when (and bg (color-defined-p bg))
-      (setq *fc-common-light-theme-bg* bg)
-      (fc-reset-theme))))
+    (cond
+     ((string= bg "NIL")
+      (setf *fc-common-light-theme-bg* nil)
+      )
+
+     ((when (and bg (color-defined-p bg))
+        (setq *fc-common-light-theme-bg* bg))))
+
+    (fc-reset-theme)))
 
 ;; theme
 (cl-defun fc-select-theme ()

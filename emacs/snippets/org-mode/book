@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: book
+# key: b
+# --
+
+#+TITLE: ${1:title}
+#+AUTHOR: ${2:author}
+#+LANGUAGE: ${3:lang}
+$0

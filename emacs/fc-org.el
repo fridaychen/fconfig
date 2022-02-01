@@ -69,6 +69,10 @@
     (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
     (plist-put org-format-latex-options :foreground (fc-get-face-attribute 'font-lock-keyword-face :foreground))
 
+    (fc-set-face-attribute 'org-footnote
+                           nil
+                           :height (- *fc-font-height* 20))
+
     (defun create-image-with-background-color (args)
       "Specify background color of Org-mode inline image through modify `ARGS'."
       (let* ((file (car args))
@@ -379,6 +383,7 @@ ASK: allow user to input parameter of block."
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)
      ("i u" ,(fc-manual (fc-org-add-block "SRC" :ask '("Output file" "plantuml :file output/"))))
+     ("i v" ,(fc-manual (fc-org-add-block "VERSE")))
      ("i T" fc--org-insert-title)
 
      ("l" org-insert-link)
@@ -400,6 +405,7 @@ ASK: allow user to input parameter of block."
      ("T" org-set-tags-command)
      ("-" org-ctrl-c-minus)
      ("^" org-sort)
+     ("[" ,(fc-decorate-region "[[" "]]"))
      ("<" ,(fc-decorate-region "<<<" ">>>"))
      ("SPC" fc-org-portal))
    "fc-org-map"

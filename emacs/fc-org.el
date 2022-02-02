@@ -162,32 +162,33 @@
 TYPE: type of block.
 ASK: allow user to input parameter of block.
 PRE-FORMAT: format the block content."
-  (when (and pre-format (region-active-p))
-    (fc-region (region-beginning) (region-end)
-      (fc-funcall pre-format)))
+  (let* (start end)
+    (if (region-active-p)
+        (setf start (region-beginning)
+              end (region-end))
+      (setf start (point))
+      (yank)
+      (setf end (point)))
 
-  (when (and (not (region-active-p))
-             (/= (current-column) 0))
-    (end-of-line)
-    (insert "\n\n"))
+    (when pre-format
+      (fc-region start end
+        (fc-funcall pre-format)))
 
-  (let ((content (when (region-active-p)
-                   (kill-region (region-beginning)
-                                (region-end))
-                   t))
-        (point-of-content nil))
+    (when (/= (current-column) 0)
+      (insert "\n"))
+
+    (insert "#+END_" type "\n")
+    (unless (looking-at "\n")
+      (insert "\n"))
+
+    (goto-char start)
+    (when (/= (current-column) 0)
+      (insert "\n\n"))
+
     (insert (fc--text " "
                       (concat "#+BEGIN_" type)
                       (fc-ask ask))
-            "\n")
-    (if content
-        (yank)
-      (setf point-of-content (point))
-      (insert "\n"))
-    (insert "#+END_" type "\n")
-
-    (when point-of-content
-      (goto-char point-of-content))))
+            "\n")))
 
 (cl-defun fc--org-fix-headline-spacing ()
   "Fix headline spacing."

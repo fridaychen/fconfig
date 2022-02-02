@@ -69,10 +69,6 @@
     (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
     (plist-put org-format-latex-options :foreground (fc-get-face-attribute 'font-lock-keyword-face :foreground))
 
-    (fc-set-face-attribute 'org-footnote
-                           nil
-                           :height (- *fc-font-height* 20))
-
     (defun create-image-with-background-color (args)
       "Specify background color of Org-mode inline image through modify `ARGS'."
       (let* ((file (car args))
@@ -108,6 +104,10 @@
       (org-content)
       (org-hide-block-all)
       (org-hide-drawer-all)
+
+      (fc-set-face-attribute 'org-footnote
+                             nil
+                             :height (- *fc-font-height* 20))
 
       (add-hook 'write-contents-functions
                 (lambda () (org-update-statistics-cookies t)) nil t))
@@ -157,10 +157,15 @@
     (insert "#+title: " title  "\n"
             "\n")))
 
-(cl-defun fc-org-add-block (type &key ask)
+(cl-defun fc-org-add-block (type &key ask pre-format)
   "Add block.
 TYPE: type of block.
-ASK: allow user to input parameter of block."
+ASK: allow user to input parameter of block.
+PRE-FORMAT: format the block content."
+  (when (and pre-format (region-active-p))
+    (fc-region (region-beginning) (region-end)
+      (fc-funcall pre-format)))
+
   (when (and (not (region-active-p))
              (/= (current-column) 0))
     (end-of-line)
@@ -184,12 +189,41 @@ ASK: allow user to input parameter of block."
     (when point-of-content
       (goto-char point-of-content))))
 
+(cl-defun fc--org-fix-headline-spacing ()
+  "Fix headline spacing."
+  (save-excursion
+    (fc-replace-regexp "\\([^\n]\\)\n+\\*"
+                       "\\1\n\n*" :from-start t)
+
+    (fc-replace-regexp "^\\*\\([^\n]+\\)\n+\\([^*\n]\\)"
+                       "*\\1\n\n\\2" :from-start t)))
+
+(cl-defun fc--org-convert-mk-verse ()
+  "Convert markdown verse."
+  (interactive)
+
+  (save-excursion
+    (save-restriction
+      (goto-char (point-min))
+
+      (while (re-search-forward "[^
+ ]+  $")
+        (goto-char (match-beginning 0))
+        (mark-paragraph)
+        (forward-char)
+        (fc-org-add-block "VERSE" :pre-format #'fc--org-format-verse)
+        (deactivate-mark)))))
+
 (cl-defun fc-org-portal ()
   "Show org portal."
   (fc-user-select-func
    "Org portal"
    `(
+     ("Convert latex footnote" . ,(fc-manual (fc--org-add-footnote "\\\\footnote{\\([^}]+\\)}")))
+     ("Convert markdown verse" . fc--org-convert-mk-verse)
      ("Conervt to table"       . fc--org-convert-table)
+     ("Fix headline spacing"   . fc--org-fix-headline-spacing)
+     ("Fix zh single quote"    . fc-fix-zh-single-qoute)
      ("Publish to html"        . org-html-export-to-html)
      ("Publish to markdown"    . org-md-export-to-markdown)
      ("Roam sync"              . org-roam-db-sync)
@@ -223,6 +257,9 @@ ASK: allow user to input parameter of block."
   (fc-modal-disable))
 
 (cl-defmacro fc--org-smart-action (default &rest body)
+  "Smart action according to current position.
+DEFAULT: defaul function.
+BODY: usually a pcase block."
   (declare (indent 1))
   `(let* ((context (org-context))
           (1st-elt (caar context))
@@ -238,13 +275,25 @@ ASK: allow user to input parameter of block."
          (fc-funcall ,default)
        ,@body)))
 
+(cl-defun fc--org-looking-over-footnote ()
+  "Test if current point is over a footnote."
+  (or (looking-at-p "\\[fn:")
+      (save-excursion
+        (re-search-backward "\\[[^\\]+" 10)
+        (looking-at-p "\\[fn:"))))
+
 (cl-defun fc--org-do ()
   "Smart do."
   (when (looking-at-p "\\$[^\\$]+\\$")
     (org-latex-preview)
     (cl-return-from fc--org-do))
 
+  (when (fc--org-looking-over-footnote)
+    (org-footnote-action)
+    (cl-return-from fc--org-do))
+
   (fc--org-smart-action #'org-ctrl-c-ctrl-c
+    (message "elt %s" elt)
     (pcase elt
       (:checkbox (org-ctrl-c-ctrl-c))
       (:headline (org-insert-heading-respect-content)
@@ -261,33 +310,39 @@ ASK: allow user to input parameter of block."
       (_ (message "context: %s elt: %s" context elt)))))
 
 (defun fc--org-beginning ()
+  "Goto the beginning of the current block."
   (fc--org-smart-action nil
     (pcase elt
       (:src-block (re-search-backward "^ *#\\+BEGIN"))
       (_ (message "context: %s" context)))))
 
 (defun fc--org-end ()
+  "Goto the end of the current block."
   (fc--org-smart-action nil
     (pcase elt
       (:src-block (re-search-forward "^ *#\\+END"))
       (_ (message "context: %s" context)))))
 
 (defun fc--org-current-cell ()
+  "Get the content of current table cell."
   (org-table-get (org-table-current-line)
                  (org-table-current-column)))
 
 (defun fc--org-copy ()
+  "Copy the content of current table cell."
   (fc--org-smart-action nil
     (pcase elt
       (:table (kill-new (fc--org-current-cell)))
       (_ (message "context: %s" context)))))
 
 (defun fc-org-mode-mouse-func (_event)
+  "Handle mouse event."
   (fc--org-do))
 
 (defvar *fc--org-last-year* "")
 
 (defun fc--org-convert ()
+  "Smart format converter."
   (or
    (fc-replace-looking-text "\\([0-9]+\\)[年/-]\\([0-9]+\\)[月/-]\\([0-9]+\\)[日号]?"
      (setf *fc--org-last-year* (string-to-number (match-string 1)))
@@ -309,9 +364,11 @@ ASK: allow user to input parameter of block."
              (string-to-number (match-string 2))))))
 
 (defun fc--org-occur ()
+  "Wrapper of org-occur."
   (org-occur (fc-current-thing :ask t :regq t :confirm "Org match")))
 
 (defun fc--org-sparse-tree ()
+  "Smart sparse tree."
   (fc--org-smart-action #'org-sparse-tree
     (pcase elt
       (:headline (fc--org-occur))
@@ -332,6 +389,7 @@ ASK: allow user to input parameter of block."
     (fc-modal-disable)))
 
 (defun fc--org-convert-table ()
+  "Convert multi line text to table."
   (interactive)
 
   (fc-region (region-beginning) (region-end)
@@ -350,6 +408,33 @@ ASK: allow user to input parameter of block."
        (forward-line)
        until (or (eq (point) (point-max))
                  (looking-at-p "^$"))))))
+
+(defun fc--org-format-verse ()
+  "Format a verse."
+  (fc-replace-regexp "^[ \t]*\\([^ ]\\)"
+                     "  \\1" :from-start t)
+  (fc-whitespace-clean))
+
+(cl-defun fc--org-add-footnote (regex)
+  "Add footnote.
+REGEX: regex."
+  (let ((no (read-number "Footnote number start from")))
+    (fc-replace-regexp regex
+                       #'(lambda ()
+                           (message "replace once")
+                           (let ((footnote (match-string 1)))
+                             (replace-match "")
+                             (fc--org-insert-footnote no footnote))
+                           (setq no (1+ no))))))
+
+(defun fc--org-insert-footnote (label content)
+  "Insert a footnote.
+LABEL: label of new footnote.
+CONTENT: content of new footnote."
+  (save-excursion
+    (insert (format "[fn:%s]" label))
+    (goto-char (point-max))
+    (insert (format "\n[fn:%s] %s\n" label content))))
 
 (defconst *fc-org-map*
   (fc-make-keymap
@@ -383,7 +468,7 @@ ASK: allow user to input parameter of block."
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)
      ("i u" ,(fc-manual (fc-org-add-block "SRC" :ask '("Output file" "plantuml :file output/"))))
-     ("i v" ,(fc-manual (fc-org-add-block "VERSE")))
+     ("i v" ,(fc-manual (fc-org-add-block "VERSE" :pre-format #'fc--org-format-verse)))
      ("i T" fc--org-insert-title)
 
      ("l" org-insert-link)
@@ -435,6 +520,8 @@ ASK: allow user to input parameter of block."
     (make-directory *fc-org-dir*)))
 
 (cl-defun fc--org-gen-template (template)
+  "Generate standard org capture template.
+TEMPLATE: fconfig format template."
   (seq-concatenate 'list
                    `(,(cl-first template)
                      ,(cl-second template)
@@ -446,6 +533,8 @@ ASK: allow user to input parameter of block."
                    (nthcdr 5 template)))
 
 (cl-defun fc-org-add-capture-template (templates)
+  "Add fconfig templates to org.
+TEMPLATES: fconfig templates."
   (--each templates
     (add-to-list 'org-capture-templates (fc--org-gen-template it))))
 
@@ -486,7 +575,8 @@ ASK: allow user to input parameter of block."
     (org-edit-special))))
 
 (defun fc--org-confirm-babel-evaluate (lang _body)
-  "Trust all mode in *fc-org-trust-babel-modes."
+  "Trust all mode in *fc-org-trust-babel-modes.
+LANG: language of babel."
   (not (member lang *fc-org-trust-babel-modes*)))
 
 (fc-load 'org-roam

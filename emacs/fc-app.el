@@ -370,7 +370,7 @@ FILE-TYPES: fc style file types."
                            "-t" "py" "-t" "ruby" "-t" "rust" "-t" "sh"
                            "-t" "vim"
                            ))
-                  ('doc '("-t" "markdown" "-t" "org" "-t" "txt"))
+                  ('doc '("-t" "markdown" "-t" "org" "-t" "tex" "-t" "txt"))
                   ('conf '("-t" "cmake" "-t" "make" "-t" "config"
                            "-t" "json" "-t" "yaml"))
                   ('xml '("-t" "xml")))
@@ -646,6 +646,7 @@ ARGS: args for ff."
   (eshell/alias "fj-rm-bak" "find . -name \"*~\" -delete")
   (eshell/alias "gp" "git pull $*")
   (eshell/alias "gq" "git push $*")
+  (eshell/alias "fit-amend" "fc-git-amend")
 
   (eshell/alias "la" "ls -A $*")
   (eshell/alias "ll" "ls -Alh $*")

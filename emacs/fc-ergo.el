@@ -20,7 +20,7 @@
 (defconst *fc--repeat-orignal-func* #'fc-translate-word)
 
 (defvar *fc-theme-mode* 'dark)
-(defvar *fc--work-themes* '((dark zenburn monokai)
+(defvar *fc--work-themes* '((dark gruvbox monokai zenburn)
                             (light leuven)))
 (defvar *fc--work-deep-themes* '((dark sanityinc-tomorrow-night)
                                  (light acme)))

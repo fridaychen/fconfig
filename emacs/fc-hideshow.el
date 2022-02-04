@@ -51,9 +51,7 @@
   "Hide leafs at too level."
   (cond
    ((eq major-mode 'org-mode)
-    (org-content)
-    (org-hide-block-all)
-    (org-hide-drawer-all))
+    (fc--org-hide-all))
 
    ((fc-hs--is-hideshow)
     (hs-hide-all))

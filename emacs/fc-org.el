@@ -96,14 +96,22 @@
 
     (require 'fc-org-ext)
 
+    (cl-defun fc--org-hide-all ()
+      (org-content)
+      (org-hide-drawer-all)
+      (org-hide-block-all)
+      (org-block-map (lambda ()
+                       (when (looking-at-p "#\\+BEGIN_VERSE")
+                         (forward-char 1)
+                         (org-cycle)))))
+
     (cl-defun fc--setup-org-mode ()
       (electric-indent-local-mode -1)
 
       (org-superstar-mode 1)
       (org-link-beautify-mode -1)
-      (org-content)
-      (org-hide-block-all)
-      (org-hide-drawer-all)
+
+      (fc--org-hide-all)
 
       (fc-set-face-attribute 'org-footnote
                              nil
@@ -170,6 +178,7 @@ PRE-FORMAT: format the block content."
       (yank)
       (setf end (point)))
 
+    (goto-char end)
     (when pre-format
       (fc-region start end
         (fc-funcall pre-format)))
@@ -215,6 +224,26 @@ PRE-FORMAT: format the block content."
         (fc-org-add-block "VERSE" :pre-format #'fc--org-format-verse)
         (deactivate-mark)))))
 
+(cl-defun fc--org-fmt-verse ()
+  "Format verse."
+  (org-block-map (lambda ()
+                   (when (looking-at-p "#\\+BEGIN_VERSE")
+                     (let (start end)
+                       (forward-line)
+                       (setf start (point))
+
+                       (goto-char (match-end 0))
+                       (forward-line -1)
+                       (end-of-line)
+                       (setf end (point))
+
+                       (fc-region start end
+                         (fc--org-format-verse)))))))
+
+(cl-defun fc--org-fmt-all ()
+  "Format all."
+  (fc--org-fmt-verse))
+
 (cl-defun fc-org-portal ()
   "Show org portal."
   (fc-user-select-func
@@ -225,6 +254,7 @@ PRE-FORMAT: format the block content."
      ("Conervt to table"       . fc--org-convert-table)
      ("Fix headline spacing"   . fc--org-fix-headline-spacing)
      ("Fix zh single quote"    . fc-fix-zh-single-qoute)
+     ("Format"                 . fc--org-fmt-all)
      ("Publish to html"        . org-html-export-to-html)
      ("Publish to markdown"    . org-md-export-to-markdown)
      ("Roam sync"              . org-roam-db-sync)
@@ -294,7 +324,6 @@ BODY: usually a pcase block."
     (cl-return-from fc--org-do))
 
   (fc--org-smart-action #'org-ctrl-c-ctrl-c
-    (message "elt %s" elt)
     (pcase elt
       (:checkbox (org-ctrl-c-ctrl-c))
       (:headline (org-insert-heading-respect-content)
@@ -412,6 +441,7 @@ BODY: usually a pcase block."
 
 (defun fc--org-format-verse ()
   "Format a verse."
+  (goto-char (point-min))
   (fc-replace-regexp "^[ \t]*\\([^ ]\\)"
                      "  \\1" :from-start t)
   (fc-whitespace-clean))
@@ -422,7 +452,6 @@ REGEX: regex."
   (let ((no (read-number "Footnote number start from")))
     (fc-replace-regexp regex
                        #'(lambda ()
-                           (message "replace once")
                            (let ((footnote (match-string 1)))
                              (replace-match "")
                              (fc--org-insert-footnote no footnote))

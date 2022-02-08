@@ -341,7 +341,7 @@ BODY: usually a pcase block."
   "Test if current point is over a footnote."
   (or (looking-at-p "\\[fn:")
       (save-excursion
-        (re-search-backward "\\[[^\\]+" 10)
+        (re-search-backward "\\[[^\\]]+" 10)
         (looking-at-p "\\[fn:"))))
 
 (cl-defun fc--org-do ()

@@ -45,6 +45,9 @@
 
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
+  (fc-set-face-attribute 'org-footnote
+                         nil
+                         :height (- *fc-font-height* 20))
 
   (setf *fc-org-image-background* (if (fc-dark-theme-p)
                                       "cornsilk2"
@@ -64,10 +67,15 @@
           org-image-actual-width nil
           org-preview-latex-image-directory "output/"
           org-startup-indented nil
+          org-fontify-quote-and-verse-blocks t
           )
 
     (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
     (plist-put org-format-latex-options :foreground (fc-get-face-attribute 'font-lock-keyword-face :foreground))
+
+    (fc-set-face-attribute 'org-footnote
+                           nil
+                           :height (- *fc-font-height* 20))
 
     (defun create-image-with-background-color (args)
       "Specify background color of Org-mode inline image through modify `ARGS'."
@@ -101,7 +109,7 @@
       (org-hide-drawer-all)
       (org-hide-block-all)
       (org-block-map (lambda ()
-                       (when (looking-at-p "#\\+BEGIN_VERSE")
+                       (when (looking-at-p "#\\+BEGIN_\\(EXAMPLE\\|NOTE\\|VERSE\\)")
                          (forward-char 1)
                          (org-cycle)))))
 
@@ -112,10 +120,6 @@
       (org-link-beautify-mode -1)
 
       (fc--org-hide-all)
-
-      (fc-set-face-attribute 'org-footnote
-                             nil
-                             :height (- *fc-font-height* 20))
 
       (add-hook 'write-contents-functions
                 (lambda () (org-update-statistics-cookies t)) nil t))
@@ -165,18 +169,27 @@
     (insert "#+title: " title  "\n"
             "\n")))
 
-(cl-defun fc-org-add-block (type &key ask pre-format)
+(cl-defun fc-org-add-block (type &key ask pre-format (copy t))
   "Add block.
 TYPE: type of block.
 ASK: allow user to input parameter of block.
 PRE-FORMAT: format the block content."
   (let* (start end)
-    (if (region-active-p)
-        (setf start (region-beginning)
-              end (region-end))
+    (cond
+     ((region-active-p)
+      (setf start (region-beginning)
+            end (region-end)))
+
+     (copy
       (setf start (point))
       (yank)
       (setf end (point)))
+
+     (t
+      (mark-paragraph)
+      (forward-line)
+      (setf start (region-beginning)
+            end (region-end))))
 
     (goto-char end)
     (when pre-format
@@ -242,25 +255,43 @@ PRE-FORMAT: format the block content."
 
 (cl-defun fc--org-fmt-all ()
   "Format all."
+  (fc--org-fix-headline-spacing)
   (fc--org-fmt-verse))
+
+(defun fc--org-find-oneline-footnote (fn)
+  (when (re-search-forward (concat "^[[:space:]]*" fn "\\([^
+]+\\)"))
+    (match-string 1)))
+
+(defun fc--org-convert-inline-fontnote (regex)
+  (while (re-search-forward regex)
+    (let ((start (match-beginning 0))
+          (end (match-end 0))
+          (note (fc--org-find-oneline-footnote (match-string 0))))
+      (goto-char start)
+      (if (zerop (current-column))
+          (goto-char end)
+        (delete-region start end)
+        (insert "[fn:: " note "]")))))
 
 (cl-defun fc-org-portal ()
   "Show org portal."
   (fc-user-select-func
    "Org portal"
    `(
-     ("Convert latex footnote" . ,(fc-manual (fc--org-add-footnote "\\\\footnote{\\([^}]+\\)}")))
-     ("Convert markdown verse" . fc--org-convert-mk-verse)
-     ("Conervt to table"       . fc--org-convert-table)
-     ("Fix headline spacing"   . fc--org-fix-headline-spacing)
-     ("Fix zh single quote"    . fc-fix-zh-single-qoute)
-     ("Format"                 . fc--org-fmt-all)
-     ("Publish to html"        . org-html-export-to-html)
-     ("Publish to markdown"    . org-md-export-to-markdown)
-     ("Roam sync"              . org-roam-db-sync)
-     ("Redisplay inline image" . org-redisplay-inline-images)
-     ("Update dblock"          . org-update-all-dblocks)
-     ("Update source block"    . org-babel-execute-buffer)
+     ("Convert latex footnote"     . ,(fc-manual (fc--org-add-footnote "\\\\footnote{\\([^}]+\\)}")))
+     ("Convert markdown verse"     . fc--org-convert-mk-verse)
+     ("Convert to inline footnote" . ,(fc-manual (fc--org-convert-inline-fontnote (read-string "Regex for mark footnote"))))
+     ("Conervt to table"           . fc--org-convert-table)
+     ("Fix headline spacing"       . fc--org-fix-headline-spacing)
+     ("Fix zh single quote"        . fc-fix-zh-single-qoute)
+     ("Format"                     . fc--org-fmt-all)
+     ("Publish to html"            . org-html-export-to-html)
+     ("Publish to markdown"        . org-md-export-to-markdown)
+     ("Roam sync"                  . org-roam-db-sync)
+     ("Redisplay inline image"     . org-redisplay-inline-images)
+     ("Update dblock"              . org-update-all-dblocks)
+     ("Update source block"        . org-babel-execute-buffer)
      )))
 
 (cl-defun fc--org-ctrl-c-ctrl-c ()
@@ -442,9 +473,12 @@ BODY: usually a pcase block."
 (defun fc--org-format-verse ()
   "Format a verse."
   (goto-char (point-min))
-  (fc-replace-regexp "^[ \t]*\\([^ ]\\)"
+  (fc-replace-regexp "^[[:space:]]*\\([^ ]\\)"
                      "  \\1" :from-start t)
-  (fc-whitespace-clean))
+  (fc-whitespace-clean)
+  (fc-replace-regexp "^\n+"
+                     "\n"
+                     :from-start t))
 
 (cl-defun fc--org-add-footnote (regex)
   "Add footnote.
@@ -498,7 +532,9 @@ CONTENT: content of new footnote."
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)
      ("i u" ,(fc-manual (fc-org-add-block "SRC" :ask '("Output file" "plantuml :file output/"))))
-     ("i v" ,(fc-manual (fc-org-add-block "VERSE" :pre-format #'fc--org-format-verse)))
+     ("i v" ,(fc-manual (fc-org-add-block "VERSE" :pre-format #'fc--org-format-verse :copy nil)))
+     ("i E" ,(fc-manual (fc-org-add-block "EXAMPLE" :copy nil)))
+     ("i N" ,(fc-manual (fc-org-add-block "NOTE")))
      ("i T" fc--org-insert-title)
 
      ("l" org-insert-link)
@@ -525,7 +561,7 @@ CONTENT: content of new footnote."
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-func-mode-map*)
-  "KEYS b: emphasize  c: C-c C-c  i c: clip link  i d: drawer  i f: formula  i n: roam node  i q: quote  i t: timestamp  i u: uml  i T: insert title  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
+  "KEYS b: emphasize  c: C-c C-c  i c: clip link  i d: drawer  i f: formula  i n: roam node  i q: quote  i t: timestamp  i u: uml  i N: note  i T: insert title  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()
   "Mode func."

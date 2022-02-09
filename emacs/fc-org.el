@@ -324,6 +324,7 @@ PRE-FORMAT: format the block content."
 DEFAULT: defaul function.
 BODY: usually a pcase block."
   (declare (indent 1))
+
   `(let* ((context (org-context))
           (1st-elt (caar context))
           (2nd-elt (caadr context))
@@ -334,6 +335,12 @@ BODY: usually a pcase block."
                  :item-bullet)
                 ((null 2nd-elt) 1st-elt)
                 (t 2nd-elt))))
+     (when (looking-at-p "\\$[^\\$]+\\$")
+       (setq elt :latex-fragment))
+
+     (when (fc--org-looking-over-footnote)
+       (setq elt :footnote))
+
      (if (null elt)
          (fc-funcall ,default)
        ,@body)))
@@ -348,17 +355,10 @@ BODY: usually a pcase block."
 
 (cl-defun fc--org-do ()
   "Smart do."
-  (when (looking-at-p "\\$[^\\$]+\\$")
-    (org-latex-preview)
-    (cl-return-from fc--org-do))
-
-  (when (fc--org-looking-over-footnote)
-    (org-footnote-action)
-    (cl-return-from fc--org-do))
-
   (fc--org-smart-action #'org-ctrl-c-ctrl-c
     (pcase elt
       (:checkbox (org-ctrl-c-ctrl-c))
+      (:footnote (org-footnote-action))
       (:headline (org-insert-heading-respect-content)
                  (fc-modal-disable))
       (:item (fc--org-do-intert-item))

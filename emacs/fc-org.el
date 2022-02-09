@@ -286,7 +286,6 @@ PRE-FORMAT: format the block content."
      ("Convert markdown verse"     . fc--org-convert-mk-verse)
      ("Convert to inline footnote" . ,(fc-manual (fc--org-convert-inline-fontnote (read-string "Regex for mark footnote"))))
      ("Conervt to table"           . fc--org-convert-table)
-     ("Fix headline spacing"       . fc--org-fix-headline-spacing)
      ("Fix zh single quote"        . fc-fix-zh-single-qoute)
      ("Publish to html"            . org-html-export-to-html)
      ("Publish to markdown"        . org-md-export-to-markdown)
@@ -343,7 +342,8 @@ BODY: usually a pcase block."
   "Test if current point is over a footnote."
   (or (looking-at-p "\\[fn:")
       (save-excursion
-        (re-search-backward "\\[[^\\]]+" 10)
+        (skip-chars-backward "a-zA-Z -:" (max (point-min) (- (point) 10)))
+        (backward-char 1)
         (looking-at-p "\\[fn:"))))
 
 (cl-defun fc--org-do ()
@@ -535,6 +535,7 @@ CONTENT: content of new footnote."
      ("i t" org-time-stamp)
      ("i u" ,(fc-manual (fc-org-add-block "SRC" :ask '("Output file" "plantuml :file output/"))))
      ("i v" ,(fc-manual (fc-org-add-block "VERSE" :pre-format #'fc--org-format-verse :copy nil)))
+     ("i C" ,(fc-manual (fc-org-add-block "COMMENT")))
      ("i E" ,(fc-manual (fc-org-add-block "EXAMPLE" :copy nil)))
      ("i N" ,(fc-manual (fc-org-add-block "NOTE")))
      ("i T" fc--org-insert-title)

@@ -77,6 +77,8 @@
                            nil
                            :height (- *fc-font-height* 20))
 
+    (fc-add-fmt 'org-mode nil 'fc-format-org)
+
     (defun create-image-with-background-color (args)
       "Specify background color of Org-mode inline image through modify `ARGS'."
       (let* ((file (car args))
@@ -253,10 +255,11 @@ PRE-FORMAT: format the block content."
                        (fc-region start end
                          (fc--org-format-verse)))))))
 
-(cl-defun fc--org-fmt-all ()
-  "Format all."
+(cl-defun fc-format-org ()
   (fc--org-fix-headline-spacing)
-  (fc--org-fmt-verse))
+  (fc--org-fmt-verse)
+
+  (fc--default-fmt))
 
 (defun fc--org-find-oneline-footnote (fn)
   (when (re-search-forward (concat "^[[:space:]]*" fn "\\([^
@@ -285,7 +288,6 @@ PRE-FORMAT: format the block content."
      ("Conervt to table"           . fc--org-convert-table)
      ("Fix headline spacing"       . fc--org-fix-headline-spacing)
      ("Fix zh single quote"        . fc-fix-zh-single-qoute)
-     ("Format"                     . fc--org-fmt-all)
      ("Publish to html"            . org-html-export-to-html)
      ("Publish to markdown"        . org-md-export-to-markdown)
      ("Roam sync"                  . org-roam-db-sync)

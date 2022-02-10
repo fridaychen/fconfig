@@ -176,22 +176,25 @@
 TYPE: type of block.
 ASK: allow user to input parameter of block.
 PRE-FORMAT: format the block content."
-  (let* (start end)
+  (let* (start end edit last-pos)
     (cond
      ((region-active-p)
       (setf start (region-beginning)
-            end (region-end)))
+            end (region-end)
+            edit nil))
 
      (copy
       (setf start (point))
       (yank)
-      (setf end (point)))
+      (setf end (point)
+            edit t))
 
      (t
       (mark-paragraph)
       (forward-line)
       (setf start (region-beginning)
-            end (region-end))))
+            end (region-end)
+            edit nil)))
 
     (goto-char end)
     (when pre-format
@@ -205,6 +208,9 @@ PRE-FORMAT: format the block content."
     (unless (looking-at "\n")
       (insert "\n"))
 
+    (unless edit
+      (setq last-pos (point-marker)))
+
     (goto-char start)
     (when (/= (current-column) 0)
       (insert "\n\n"))
@@ -212,7 +218,10 @@ PRE-FORMAT: format the block content."
     (insert (fc--text " "
                       (concat "#+BEGIN_" type)
                       (fc-ask ask))
-            "\n")))
+            "\n")
+
+    (when last-pos
+      (goto-char last-pos))))
 
 (cl-defun fc--org-fix-headline-spacing ()
   "Fix headline spacing."

@@ -633,6 +633,13 @@ ARGS: args for ff."
       '("-media")
     (fc-exec-command "fj" "--playa" file)))
 
+(cl-defun fit-amend (&rest args)
+  "Git amend wrapper.
+ARGS: the message of git commit."
+  (if (null args)
+      (fc--run-git-command "commit" "--amend" "--no-edit")
+    (fc--run-git-command "commit" "--amend" "-m" (fc--text " " args))))
+
 (defun fc-init-eshell ()
   "Init eshell."
   (interactive)
@@ -646,7 +653,6 @@ ARGS: args for ff."
   (eshell/alias "fj-rm-bak" "find . -name \"*~\" -delete")
   (eshell/alias "gp" "git pull $*")
   (eshell/alias "gq" "git push $*")
-  (eshell/alias "fit-amend" "fc-git-amend")
 
   (eshell/alias "la" "ls -A $*")
   (eshell/alias "ll" "ls -Alh $*")
@@ -714,7 +720,7 @@ ARGS: args for ff."
 
 (cl-defun fc--search-set-target (regex)
   "Set search target.
-REGEX: target."
+  REGEX: target."
   (fc-bind-keys `(("C-r" ,(fc-manual
                            (fc-search-next nil t)))))
 
@@ -728,8 +734,8 @@ REGEX: target."
 
 (cl-defun fc-search-next (&optional (regex nil) (backward nil))
   "Search next.
-REGEX: target regex.
-BACKWARD: search direction."
+  REGEX: target regex.
+  BACKWARD: search direction."
   (interactive)
 
   (cond (regex
@@ -816,8 +822,8 @@ BACKWARD: search direction."
 ;; multiple buffers functions
 (cl-defun fc--run-multi-buffer (dir func)
   "Do run func on multi buffers which under dir.
-DIR: root dir.
-FUNC: function to be run."
+  DIR: root dir.
+  FUNC: function to be run."
   (setf dir (concat (expand-file-name dir)
                     (if (string-suffix-p "/" dir) "" "/")))
 
@@ -827,8 +833,8 @@ FUNC: function to be run."
 
 (cl-defmacro fc-run-multi-buffer (operation &rest rest)
   "Exec operation over multi buffers.
-OPERATION: target operation.
-REST: commands."
+  OPERATION: target operation.
+  REST: commands."
   (declare (indent 1))
   `(lambda () (interactive)
      (let ((dir (read-directory-name (format "Select directory for %s :" ,operation))))
@@ -1075,10 +1081,10 @@ REST: commands."
     (setf buffer-file-name (format "%s/emacs/snippets/%s/%s" *fc-home* mode name))
     (snippet-mode)
     (insert (format "# -*- mode: snippet -*-
-# name: %s
-# key: %s
-# --\n
-"
+  # name: %s
+  # key: %s
+  # --\n
+  "
                     name key))))
 
 (defun fc-select-other-func ()
@@ -1157,7 +1163,7 @@ REST: commands."
 
 (cl-defun fc-forward-to-char (c)
   "Move forward to char.
-C: target char."
+  C: target char."
   (interactive (list (progn
                        (fc-ergo-repeat-func 'fc-repeat-to-char)
                        (read-char "Forward to char : " nil *ergo-prefix-timeout*))))
@@ -1175,7 +1181,7 @@ C: target char."
 
 (cl-defun fc-backward-to-char (c)
   "Move backward to char.
-C: target char."
+  C: target char."
   (interactive (list (progn
                        (fc-ergo-repeat-func 'fc-repeat-to-char)
                        (read-char "Backward to char : " nil *ergo-prefix-timeout*))))

@@ -1259,7 +1259,7 @@ STEP: pixels."
      ("h" git-messenger:popup-message)
      ("j" ,(fc-manual (shell-command-to-string "fit -s")))
      ("k" fc-git-commit)
-     ("l" vc-print-log)
+     ("l" magit-log-buffer-file)
      ("p" fc-git-pull)
      ("q" fc-git-push)
      ("r" fc-vc-rename-file)
@@ -1268,10 +1268,11 @@ STEP: pixels."
      ("v" vc-diff)
      ("x" magit-status)
      ("H" magit-blame)
+     ("L" magit-log-all)
      ("V" fc-git-diff-repo)
      )
    "ergo-vc-map")
-  "KEYS a: amend  c: commit  h: popup history  j: repo status  k: commit  l: log  p: pull  q: push  r: rename  s: stage  u: revert  v: diff  x: magit  H: magit blame  V: diff repo.")
+  "KEYS a: amend  c: commit  h: popup history  j: repo status  k: commit  l: log of current  p: pull  q: push  r: rename  s: stage  u: revert  v: diff  x: magit  H: magit blame  L: log of HEAD  V: diff repo.")
 
 (defconst *ergo-layout-map*
   (fc-make-keymap

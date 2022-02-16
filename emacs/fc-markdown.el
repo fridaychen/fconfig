@@ -318,13 +318,6 @@ END: end point."
       (goto-char (point-min))
       (indent-region (point-min) (point-max)))))
 
-(cl-defun fc-md-search-verse ()
-  "Search verse."
-  (interactive)
-
-  (search-forward-regexp "^[^，。]\\{5,7\\}，[^，。]\\{5,7\\}。
-"))
-
 (cl-defun fc-md-style ()
   "Apply MD style."
   (minibuffer-message (keymap-prompt markdown-mode-style-map))
@@ -352,7 +345,7 @@ END: end point."
      ("q" fc-md-quote)
      ("s" markdown-insert-hr)
 
-     ("t" fc-md-search-verse)
+     ("t" fc-book-search-verse)
 
      ("v" fc-md-add-verse)
      ("u" markdown-do)

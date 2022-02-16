@@ -286,16 +286,94 @@ PRE-FORMAT: format the block content."
         (delete-region start end)
         (insert "[fn:: " note "]")))))
 
+(cl-defun fc--org-add-header (&optional title author date lang)
+  "Add header.
+TITLE: title.
+AUTHOR: author.
+DATE: date.
+LANG: language."
+  (goto-char (point-min))
+
+  (insert "#+TITLE: " (or title (read-string "Title : ")) "\n"
+          "#+AUTHOR: " (or author (read-string "Author : ")) "\n"
+          "#+DATE: " (or date (read-string "Date : ")) "\n"
+          "#+LANGUAGE: " (or lang
+                             (fc-user-select "Language"
+                                             `("en-US"
+                                               "jp-JP"
+                                               "zh-CN")))
+          "\n"))
+
+(cl-defun fc--org-convert-latex ()
+  "Convert latex to org."
+  (save-excursion
+    (fc--org-add-header
+     (fc-search "\\title{\\(.+\\)}" :begin t :sub 1 :bound 1024)
+     (fc-search "\\author{\\(.+\\)}" :begin t :sub 1 :bound 1024)
+     (fc-search "\\date{\\([^}]+\\)}" :begin t :sub 1 :bound 1024))
+
+    (save-excursion
+      (fc--org-add-footnote "\\\\footnote{\\([^}]+\\)}"))
+
+    (save-excursion
+      (--each (if (fc-search "\\\\part{" :begin t :sub 0 :bound 20480)
+                  '(("\\part{" "* ")
+                    ("\\chapter{" "** ")
+                    ("\\chapter*{" "** ")
+                    ("\\section{" "*** ")
+                    ("\\section*{" "*** ")
+                    ("\\subsection{" "**** "))
+                '(("\\chapter{" "* ")
+                  ("\\chapter*{" "* ")
+                  ("\\section{" "** ")
+                  ("\\section*{" "** ")
+                  ("\\subsection{" "*** ")))
+        (fc-replace-string (cl-first it) (cl-second it) :from-start t)))
+
+    (save-excursion
+      (--each '(("^ +\\\\sopening{" "")
+                ("^\\\\documentclass.+" "")
+                ("^\\\\usepackage.+" "")
+                ("^\\\\title.+" "")
+                ("^\\\\author.+" "")
+                ("^\\\\date.+" ""))
+        (fc-replace-regexp (cl-first it) (cl-second it) :from-start t)))
+
+    (save-excursion
+      (--each '(("\\begin{document}" "")
+                ("\\zhbook" "")
+                ("\\end{document}" "")
+                ("\\begin{sletter}" "```")
+                ("\\end{sletter}" "```")
+                ("\\begin{verse}" "```")
+                ("\\end{verse}" "```")
+                ("\\begin{zhverse}" "```")
+                ("\\end{zhverse}" "```")
+                ("\\begin{flushright}" "")
+                ("\\end{flushright}" "")
+                ("\\begin{flushleft}" "")
+                ("\\end{flushleft}" "")
+                ("\\end{document}" "")
+                ("\\sclosing{" "")
+                ("\\sps{" "")
+                ("\\" "")
+                ("}" ""))
+        (fc-replace-string (cl-first it) (cl-second it) :from-start t)))))
+
 (cl-defun fc-org-portal ()
   "Show org portal."
   (fc-user-select-func
    "Org portal"
    `(
+     ("Add header"                 . fc--org-add-header)
      ("Convert latex footnote"     . ,(fc-manual (fc--org-add-footnote "\\\\footnote{\\([^}]+\\)}")))
      ("Convert markdown verse"     . fc--org-convert-mk-verse)
+     ("Convert latex"              . fc--org-convert-latex)
      ("Convert to inline footnote" . ,(fc-manual (fc--org-convert-inline-fontnote (read-string "Regex for mark footnote"))))
      ("Conervt to table"           . fc--org-convert-table)
      ("Fix zh single quote"        . fc-fix-zh-single-qoute)
+     ("Org ctrl-c-minus"           . org-ctrl-c-minus)
+     ("Org Sort"                   . org-sort)
      ("Publish to html"            . org-html-export-to-html)
      ("Publish to markdown"        . org-md-export-to-markdown)
      ("Roam sync"                  . org-roam-db-sync)
@@ -566,8 +644,6 @@ CONTENT: content of new footnote."
      ("L" org-todo-list)
      ("S" org-schedule)
      ("T" org-set-tags-command)
-     ("-" org-ctrl-c-minus)
-     ("^" org-sort)
      ("[" ,(fc-decorate-region "[[" "]]"))
      ("<" ,(fc-decorate-region "<<<" ">>>"))
      ("SPC" fc-org-portal))

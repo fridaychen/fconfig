@@ -34,9 +34,9 @@
     "“[^”]+“"
     "”[^“]+”"
     "^ *[,，.。”’]"
-    "^[^#\n][^\n]+[^？。！…～”’）〗】}：※》a-z—；*—]\n$"
+    "^[^#*\n][^\n]+[^？。！…～”’）〗】}：※》a-z—；*—]\n$"
     "“[^”]*\n+[^”]*”"
-    "^[^\\#\n].*[^”。！？：…}）〗】※*—～]\n$"))
+    "^[^\\#*\n].*[^”。！？：…}）〗】※*—～]\n$"))
 
 (defun fc-book-replace (pairs)
   "Batch strings replacing.
@@ -239,6 +239,15 @@ TO-STRING: new string."
                (goto-char end))
            (message "error %s" (concat "^" text "\\([^\n]+\\)")))))
    :from-start t))
+
+(cl-defun fc-book-search-verse ()
+  "Search verse."
+  (interactive)
+
+  (fc-ergo-repeat-func #'fc-book-search-verse)
+
+  (search-forward-regexp "^[^，。]\\{5,7\\}，[^，。]\\{5,7\\}。
+"))
 
 (provide 'fc-book)
 

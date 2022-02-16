@@ -16,7 +16,7 @@ var (
 	verbose_mode   = flag.Bool("v", false, "Set verbose mode")
 )
 
-func _MDConvZhScene(content string) string {
+func _MdConvZhScene(content string) string {
 	re := regexp.MustCompile("(?m)^……+")
 
 	return re.ReplaceAllString(content, "---")
@@ -69,7 +69,7 @@ func _decodeMosaic(content string) string {
 	return content
 }
 
-func _MDMarkChineseChapter(content string) string {
+func _MdMarkChineseChapter(content string) string {
 	ch_level := 1
 
 	if strings.Index(content, "第一卷") > 0 {
@@ -85,9 +85,36 @@ func _MDMarkChineseChapter(content string) string {
 	return ch_re.ReplaceAllString(content, "\n"+strings.Repeat("#", ch_level)+" $1$2$3 $4")
 }
 
-func _MDFixHeadlineSpacing(content string) string {
+func _MdFixHeadlineSpacing(content string) string {
 	content = regexp.MustCompile("([^\n])\n+#").ReplaceAllString(content, "$1\n\n#")
 	return regexp.MustCompile("(?m)^#([^\n]+)\n+([^\n])").ReplaceAllString(content, "#$1\n\n$2")
+}
+
+func _OrgMarkChineseChapter(content string) string {
+	ch_level := 1
+
+	if strings.Index(content, "第一卷") > 0 {
+		fmt.Println("found part")
+		ch_level++
+
+		part_re := regexp.MustCompile("(?m)^ *第([零一二三四五六七八九十两百千]{1,3})卷 *([^。\n]{0,40})$")
+		content = part_re.ReplaceAllString(content, "\n* 第${1}卷 $2")
+	}
+
+	ch_re := regexp.MustCompile("(?m)^ *([第章]) *([0-9零一二三四五六七八九十两百千]{1,8}) *([章节回幕]) *([^。\n]{0,40})$")
+
+	return ch_re.ReplaceAllString(content, "\n"+strings.Repeat("*", ch_level)+" $1$2$3 $4")
+}
+
+func _OrgConvZhScene(content string) string {
+	re := regexp.MustCompile("(?m)^……+")
+
+	return re.ReplaceAllString(content, "-----")
+}
+
+func _OrgFixHeadlineSpacing(content string) string {
+	content = regexp.MustCompile("([^\n])\n+\\*").ReplaceAllString(content, "$1\n\n*")
+	return regexp.MustCompile("(?m)^\\*([^\n]+)\n+([^\n])").ReplaceAllString(content, "*$1\n\n$2")
 }
 
 func _convertLeadingSpaceToNewLine(content string) string {
@@ -166,15 +193,24 @@ func _bookInit(in_filename string, out_filename string) {
 
 	content = _convertLeadingSpaceToNewLine(content)
 
+	content = _decodeMosaic(content)
+
 	if strings.HasSuffix(out_filename, ".md") {
 		if *chinese_mode {
-			content = _MDMarkChineseChapter(content)
+			content = _MdMarkChineseChapter(content)
 			content = convertChineseChapterNoToArabic(content)
-			content = _MDConvZhScene(content)
-			content = _decodeMosaic(content)
+			content = _MdConvZhScene(content)
 		}
 
-		content = _MDFixHeadlineSpacing(content)
+		content = _MdFixHeadlineSpacing(content)
+	} else if strings.HasSuffix(out_filename, ".org") {
+		if *chinese_mode {
+			content = _OrgMarkChineseChapter(content)
+			content = convertChineseChapterNoToArabic(content)
+			content = _OrgConvZhScene(content)
+		}
+
+		content = _OrgFixHeadlineSpacing(content)
 	}
 
 	content = _removeEmptyLine(content)

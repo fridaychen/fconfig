@@ -116,6 +116,10 @@
                          (org-cycle)))))
 
     (cl-defun fc--setup-org-mode ()
+      (when (and *is-gui*
+                 (fboundp #'pixel-scroll-precision-mode))
+        (pixel-scroll-precision-mode 1))
+
       (electric-indent-local-mode -1)
 
       (org-superstar-mode 1)
@@ -364,23 +368,24 @@ LANG: language."
   "Show org portal."
   (fc-user-select-func
    "Org portal"
-   `(
-     ("Add header"                 . fc--org-add-header)
-     ("Convert latex footnote"     . ,(fc-manual (fc--org-add-footnote "\\\\footnote{\\([^}]+\\)}")))
-     ("Convert markdown verse"     . fc--org-convert-mk-verse)
-     ("Convert latex"              . fc--org-convert-latex)
-     ("Convert to inline footnote" . ,(fc-manual (fc--org-convert-inline-fontnote (read-string "Regex for mark footnote"))))
-     ("Conervt to table"           . fc--org-convert-table)
-     ("Fix zh single quote"        . fc-fix-zh-single-qoute)
-     ("Org ctrl-c-minus"           . org-ctrl-c-minus)
-     ("Org Sort"                   . org-sort)
-     ("Publish to html"            . org-html-export-to-html)
-     ("Publish to markdown"        . org-md-export-to-markdown)
-     ("Roam sync"                  . org-roam-db-sync)
-     ("Redisplay inline image"     . org-redisplay-inline-images)
-     ("Update dblock"              . org-update-all-dblocks)
-     ("Update source block"        . org-babel-execute-buffer)
-     )))
+   (append
+    `(
+      ("Add header"                 . fc--org-add-header)
+      ("Convert latex footnote"     . ,(fc-manual (fc--org-add-footnote "\\\\footnote{\\([^}]+\\)}")))
+      ("Convert markdown verse"     . fc--org-convert-mk-verse)
+      ("Convert latex"              . fc--org-convert-latex)
+      ("Convert to inline footnote" . ,(fc-manual (fc--org-convert-inline-fontnote (read-string "Regex for mark footnote"))))
+      ("Conervt to table"           . fc--org-convert-table)
+      ("Org ctrl-c-minus"           . org-ctrl-c-minus)
+      ("Org Sort"                   . org-sort)
+      ("Publish to html"            . org-html-export-to-html)
+      ("Publish to markdown"        . org-md-export-to-markdown)
+      ("Roam sync"                  . org-roam-db-sync)
+      ("Redisplay inline image"     . org-redisplay-inline-images)
+      ("Update dblock"              . org-update-all-dblocks)
+      ("Update source block"        . org-babel-execute-buffer)
+      )
+    *fc-book-func-list*)))
 
 (cl-defun fc--org-ctrl-c-ctrl-c ()
   "Org ctrl-c ctrl-c wrapper."
@@ -603,7 +608,10 @@ CONTENT: content of new footnote."
      ("6" ,(fc-decorate-region "****** " "" :mark #'fc-mark-line))
 
      ("a" fc--org-beginning)
-     ("b" org-emphasize)
+     ("b" ,(fc-manual
+            (unless (region-active-p)
+              (er/mark-symbol))
+            (fc-funcall #'org-emphasize)))
      ("c" fc--org-ctrl-c-ctrl-c)
      ("e" fc--org-end)
 
@@ -613,11 +621,16 @@ CONTENT: content of new footnote."
 
      ("g" fc--org-copy)
 
-     ("i c" org-cliplink)
+     ("i c" ,(fc-cond-key :normal 'org-cliplink
+                          :region (fc-manual (fc-org-add-block "COMMENT"))))
      ("i d" org-insert-drawer)
+     ("i e" ,(fc-cond-key :normal nil
+                          :region (fc-manual (fc-org-add-block "EXAMPLE"))))
      ("i f" fc--org-insert-formula)
+     ("i g" ,(fc-manual (insert "[fn:: ") (yank) (insert "]")))
      ("i i" fc--org-convert)
-     ("i n" org-roam-node-insert)
+     ("i n" ,(fc-cond-key :normal 'org-roam-node-insert
+                          :region (fc-manual (fc-org-add-block "NOTE"))))
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)
      ("i u" ,(fc-manual (fc-org-add-block "SRC" :ask '("Output file" "plantuml :file output/"))))

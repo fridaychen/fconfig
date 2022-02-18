@@ -38,7 +38,7 @@
     "“[^”]*\n+[^”]*”"
     "^[^\\#*\n].*[^”。！？：…}）〗】※*—～]\n$"))
 
-(defun fc-book-replace (pairs)
+(defun fc--book-replace (pairs)
   "Batch strings replacing.
 PAIRS: replacement list."
   (interactive)
@@ -55,7 +55,7 @@ PAIRS: replacement list."
   (save-excursion
     (goto-char (point-min))
     (save-excursion (dos2unix))
-    (save-excursion (fc-book-replace *fc-book-chinese-table*))
+    (save-excursion (fc--book-replace *fc-book-chinese-table*))
     (save-excursion (fc-remove-empty-line))
     (save-excursion (whitespace-cleanup))))
 
@@ -72,7 +72,7 @@ TO-STRING: new string."
                                      (fc-void-p (match-string 3))))
                            (replace-match to-string)))))
 
-(cl-defun fc-fix-zh-single-qoute ()
+(cl-defun fc-book-fix-zh-single-qoute ()
   (interactive)
 
   (save-excursion
@@ -248,6 +248,26 @@ TO-STRING: new string."
 
   (search-forward-regexp "^[^，。]\\{5,7\\}，[^，。]\\{5,7\\}。
 "))
+
+(defun fc-book-chapter-zh-to-number ()
+  "Convert Chinese chapter number to arabic number."
+  (fc-replace-regexp
+   "第\\([零一二两三四五六七八九十百千万]+\\)\\([章节回幕]\\)"
+   #'(lambda ()
+       (replace-match (concat "第"
+                              (number-to-string (fc-zh-to-number (match-string 1)))
+                              "\\2")))))
+
+(defconst *fc-book-func-list*
+  `(
+    ("Book: Chapter number zh to Arabic" . fc-book-chapter-zh-to-number)
+    ("Book: Fix zh single quote"         . fc-book-fix-zh-single-qoute)
+    ("Book: Format"                      . fc-book-format)
+    ("Book: Init"                        . fc-book-init)
+    ("Book: Merge lines"                 . fc-merge-short-line)
+    ("Book: Recheck"                     . fc-recheck-book)
+    ("Book: Remove extra space"          . fc-remove-extra-whitespace)
+    ("Book: Search verse"                . fc-book-search-verse)))
 
 (provide 'fc-book)
 

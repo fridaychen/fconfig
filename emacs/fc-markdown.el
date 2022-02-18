@@ -203,24 +203,19 @@ REGEX: regex."
   "Show md portal."
   (fc-user-select-func
    "Markdown"
-   `(
-     ("Add header"                      .       fc-md-add-header)
-     ("Chapter number zh to Arabic"     .       fc-md-chapter-zh-to-number)
-     ("Convert footnote"                .       fc-md-convert-footnote)
-     ("Convert Latex"                   .       fc-md-convert-latex)
-     ("Convert Latex footnote"          .       fc-md-convert-latex-footnote)
-     ("Fix headline spacing"            .       fc-md-fix-headline-spacing)
-     ("Fix zh single quote"             .       fc-fix-zh-single-qoute)
-     ("Format"                          .       fc-book-format)
-     ("Init"                            .       fc-book-init)
-     ("Init book var"                   .       fc-md-update-local-var)
-     ("Mark chapter"                    .       fc-md-mark-chapter)
-     ("Mark section"                    .       fc-md-mark-section)
-     ("Merge lines"                     .       fc-merge-short-line)
-     ("Recheck"                         .       fc-recheck-book)
-     ("Remove extra space"              .       fc-remove-extra-whitespace)
-     ("Remove suffix space"             .       fc-markdown-mode-whitespace-cleanup)
-     )))
+   (append
+    `(
+      ("Add header"                      .       fc-md-add-header)
+      ("Chapter number zh to Arabic"     .       fc-md-chapter-zh-to-number)
+      ("Convert footnote"                .       fc-md-convert-footnote)
+      ("Convert Latex"                   .       fc-md-convert-latex)
+      ("Convert Latex footnote"          .       fc-md-convert-latex-footnote)
+      ("Fix headline spacing"            .       fc-md-fix-headline-spacing)
+      ("Init book var"                   .       fc-md-update-local-var)
+      ("Mark chapter"                    .       fc-md-mark-chapter)
+      ("Mark section"                    .       fc-md-mark-section)
+      )
+    *fc-book-func-list*)))
 
 (cl-defun fc-md-quote (start end)
   "Quote region.

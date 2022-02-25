@@ -364,6 +364,62 @@ LANG: language."
                 ("}" ""))
         (fc-replace-string (cl-first it) (cl-second it) :from-start t)))))
 
+(cl-defun fc--org-fix-fn-number ()
+  (let ((ref-num 0)
+        (def-num 0))
+    (while (re-search-forward "\\[fn:\\([0-9]+\\)\\]" nil t)
+      (let ((num (string-to-number (match-string 1))))
+        (message "-- find %d" num)
+
+        (if (zerop (- (current-column) (- (match-end 0) (match-beginning 0))))
+            (progn
+              (when (> def-num num)
+                (setq num (1+ def-num))
+                (replace-match (format "[fn:%d]" num)))
+              (setq def-num num))
+          (when (> ref-num num)
+            (setq num (1+ ref-num))
+            (replace-match (format "[fn:%d]" num)))
+          (setq ref-num num))))))
+
+(cl-defun fc--org-merge-fn-sections ()
+  (let (max s)
+    (save-excursion
+      (goto-char (point-max))
+      (setq max (point-marker)))
+
+    (while (re-search-forward "^\\[fn:.+$")
+      (when (> (point) (marker-position max))
+        (cl-return-from fc--org-merge-fn-sections))
+
+      (setq s (match-string 0))
+      (replace-match "")
+      (save-excursion
+        (goto-char (point-max))
+        (insert s "\n\n")))))
+
+(cl-defun fc--org-validate-fn-number ()
+  (let ((ref-num 0)
+        (def-num 0))
+    (while (re-search-forward "\\[fn:\\([0-9]+\\)\\]" nil t)
+      (let ((num (string-to-number (match-string 1))))
+        (if (zerop (- (current-column) (- (match-end 0) (match-beginning 0))))
+            (progn
+              (unless (= (- num def-num) 1)
+                (unless (y-or-n-p (format "Continue : def-num error %d" num))
+                  (cl-return)))
+              (setq def-num num))
+          (unless (= (- num ref-num) 1)
+            (unless (y-or-n-p (format "Continue : ref-num error %d" num))
+              (cl-return)))
+          (setq ref-num num))))
+    (message "done")))
+
+(defun fc--org-fix-fn ()
+  (save-excursion
+    (fc--org-fix-fn-number))
+  (fc--org-merge-fn-sections))
+
 (cl-defun fc-org-portal ()
   "Show org portal."
   (fc-user-select-func
@@ -376,6 +432,7 @@ LANG: language."
       ("Convert latex"              . fc--org-convert-latex)
       ("Convert to inline footnote" . ,(fc-manual (fc--org-convert-inline-fontnote (read-string "Regex for mark footnote"))))
       ("Conervt to table"           . fc--org-convert-table)
+      ("Fix footnote"               . fc--org-fix-fn)
       ("Org ctrl-c-minus"           . org-ctrl-c-minus)
       ("Org Sort"                   . org-sort)
       ("Publish to html"            . org-html-export-to-html)
@@ -384,6 +441,7 @@ LANG: language."
       ("Redisplay inline image"     . org-redisplay-inline-images)
       ("Update dblock"              . org-update-all-dblocks)
       ("Update source block"        . org-babel-execute-buffer)
+      ("Validate footnote number"   . fc--org-validate-fn-number)
       )
     *fc-book-func-list*)))
 

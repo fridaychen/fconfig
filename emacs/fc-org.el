@@ -289,7 +289,7 @@ PRE-FORMAT: format the block content."
   (fc--default-fmt))
 
 (defun fc--org-find-oneline-footnote (fn)
-  (when (re-search-forward (concat "^[[:space:]]*" fn "\\([^
+  (when (re-search-forward (concat "^[[:space:]]*" fn "[[:space:]]*" "\\([^
 ]+\\)"))
     (match-string 1)))
 
@@ -297,7 +297,7 @@ PRE-FORMAT: format the block content."
   (while (re-search-forward regex)
     (let ((start (match-beginning 0))
 	  (end (match-end 0))
-	  (note (fc--org-find-oneline-footnote (match-string 0))))
+	  (note (fc--org-find-oneline-footnote (match-string 1))))
       (goto-char start)
       (if (zerop (current-column))
 	  (goto-char end)
@@ -441,16 +441,23 @@ LANG: language."
    (append
     `(
       ("Add header"			.	fc--org-add-header)
-      ("Convert latex footnote"		.	,(fc-manual (fc--org-add-footnote "\\\\footnote{\\([^}]+\\)}")))
-      ("Convert footnote"		.	,(fc-manual (fc--org-add-footnote
-							     (read-string "Confirm"
-									  (fc-user-select
-									   "Footnote regex"
-									   '("\\[fn:: \\([^\]]+\\)\\]"
-									     "\\〔注：\\([^\]]+\\)〕"))))))
+      ("Convert footnote (from inline)"	.	,(fc-manual (fc--org-add-footnote
+							     (read-string
+							      "Confirm"
+							      (fc-user-select
+							       "Footnote regex"
+							       '("\\[fn:: \\([^\]]+\\)\\]"
+								 "\\\\footnote{\\([^}]+\\)}"
+								 "[〔【<\[]注\\([^\]]+\\)[\]>】〕]"))))))
+      ("Convert footnote (to inline)"	.	,(fc-manual (fc--org-convert-inline-fontnote
+							     (read-string
+							      "Confirm"
+							      (fc-user-select
+							       "Footnote regex"
+							       '("\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
+								 "[〔【<\[]\\(注[0-9]+\\)[\]>】〕]"))))))
       ("Convert markdown verse"		.	fc--org-convert-mk-verse)
       ("Convert latex"			.	fc--org-convert-latex)
-      ("Convert to inline footnote"	.	,(fc-manual (fc--org-convert-inline-fontnote (read-string "Regex for mark footnote"))))
       ("Conervt to table"		.	fc--org-convert-table)
       ("Fix footnote"			.	fc--org-fix-fn)
       ("Org ctrl-c-minus"		.	org-ctrl-c-minus)
@@ -520,7 +527,8 @@ BODY: usually a pcase block."
   (or (looking-at-p "\\[fn:")
       (save-excursion
 	(skip-chars-backward "a-zA-Z -:" (max (point-min) (- (point) 10)))
-	(backward-char 1)
+	(unless (= (point) (point-min))
+	  (backward-char 1))
 	(looking-at-p "\\[fn:"))))
 
 (cl-defun fc--org-show-footnote ()

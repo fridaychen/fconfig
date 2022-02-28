@@ -361,12 +361,12 @@ LANG: language."
       (--each '(("\\begin{document}" "")
 		("\\zhbook" "")
 		("\\end{document}" "")
-		("\\begin{sletter}" "```")
-		("\\end{sletter}" "```")
-		("\\begin{verse}" "```")
-		("\\end{verse}" "```")
-		("\\begin{zhverse}" "```")
-		("\\end{zhverse}" "```")
+		("\\begin{sletter}" "#+BEGIN_QUOTE")
+		("\\end{sletter}" "#+END_QUOTE")
+		("\\begin{verse}" "#+BEGIN_VERSE")
+		("\\end{verse}" "#+END_VERSE")
+		("\\begin{zhverse}" "#+BEGIN_VERSE")
+		("\\end{zhverse}" "#+END_VERSE")
 		("\\begin{flushright}" "")
 		("\\end{flushright}" "")
 		("\\begin{flushleft}" "")
@@ -448,14 +448,14 @@ LANG: language."
 							       "Footnote regex"
 							       '("\\[fn:: \\([^\]]+\\)\\]"
 								 "\\\\footnote{\\([^}]+\\)}"
-								 "[〔【<\[]注\\([^\]]+\\)[\]>】〕]"))))))
+								 "[〔【<\[]注?\\([^\]]+\\)[\]>】〕]"))))))
       ("Convert footnote (to inline)"	.	,(fc-manual (fc--org-convert-inline-fontnote
 							     (read-string
 							      "Confirm"
 							      (fc-user-select
 							       "Footnote regex"
 							       '("\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
-								 "[〔【<\[]\\(注[0-9]+\\)[\]>】〕]"))))))
+								 "[〔【<\[]\\(注?[0-9]+\\)[\]>】〕]"))))))
       ("Convert markdown verse"		.	fc--org-convert-mk-verse)
       ("Convert latex"			.	fc--org-convert-latex)
       ("Conervt to table"		.	fc--org-convert-table)

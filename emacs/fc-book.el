@@ -258,16 +258,32 @@ TO-STRING: new string."
                               (number-to-string (fc-zh-to-number (match-string 1)))
                               "\\2")))))
 
+(cl-defun fc-book-replace-zh-double-quote ()
+  (save-excursion
+    (goto-char (point-min))
+    (query-replace-regexp "\"\\([^\n\"]+\\)\""
+                          "“\\1”")
+    (goto-char (point-min))
+    (query-replace-regexp "^\"" "“")))
+
+(cl-defun fc-book-replace-zh-single-quote ()
+  (save-excursion
+    (goto-char (point-min))
+    (query-replace-regexp "\\([^a-zA-Z]\\)'\\([^\n]+\\)'\\([^a-zA-Z]\\)"
+                          "\\1‘\\2’\\3")))
+
 (defconst *fc-book-func-list*
   `(
-    ("Book: Chapter number zh to Arabic" . fc-book-chapter-zh-to-number)
-    ("Book: Fix zh single quote"         . fc-book-fix-zh-single-qoute)
-    ("Book: Format"                      . fc-book-format)
-    ("Book: Init"                        . fc-book-init)
-    ("Book: Merge lines"                 . fc-merge-short-line)
-    ("Book: Recheck"                     . fc-recheck-book)
-    ("Book: Remove extra space"          . fc-remove-extra-whitespace)
-    ("Book: Search verse"                . fc-book-search-verse)))
+    ("Book: Chapter number zh to Arabic"  . fc-book-chapter-zh-to-number)
+    ("Book: Fix zh single quote"          . fc-book-fix-zh-single-qoute)
+    ("Book: Format"                       . fc-book-format)
+    ("Book: Init"                         . fc-book-init)
+    ("Book: Merge lines"                  . fc-merge-short-line)
+    ("Book: Recheck"                      . fc-recheck-book)
+    ("Book: Replace with zh double quote" . fc-book-replace-zh-double-quote)
+    ("Book: Replace with zh single quote" . fc-book-replace-zh-single-quote)
+    ("Book: Remove extra space"           . fc-remove-extra-whitespace)
+    ("Book: Search verse"                 . fc-book-search-verse)))
 
 (provide 'fc-book)
 

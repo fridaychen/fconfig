@@ -9,7 +9,10 @@
 (fc-load (if (and *is-gui*
                   (<= 26 emacs-major-version))
              'posframe
-           'popup))
+           'popup)
+  :after (progn
+           (add-hook '*fc-after-theme-hook* #'posframe-delete-all)))
+
 (fc-load 'fullframe :autoload t)
 (when *is-mac*
   (fc-load 'osx-lib :autoload t))

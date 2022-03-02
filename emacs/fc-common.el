@@ -197,6 +197,7 @@ COLOR: background color."
       ('leuven
        (setf soothe-percent 6)
        (fc-set-face-attribute 'default nil
+                              :foreground "#444444"
                               :background *fc-common-light-theme-bg*))
 
       ((or 'gruvbox-light-soft 'gruvbox-light-medium 'gruvbox-light-hard)

@@ -28,10 +28,10 @@
 (defvar *fc-org-user-capture-templates* nil)
 
 (defvar *fc-org-trust-babel-modes* '("blockdiag"
-				     "gnuplot"
-				     "packetdiag"
-				     "plantuml"
-				     "shell"))
+                                     "gnuplot"
+                                     "packetdiag"
+                                     "plantuml"
+                                     "shell"))
 
 (defvar *fc-org-image-background* nil)
 
@@ -39,64 +39,64 @@
 (defvar *fc-org-pop-footnote* nil)
 
 (fc-install 'blockdiag-mode
-	    'gnuplot
-	    'ob-blockdiag
-	    'org-cliplink
-	    'org-link-beautify
-	    'org-superstar
-	    'valign)
+            'gnuplot
+            'ob-blockdiag
+            'org-cliplink
+            'org-link-beautify
+            'org-superstar
+            'valign)
 
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
   (fc-set-face-attribute 'org-footnote
-			 nil
-			 :height (- *fc-font-height* 20))
+                         nil
+                         :height (- *fc-font-height* 20))
 
   (setf *fc-org-image-background* (if (fc-dark-theme-p)
-				      "cornsilk2"
-				    nil))
+                                      "cornsilk2"
+                                    nil))
 
   (plist-put org-format-latex-options
-	     :foreground
-	     (fc-get-face-attribute 'font-lock-keyword-face :foreground)))
+             :foreground
+             (fc-get-face-attribute 'font-lock-keyword-face :foreground)))
 
 (fc-load 'org
   :after
   (progn
     (setf org-hide-emphasis-markers t
-	  org-log-done t
-	  org-export-with-sub-superscripts nil
-	  org-src-ask-before-returning-to-edit-buffer nil
-	  org-image-actual-width nil
-	  org-preview-latex-image-directory "output/"
-	  org-startup-indented nil
-	  org-fontify-quote-and-verse-blocks t
-	  )
+          org-log-done t
+          org-export-with-sub-superscripts nil
+          org-src-ask-before-returning-to-edit-buffer nil
+          org-image-actual-width nil
+          org-preview-latex-image-directory "output/"
+          org-startup-indented nil
+          org-fontify-quote-and-verse-blocks t
+          )
 
     (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
     (plist-put org-format-latex-options :foreground (fc-get-face-attribute 'font-lock-keyword-face :foreground))
 
     (fc-set-face-attribute 'org-footnote
-			   nil
-			   :height (- *fc-font-height* 20))
+                           nil
+                           :height (- *fc-font-height* 20))
 
     (fc-add-fmt 'org-mode nil 'fc-format-org)
 
     (defun create-image-with-background-color (args)
       "Specify background color of Org-mode inline image through modify `ARGS'."
       (let* ((file (car args))
-	     (type (cadr args))
-	     (data-p (caddr args))
-	     (props (cdddr args)))
-	;; Get this return result style from `create-image'.
-	(append (list file type data-p)
-		(when (eq major-mode 'org-mode)
-		  (list :background (or *fc-org-image-background*
-					(face-background 'default))))
-		props)))
+             (type (cadr args))
+             (data-p (caddr args))
+             (props (cdddr args)))
+        ;; Get this return result style from `create-image'.
+        (append (list file type data-p)
+                (when (eq major-mode 'org-mode)
+                  (list :background (or *fc-org-image-background*
+                                        (face-background 'default))))
+                props)))
 
     (advice-add 'create-image :filter-args
-		#'create-image-with-background-color)
+                #'create-image-with-background-color)
 
     (require 'org-agenda)
     (require 'org-capture)
@@ -114,22 +114,22 @@
       (org-hide-drawer-all)
       (org-hide-block-all)
       (org-block-map (lambda ()
-		       (when (looking-at-p "#\\+BEGIN_\\(EXAMPLE\\|QUOTE\\|VERSE\\)")
-			 (forward-char 1)
-			 (org-cycle)))))
+                       (when (looking-at-p "#\\+BEGIN_\\(EXAMPLE\\|QUOTE\\|VERSE\\)")
+                         (forward-char 1)
+                         (org-cycle)))))
 
     (defun fc-org-schedule-timer ()
       (when *fc-org-dwell-timer*
-	(cancel-timer *fc-org-dwell-timer*))
+        (cancel-timer *fc-org-dwell-timer*))
 
       (setf *fc-org-dwell-timer*
-	    (fc-idle-delay-task #'fc--org-dwell
-				0.6)))
+            (fc-idle-delay-task #'fc--org-dwell
+                                0.6)))
 
     (cl-defun fc--setup-org-mode ()
       (when (and *is-gui*
-		 (fboundp #'pixel-scroll-precision-mode))
-	(pixel-scroll-precision-mode 1))
+                 (fboundp #'pixel-scroll-precision-mode))
+        (pixel-scroll-precision-mode 1))
 
       (electric-indent-local-mode -1)
 
@@ -142,31 +142,31 @@
       (add-hook 'pre-command-hook #'fc--org-hide-footnote)
 
       (add-hook 'write-contents-functions
-		(lambda () (org-update-statistics-cookies t)) nil t))
+                (lambda () (org-update-statistics-cookies t)) nil t))
 
     (cl-defun fc--capture-copy-region ()
       (save-excursion
-	(let ((data nil))
-	  (with-current-buffer (plist-get org-capture-plist :original-buffer)
-	    (when (region-active-p)
-	      (setf data (buffer-substring (region-beginning)
-					   (region-end)))
-	      (deactivate-mark)))
-	  (when data
-	    (goto-char (point-max))
-	    (when (/= (current-column) 0)
-	      (insert "\n"))
-	    (insert data)))))
+        (let ((data nil))
+          (with-current-buffer (plist-get org-capture-plist :original-buffer)
+            (when (region-active-p)
+              (setf data (buffer-substring (region-beginning)
+                                           (region-end)))
+              (deactivate-mark)))
+          (when data
+            (goto-char (point-max))
+            (when (/= (current-column) 0)
+              (insert "\n"))
+            (insert data)))))
 
     (cl-defun fc--capture-tag ()
       (when (org-roam-capture-p)
-	(cl-return-from fc--capture-tag))
+        (cl-return-from fc--capture-tag))
 
       (let ((tags
-	     (with-current-buffer (plist-get org-capture-plist :original-buffer)
-	       (when (boundp 'fc-capture-tags)
-		 fc-capture-tags))))
-	(org-set-tags (fc-string tags))))
+             (with-current-buffer (plist-get org-capture-plist :original-buffer)
+               (when (boundp 'fc-capture-tags)
+                 fc-capture-tags))))
+        (org-set-tags (fc-string tags))))
 
     (cl-defun fc--capture-edit ()
       (fc-modal-disable))
@@ -187,7 +187,7 @@
   "Insert title."
   (let ((title (read-string "Org file title")))
     (insert "#+title: " title  "\n"
-	    "\n")))
+            "\n")))
 
 (cl-defun fc-org-add-block (type &key ask pre-format (copy t))
   "Add block.
@@ -198,26 +198,26 @@ PRE-FORMAT: format the block content."
     (cond
      ((region-active-p)
       (setf start (region-beginning)
-	    end (region-end)
-	    edit nil))
+            end (region-end)
+            edit nil))
 
      (copy
       (setf start (point))
       (yank)
       (setf end (point)
-	    edit t))
+            edit t))
 
      (t
       (mark-paragraph)
       (forward-line)
       (setf start (region-beginning)
-	    end (region-end)
-	    edit nil)))
+            end (region-end)
+            edit nil)))
 
     (goto-char end)
     (when pre-format
       (fc-region start end
-	(fc-funcall pre-format)))
+        (fc-funcall pre-format)))
 
     (when (/= (current-column) 0)
       (insert "\n"))
@@ -234,9 +234,9 @@ PRE-FORMAT: format the block content."
       (insert "\n\n"))
 
     (insert (fc--text " "
-		      (concat "#+BEGIN_" type)
-		      (fc-ask ask))
-	    "\n")
+                      (concat "#+BEGIN_" type)
+                      (fc-ask ask))
+            "\n")
 
     (when last-pos
       (goto-char last-pos))))
@@ -245,10 +245,10 @@ PRE-FORMAT: format the block content."
   "Fix headline spacing."
   (save-excursion
     (fc-replace-regexp "\\([^\n]\\)\n+\\*"
-		       "\\1\n\n*" :from-start t)
+                       "\\1\n\n*" :from-start t)
 
     (fc-replace-regexp "^\\*\\([^\n]+\\)\n+\\([^*\n]\\)"
-		       "*\\1\n\n\\2" :from-start t)))
+                       "*\\1\n\n\\2" :from-start t)))
 
 (cl-defun fc--org-convert-mk-verse ()
   "Convert markdown verse."
@@ -260,27 +260,27 @@ PRE-FORMAT: format the block content."
 
       (while (re-search-forward "[^
  ]+  $")
-	(goto-char (match-beginning 0))
-	(mark-paragraph)
-	(forward-char)
-	(fc-org-add-block "VERSE" :pre-format #'fc--org-format-verse)
-	(deactivate-mark)))))
+        (goto-char (match-beginning 0))
+        (mark-paragraph)
+        (forward-char)
+        (fc-org-add-block "VERSE" :pre-format #'fc--org-format-verse)
+        (deactivate-mark)))))
 
 (cl-defun fc--org-fmt-verse ()
   "Format verse."
   (org-block-map (lambda ()
-		   (when (looking-at-p "#\\+BEGIN_VERSE")
-		     (let (start end)
-		       (forward-line)
-		       (setf start (point))
+                   (when (looking-at-p "#\\+BEGIN_VERSE")
+                     (let (start end)
+                       (forward-line)
+                       (setf start (point))
 
-		       (goto-char (match-end 0))
-		       (forward-line -1)
-		       (end-of-line)
-		       (setf end (point))
+                       (goto-char (match-end 0))
+                       (forward-line -1)
+                       (end-of-line)
+                       (setf end (point))
 
-		       (fc-region start end
-			 (fc--org-format-verse)))))))
+                       (fc-region start end
+                         (fc--org-format-verse)))))))
 
 (cl-defun fc-format-org ()
   (fc--org-fix-headline-spacing)
@@ -296,13 +296,13 @@ PRE-FORMAT: format the block content."
 (defun fc--org-convert-inline-fontnote (regex)
   (while (re-search-forward regex)
     (let ((start (match-beginning 0))
-	  (end (match-end 0))
-	  (note (fc--org-find-oneline-footnote (match-string 1))))
+          (end (match-end 0))
+          (note (fc--org-find-oneline-footnote (match-string 1))))
       (goto-char start)
       (if (zerop (current-column))
-	  (goto-char end)
-	(delete-region start end)
-	(insert "[fn:: " note "]")))))
+          (goto-char end)
+        (delete-region start end)
+        (insert "[fn:: " note "]")))))
 
 (cl-defun fc--org-add-header (&optional title author date lang)
   "Add header.
@@ -313,16 +313,16 @@ LANG: language."
   (goto-char (point-min))
 
   (insert "#+TITLE: " (or title (read-string "Title : ")) "\n"
-	  "#+AUTHOR: " (or author (read-string "Author : ")) "\n"
-	  "#+DATE: " (or date (read-string "Date : ")) "\n"
-	  "#+LANGUAGE: " (or lang
-			     (fc-user-select "Language"
-					     `("en-US"
-					       "jp-JP"
-					       "zh-CN")))
-	  "\n"))
+          "#+AUTHOR: " (or author (read-string "Author : ")) "\n"
+          "#+DATE: " (or date (read-string "Date : ")) "\n"
+          "#+LANGUAGE: " (or lang
+                             (fc-user-select "Language"
+                                             `("en-US"
+                                               "jp-JP"
+                                               "zh-CN")))
+          "\n"))
 
-(cl-defun fc--org-convert-latex ()
+(cl-defun fc--org-convert-from-latex ()
   "Convert latex to org."
   (save-excursion
     (fc--org-add-header
@@ -335,66 +335,90 @@ LANG: language."
 
     (save-excursion
       (--each (if (fc-search "\\\\part{" :begin t :sub 0 :bound 20480)
-		  '(("\\part{" "* ")
-		    ("\\chapter{" "** ")
-		    ("\\chapter*{" "** ")
-		    ("\\section{" "*** ")
-		    ("\\section*{" "*** ")
-		    ("\\subsection{" "**** "))
-		'(("\\chapter{" "* ")
-		  ("\\chapter*{" "* ")
-		  ("\\section{" "** ")
-		  ("\\section*{" "** ")
-		  ("\\subsection{" "*** ")))
-	(fc-replace-string (cl-first it) (cl-second it) :from-start t)))
+                  '(("\\part{" "* ")
+                    ("\\chapter{" "** ")
+                    ("\\chapter*{" "** ")
+                    ("\\section{" "*** ")
+                    ("\\section*{" "*** ")
+                    ("\\subsection{" "**** "))
+                '(("\\chapter{" "* ")
+                  ("\\chapter*{" "* ")
+                  ("\\section{" "** ")
+                  ("\\section*{" "** ")
+                  ("\\subsection{" "*** ")))
+        (fc-replace-string (cl-first it) (cl-second it) :from-start t)))
 
     (save-excursion
       (--each '(("^ +\\\\sopening{" "")
-		("^\\\\documentclass.+" "")
-		("^\\\\usepackage.+" "")
-		("^\\\\title.+" "")
-		("^\\\\author.+" "")
-		("^\\\\date.+" ""))
-	(fc-replace-regexp (cl-first it) (cl-second it) :from-start t)))
+                ("^\\\\documentclass.+" "")
+                ("^\\\\usepackage.+" "")
+                ("^\\\\title.+" "")
+                ("^\\\\author.+" "")
+                ("^\\\\date.+" ""))
+        (fc-replace-regexp (cl-first it) (cl-second it) :from-start t)))
 
     (save-excursion
       (--each '(("\\begin{document}" "")
-		("\\zhbook" "")
-		("\\end{document}" "")
-		("\\begin{sletter}" "#+BEGIN_QUOTE")
-		("\\end{sletter}" "#+END_QUOTE")
-		("\\begin{verse}" "#+BEGIN_VERSE")
-		("\\end{verse}" "#+END_VERSE")
-		("\\begin{zhverse}" "#+BEGIN_VERSE")
-		("\\end{zhverse}" "#+END_VERSE")
-		("\\begin{flushright}" "")
-		("\\end{flushright}" "")
-		("\\begin{flushleft}" "")
-		("\\end{flushleft}" "")
-		("\\end{document}" "")
-		("\\sclosing{" "")
-		("\\sps{" "")
-		("\\" "")
-		("}" ""))
-	(fc-replace-string (cl-first it) (cl-second it) :from-start t)))))
+                ("\\zhbook" "")
+                ("\\end{document}" "")
+                ("\\begin{sletter}" "#+BEGIN_QUOTE")
+                ("\\end{sletter}" "#+END_QUOTE")
+                ("\\begin{verse}" "#+BEGIN_VERSE")
+                ("\\end{verse}" "#+END_VERSE")
+                ("\\begin{zhverse}" "#+BEGIN_VERSE")
+                ("\\end{zhverse}" "#+END_VERSE")
+                ("\\begin{flushright}" "")
+                ("\\end{flushright}" "")
+                ("\\begin{flushleft}" "")
+                ("\\end{flushleft}" "")
+                ("\\end{document}" "")
+                ("\\sclosing{" "")
+                ("\\sps{" "")
+                ("\\" "")
+                ("}" ""))
+        (fc-replace-string (cl-first it) (cl-second it) :from-start t)))))
+
+(defun fc--org-convert-from-markdown ()
+  "Convert latex to org."
+  (save-excursion
+    (fc--org-add-header
+     (fc-search "^title: \\(.+\\)" :begin t :sub 1 :bound 1024)
+     (fc-search "^author: \\(.+\\)" :begin t :sub 1 :bound 1024)
+     (fc-search "^date: \\(.+\\)" :begin t :sub 1 :bound 1024)
+     (fc-search "^langugae: \\(.+\\)" :begin t :sub 1 :bound 1024))
+
+    (fc-replace-regexp "\\[^\\([^
+]+\\)\\]" "[fn: \\1]":from-start t)
+
+    (--each '(("^#### " "**** ")
+              ("^### " "*** ")
+              ("^## " "** ")
+              ("^# " "* "))
+      (fc-replace-regexp (cl-first it) (cl-second it) :from-start t))
+
+    (--each '(("\n\n```" "\n\n#+BEGIN_QUOTE")
+              ("```\n\n" "#+END_QUOTE\n\n"))
+      (fc-replace-string (cl-first it) (cl-second it) :from-start t))
+
+    (fc--org-convert-mk-verse)))
 
 (cl-defun fc--org-fix-fn-number ()
   (let ((ref-num 0)
-	(def-num 0))
+        (def-num 0))
     (while (re-search-forward "\\[fn:\\([0-9]+\\)\\]" nil t)
       (let ((num (string-to-number (match-string 1))))
-	(message "-- find %d" num)
+        (message "-- find %d" num)
 
-	(if (zerop (- (current-column) (- (match-end 0) (match-beginning 0))))
-	    (progn
-	      (when (>= def-num num)
-		(setq num (1+ def-num))
-		(replace-match (format "[fn:%d]" num)))
-	      (setq def-num num))
-	  (when (>= ref-num num)
-	    (setq num (1+ ref-num))
-	    (replace-match (format "[fn:%d]" num)))
-	  (setq ref-num num))))))
+        (if (zerop (- (current-column) (- (match-end 0) (match-beginning 0))))
+            (progn
+              (when (>= def-num num)
+                (setq num (1+ def-num))
+                (replace-match (format "[fn:%d]" num)))
+              (setq def-num num))
+          (when (>= ref-num num)
+            (setq num (1+ ref-num))
+            (replace-match (format "[fn:%d]" num)))
+          (setq ref-num num))))))
 
 (cl-defun fc--org-merge-fn-sections ()
   (let (max s)
@@ -404,29 +428,29 @@ LANG: language."
 
     (while (re-search-forward "^\\[fn:.+$")
       (when (> (point) (marker-position max))
-	(cl-return-from fc--org-merge-fn-sections))
+        (cl-return-from fc--org-merge-fn-sections))
 
       (setq s (match-string 0))
       (replace-match "")
       (save-excursion
-	(goto-char (point-max))
-	(insert s "\n\n")))))
+        (goto-char (point-max))
+        (insert s "\n\n")))))
 
 (cl-defun fc--org-validate-fn-number ()
   (let ((ref-num 0)
-	(def-num 0))
+        (def-num 0))
     (while (re-search-forward "\\[fn:\\([0-9]+\\)\\]" nil t)
       (let ((num (string-to-number (match-string 1))))
-	(if (zerop (- (current-column) (- (match-end 0) (match-beginning 0))))
-	    (progn
-	      (unless (= (- num def-num) 1)
-		(unless (y-or-n-p (format "Continue : def-num error %d" num))
-		  (cl-return)))
-	      (setq def-num num))
-	  (unless (= (- num ref-num) 1)
-	    (unless (y-or-n-p (format "Continue : ref-num error %d" num))
-	      (cl-return)))
-	  (setq ref-num num))))
+        (if (zerop (- (current-column) (- (match-end 0) (match-beginning 0))))
+            (progn
+              (unless (= (- num def-num) 1)
+                (unless (y-or-n-p (format "Continue : def-num error %d" num))
+                  (cl-return)))
+              (setq def-num num))
+          (unless (= (- num ref-num) 1)
+            (unless (y-or-n-p (format "Continue : ref-num error %d" num))
+              (cl-return)))
+          (setq ref-num num))))
     (message "done")))
 
 (defun fc--org-fix-fn ()
@@ -442,22 +466,23 @@ LANG: language."
     `(
       ("Add header"			.	fc--org-add-header)
       ("Convert footnote (from inline)"	.	,(fc-manual (fc--org-add-footnote
-							     (read-string
-							      "Confirm"
-							      (fc-user-select
-							       "Footnote regex"
-							       '("\\[fn:: \\([^\]]+\\)\\]"
-								 "\\\\footnote{\\([^}]+\\)}"
-								 "[〔【<\[]注?\\([^\]]+\\)[\]>】〕]"))))))
+                                                             (read-string
+                                                              "Confirm"
+                                                              (fc-user-select
+                                                               "Footnote regex"
+                                                               '("\\[fn:: \\([^\]]+\\)\\]"
+                                                                 "\\\\footnote{\\([^}]+\\)}"
+                                                                 "[〔【<\[]注?\\([^\]]+\\)[\]>】〕]"))))))
       ("Convert footnote (to inline)"	.	,(fc-manual (fc--org-convert-inline-fontnote
-							     (read-string
-							      "Confirm"
-							      (fc-user-select
-							       "Footnote regex"
-							       '("\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
-								 "[〔【<\[]\\(注?[0-9]+\\)[\]>】〕]"))))))
+                                                             (read-string
+                                                              "Confirm"
+                                                              (fc-user-select
+                                                               "Footnote regex"
+                                                               '("\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
+                                                                 "[〔【<\[]\\(注?[0-9]+\\)[\]>】〕]"))))))
+      ("Convert from latex"		.	fc--org-convert-from-latex)
+      ("Convert from markdown"		.	fc--org-convert-from-markdown)
       ("Convert markdown verse"		.	fc--org-convert-mk-verse)
-      ("Convert latex"			.	fc--org-convert-latex)
       ("Conervt to table"		.	fc--org-convert-table)
       ("Fix footnote"			.	fc--org-fix-fn)
       ("Org ctrl-c-minus"		.	org-ctrl-c-minus)
@@ -476,11 +501,11 @@ LANG: language."
   "Org ctrl-c ctrl-c wrapper."
   (cond
    ((and (boundp 'org-agenda-mode)
-	 org-agenda-mode)
+         org-agenda-mode)
     (org-agenda-ctrl-c-ctrl-c))
 
    ((and (boundp 'org-capture-mode)
-	 org-capture-mode)
+         org-capture-mode)
     (org-capture-finalize))
 
    (t
@@ -489,8 +514,8 @@ LANG: language."
 (cl-defun fc--org-do-intert-item ()
   "Insert item."
   (if (save-excursion
-	(beginning-of-line)
-	(looking-at-p " +- \\[[ X]\\]"))
+        (beginning-of-line)
+        (looking-at-p " +- \\[[ X]\\]"))
       (org-insert-item t)
     (org-insert-item))
 
@@ -503,15 +528,15 @@ BODY: usually a pcase block."
   (declare (indent 1))
 
   `(let* ((context (org-context))
-	  (1st-elt (caar context))
-	  (2nd-elt (caadr context))
-	  (elt (cond
-		((null 1st-elt) nil)
-		((and (eq 1st-elt :item-bullet)
-		      (eq 2nd-elt :item))
-		 :item-bullet)
-		((null 2nd-elt) 1st-elt)
-		(t 2nd-elt))))
+          (1st-elt (caar context))
+          (2nd-elt (caadr context))
+          (elt (cond
+                ((null 1st-elt) nil)
+                ((and (eq 1st-elt :item-bullet)
+                      (eq 2nd-elt :item))
+                 :item-bullet)
+                ((null 2nd-elt) 1st-elt)
+                (t 2nd-elt))))
      (when (looking-at-p "\\$[^\\$]+\\$")
        (setq elt :latex-fragment))
 
@@ -519,30 +544,31 @@ BODY: usually a pcase block."
        (setq elt :footnote))
 
      (if (null elt)
-	 (fc-funcall ,default)
+         (fc-funcall ,default)
        ,@body)))
 
 (cl-defun fc--org-looking-over-footnote ()
   "Test if current point is over a footnote."
   (or (looking-at-p "\\[fn:")
       (save-excursion
-	(skip-chars-backward "a-zA-Z -:" (max (point-min) (- (point) 10)))
-	(unless (= (point) (point-min))
-	  (backward-char 1))
-	(looking-at-p "\\[fn:"))))
+        (skip-chars-backward "a-zA-Z -:" (max (point-min) (- (point) 10)))
+        (unless (= (point) (point-min))
+          (backward-char 1))
+        (looking-at-p "\\[fn:"))))
 
 (cl-defun fc--org-show-footnote ()
-  (let ((fn (org-footnote-at-reference-p)))
+  (when-let ((fn (org-footnote-at-reference-p))
+             (text (nth 3 (org-footnote-get-definition (car fn)))))
     (setf *fc-org-pop-footnote* t)
-    (posframe-show "fc-org-footnote"
-		   :string (nth 3 (org-footnote-get-definition (car fn)))
-		   :background-color "DarkRed"
-		   :foreground-color "White")))
+    (posframe-show "*fc-org-footnote*"
+                   :string text
+                   :background-color "DarkRed"
+                   :foreground-color "White")))
 
 (cl-defun fc--org-hide-footnote ()
   (when *fc-org-pop-footnote*
     (setf *fc-org-pop-footnote* nil)
-    (posframe-hide "fc-org-footnote")))
+    (posframe-hide "*fc-org-footnote*")))
 
 (cl-defun fc--org-dwell()
   (fc--org-smart-action nil
@@ -556,7 +582,7 @@ BODY: usually a pcase block."
       (:checkbox (org-ctrl-c-ctrl-c))
       (:footnote (org-footnote-action))
       (:headline (org-insert-heading-respect-content)
-		 (fc-modal-disable))
+                 (fc-modal-disable))
       (:item (fc--org-do-intert-item))
       (:item-bullet (org-ctrl-c-minus))
       ((or :latex-fragment :latex-preview)
@@ -585,7 +611,7 @@ BODY: usually a pcase block."
 (defun fc--org-current-cell ()
   "Get the content of current table cell."
   (org-table-get (org-table-current-line)
-		 (org-table-current-column)))
+                 (org-table-current-column)))
 
 (defun fc--org-copy ()
   "Copy the content of current table cell."
@@ -606,21 +632,21 @@ BODY: usually a pcase block."
    (fc-replace-looking-text "\\([0-9]+\\)[年/-]\\([0-9]+\\)[月/-]\\([0-9]+\\)[日号]?"
      (setf *fc--org-last-year* (string-to-number (match-string 1)))
      (format "[%d-%02d-%02d]"
-	     (string-to-number (match-string 1))
-	     (string-to-number (match-string 2))
-	     (string-to-number (match-string 3))))
+             (string-to-number (match-string 1))
+             (string-to-number (match-string 2))
+             (string-to-number (match-string 3))))
 
    (fc-replace-looking-text "\\([0-9]+\\)[年/-]\\([0-9]+\\)[月]"
      (setf *fc--org-last-year* (string-to-number (match-string 1)))
      (format "[%d-%02d]"
-	     (string-to-number (match-string 1))
-	     (string-to-number (match-string 2))))
+             (string-to-number (match-string 1))
+             (string-to-number (match-string 2))))
 
    (fc-replace-looking-text "\\([0-9]+\\)[月/-]\\([0-9]+\\)[日号]?"
      (format "[%d-%02d-%02d]"
-	     *fc--org-last-year*
-	     (string-to-number (match-string 1))
-	     (string-to-number (match-string 2))))))
+             *fc--org-last-year*
+             (string-to-number (match-string 1))
+             (string-to-number (match-string 2))))))
 
 (defun fc--org-occur ()
   "Wrapper of org-occur."
@@ -638,7 +664,7 @@ BODY: usually a pcase block."
 (defun fc--org-insert-formula ()
   "Insert latex formula."
   (let (last-point
-	(displayed (zerop (current-column))))
+        (displayed (zerop (current-column))))
     (unless (looking-back " " 1)
       (insert " "))
     (insert (if displayed "\\[" "$"))
@@ -654,8 +680,8 @@ BODY: usually a pcase block."
   (fc-region (region-beginning) (region-end)
     (let ((columns (read-number "Org table column")))
       (fc-replace-regexp "\n\\{1,\\}"
-			 "\n"
-			 :from-start t)
+                         "\n"
+                         :from-start t)
 
       (fc-replace-regexp "^\\(.\\)" "|\\1" :from-start t)
 
@@ -666,28 +692,28 @@ BODY: usually a pcase block."
        (join-line columns)
        (forward-line)
        until (or (eq (point) (point-max))
-		 (looking-at-p "^$"))))))
+                 (looking-at-p "^$"))))))
 
 (defun fc--org-format-verse ()
   "Format a verse."
   (goto-char (point-min))
   (fc-replace-regexp "^[[:space:]]*\\([^ ]\\)"
-		     "  \\1" :from-start t)
+                     "  \\1" :from-start t)
   (fc-whitespace-clean)
   (fc-replace-regexp "^\n+"
-		     "\n"
-		     :from-start t))
+                     "\n"
+                     :from-start t))
 
 (cl-defun fc--org-add-footnote (regex)
   "Add footnote.
 REGEX: regex."
   (let ((no (read-number "Footnote number start from")))
     (fc-replace-regexp regex
-		       #'(lambda ()
-			   (let ((footnote (match-string 1)))
-			     (replace-match "")
-			     (fc--org-insert-footnote no footnote))
-			   (setq no (1+ no))))))
+                       #'(lambda ()
+                           (let ((footnote (match-string 1)))
+                             (replace-match "")
+                             (fc--org-insert-footnote no footnote))
+                           (setq no (1+ no))))))
 
 (defun fc--org-insert-footnote (label content)
   "Insert a footnote.
@@ -713,9 +739,9 @@ CONTENT: content of new footnote."
 
      ("a" fc--org-beginning)
      ("b" ,(fc-manual
-	    (unless (region-active-p)
-	      (er/mark-symbol))
-	    (fc-funcall #'org-emphasize)))
+            (unless (region-active-p)
+              (er/mark-symbol))
+            (fc-funcall #'org-emphasize)))
      ("c" fc--org-ctrl-c-ctrl-c)
      ("e" fc--org-end)
 
@@ -726,21 +752,22 @@ CONTENT: content of new footnote."
      ("g" fc--org-copy)
 
      ("i c" ,(fc-cond-key :normal 'org-cliplink
-			  :region (fc-manual (fc-org-add-block "COMMENT"))))
+                          :region (fc-manual (fc-org-add-block "COMMENT"))))
      ("i d" org-insert-drawer)
      ("i e" ,(fc-cond-key :normal nil
-			  :region (fc-manual (fc-org-add-block "EXAMPLE"))))
+                          :region (fc-manual (fc-org-add-block "EXAMPLE"))))
      ("i f" fc--org-insert-formula)
      ("i g" ,(fc-manual (insert "[fn:: ") (yank) (insert "]")))
      ("i i" fc--org-convert)
      ("i n" ,(fc-cond-key :normal 'org-roam-node-insert
-			  :region (fc-manual (fc-org-add-block "NOTE"))))
+                          :region (fc-manual (fc-org-add-block "NOTE"))))
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)
      ("i u" ,(fc-manual (fc-org-add-block "SRC" :ask '("Output file" "plantuml :file output/"))))
      ("i v" ,(fc-manual (fc-org-add-block "VERSE" :pre-format #'fc--org-format-verse :copy nil)))
      ("i C" ,(fc-manual (fc-org-add-block "COMMENT")))
      ("i E" ,(fc-manual (fc-org-add-block "EXAMPLE" :copy nil)))
+     ("i G" ,(fc-manual (fc-funcall #'org-footnote-new) (insert " ")))
      ("i N" ,(fc-manual (fc-org-add-block "NOTE")))
      ("i T" fc--org-insert-title)
 
@@ -753,7 +780,7 @@ CONTENT: content of new footnote."
      ("v t" ,(fc-manual (org-tags-view t)))
      ("v T" org-tags-view)
      ("y" ,(fc-cond-key :normal 'fc--org-sparse-tree
-			:region 'fc--org-occur))
+                        :region 'fc--org-occur))
      ("A" org-archive-subtree)
      ("C i" org-clock-in)
      ("C o" org-clock-out)
@@ -794,14 +821,14 @@ CONTENT: content of new footnote."
   "Generate standard org capture template.
 TEMPLATE: fconfig format template."
   (seq-concatenate 'list
-		   `(,(cl-first template)
-		     ,(cl-second template)
-		     entry
-		     (file+headline
-		      ,(concat *fc-org-dir* (cl-third template))
-		      ,(cl-fourth template))
-		     ,(cl-fifth template))
-		   (nthcdr 5 template)))
+                   `(,(cl-first template)
+                     ,(cl-second template)
+                     entry
+                     (file+headline
+                      ,(concat *fc-org-dir* (cl-third template))
+                      ,(cl-fourth template))
+                     ,(cl-fifth template))
+                   (nthcdr 5 template)))
 
 (cl-defun fc-org-add-capture-template (templates)
   "Add fconfig templates to org.
@@ -814,15 +841,15 @@ TEMPLATES: fconfig templates."
   (fc--org-init-dir)
 
   (--each '(org-agenda
-	    org-agenda-list)
+            org-agenda-list)
     (advice-add it :before #'fc--before-agenda))
 
   (setf org-agenda-files (directory-files *fc-org-dir* t "org$")
-	org-capture-templates nil
-	org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
-				      "|"
-				      "DONE(d)" "SOMEDAY(s)"))
-	org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate)
+        org-capture-templates nil
+        org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
+                                      "|"
+                                      "DONE(d)" "SOMEDAY(s)"))
+        org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate)
 
   (fc-org-add-capture-template *fc-org-captrue-template*)
   (fc-org-add-capture-template *fc-org-user-capture-templates*)
@@ -839,7 +866,7 @@ TEMPLATES: fconfig templates."
   (cond
    ((org-src-edit-buffer-p)
     (if *fc-ergo-prefix*
-	(org-edit-src-abort)
+        (org-edit-src-abort)
       (org-edit-src-exit)))
 
    ((equal major-mode 'org-mode)

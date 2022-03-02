@@ -223,21 +223,20 @@ TO-STRING: new string."
   (fc-replace-regexp
    regex
    #'(lambda ()
-       (let* ((start (match-beginning 0))
-              (end (match-end 0))
-              (text (match-string 0))
-              (ft-text (fc--search (concat "^" text "\\([^\n]+\\)")
-                                   :sub 1
-                                   :bound 20480)))
-         (if ft-text
-             (progn
-               (fc-replace-region start
-                                  end
-                                  (concat "\\footnote{" ft-text "}"))
-               (goto-char (line-beginning-position))
-               (delete-char (- (line-end-position) (line-beginning-position)))
-               (goto-char end))
-           (message "error %s" (concat "^" text "\\([^\n]+\\)")))))
+       (if-let ((start (match-beginning 0))
+                (end (match-end 0))
+                (text (match-string 0))
+                (ft-text (fc--search (concat "^" text "\\([^\n]+\\)")
+                                     :sub 1
+                                     :bound 20480)))
+           (progn
+             (fc-replace-region start
+                                end
+                                (concat "\\footnote{" ft-text "}"))
+             (goto-char (line-beginning-position))
+             (delete-char (- (line-end-position) (line-beginning-position)))
+             (goto-char end))
+         (message "error %s" (concat "^" text "\\([^\n]+\\)"))))
    :from-start t))
 
 (cl-defun fc-book-search-verse ()

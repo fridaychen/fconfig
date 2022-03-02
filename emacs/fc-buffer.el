@@ -12,9 +12,8 @@
 (defun fc-buffer-visible-p (bufname)
   "Test if a buffer is visible.
 BUFNAME: to be tested."
-  (let ((buf (get-buffer bufname)))
-    (and buf
-         (get-buffer-window buf))))
+  (when-let ((buf (get-buffer bufname)))
+    (get-buffer-window buf)))
 
 (cl-defun fc-rm-current-buf (buffers)
   "Remove current buffer from list buffers.
@@ -76,11 +75,10 @@ N: nth."
 
 (cl-defun fc-switch-to-recent-buffer ()
   "Create a window and show a recent buf which is not showed."
-  (let ((buf (--first (and (buffer-file-name it)
-                           (null (get-buffer-window it)))
-                      (cdr (buffer-list)))))
-    (when buf
-      (switch-to-buffer buf))))
+  (when-let ((buf (--first (and (buffer-file-name it)
+                                (null (get-buffer-window it)))
+                           (cdr (buffer-list)))))
+    (switch-to-buffer buf)))
 
 (cl-defun fc-switch-to-buffer (prompt buffers &key root pop error-msg)
   "Select buffer to switch.

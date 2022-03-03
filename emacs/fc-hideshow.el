@@ -74,13 +74,11 @@
   (interactive)
 
   (cond
-   ((eq major-mode 'org-mode)
-    (org-cycle))
-
    ((fc-hs--is-hideshow)
     (hs-toggle-hiding))
 
-   ((fc-hs--is-outline)
+   ((or (eq major-mode 'org-mode)
+        (fc-hs--is-outline))
     (outline-toggle-children))))
 
 (provide 'fc-hideshow)

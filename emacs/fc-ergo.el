@@ -554,7 +554,7 @@ ARG: words."
   "Show current time."
   (interactive)
 
-  (fc-popup-tip (current-time-string) :timeout 3))
+  (fc-popup-info (current-time-string) :title "Time" :timeout 3))
 
 (defmacro fc-delete-key (&optional mark-func not-save)
   "Delete region.

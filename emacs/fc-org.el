@@ -71,6 +71,7 @@
           org-preview-latex-image-directory "output/"
           org-startup-indented nil
           org-fontify-quote-and-verse-blocks t
+          org-superstar-headline-bullets-list '(?◉ ?🞛 ?○ ?▷)
           )
 
     (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
@@ -289,20 +290,21 @@ PRE-FORMAT: format the block content."
   (fc--default-fmt))
 
 (defun fc--org-find-oneline-footnote (fn)
-  (when (re-search-forward (concat "^[[:space:]]*" fn "[[:space:]]*" "\\([^
+  (save-excursion
+    (when (re-search-forward (concat "^[[:space:]]*" (regexp-quote fn) "[[:space:]]*" "\\([^
 ]+\\)"))
-    (match-string 1)))
+      (match-string 1))))
 
 (defun fc--org-convert-inline-fontnote (regex)
-  (while (re-search-forward regex)
+  (while (re-search-forward regex nil t)
     (let ((start (match-beginning 0))
           (end (match-end 0))
-          (note (fc--org-find-oneline-footnote (match-string 1))))
+          (fn (match-string 1)))
       (goto-char start)
       (if (zerop (current-column))
           (goto-char end)
         (delete-region start end)
-        (insert "[fn:: " note "]")))))
+        (insert "[fn:: " (s-trim (fc--org-find-oneline-footnote fn)) "]")))))
 
 (cl-defun fc--org-add-header (&optional title author date lang)
   "Add header.
@@ -479,7 +481,7 @@ LANG: language."
                                                               (fc-user-select
                                                                "Footnote regex"
                                                                '("\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
-                                                                 "[〔【<\[]\\(注?[0-9]+\\)[\]>】〕]"))))))
+                                                                 "[（(〔【<\[]\\(注?[0-9]+\\)[\]>】〕)）]"))))))
       ("Convert from latex"		.	fc--org-convert-from-latex)
       ("Convert from markdown"		.	fc--org-convert-from-markdown)
       ("Convert markdown verse"		.	fc--org-convert-mk-verse)
@@ -560,15 +562,12 @@ BODY: usually a pcase block."
   (when-let ((fn (org-footnote-at-reference-p))
              (text (nth 3 (org-footnote-get-definition (car fn)))))
     (setf *fc-org-pop-footnote* t)
-    (posframe-show "*fc-org-footnote*"
-                   :string text
-                   :background-color "DarkRed"
-                   :foreground-color "White")))
+    (fc-popup-tip text)))
 
 (cl-defun fc--org-hide-footnote ()
   (when *fc-org-pop-footnote*
     (setf *fc-org-pop-footnote* nil)
-    (posframe-hide "*fc-org-footnote*")))
+    (fc-popup-tip-hide)))
 
 (cl-defun fc--org-dwell()
   (fc--org-smart-action nil

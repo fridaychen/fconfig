@@ -25,7 +25,7 @@ MOUSE: allow user to select with mouse."
     (let ((helm-full-frame t))
       (helm :sources
             (helm-build-sync-source prompt
-                                    :candidates collection))))
+              :candidates collection))))
 
    ((and (> 9 (length collection))
          (> (- (frame-width) 20 (length prompt))
@@ -142,44 +142,65 @@ MENU: menu."
 
 (require 'notifications)
 
-(defun fc--popup-tip-local (title content timeout)
-  "Popup top application level.
+(defun fc--popup-posframe (name text &rest rest)
+  (apply #'posframe-show name
+         :string text
+         :background-color "DarkRed"
+         :foreground-color "White"
+
+         rest))
+
+(defun fc--popup-tip (text)
+  (let ((lines (s-count-matches "\n" text)))
+    (unless (s-suffix? "\n" text)
+      (cl-incf lines))
+
+    (popup-tip text :height lines)))
+
+(defun fc-popup-tip (content)
+  "Popup info application level.
+CONTENT: buffer content.
+TIMEOUT: buffer show timeout in seconds."
+  (if (and (<= 26 emacs-major-version)
+           *is-gui*)
+      (fc--popup-posframe "*fc-tip*" content)
+    (fc--popup-tip content)))
+
+(defun fc-popup-tip-hide ()
+  (when *is-gui*
+    (posframe-hide "*fc-tip*")))
+
+(defun fc--popup-info-local (title content timeout)
+  "Popup info application level.
 CONTENT: buffer content.
 TITLE: buffer title.
 TIMEOUT: buffer show timeout in seconds."
   (if (and (<= 26 emacs-major-version)
            *is-gui*)
-      (let ((frame (posframe-show "*fc-tip*"
-                                  :string (concat "[" title "]\n\n" content)
-                                  :poshandler #'posframe-poshandler-frame-center
-                                  :background-color "DarkRed"
-                                  :foreground-color "White")))
+      (let ((frame (fc--popup-posframe "*fc-info*"
+                                       (concat "[" title "]\n\n" content)
+                                       :poshandler #'posframe-poshandler-frame-center)))
         (if (eq 0 timeout)
             (read-event)
           (sit-for timeout))
-        (posframe-hide frame))
+        (posframe-hide "*fc-info*"))
+    (fc--popup-tip content)))
 
-    (let ((lines (s-count-matches "\n" content)))
-      (unless (s-suffix? "\n" content)
-        (cl-incf lines))
-
-      (popup-tip content :height lines))))
-
-(cl-defun fc-popup-tip (content &key (title "*fc-tip*") (timeout 0) os)
-  "Popup top.
+(cl-defun fc-popup-info (content &key (title "*fc-info*") (timeout 0) os)
+  "Popup information.
 CONTENT: buffer content.
 TITLE: buffer title.
 TIMEOUT: buffer show timeout in seconds.
 OS: os level or app level."
   (if os
       (notifications-notify :title title :body content :urgency "critical" :sound-name )
-    (fc--popup-tip-local title content timeout)))
+    (fc--popup-info-local title content timeout)))
 
-(defun fc--popup-hide-tip ()
+(defun fc--popup-hide-info ()
   "Hide popup tip buffer."
-  (posframe-hide "*fc-tip*"))
+  (posframe-hide "*fc-info*"))
 
-(add-hook '*fc-ergo-restore-hook* #'fc--popup-hide-tip)
+(add-hook '*fc-ergo-restore-hook* #'fc--popup-hide-info)
 
 (provide 'fc-ui)
 

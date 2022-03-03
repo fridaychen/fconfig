@@ -143,7 +143,7 @@ S: note string."
   "Show ascii table."
   (interactive)
 
-  (fc-popup-tip
+  (fc-popup-info
    " <<US-ASCII>>
 
     2 3 4 5 6 7
@@ -163,13 +163,14 @@ S: note string."
  C: , < L \ l |
  D: - = M ] m }
  E: . > N ^ n ~
- F: / ? O _ o DEL"))
+ F: / ? O _ o DEL"
+   :title "ASCII table"))
 
 (defun fc-show-common-keys ()
   "Show functions of common keys."
   (interactive)
 
-  (fc-popup-tip
+  (fc-popup-info
    " << Common Mark Keys >>
 
   a: to begining of the line

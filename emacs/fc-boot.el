@@ -94,9 +94,9 @@
            (fc-add-to-hook '*fc-tomato-rest-hook*
                            (lambda ()
                              (fc-speak "take a break")
-                             (fc-popup-tip "Take a break !"
-                                           :title "Tomato"
-                                           :timeout 3)))
+                             (fc-popup-info "Take a break !"
+                                            :title "Tomato"
+                                            :timeout 3)))
 
            (fc-add-to-hook '*fc-tomato-start-hook*
                            #'(lambda ()
@@ -106,8 +106,8 @@
                            #'fc-job-done
                            (lambda ()
                              (fc-speak "tomato done")
-                             (fc-popup-tip "Circle done !"
-                                           :title "Tomato")))
+                             (fc-popup-info "Circle done !"
+                                            :title "Tomato")))
 
            (when *fc-enable-screen-saver*
              (add-hook '*fc-tomato-start-hook*

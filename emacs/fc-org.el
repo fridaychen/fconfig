@@ -387,10 +387,10 @@ LANG: language."
      (fc-search "^title: \\(.+\\)" :begin t :sub 1 :bound 1024)
      (fc-search "^author: \\(.+\\)" :begin t :sub 1 :bound 1024)
      (fc-search "^date: \\(.+\\)" :begin t :sub 1 :bound 1024)
-     (fc-search "^langugae: \\(.+\\)" :begin t :sub 1 :bound 1024))
+     (fc-search "^language: \\(.+\\)" :begin t :sub 1 :bound 1024))
 
     (fc-replace-regexp "\\[^\\([^
-]+\\)\\]" "[fn: \\1]":from-start t)
+]+\\)\\]" "[fn:\\1]":from-start t)
 
     (--each '(("^#### " "**** ")
               ("^### " "*** ")

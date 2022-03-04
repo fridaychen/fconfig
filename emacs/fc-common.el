@@ -276,8 +276,6 @@ COLOR: background color."
                               :background (cdr
                                            (assoc-string "zenburn-orange"
                                                          zenburn-default-colors-alist)))
-       (fc-set-face-attribute 'default nil
-                              :background "#383838")
        (fc-set-face-attribute 'hl-line nil
                               :background (cond (*is-gui* "#1E3124")
                                                 (*is-colorful* "#505050")

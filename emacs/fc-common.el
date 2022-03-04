@@ -129,7 +129,8 @@ COLOR: background color."
             font-lock-function-name-face
             font-lock-variable-name-face
             font-lock-type-face
-            font-lock-constant-face)
+            font-lock-constant-face
+            org-footnote)
     (let* ((new-bg (or color
                        (color-darken-name
                         (fc-get-face-attribute it :background)

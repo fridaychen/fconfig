@@ -390,7 +390,9 @@ LANG: language."
      (fc-search "^language: \\(.+\\)" :begin t :sub 1 :bound 1024))
 
     (fc-replace-regexp "\\[^\\([^
-]+\\)\\]" "[fn:\\1]":from-start t)
+]+\\)\\]" "[fn:\\1]" :from-start t)
+    (fc-replace-regexp "^\\(\\[fn:[^
+]+\\]\\): " "\\1 " :from-start t)
 
     (--each '(("^#### " "**** ")
               ("^### " "*** ")
@@ -551,12 +553,7 @@ BODY: usually a pcase block."
 
 (cl-defun fc--org-looking-over-footnote ()
   "Test if current point is over a footnote."
-  (or (looking-at-p "\\[fn:")
-      (save-excursion
-        (skip-chars-backward "a-zA-Z -:" (max (point-min) (- (point) 10)))
-        (unless (= (point) (point-min))
-          (backward-char 1))
-        (looking-at-p "\\[fn:"))))
+  (org-in-regexp "\\[fn:[^\]]+\\]"))
 
 (cl-defun fc--org-show-footnote ()
   (when-let ((fn (org-footnote-at-reference-p))

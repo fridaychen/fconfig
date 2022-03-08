@@ -74,6 +74,8 @@
           org-superstar-headline-bullets-list '(?◉ ?🞛 ?○ ?▷)
           )
 
+    (fc-patch-theme)
+
     (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
     (plist-put org-format-latex-options :foreground (fc-get-face-attribute 'font-lock-keyword-face :foreground))
 
@@ -389,8 +391,8 @@ LANG: language."
      (fc-search "^date: \\(.+\\)" :begin t :sub 1 :bound 1024)
      (fc-search "^language: \\(.+\\)" :begin t :sub 1 :bound 1024))
 
-    (fc-replace-regexp "\\[^\\([^
-]+\\)\\]" "[fn:\\1]" :from-start t)
+    (fc-replace-regexp "\\[^\\([^\]\n]+\\)\\]" "[fn:\\1]" :from-start t)
+
     (fc-replace-regexp "^\\(\\[fn:[^
 ]+\\]\\): " "\\1 " :from-start t)
 

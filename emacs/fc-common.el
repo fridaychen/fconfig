@@ -121,6 +121,13 @@
 
 (require 'classic-theme)
 
+(defun fc-soothe-face (face percent color)
+  (let* ((new-bg (or color
+                     (color-darken-name
+                      (fc-get-face-attribute face :background)
+                      percent))))
+    (fc-set-face-attribute face nil :background new-bg)))
+
 (defun fc-soothe-theme (percent color)
   "Soothe theme.
 PERCENT: produce background color by darken this percent.
@@ -131,11 +138,8 @@ COLOR: background color."
             font-lock-type-face
             font-lock-constant-face
             org-footnote)
-    (let* ((new-bg (or color
-                       (color-darken-name
-                        (fc-get-face-attribute it :background)
-                        percent))))
-      (fc-set-face-attribute it nil :background new-bg))))
+    (when (facep it)
+      (fc-soothe-face it percent color))))
 
 (defvar *fc-common-light-theme-bg* "cornsilk2")
 

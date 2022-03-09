@@ -28,6 +28,7 @@ class YoutubeUtil:
         url, audio_only, hook, output="~/Downloads", quiet=True
     ):
         ydl_audio_opts = {
+            "continue": True,
             "format": "bestaudio",
             "postprocessors": [
                 {"key": "FFmpegExtractAudio"},
@@ -40,6 +41,7 @@ class YoutubeUtil:
         }
 
         ydl_video_opts = {
+            "continue": True,
             "format": "bestvideo+bestaudio",
             "postprocessors": [{"key": "FFmpegMetadata"}],
             "progress_hooks": [hook],

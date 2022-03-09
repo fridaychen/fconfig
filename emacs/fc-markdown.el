@@ -15,7 +15,8 @@
           '("---"))
 
     (defun fc--setup-markdown-mode ()
-      (markdown-display-inline-images)
+      (when *is-gui*
+        (markdown-display-inline-images))
 
       (outline-hide-sublevels 3)
 
@@ -355,6 +356,9 @@ END: end point."
 (defun fc-markdown-mode-func ()
   "Run markdown mode func."
   (fc-modal-head-key "Markdown" '*fc-md-map*))
+
+(when (eq major-mode 'markdown-mode)
+  (fc--setup-markdown-mode))
 
 (provide 'fc-markdown)
 

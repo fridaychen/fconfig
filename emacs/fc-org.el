@@ -29,6 +29,7 @@
 
 (defvar *fc-org-trust-babel-modes* '("blockdiag"
                                      "gnuplot"
+                                     "octave"
                                      "packetdiag"
                                      "plantuml"
                                      "shell"))
@@ -772,7 +773,8 @@ CONTENT: content of new footnote."
      ("i T" fc--org-insert-title)
 
      ("l" org-insert-link)
-     ("m" org-mark-element)
+     ("m" ,(fc-cond-key :normal #'org-mark-element
+                        :region #'org-ctrl-c-minus))
      ("o" org-open-at-point)
      ("s" ,(fc-manual (fc-org-add-block "SRC" :ask "Programming language")))
      ("t" org-todo)
@@ -884,6 +886,9 @@ LANG: language of babel."
     (setf org-roam-directory "~/org/roam")
 
     (org-roam-db-autosync-mode)))
+
+(defun fc--org-mode-chapter-mark (level)
+  (s-repeat level "*"))
 
 (when (eq major-mode 'org-mode)
   (fc--setup-org-mode))

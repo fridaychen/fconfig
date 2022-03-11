@@ -15,7 +15,8 @@
           '("---"))
 
     (defun fc--setup-markdown-mode ()
-      (markdown-display-inline-images)
+      (when *is-gui*
+        (markdown-display-inline-images))
 
       (outline-hide-sublevels 3)
 
@@ -73,30 +74,8 @@ LANG: language."
           "\n"
           "---\n"))
 
-(cl-defun fc-md-mark-chapter (level)
-  "Find chapter and insert md commands.
-LEVEL: chapter level."
-  (interactive "nLever: ")
-
-  (save-excursion
-    (fc--toc-replace-regexp
-     "^ *\\([第章]\\) *\\([0-9零一二三四五六七八九十两百千]\\{1,8\\}\\) *\\([章节回幕]\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
-     (concat "\n"
-             (s-repeat level "#")
-             " \\1\\2\\3 \\4"))))
-
-(cl-defun fc-md-mark-section (level)
-  "Find section and insert md commands.
-LEVEL: chapter level."
-  (interactive "nLever: ")
-
-  (save-excursion
-    (fc--toc-replace-regexp
-     "^\\(第\\{0,1\\}\\)\\([0-9零一二三四五六七八九十]\\{1,4\\}\\)\\(节\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
-     (concat "
-"
-             (s-repeat level "#")
-             " \\1\\2\\3 \\4"))))
+(defun fc--markdown-mode-chapter-mark (level)
+  (s-repeat level "#"))
 
 (defun fc-md-chapter-zh-to-number ()
   "Convert Chinese chapter number to arabic number."
@@ -212,8 +191,6 @@ REGEX: regex."
       ("Convert Latex footnote"          .       fc-md-convert-latex-footnote)
       ("Fix headline spacing"            .       fc-md-fix-headline-spacing)
       ("Init book var"                   .       fc-md-update-local-var)
-      ("Mark chapter"                    .       fc-md-mark-chapter)
-      ("Mark section"                    .       fc-md-mark-section)
       )
     *fc-book-func-list*)))
 
@@ -355,6 +332,9 @@ END: end point."
 (defun fc-markdown-mode-func ()
   "Run markdown mode func."
   (fc-modal-head-key "Markdown" '*fc-md-map*))
+
+(when (eq major-mode 'markdown-mode)
+  (fc--setup-markdown-mode))
 
 (provide 'fc-markdown)
 

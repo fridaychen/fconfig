@@ -271,12 +271,38 @@ TO-STRING: new string."
     (query-replace-regexp "\\([^a-zA-Z]\\)'\\([^\n]+\\)'\\([^a-zA-Z]\\)"
                           "\\1‘\\2’\\3")))
 
+(cl-defun fc-book-mark-chapter (level)
+  "Find chapter and insert md commands.
+LEVEL: chapter level."
+  (interactive "nLever: ")
+
+  (save-excursion
+    (fc--toc-replace-regexp
+     "^ *\\([第章]\\) *\\([0-9零一二三四五六七八九十两百千]\\{1,8\\}\\) *\\([章节回幕]\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
+     (concat "\n"
+             (apply (intern (format "fc--%s-chapter-mark" major-mode)) (list level))
+             " \\1\\2\\3 \\4"))))
+
+(cl-defun fc-book-mark-section (level)
+  "Find section and insert md commands.
+LEVEL: chapter level."
+  (interactive "nLever: ")
+
+  (save-excursion
+    (fc--toc-replace-regexp
+     "^\\(第\\{0,1\\}\\)\\([0-9零一二三四五六七八九十]\\{1,4\\}\\)\\(节\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
+     (concat "\n"
+             (apply (intern (format "fc--%s-chapter-mark" major-mode)) (list level))
+             " \\1\\2\\3 \\4"))))
+
 (defconst *fc-book-func-list*
   `(
     ("Book: Chapter number zh to Arabic"  . fc-book-chapter-zh-to-number)
     ("Book: Fix zh single quote"          . fc-book-fix-zh-single-qoute)
     ("Book: Format"                       . fc-book-format)
     ("Book: Init"                         . fc-book-init)
+    ("Book: Mark chapter"                 . fc-md-mark-chapter)
+    ("Book: Mark section"                 . fc-md-mark-section)
     ("Book: Merge lines"                  . fc-merge-short-line)
     ("Book: Recheck"                      . fc-recheck-book)
     ("Book: Replace with zh double quote" . fc-book-replace-zh-double-quote)

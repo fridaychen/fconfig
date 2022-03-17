@@ -136,8 +136,7 @@ COLOR: background color."
             font-lock-function-name-face
             font-lock-variable-name-face
             font-lock-type-face
-            font-lock-constant-face
-            org-footnote)
+            font-lock-constant-face)
     (when (facep it)
       (fc-soothe-face it percent color))))
 
@@ -231,6 +230,7 @@ COLOR: background color."
          (fc-set-face-attribute 'fringe nil
                                 :background monokai-orange)
          (fc-set-face-attribute 'default nil
+                                :foreground "gray86"
                                 :background "#282a3a")))
 
       ('monokai-pro

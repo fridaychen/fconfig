@@ -49,6 +49,20 @@
 
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
+  (when (and (fc-dark-theme-p)
+             (not (fc-get-face-attribute 'org-level-1 :overline)))
+    (fc-set-face-attribute 'org-level-1 nil
+                           :overline "#efcab2"
+                           :foreground "#c7c3cb"
+                           :background "#3d2a2d"
+                           :height 1.2)
+    (fc-set-face-attribute 'org-level-2 nil
+                           :overline "#efcab2"
+                           :foreground "#efcab2"
+                           :background "#3d2a2d"
+                           :height 1.1)
+    (fc-set-face-attribute 'org-level-3 nil :height 1.05))
+
   (fc-set-face-attribute 'org-footnote
                          nil
                          :height (- *fc-font-height* 20))
@@ -75,14 +89,10 @@
           org-superstar-headline-bullets-list '(?◉ ?🞛 ?○ ?▷)
           )
 
-    (fc-patch-theme)
-
     (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
     (plist-put org-format-latex-options :foreground (fc-get-face-attribute 'font-lock-keyword-face :foreground))
 
-    (fc-set-face-attribute 'org-footnote
-                           nil
-                           :height (- *fc-font-height* 20))
+    (fc--org-theme-changed)
 
     (fc-add-fmt 'org-mode nil 'fc-format-org)
 
@@ -252,7 +262,10 @@ PRE-FORMAT: format the block content."
                        "\\1\n\n*" :from-start t)
 
     (fc-replace-regexp "^\\*\\([^\n]+\\)\n+\\([^*\n]\\)"
-                       "*\\1\n\n\\2" :from-start t)))
+                       "*\\1\n\n\\2" :from-start t)
+
+    (fc-replace-regexp "^\\*\\([^\n]+\\)\n+\\([[:alpha:]]+:\\|:PROPERTIES\\)"
+                       "*\\1\n\\2" :from-start t)))
 
 (cl-defun fc--org-convert-mk-verse ()
   "Convert markdown verse."
@@ -776,6 +789,7 @@ CONTENT: content of new footnote."
      ("m" ,(fc-cond-key :normal #'org-mark-element
                         :region #'org-ctrl-c-minus))
      ("o" org-open-at-point)
+     ("p" org-set-property)
      ("s" ,(fc-manual (fc-org-add-block "SRC" :ask "Programming language")))
      ("t" org-todo)
      ("u" fc--org-do)

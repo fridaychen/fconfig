@@ -49,23 +49,37 @@
 
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
-  (when (and (fc-dark-theme-p)
-             (not (fc-get-face-attribute 'org-level-1 :overline)))
-    (fc-set-face-attribute 'org-level-1 nil
-                           :overline "#efcab2"
-                           :foreground "#c7c3cb"
-                           :background "#3d2a2d"
-                           :height 1.2)
-    (fc-set-face-attribute 'org-level-2 nil
-                           :overline "#efcab2"
-                           :foreground "#efcab2"
-                           :background "#3d2a2d"
-                           :height 1.1)
-    (fc-set-face-attribute 'org-level-3 nil :height 1.05))
+  (when (not (fc-get-face-attribute 'org-level-1 :overline))
+    (cond
+     ((fc-dark-theme-p)
+      (fc-set-face-attribute 'org-level-1 nil
+                             :overline "#efcab2"
+                             :foreground "#c7c3cb"
+                             :background "#3d2a2d"
+                             :height 1.2)
+      (fc-set-face-attribute 'org-level-2 nil
+                             :overline "#efcab2"
+                             :foreground "#efcab2"
+                             :background "#3d2a2d"
+                             :height 1.1)
+      (fc-set-face-attribute 'org-level-3 nil :height 1.05))
+
+     (t
+      (fc-set-face-attribute 'org-level-1 nil
+                             :overline "#A7A7A7"
+                             :foreground "#3C3C3C"
+                             :background "#F0F0F0"
+                             :height 1.2)
+      (fc-set-face-attribute 'org-level-2 nil
+                             :overline "#123555"
+                             :foreground "#123555"
+                             :background "#E5F4FB"
+                             :height 1.1)
+      (fc-set-face-attribute 'org-level-3 nil :height 1.05))))
 
   (fc-set-face-attribute 'org-footnote
                          nil
-                         :height (- *fc-font-height* 20))
+                         :height (- *fc-font-height* 30))
 
   (setf *fc-org-image-background* (if (fc-dark-theme-p)
                                       "cornsilk2"

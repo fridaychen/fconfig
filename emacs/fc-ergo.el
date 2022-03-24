@@ -21,7 +21,7 @@
 
 (defvar *fc-theme-mode* 'dark)
 (defvar *fc--work-themes* '((dark gruvbox monokai zenburn)
-                            (light leuven)))
+                            (light leuven gruvbox-light-soft)))
 (defvar *fc--work-deep-themes* '((dark sanityinc-tomorrow-night)
                                  (light acme)))
 
@@ -1250,7 +1250,15 @@ STEP: pixels."
                        `(("dark"  . (lambda () (fc-theme-auto-select *fc-dark-theme*)))
                          ("deep dark" . (lambda () (fc-theme-auto-select *fc-deep-dark-theme*)))
                          ("light" . (lambda () (fc-theme-auto-select *fc-light-theme*)))
-                         ("very light" . (lambda () (fc-theme-auto-select *fc-very-light-theme*)))))))
+                         ("very light" . (lambda () (fc-theme-auto-select *fc-very-light-theme*)))
+                         ("work dark"  . (lambda () (fc-theme-auto-select
+                                                     (alist-get 'dark *fc--work-themes*))))
+                         ("work deep dark"  . (lambda () (fc-theme-auto-select
+                                                          (alist-get 'dark *fc--work-deep-themes*))))
+                         ("work light"  . (lambda () (fc-theme-auto-select
+                                                      (alist-get 'light *fc--work-themes*))))
+                         ("work very light"  . (lambda () (fc-theme-auto-select
+                                                           (alist-get 'light *fc--work-themes*))))))))
      ("v" fc-tomato-customize)
      ("w" ,(fc-manual (fc-theme-auto-select
                        (alist-get *fc-theme-mode* *fc--work-themes*))))

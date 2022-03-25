@@ -259,6 +259,8 @@ COLOR: background color."
                                            8)))
 
       ('sanityinc-tomorrow-eighties
+       (fc-set-face-attribute 'ivy-current-match nil
+                              :background "gray35")
        (fc-set-face-attribute 'fringe nil
                               :background "#de935f"))
 

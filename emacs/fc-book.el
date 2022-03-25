@@ -114,7 +114,7 @@ TO-STRING: new string."
   (interactive)
 
   (save-excursion
-    (fc-replace-regexp "\\([^a-zA-Z,.\\\\]\\) +"
+    (fc-replace-regexp "\\([^a-zA-Z,.:*\\\\]\\) +"
                        "\\1"
                        :from-start t)
     (fc-replace-regexp "\\([a-zA-Z]\\) +\\([^a-zA-Z]\\)"

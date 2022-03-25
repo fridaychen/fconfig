@@ -22,7 +22,7 @@
 (defvar *fc-theme-mode* 'dark)
 (defvar *fc--work-themes* '((dark gruvbox monokai zenburn)
                             (light leuven gruvbox-light-soft)))
-(defvar *fc--work-deep-themes* '((dark sanityinc-tomorrow-night)
+(defvar *fc--work-deep-themes* '((dark jazz sanityinc-tomorrow-night)
                                  (light acme)))
 
 (defvar *fc--ignore-files* '("compile_commands.json"))

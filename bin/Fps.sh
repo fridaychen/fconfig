@@ -55,7 +55,7 @@ function last-command-result() {
     fc-dget $FC_EXITCODE_FILE exitcode
 
     if [[ $exitcode != 0 ]]; then
-        echo -n "${FC_EXIT_FAIL} "
+        echo -n "${FC_PS_PREFIX[ec]} "
     fi
 }
 

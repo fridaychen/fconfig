@@ -80,3 +80,9 @@ function fc-locate-file-in-path() {
         dir=$(dirname "${dir}")
     done
 }
+
+function fc-wait-children() {
+    while true; do
+        wait -n || break
+    done
+}

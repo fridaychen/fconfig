@@ -19,6 +19,7 @@
         (markdown-display-inline-images))
 
       (outline-hide-sublevels 3)
+      (fc-idle-delay-task #'fc-hs-toggle 0.1)
 
       (let ((buf (current-buffer)))
         (fc-delay-task #'(lambda ()

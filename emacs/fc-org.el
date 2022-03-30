@@ -165,6 +165,7 @@
       (org-link-beautify-mode -1)
 
       (fc--org-hide-all)
+      (fc-idle-delay-task #'fc-hs-toggle 0.1)
 
       (add-hook 'post-command-hook #'fc-org-schedule-timer nil t)
       (add-hook 'pre-command-hook #'fc--org-hide-footnote)

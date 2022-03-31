@@ -48,6 +48,7 @@ var (
 	htmlArg   = flag.Bool("html", false, "find html files")
 	imageArg  = flag.Bool("img", false, "find image files")
 	libArg    = flag.Bool("lib", false, "find lib files")
+	lightArg  = flag.Bool("light", false, "light theme")
 	mediaArg  = flag.Bool("media", false, "find media files")
 	officeArg = flag.Bool("office", false, "find office files")
 	pkgArg    = flag.Bool("pkg", false, "find package files")
@@ -137,6 +138,21 @@ func doProcessDir(dir string, resultChannel chan *searchResult) []string {
 	return subdirs
 }
 
+func getLongFormatStr() string {
+	if *lightArg {
+		return "\x1b[31m%v\x1b[0m \x1b[34m%s\x1b[0m \x1b[35m%s\x1b[0m\x1b[30m%s\x1b[0m\n"
+	}
+
+	return "\x1b[33m%v\x1b[0m \x1b[31m%s\x1b[0m \x1b[35m%s\x1b[0m\x1b[37m%s\x1b[0m\n"
+}
+
+func getShortFormatStr() string {
+	if *lightArg {
+		return "\x1b[31m%s\x1b[0m\x1b[30m%s\x1b[0m\n"
+	}
+	return "\x1b[33m%s\x1b[0m\x1b[37m%s\x1b[0m\n"
+}
+
 func printOut(b *bufio.Writer, dir *string, fi os.FileInfo) {
 	ndir := ""
 
@@ -157,7 +173,7 @@ func printOut(b *bufio.Writer, dir *string, fi os.FileInfo) {
 	case *longArg:
 		fmt.Fprintf(
 			b,
-			"\x1b[31m%v\x1b[0m \x1b[33m%s\x1b[0m \x1b[32m%s\x1b[0m\x1b[33m%s\x1b[0m\n",
+			getLongFormatStr(),
 			fi.Mode(),
 			fc.GenHumanSize(fi.Size()),
 			ndir,
@@ -167,7 +183,7 @@ func printOut(b *bufio.Writer, dir *string, fi os.FileInfo) {
 		fmt.Fprintf(b, "%s%s\n", ndir, fi.Name())
 
 	default:
-		fmt.Fprintf(b, "\x1b[32m%s\x1b[0m\x1b[33m%s\x1b[0m\n", ndir, fi.Name())
+		fmt.Fprintf(b, getShortFormatStr(), ndir, fi.Name())
 	}
 }
 

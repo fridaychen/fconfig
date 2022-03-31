@@ -15,9 +15,9 @@ FC_PS_FIT_AWK=$(cat $FCHOME/bin/ps-fit.awk)
 declare -g -A FC_PS_PREFIX
 
 if [[ $FC_COLORFUL == false || $FC_EMOJI == false ]]; then
-    FC_PS_PREFIX=([fit]="^" [ol]="OL" [ec]="NG" [exec]="!")
+    FC_PS_PREFIX=([fit]="^" [fit_cherry]="Cherry" [ol]="OL" [ec]="NG" [exec]="!")
 else
-    FC_PS_PREFIX=([fit]="" [ol]="🔥" [ec]="❌" [exec]="❕")
+    FC_PS_PREFIX=([fit]="" [fit_cherry]="🍒" [ol]="🔥" [ec]="❌" [exec]="❕")
 fi
 
 FC_EXITCODE_FILE=${USER}.bashexit.${FCROOTPID}
@@ -100,9 +100,13 @@ function ps-fit-info() {
 
     if [[ ! -z $branch ]]; then
         echo -n "${FC_PS_PREFIX[fit]} $branch"
-
         git status -s | awk "$FC_PS_FIT_AWK"
+
+        if [[ -f $(fit-root)/.git/CHERRY_PICK_HEAD ]]; then
+            echo -n " ${FC_PS_PREFIX[fit_cherry]}"
+        fi
     fi
+
 }
 
 function ps-exec-start() {

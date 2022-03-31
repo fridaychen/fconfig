@@ -97,7 +97,11 @@ def list_git_log(prompt="> ", need_result=False, files=[]):
                 prompt,
                 f"--preview-window={get_preview_window_pos()}:wrap",
                 "--preview",
-                f"""echo {{}}| grep -Eo '[a-f0-9]+' | head -1 | xargs -I% git show --color=always % {" ".join(files)}""",
+                (
+                    """echo {{}} | grep -Eo "[a-f0-9]+" | head -1"""
+                    """| xargs -I% git show """
+                    f"""--color=always % {" ".join(files)}"""
+                ),
             ],
         ],
         need_result=need_result,
@@ -118,6 +122,15 @@ def git_status():
     else:
         fc.run("git", ["git", "rev-parse", "--show-toplevel"])
         fc.run("git", ["git", "status", "-s", "-b"])
+        fc.run(
+            "git",
+            [
+                "git",
+                "show",
+                "-s",
+                "--format=\n[%h] at %ar by %an : %s",
+            ],
+        )
 
         if fc.verbose:
             fc.run("git", ["git", "diff"])
@@ -273,7 +286,10 @@ def portal(once=False):
         % (
             get_root(),
             os.popen(
-                "git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \\(.*\\)/\\1/'"
+                (
+                    "git branch 2> /dev/null "
+                    "| sed -e '/^[^*]/d' -e 's/* \\(.*\\)/\\1/'"
+                )
             )
             .read()
             .strip(),

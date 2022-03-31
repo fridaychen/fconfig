@@ -541,8 +541,13 @@ DIR: dir to search."
      " "
      (fc-visible "╍❱ " "-> "))))
 
-(setf eshell-prompt-function #'fc-eshell-prompt-function
-      eshell-prompt-regexp (fc-visible "^[^\n]* ╍❱ " "^[^\n]* -> "))
+(fc-load 'eshell
+  :local t
+  :after (progn
+           (setf eshell-prompt-function #'fc-eshell-prompt-function
+                 eshell-prompt-regexp (fc-visible "^[^\n]* ╍❱ " "^[^\n]* -> "))
+           (when *is-linux*
+             (setenv "TERM" "linux"))))
 
 (defun j (&rest args)
   "Fast jump.

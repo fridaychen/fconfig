@@ -157,7 +157,7 @@ func printOut(b *bufio.Writer, dir *string, fi os.FileInfo) {
 	case *longArg:
 		fmt.Fprintf(
 			b,
-			"\x1b[31m%v\x1b[0m \x1b[34m%s\x1b[0m \x1b[32m%s\x1b[0m\x1b[33m%s\x1b[0m\n",
+			"\x1b[31m%v\x1b[0m \x1b[33m%s\x1b[0m \x1b[32m%s\x1b[0m\x1b[33m%s\x1b[0m\n",
 			fi.Mode(),
 			fc.GenHumanSize(fi.Size()),
 			ndir,

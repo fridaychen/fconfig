@@ -83,14 +83,12 @@ alias ll='ls -AlFh'
 alias lst="ll -rt"
 alias lss="ll -rS"
 
-alias lc=$(which lsd)
-
 function lsd() {
     if [[ -z $1 ]]; then
-        ls -d */
+        ls -d */ 2>/dev/null
     else
         for x in $@; do
-            ls -d "$x"/*/
+            ls -d "$x"/*/ 2>/dev/null
         done
     fi
 }

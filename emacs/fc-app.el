@@ -577,10 +577,10 @@ ARGS: ls patterns."
   (interactive)
 
   (if (not args)
-      (shell-command-to-string "ls -d */" )
+      (shell-command-to-string "ls -d */ 2>/dev/null" )
     (string-join (-map
                   (lambda (x)
-                    (shell-command-to-string (format "ls -d \"%s\"/*/" x)))
+                    (shell-command-to-string (format "ls -d \"%s\"/*/ 2>/dev/null" x)))
                   args)
                  "")))
 

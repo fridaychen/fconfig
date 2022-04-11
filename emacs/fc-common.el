@@ -108,7 +108,7 @@
       ;; fringe width 2.5mm for laptop, otherwise 3mm
       *fc-fringe-width* (if *is-gui*
                             (truncate (* (fc-display-ppi)
-                                         (/ (if *is-laptop* 2.5 3) 24.5)))
+                                         (/ (if *is-laptop* 2.5 2.8) 24.5)))
                           0)
       ;; font height 145 for laptop, otherwiseo 160
       *fc-font-height* (if *is-laptop* 145

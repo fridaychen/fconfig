@@ -1235,14 +1235,16 @@ END: end of region."
 
   (fc-region start end
     (cl-loop
-     initially (goto-char 0)
+     initially (goto-char (point-min))
      while (re-search-forward "[0-9a-fA-F]\\{2\\}" nil t)
      collect (string-to-number (match-string 0) 16) into numbers
      finally do
      (if (null numbers)
          (message "Hex number is not found !")
-       (message "string is %s"
-                (kill-new (apply #'string numbers))))
+       (let (ans)
+         (setq ans (apply #'string numbers))
+         (message "string is %s" ans)
+         (kill-new ans)))
      (deactivate-mark))))
 
 ;; set sound sink

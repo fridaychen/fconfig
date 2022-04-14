@@ -14,7 +14,7 @@
 (make-local-variable '*fc-hs-show-all*)
 
 (fc-require 'hideshow)
-(fc-require 'outline-mode)
+(fc-require 'outline)
 
 (defun fc-hs--is-hideshow ()
   (and (boundp 'hs-minor-mode)

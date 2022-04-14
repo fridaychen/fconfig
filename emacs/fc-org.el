@@ -146,14 +146,6 @@
                          (forward-char 1)
                          (org-cycle)))))
 
-    (defun fc-org-schedule-timer ()
-      (when *fc-org-dwell-timer*
-        (cancel-timer *fc-org-dwell-timer*))
-
-      (setf *fc-org-dwell-timer*
-            (fc-idle-delay-task #'fc--org-dwell
-                                0.6)))
-
     (cl-defun fc--setup-org-mode ()
       (when (and *is-gui*
                  (fboundp #'pixel-scroll-precision-mode))
@@ -167,7 +159,7 @@
       (fc--org-hide-all)
       (fc-idle-delay-task #'fc-hs-toggle 0.1)
 
-      (add-hook 'post-command-hook #'fc-org-schedule-timer nil t)
+      (fc-dwell-enable #'fc--org-dwell)
       (add-hook 'pre-command-hook #'fc--org-hide-footnote)
 
       (add-hook 'write-contents-functions
@@ -599,7 +591,7 @@ BODY: usually a pcase block."
     (setf *fc-org-pop-footnote* nil)
     (fc-popup-tip-hide)))
 
-(cl-defun fc--org-dwell()
+(cl-defun fc--org-dwell ()
   (fc--org-smart-action nil
     (pcase elt
       (:footnote (fc--org-show-footnote)))))

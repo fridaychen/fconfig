@@ -205,12 +205,36 @@ FUNC: new function."
     (add-hook 'fc-display-hook func))
 
   (cl-flet ((f (&optional ignored)
-               (run-hooks 'fc-display-hook)))
+              (run-hooks 'fc-display-hook)))
     (add-function :after pre-redisplay-function #'f)))
 
 (defun fc-home-path (path)
   (expand-file-name
    (concat user-emacs-directory path)))
+
+;; dwell delay
+(defvar *fc-dwell-timeout* 0.6)
+(defvar *fc-dwell-timer* nil)
+(defvar *fc-dwell-func* nil)
+
+(make-local-variable '*fc-dwell-func*)
+
+(defun fc--dwell-func ()
+  (when *fc-dwell-timer*
+    (cancel-timer *fc-dwell-timer*)
+    (setq *fc-dwell-timer* nil))
+
+  (when *fc-dwell-func*
+    (setf *fc-dwell-timer*
+          (fc-idle-delay-task *fc-dwell-func* *fc-dwell-timeout*))))
+
+(defun fc-dwell-enable (func)
+  (setq-local *fc-dwell-func* func)
+  (add-hook 'post-command-hook #'fc--dwell-func nil t))
+
+(defun fc-dwell-disable ()
+  (setq-local *fc-dwell-func* nil)
+  (remove-hook 'post-command-hook #'fc--dwell-func t))
 
 (provide 'fc-facility)
 

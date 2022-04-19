@@ -77,6 +77,18 @@
                              :height 1.1)
       (fc-set-face-attribute 'org-level-3 nil :height 1.05))))
 
+  (--each '(org-quote org-block)
+    (let ((default-bg (fc-get-face-attribute 'default :background))
+          (target-bg (fc-get-face-attribute it :background)))
+      (when (or
+             (equal target-bg default-bg)
+             (> (fc-color-difference target-bg default-bg) 8000))
+        (fc-set-face-attribute it nil
+                               :background
+                               (color-darken-name
+                                default-bg
+                                (if (fc-dark-theme-p) -5 5))))))
+
   (fc-set-face-attribute 'org-footnote
                          nil
                          :height (- *fc-font-height* 30))

@@ -56,7 +56,7 @@ PAIRS: replacement list."
     (goto-char (point-min))
     (save-excursion (dos2unix))
     (save-excursion (fc--book-replace *fc-book-chinese-table*))
-    (save-excursion (fc-remove-empty-line))
+    (save-excursion (fc--remove-empty-line))
     (save-excursion (whitespace-cleanup))))
 
 (defun fc--toc-replace-regexp (regex to-string)
@@ -167,7 +167,7 @@ TO-STRING: new string."
   (interactive)
 
   (save-excursion
-    (fc-remove-empty-line)
+    (fc--remove-empty-line)
 
     (fc-replace-regexp "^ +"
                        "

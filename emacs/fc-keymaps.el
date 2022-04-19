@@ -119,6 +119,8 @@ MODE-FUNC: mode and function definitions."
    `(
      ("7" ,(fc-manual (fc-run-hook '*fc-common-fast-act-hook*)))
 
+     ("B" ,(fc-cond-key :region 'base64-encode-region
+                        :preregion 'base64-decode-region))
      ("H" ,(fc-cond-key :normal 'fc-string2hex
                         :region 'fc-hex2string))
      ("T" fc-insert-todo-block)

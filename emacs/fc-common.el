@@ -220,6 +220,11 @@ COLOR: background color."
        (fc-set-face-attribute 'org-level-2 nil
                               :height 1.1))
 
+      ('material-light
+       (setf soothe-percent 2)
+       (fc-set-face-attribute 'default nil
+                              :background "honeydew"))
+
       ('modus-operandi
        (setf soothe-percent 6)
        (fc-set-face-attribute 'default nil :background *fc-common-light-theme-bg*)

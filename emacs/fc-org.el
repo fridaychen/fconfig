@@ -605,41 +605,41 @@ BODY: usually a pcase block."
 
 (cl-defun fc--org-dwell ()
   (fc--org-smart-action nil
-    (pcase elt
-      (:footnote (fc--org-show-footnote)))))
+                        (pcase elt
+                          (:footnote (fc--org-show-footnote)))))
 
 (cl-defun fc--org-do ()
   "Smart do."
   (fc--org-smart-action #'org-ctrl-c-ctrl-c
-    (pcase elt
-      (:checkbox (org-ctrl-c-ctrl-c))
-      (:footnote (org-footnote-action))
-      (:headline (org-insert-heading-respect-content)
-                 (fc-modal-disable))
-      (:item (fc--org-do-intert-item))
-      (:item-bullet (org-ctrl-c-minus))
-      ((or :latex-fragment :latex-preview)
-       (org-latex-preview))
-      (:link (org-open-at-point))
-      (:src-block (org-ctrl-c-ctrl-c))
-      (:tags (org-set-tags-command))
-      (:timestamp (fc-funcall #'org-time-stamp))
-      (:todo-keyword (org-todo))
-      (_ (message "context: %s elt: %s" context elt)))))
+                        (pcase elt
+                          (:checkbox (org-ctrl-c-ctrl-c))
+                          (:footnote (org-footnote-action))
+                          (:headline (org-insert-heading-respect-content)
+                                     (fc-modal-disable))
+                          (:item (fc--org-do-intert-item))
+                          (:item-bullet (org-ctrl-c-minus))
+                          ((or :latex-fragment :latex-preview)
+                           (org-latex-preview))
+                          (:link (org-open-at-point))
+                          (:src-block (org-ctrl-c-ctrl-c))
+                          (:tags (org-set-tags-command))
+                          (:timestamp (fc-funcall #'org-time-stamp))
+                          (:todo-keyword (org-todo))
+                          (_ (message "context: %s elt: %s" context elt)))))
 
 (defun fc--org-beginning ()
   "Goto the beginning of the current block."
   (fc--org-smart-action nil
-    (pcase elt
-      (:src-block (re-search-backward "^ *#\\+BEGIN"))
-      (_ (message "context: %s" context)))))
+                        (pcase elt
+                          (:src-block (re-search-backward "^ *#\\+BEGIN"))
+                          (_ (message "context: %s" context)))))
 
 (defun fc--org-end ()
   "Goto the end of the current block."
   (fc--org-smart-action nil
-    (pcase elt
-      (:src-block (re-search-forward "^ *#\\+END"))
-      (_ (message "context: %s" context)))))
+                        (pcase elt
+                          (:src-block (re-search-forward "^ *#\\+END"))
+                          (_ (message "context: %s" context)))))
 
 (defun fc--org-current-cell ()
   "Get the content of current table cell."
@@ -649,9 +649,9 @@ BODY: usually a pcase block."
 (defun fc--org-copy ()
   "Copy the content of current table cell."
   (fc--org-smart-action nil
-    (pcase elt
-      (:table (kill-new (fc--org-current-cell)))
-      (_ (message "context: %s" context)))))
+                        (pcase elt
+                          (:table (kill-new (fc--org-current-cell)))
+                          (_ (message "context: %s" context)))))
 
 (defun fc-org-mode-mouse-func (_event)
   "Handle mouse event."
@@ -688,11 +688,11 @@ BODY: usually a pcase block."
 (defun fc--org-sparse-tree ()
   "Smart sparse tree."
   (fc--org-smart-action #'org-sparse-tree
-    (pcase elt
-      (:headline (fc--org-occur))
-      (:tags (fc-funcall #'org-match-sparse-tree))
-      (:todo-keyword (fc-funcall #'org-show-todo-tree))
-      (_ (fc-funcall #'org-sparse-tree)))))
+                        (pcase elt
+                          (:headline (fc--org-occur))
+                          (:tags (fc-funcall #'org-match-sparse-tree))
+                          (:todo-keyword (fc-funcall #'org-show-todo-tree))
+                          (_ (fc-funcall #'org-sparse-tree)))))
 
 (defun fc--org-insert-formula ()
   "Insert latex formula."
@@ -776,6 +776,10 @@ CONTENT: content of new footnote."
               (er/mark-symbol))
             (fc-funcall #'org-emphasize)))
      ("c" fc--org-ctrl-c-ctrl-c)
+     ("d" ,(fc-manual
+            (if (org-at-encrypted-entry-p)
+                (fc-funcall #'org-decrypt-entry)
+              (fc-funcall #'org-encrypt-entry))))
      ("e" fc--org-end)
 
      ("f b" ,(fc-decorate-region "*" "*"))
@@ -817,6 +821,7 @@ CONTENT: content of new footnote."
      ("y" ,(fc-cond-key :normal 'fc--org-sparse-tree
                         :region 'fc--org-occur))
      ("A" org-archive-subtree)
+     ("B" org-roam-buffer-toggle)
      ("C i" org-clock-in)
      ("C o" org-clock-out)
      ("D" org-deadline)
@@ -828,7 +833,7 @@ CONTENT: content of new footnote."
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-func-mode-map*)
-  "KEYS b: emphasize  c: C-c C-c  i c: clip link  i d: drawer  i f: formula  i n: roam node  i q: quote  i t: timestamp  i u: uml  i N: note  i T: insert title  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
+  "KEYS b: emphasize  c: C-c C-c  d: de/en-crypt  i c: clip link  i d: drawer  i f: formula  i n: roam node  i q: quote  i t: timestamp  i u: uml  i N: note  i T: insert title  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  B: backlink  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()
   "Mode func."

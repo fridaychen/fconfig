@@ -1,13 +1,14 @@
 # -*- mode: snippet -*-
 # name:  getopt
 # key: getopt
+# expand-env: ((yas-indent-line 'fixed))
 # --
-
 while getopts "$1" OPT; do
     case $OPT in
 	$2)
 	    $0
 	    ;;
+
 	*)
 	    usage
 	    ;;

@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name:  getopt
+# key: getopt
+# --
+
+while getopts "$1" OPT; do
+    case $OPT in
+	$2)
+	    $0
+	    ;;
+	*)
+	    usage
+	    ;;
+    esac
+done

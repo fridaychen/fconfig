@@ -241,6 +241,18 @@ FUNC: new function."
   `(when-let ((default-directory ,dir))
      (progn ,@rest)))
 
+(cl-defmacro fc-with-buffer (buffer-or-name &rest rest)
+  (declare (indent 1))
+  `(when-let ((buf (get-buffer-create ,buffer-or-name)))
+     (with-current-buffer buf
+       (progn ,@rest))))
+
+(cl-defmacro fc-with-existing-buffer (buffer-or-name &rest rest)
+  (declare (indent 1))
+  `(when-let ((buf (get-buffer ,buffer-or-name)))
+     (with-current-buffer buf
+       (progn ,@rest))))
+
 (provide 'fc-facility)
 
 ;; Local Variables:

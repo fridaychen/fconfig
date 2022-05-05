@@ -236,6 +236,11 @@ FUNC: new function."
   (setq-local *fc-dwell-func* nil)
   (remove-hook 'post-command-hook #'fc--dwell-func t))
 
+(cl-defmacro fc-with-dir (dir &rest rest)
+  (declare (indent 1))
+  `(let ((default-directory ,dir))
+     (progn ,@rest)))
+
 (provide 'fc-facility)
 
 ;; Local Variables:

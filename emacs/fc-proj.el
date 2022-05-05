@@ -67,9 +67,9 @@ PATH: path."
 (cl-defmethod fc-proj--exec ((x fc-project) &rest args)
   "Run command under project.
 ARGS: command arguments."
-  (shell-command
-   (concat "cd " (fc-proj--get x :path) ";"
-           (s-join "" args))))
+  (fc-with-dir (fc-proj--get x :path)
+    (shell-command
+     (s-join "" args))))
 
 (cl-defmethod fc-proj--opentag ((x fc-project) &rest _args)
   (fc-tag-open-project
@@ -87,7 +87,8 @@ TARGET: make target."
       (if (consp it)
           (setenv (car it) (cadr it))))
 
-    (compile (format "cd %s;fj-build %s" (oref x dir) target))
+    (fc-with-dir (oref x dir)
+      (compile (format "fj-build %s" target)))
     (setenv "PATH" old-path)))
 
 (cl-defmethod fc-proj--update-local-vars ((x fc-project))
@@ -292,22 +293,15 @@ BUILD-DIR: compilation dir."
 
 ;; project utils
 (cl-defun fc-proj-recentf ()
-  (let* ((root (fc-proj-root))
-         (files (if root
-                    (--filter (string-prefix-p root it)
-                              recentf-list)
-                  nil)))
-    (when (null root)
-      (message "No project !!!")
-      (cl-return-from fc-proj-recentf))
-
-    (when (zerop (length files))
-      (message "No recent files !!!")
-      (cl-return-from fc-proj-recentf))
-
+  (when-let* ((root (fc-proj-root))
+              (files (--filter (string-prefix-p root it)
+                               recentf-list)))
     (find-file (fc-user-select "Project recentf"
                                (--map (cons (file-relative-name it root) it)
-                                      files)))))
+                                      files)))
+    (cl-return-from fc-proj-recentf))
+
+  (message "No project or recent files !!!"))
 
 (cl-defun fc-proj-root (&optional (dir (expand-file-name default-directory)))
   (unless dir

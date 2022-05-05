@@ -667,12 +667,13 @@ ARGS: the message of git commit."
   )
 
 (defun fc--setup-eshell-after-theme-changed ()
-  (with-current-buffer "*eshell*"
-    (setenv "FC_LIGHT_THEME"
-            (if (fc-dark-theme-p)
-                "false"
-              "true")
-            nil)))
+  (when-let ((buf (get-buffer "*eshell*")))
+    (with-current-buffer buf
+      (setenv "FC_LIGHT_THEME"
+              (if (fc-dark-theme-p)
+                  "false"
+                "true")
+              nil))))
 
 ;; f key sequence
 (defvar *fc-key-seq* "")

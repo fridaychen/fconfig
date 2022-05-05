@@ -36,11 +36,14 @@ function usage() {
     exit
 }
 
-while getopts "hc:" OPT; do
+while getopts "hc:f" OPT; do
     case $OPT in
         c)
             CPUS=$OPTARG
             ;;
+	f)
+	    NO_CONFIRM=true
+	    ;;
         *)
             usage
             ;;

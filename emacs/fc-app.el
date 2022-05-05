@@ -666,6 +666,14 @@ ARGS: the message of git commit."
   (eshell/alias "lss" "ls -Alh -rS $*")
   )
 
+(defun fc--setup-eshell-after-theme-changed ()
+  (with-current-buffer "*eshell*"
+    (setenv "FC_LIGHT_THEME"
+            (if (fc-dark-theme-p)
+                "false"
+              "true")
+            nil)))
+
 ;; f key sequence
 (defvar *fc-key-seq* "")
 

@@ -485,6 +485,10 @@ func setupEnv() {
 	if "dumb" == os.Getenv("TERM") {
 		*noColorArg = true
 	}
+
+	if "true" == os.Getenv("FC_LIGHT_THEME") {
+		*lightArg = true
+	}
 }
 
 func run() {

@@ -121,7 +121,12 @@
   :before (setf exec-path-from-shell-check-startup-files nil)
   :after (exec-path-from-shell-initialize))
 
-(fc-require 'fc-app t)
+(fc-load 'fc-app
+  :local t
+  :after
+  (progn
+    (add-hook '*fc-after-theme-hook* #'fc--setup-eshell-after-theme-changed)))
+
 (fc-require 'fc-book t)
 
 (fc-load 'fc-player

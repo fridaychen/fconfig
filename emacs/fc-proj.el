@@ -261,9 +261,8 @@ DIR: project path."
   "Load compileation error file.
 ERROR-FILE: error file path.
 BUILD-DIR: compilation dir."
-  (let ((buf (find-file error-file)))
-    (with-current-buffer buf
-      (setf default-directory build-dir)
+  (fc-with-buffer (find-file error-file)
+    (fc-with-dir build-dir
       (compilation-mode))))
 
 (cl-defun fc-proj-load-compilation-error ()

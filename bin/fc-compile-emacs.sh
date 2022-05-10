@@ -32,6 +32,7 @@ function usage() {
     echo "Update and compile emacs"
     echo ""
     echo "  -c number of cpus will be used for compilation"
+    echo "  -f never prompt"
     echo ""
     exit
 }
@@ -41,9 +42,9 @@ while getopts "hc:f" OPT; do
         c)
             CPUS=$OPTARG
             ;;
-	f)
-	    NO_CONFIRM=true
-	    ;;
+        f)
+            NO_CONFIRM=true
+            ;;
         *)
             usage
             ;;

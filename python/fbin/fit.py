@@ -133,7 +133,13 @@ def git_status():
         )
 
         if fc.verbose:
-            fc.run("git", ["git", "diff"])
+            fc.pipe(
+                [
+                    ["git", "diff", "--color=always"],
+                    ["diff-so-fancy", "--colors"],
+                    ["less", "--tabs=4", "-RFX"],
+                ]
+            )
 
 
 def git_add_file():

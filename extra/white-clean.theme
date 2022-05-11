@@ -162,10 +162,11 @@
 #+HTML_HEAD:     line-height:  2.5;
 #+HTML_HEAD:     margin-bottom:  15px;
 #+HTML_HEAD:     max-width:  100%;
-#+HTML_HEAD:     width:  100%;
+#+HTML_HEAD:     border-collapse: collapse;
 #+HTML_HEAD: }
 #+HTML_HEAD: table td, table th {
 #+HTML_HEAD:     padding:  0 15px;
+#+HTML_HEAD:     border: 1px solid #777;
 #+HTML_HEAD: }
 #+HTML_HEAD: table th.left, table td.left {
 #+HTML_HEAD:     text-align:  left;

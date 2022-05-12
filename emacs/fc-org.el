@@ -28,10 +28,13 @@
 (defvar *fc-org-user-capture-templates* nil)
 
 (defvar *fc-org-trust-babel-modes* '("blockdiag"
+                                     "elisp"
+                                     "emacs-lisp"
                                      "gnuplot"
                                      "octave"
                                      "packetdiag"
                                      "plantuml"
+                                     "python"
                                      "shell"))
 
 (defvar *fc-org-image-background* nil)
@@ -605,41 +608,41 @@ BODY: usually a pcase block."
 
 (cl-defun fc--org-dwell ()
   (fc--org-smart-action nil
-                        (pcase elt
-                          (:footnote (fc--org-show-footnote)))))
+    (pcase elt
+      (:footnote (fc--org-show-footnote)))))
 
 (cl-defun fc--org-do ()
   "Smart do."
   (fc--org-smart-action #'org-ctrl-c-ctrl-c
-                        (pcase elt
-                          (:checkbox (org-ctrl-c-ctrl-c))
-                          (:footnote (org-footnote-action))
-                          (:headline (org-insert-heading-respect-content)
-                                     (fc-modal-disable))
-                          (:item (fc--org-do-intert-item))
-                          (:item-bullet (org-ctrl-c-minus))
-                          ((or :latex-fragment :latex-preview)
-                           (org-latex-preview))
-                          (:link (org-open-at-point))
-                          (:src-block (org-ctrl-c-ctrl-c))
-                          (:tags (org-set-tags-command))
-                          (:timestamp (fc-funcall #'org-time-stamp))
-                          (:todo-keyword (org-todo))
-                          (_ (message "context: %s elt: %s" context elt)))))
+    (pcase elt
+      (:checkbox (org-ctrl-c-ctrl-c))
+      (:footnote (org-footnote-action))
+      (:headline (org-insert-heading-respect-content)
+                 (fc-modal-disable))
+      (:item (fc--org-do-intert-item))
+      (:item-bullet (org-ctrl-c-minus))
+      ((or :latex-fragment :latex-preview)
+       (org-latex-preview))
+      (:link (org-open-at-point))
+      (:src-block (org-ctrl-c-ctrl-c))
+      (:tags (org-set-tags-command))
+      (:timestamp (fc-funcall #'org-time-stamp))
+      (:todo-keyword (org-todo))
+      (_ (message "context: %s elt: %s" context elt)))))
 
 (defun fc--org-beginning ()
   "Goto the beginning of the current block."
   (fc--org-smart-action nil
-                        (pcase elt
-                          (:src-block (re-search-backward "^ *#\\+BEGIN"))
-                          (_ (message "context: %s" context)))))
+    (pcase elt
+      (:src-block (re-search-backward "^ *#\\+BEGIN"))
+      (_ (message "context: %s" context)))))
 
 (defun fc--org-end ()
   "Goto the end of the current block."
   (fc--org-smart-action nil
-                        (pcase elt
-                          (:src-block (re-search-forward "^ *#\\+END"))
-                          (_ (message "context: %s" context)))))
+    (pcase elt
+      (:src-block (re-search-forward "^ *#\\+END"))
+      (_ (message "context: %s" context)))))
 
 (defun fc--org-current-cell ()
   "Get the content of current table cell."
@@ -649,9 +652,9 @@ BODY: usually a pcase block."
 (defun fc--org-copy ()
   "Copy the content of current table cell."
   (fc--org-smart-action nil
-                        (pcase elt
-                          (:table (kill-new (fc--org-current-cell)))
-                          (_ (message "context: %s" context)))))
+    (pcase elt
+      (:table (kill-new (fc--org-current-cell)))
+      (_ (message "context: %s" context)))))
 
 (defun fc-org-mode-mouse-func (_event)
   "Handle mouse event."
@@ -688,11 +691,11 @@ BODY: usually a pcase block."
 (defun fc--org-sparse-tree ()
   "Smart sparse tree."
   (fc--org-smart-action #'org-sparse-tree
-                        (pcase elt
-                          (:headline (fc--org-occur))
-                          (:tags (fc-funcall #'org-match-sparse-tree))
-                          (:todo-keyword (fc-funcall #'org-show-todo-tree))
-                          (_ (fc-funcall #'org-sparse-tree)))))
+    (pcase elt
+      (:headline (fc--org-occur))
+      (:tags (fc-funcall #'org-match-sparse-tree))
+      (:todo-keyword (fc-funcall #'org-show-todo-tree))
+      (_ (fc-funcall #'org-sparse-tree)))))
 
 (defun fc--org-insert-formula ()
   "Insert latex formula."

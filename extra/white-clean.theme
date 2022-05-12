@@ -54,16 +54,16 @@
 #+HTML_HEAD: h1, h2, h3 {
 #+HTML_HEAD:     position:  relative;
 #+HTML_HEAD:     margin:  30px 0 20px;
-#+HTML_HEAD:     font-size:  18px;
+#+HTML_HEAD:     font-size:  20px;
 #+HTML_HEAD:     font-weight:  bold;
+#+HTML_HEAD:     color:  #859900
 #+HTML_HEAD:     line-height:  1.1;
-#+HTML_HEAD:     color:  #111;
 #+HTML_HEAD:     text-rendering:  optimizeLegibility;
 #+HTML_HEAD: }
 #+HTML_HEAD: h1:before, h2:before, h3:before {
 #+HTML_HEAD:     position:  absolute;
 #+HTML_HEAD:     top:  auto;
-#+HTML_HEAD:     color:  #ccc;
+#+HTML_HEAD:     color:  #859900;
 #+HTML_HEAD:     display:  none;
 #+HTML_HEAD: }
 #+HTML_HEAD: h1:before {
@@ -108,6 +108,11 @@
 #+HTML_HEAD: }
 #+HTML_HEAD: code, pre {
 #+HTML_HEAD:     font-family:  Menlo, Monaco, Consolas, "Courier New", monospace;
+#+HTML_HEAD:     background-color:#fdf6e3;
+#+HTML_HEAD:     color:#657b83;
+#+HTML_HEAD:     border:1pt solid #93a1a1;
+#+HTML_HEAD:     padding:1em;
+#+HTML_HEAD:     box-shadow:5pt 5pt 8pt #eee8d5
 #+HTML_HEAD: }
 #+HTML_HEAD: code {
 #+HTML_HEAD:     color:  #d14;

@@ -1,0 +1,15 @@
+# (org-babel-lob-ingest (format "%s/%s" *fc-home* "/org/plot.org"))
+
+#+NAME: draw
+#+BEGIN_SRC python var fname var delsee :results file
+import matplotlib.pyplot as plt
+
+x, y, z = zip(*delsee)
+
+fig = plt.figure()
+axes = fig.add_subplot(1,1,1)
+axes.plot(y, z, marker='o')
+fig.savefig(fname)
+
+return fname
+#+END_SRC

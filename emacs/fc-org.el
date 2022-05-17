@@ -506,36 +506,37 @@ LANG: language."
    "Org portal"
    (append
     `(
-      ("Add header"			.	fc--org-add-header)
-      ("Convert footnote (from inline)"	.	,(fc-manual (fc--org-add-footnote
-                                                             (read-string
-                                                              "Confirm"
-                                                              (fc-user-select
-                                                               "Footnote regex"
-                                                               '("\\[fn:: \\([^\]]+\\)\\]"
-                                                                 "\\\\footnote{\\([^}]+\\)}"
-                                                                 "[〔【<\[]注?\\([^\]]+\\)[\]>】〕]"))))))
-      ("Convert footnote (to inline)"	.	,(fc-manual (fc--org-convert-inline-fontnote
-                                                             (read-string
-                                                              "Confirm"
-                                                              (fc-user-select
-                                                               "Footnote regex"
-                                                               '("\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
-                                                                 "[（(〔【<\[]\\(注?[0-9]+\\)[\]>】〕)）]"))))))
-      ("Convert from latex"		.	fc--org-convert-from-latex)
-      ("Convert from markdown"		.	fc--org-convert-from-markdown)
-      ("Convert markdown verse"		.	fc--org-convert-mk-verse)
-      ("Conervt to table"		.	fc--org-convert-table)
-      ("Fix footnote"			.	fc--org-fix-fn)
-      ("Org ctrl-c-minus"		.	org-ctrl-c-minus)
-      ("Org Sort"			.	org-sort)
-      ("Publish to html"		.	org-html-export-to-html)
-      ("Publish to markdown"		.	org-md-export-to-markdown)
-      ("Roam sync"			.	org-roam-db-sync)
-      ("Redisplay inline image"		.	org-redisplay-inline-images)
-      ("Update dblock"			.	org-update-all-dblocks)
-      ("Update source block"		.	org-babel-execute-buffer)
-      ("Validate footnote number"	.	fc--org-validate-fn-number)
+      ("Add header"			. fc--org-add-header)
+      ("Convert footnote (from inline)"	. ,(fc-manual (fc--org-add-footnote
+                                                       (read-string
+                                                        "Confirm"
+                                                        (fc-user-select
+                                                         "Footnote regex"
+                                                         '("\\[fn:: \\([^\]]+\\)\\]"
+                                                           "\\\\footnote{\\([^}]+\\)}"
+                                                           "[〔【<\[]注?\\([^\]]+\\)[\]>】〕]"))))))
+      ("Convert footnote (to inline)"	. ,(fc-manual (fc--org-convert-inline-fontnote
+                                                       (read-string
+                                                        "Confirm"
+                                                        (fc-user-select
+                                                         "Footnote regex"
+                                                         '("\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
+                                                           "[（(〔【<\[]\\(注?[0-9]+\\)[\]>】〕)）]"))))))
+      ("Convert from latex"		. fc--org-convert-from-latex)
+      ("Convert from markdown"		. fc--org-convert-from-markdown)
+      ("Convert markdown verse"		. fc--org-convert-mk-verse)
+      ("Conervt to table"		. fc--org-convert-table)
+      ("Fix footnote"			. fc--org-fix-fn)
+      ("Ingest"                         . ,(fc-manual (org-babel-lob-ingest buffer-file-name)))
+      ("Org ctrl-c-minus"		. org-ctrl-c-minus)
+      ("Org Sort"			. org-sort)
+      ("Publish to html"		. org-html-export-to-html)
+      ("Publish to markdown"		. org-md-export-to-markdown)
+      ("Roam sync"			. org-roam-db-sync)
+      ("Redisplay inline image"		. org-redisplay-inline-images)
+      ("Update dblock"			. org-update-all-dblocks)
+      ("Update source block"		. org-babel-execute-buffer)
+      ("Validate footnote number"	. fc--org-validate-fn-number)
       )
     *fc-book-func-list*)))
 

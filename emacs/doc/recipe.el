@@ -66,10 +66,10 @@ _____________________________________________
 
 ;; tiny-menu
 (defconst *fc-main-menu* '(("main menu" ("Programs"
-					((?u "Upgrade" package-utils-upgrade-all)
-					 (?i "Install" (lambda () (fc-read-symbol "Package name: ")))
-					 (?d "Delete" (lambda () (fc-read-symbol "Package name: ")))))
-			   )))
+                                         ((?u "Upgrade" package-utils-upgrade-all)
+                                          (?i "Install" (lambda () (fc-read-symbol "Package name: ")))
+                                          (?d "Delete" (lambda () (fc-read-symbol "Package name: ")))))
+                            )))
 
 (defun fc-program ()
   (interactive)
@@ -109,13 +109,13 @@ Or you can do it with
 
 ;; font scale
 (setq face-font-rescale-alist '(("^-apple-hiragino.*" . 1.2)
-				(".*STFangSong.*" . 1.0)
-				(".*方正宋刻本秀楷简补全.*" . 1.0)
-				(".*osaka-medium.*" . 1.2)
-				(".*courier-bold-.*-mac-roman" . 1.0)
-				(".*monaco cy-bold-.*-mac-cyrillic" . 0.9)
-				(".*monaco-bold-.*-mac-roman" . 0.9)
-				("-cdac$" . 1.3)))
+                                (".*STFangSong.*" . 1.0)
+                                (".*方正宋刻本秀楷简补全.*" . 1.0)
+                                (".*osaka-medium.*" . 1.2)
+                                (".*courier-bold-.*-mac-roman" . 1.0)
+                                (".*monaco cy-bold-.*-mac-cyrillic" . 0.9)
+                                (".*monaco-bold-.*-mac-roman" . 0.9)
+                                ("-cdac$" . 1.3)))
 
 ;; display
 (x-display-monitor-attributes-list)
@@ -128,11 +128,11 @@ Or you can do it with
 
 (defun fc-display-ppi ()
   (let* ((w (* (display-mm-width) 0.039))
-	 (h (* (display-mm-height) 0.039))
-	 (di (sqrt (+ (* h h)
-		      (* w w))))
-	 (dp (sqrt (+ (* (x-display-pixel-width) (x-display-pixel-width))
-		      (* (x-display-pixel-height) (x-display-pixel-height))))))
+         (h (* (display-mm-height) 0.039))
+         (di (sqrt (+ (* h h)
+                      (* w w))))
+         (dp (sqrt (+ (* (x-display-pixel-width) (x-display-pixel-width))
+                      (* (x-display-pixel-height) (x-display-pixel-height))))))
     (format "~a * ~a" w  h)
     (/ dp di)))
 
@@ -202,10 +202,10 @@ default-frame-alist
 ;; mouse fringe bookmark
 
 (global-set-key (kbd "<left-fringe> <mouse-1>") #'(lambda(event)
-						    (interactive "e")
-						    (save-excursion
-						      (mouse-set-point event)
-						      (bm-toggle))))
+                                                    (interactive "e")
+                                                    (save-excursion
+                                                      (mouse-set-point event)
+                                                      (bm-toggle))))
 
 ;; font setup
 
@@ -213,7 +213,7 @@ default-frame-alist
 
 (dolist (charset '(kana han symbol cjk-misc bopomofo))
   (set-fontset-font (frame-parameter nil 'font)
-		    charset (font-spec :family "Microsoft Yahei Light" :size 18)))
+                    charset (font-spec :family "Microsoft Yahei Light" :size 18)))
 
 (find-font (font-spec :family "Microsoft Yahei Light1"))
 
@@ -294,12 +294,12 @@ keycode 237 = XF86HomePage
   "Refreshes all open buffers from their respective files"
   (interactive)
   (let* ((list (buffer-list))
-	 (buffer (car list)))
+         (buffer (car list)))
     (while buffer
       (when (and (buffer-file-name buffer)
-		 (not (buffer-modified-p buffer)))
-	(set-buffer buffer)
-	(revert-buffer t t t))
+                 (not (buffer-modified-p buffer)))
+        (set-buffer buffer)
+        (revert-buffer t t t))
       (setq list (cdr list))
       (setq buffer (car list))))
   (message "Refreshed open files"))
@@ -308,25 +308,25 @@ keycode 237 = XF86HomePage
 
 (defun foo (pattern)
   (let* ((bufs (-filter
-		#'(lambda (x) (and x
-				   (buffer-file-name x)
-				   (string-match "[ch]$" (buffer-file-name x))))
-		(buffer-list)))
-	 (count (length bufs))
-	 (first-buf (cl-first bufs))
-	 (rest-bufs (cl-rest bufs))
-	 (size (/ (frame-height) count)))
+                #'(lambda (x) (and x
+                                   (buffer-file-name x)
+                                   (string-match "[ch]$" (buffer-file-name x))))
+                (buffer-list)))
+         (count (length bufs))
+         (first-buf (cl-first bufs))
+         (rest-bufs (cl-rest bufs))
+         (size (/ (frame-height) count)))
 
     (when (or (< count 5)
-	      (yes-or-no-p (--reduce (concat acc " " it)
-				     (-map #'buffer-name bufs))))
+              (yes-or-no-p (--reduce (concat acc " " it)
+                                     (-map #'buffer-name bufs))))
       (switch-to-buffer first-buf)
       (delete-other-windows)
 
       (--each (cl-rest bufs)
-	(split-window-vertically size)
-	(other-window 1)
-	(switch-to-bufer it)))))
+        (split-window-vertically size)
+        (other-window 1)
+        (switch-to-bufer it)))))
 
 (foo "[hc]$")
 
@@ -342,10 +342,10 @@ keycode 237 = XF86HomePage
 ;; struct
 
 (defstruct starship
-  (name nil)
-  (speed 0)
-  (condition 'green)
-  (shields 'down))
+           (name nil)
+           (speed 0)
+           (condition 'green)
+           (shields 'down))
 
 (setf s1 (make-starship))
 
@@ -375,13 +375,13 @@ keycode 237 = XF86HomePage
 
       (cond
        ((or (typep ret 'symbol)
-	    (typep ret 'cons))
-	(message "%s" ret)
-	(call-interactively ret))
+            (typep ret 'cons))
+        (message "%s" ret)
+        (call-interactively ret))
 
        ((numberp ret)
-	(message "too long")
-	(return))))))
+        (message "too long")
+        (return))))))
 
 (fc-modal-head-key "action : " *fc-modal-keymap* 5)
 
@@ -395,7 +395,7 @@ keycode 237 = XF86HomePage
 
 ;; path
 (fc-load 'exec-path-from-shell
-	 :after (exec-path-from-shell-initialize))
+  :after (exec-path-from-shell-initialize))
 
 ;; double-space enter modal mode
 (setf *test-foo* 0)
@@ -403,9 +403,9 @@ keycode 237 = XF86HomePage
 (defun run-modal ()
   (if (eq *test-foo* 2)
       (progn
-	(when (buffer-modified-p)
-	  (backward-delete-char 2))
-	(fc-modal-global-mode 1))
+        (when (buffer-modified-p)
+          (backward-delete-char 2))
+        (fc-modal-global-mode 1))
 
     (unless (buffer-modified-p)
       (insert " ")))
@@ -429,14 +429,14 @@ keycode 237 = XF86HomePage
 (defun fc-modal-dump-keymap (keymap)
   (let ((str ""))
     (map-keymap (lambda (evt func)
-		  (message "--%S" evt)
-		  (setf str (concat str " " (if (characterp evt)
-						(progn
-						  (message "convert %S %d" evt (length str))
-						  (byte-to-string evt))
-					      (message "format %S" evt)
-					      (format "%S" evt)))))
-		*fc-modal-keymap*)
+                  (message "--%S" evt)
+                  (setf str (concat str " " (if (characterp evt)
+                                                (progn
+                                                  (message "convert %S %d" evt (length str))
+                                                  (byte-to-string evt))
+                                              (message "format %S" evt)
+                                              (format "%S" evt)))))
+                *fc-modal-keymap*)
     (message "%s" str)))
 
 ;; doc string
@@ -450,12 +450,12 @@ keycode 237 = XF86HomePage
 (highlight-phrase "FIXME")
 
 (font-lock-add-keywords モード
-			'(("正規表現" . face名)))
+                        '(("正規表現" . face名)))
 
 (font-lock-add-keywords 'org-mode
-			'(("\\<MyCompany\\>" . 'my-keyword-face)
-			  ("FIXME:.*" . 'my-keyword-face)
-			  ("TODO:.*" . 'my-keyword-face)))
+                        '(("\\<MyCompany\\>" . 'my-keyword-face)
+                          ("FIXME:.*" . 'my-keyword-face)
+                          ("TODO:.*" . 'my-keyword-face)))
 
 ;; relative/absolute path
 (file-relative-name (buffer-file-name (current-buffer)))
@@ -466,3 +466,12 @@ keycode 237 = XF86HomePage
 ;; flet
 (cl-flet ((f (x) (* x x)))
   (f 7))
+
+;; use advice to modify parameter
+(defun replace-regexp-in-string-test-empty (args)
+  (when (null (nth 2 args))
+    (setf (nth 2 args) ""))
+  args)
+
+(advice-add 'replace-regexp-in-string :filter-args
+            #'replace-regexp-in-string-test-empty)

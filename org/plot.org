@@ -1,10 +1,114 @@
-# (org-babel-lob-ingest (format "%s/%s" *fc-home* "/org/plot.org"))
+#+startup: inlineimages
 
-#+NAME: draw
-#+BEGIN_SRC python var fname var delsee :results file
+* Draw functions/datafile by Gnuplot
+
+#+NAME: draw_func
+#+BEGIN_SRC gnuplot :var cmd="" :var xl="" :var yl="" t="" :results file
+  reset
+
+  set title t
+  set grid
+
+  set xlabel xl
+  set ylabel yl
+
+  eval "plot ".cmd
+#+END_SRC
+
+Example:
+#+CALL: draw_func(cmd="[-10:10] [-2:3] sin(x), cos(x)", xl="X", yl="Y", t="Title") :file test-func.png
+
+#+RESULTS:
+[[file:test-func.png]]
+
+#+CALL: draw_func(cmd="sin(x), for [col=2:4] 'test-data.txt' using 1:col with lp", xl="hello") :file test-datafile.png
+
+#+RESULTS:
+[[file:test-datafile.png]]
+
+* Draw bar by Python
+
+#+NAME: draw_bar
+#+BEGIN_SRC python :var fname="bar.svg" :var table=bardata :results file
+import matplotlib.pyplot as plt
+from matplotlib import rc as prc
+
+prc('font', family='TsangerJinKai01-27533')
+
+x, y = zip(*table)
+
+plt.bar(x, y)
+plt.savefig(fname)
+
+return fname
+#+END_SRC
+
+#+tblname: hello
+| city   | population |
+|--------+------------|
+| foo    |        100 |
+| bar    |        200 |
+| わたし |         39 |
+| world  |         20 |
+| 我们   |        100 |
+
+#+call: draw_bar(table=hello, fname="test-bar.png")
+
+#+RESULTS:
+[[file:test-bar.png]]
+
+* Draw pie by Python
+
+#+NAME: draw_pie
+#+BEGIN_SRC python :var fname="pie.svg" :var table=piedata :results file
+import matplotlib.pyplot as plt
+from matplotlib import rc as prc
+
+prc('font', family='TsangerJinKai01-27533')
+
+x, y = zip(*table)
+
+plt.pie(y, labels=x, shadow=True)
+plt.savefig(fname)
+
+return fname
+#+END_SRC
+
+#+tblname: hello
+| city   | population |
+|--------+------------|
+| foo    |        100 |
+| bar    |        200 |
+| わたし |         39 |
+| world  |         20 |
+| 我们   |        100 |
+
+#+call: draw_pie(table=hello, fname="test-pie.png")
+
+#+RESULTS:
+[[file:test-pie.png]]
+
+* Draw histogram by Python
+
+#+NAME: draw_histogram
+#+BEGIN_SRC python :var fname="histgram.svg" :var table=histodata :results file
 import matplotlib.pyplot as plt
 
-x, y, z = zip(*delsee)
+x = *table
+
+plt.hist(x)
+plt.savefig(fname)
+
+return fname
+#+END_SRC
+
+* Example
+
+#+NAME: draw_test
+#+BEGIN_SRC python :var fname="histgram.svg" :var table=histodata :results file
+import matplotlib.pyplot as plt
+
+x, y = zip(*table)
 
 fig = plt.figure()
 axes = fig.add_subplot(1,1,1)

@@ -207,6 +207,13 @@
     (cl-defun fc--capture-edit ()
       (fc-modal-disable))
 
+    (cl-defun fc--auto-ingest ()
+      (when-let* ((org-buf (eq major-mode 'org-mode))
+                  (keys (org-collect-keywords '("PROPERTY")))
+                  (props (cdar keys)))
+        (when (member "AUTOINGEST" props)
+          (org-babel-lob-ingest buffer-file-name))))
+
     (add-hook 'org-capture-mode-hook #'fc--capture-edit)
     (add-hook 'org-capture-mode-hook #'fc--capture-copy-region)
     (add-hook 'org-capture-mode-hook #'org-align-all-tags)
@@ -217,6 +224,7 @@
     (add-hook 'org-mode-hook #'fc--setup-org-mode)
     (add-hook 'org-mode-hook #'valign-mode)
 
+    (add-hook 'after-save-hook #'fc--auto-ingest)
     (add-hook 'after-save-hook #'check-parens nil t)))
 
 (cl-defun fc--org-insert-title ()

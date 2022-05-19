@@ -1,3 +1,4 @@
+#+PROPERTY: AUTOINGEST TRUE
 #+startup: inlineimages
 
 * Draw functions/datafile by Gnuplot
@@ -16,7 +17,7 @@
 #+END_SRC
 
 Example:
-#+CALL: draw_func(cmd="[-10:10] [-2:3] sin(x), cos(x)", xl="X", yl="Y", t="Title") :file test-func.png
+#+CALL: draw_func(cmd="[-10:10] [-2:2] sin(x) title 'sin', cos(x) title 'cos'", xl="X", yl="Y", t="Title") :file test-func.png
 
 #+RESULTS:
 [[file:test-func.png]]
@@ -37,8 +38,9 @@ prc('font', family='TsangerJinKai01-27533')
 
 x, y = zip(*table)
 
+plt.xticks(rotation = 70)
 plt.bar(x, y)
-plt.savefig(fname)
+plt.savefig(fname, bbox_inches='tight')
 
 return fname
 #+END_SRC
@@ -68,8 +70,8 @@ prc('font', family='TsangerJinKai01-27533')
 
 x, y = zip(*table)
 
-plt.pie(y, labels=x, shadow=True)
-plt.savefig(fname)
+plt.pie(y, labels=x, shadow=True, autopct='%.0f%%')
+plt.savefig(fname, bbox_inches='tight')
 
 return fname
 #+END_SRC

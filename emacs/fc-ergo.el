@@ -1067,6 +1067,7 @@ KEYMAP: keymap to run."
      ("b" ,(fc-manual (fc-show-info (fc-file-info)
                                     (fc-buffer-info))))
      ("c" describe-char)
+     ("e" describe-function)
      ("f" ,(fc-mode-key
             `(
               (emacs-lisp-mode . describe-function)
@@ -1087,7 +1088,7 @@ KEYMAP: keymap to run."
      ("F" describe-face)
      ("M" describe-mode))
    "ergo-help-map")
-  "KEYS SPC: portal  a: apropros  b: buffer info  c: char  f: func  i: info  k: key  m: manul  o: org info  r: show *Help*  s: sys info  v: var  y: yas  F: face  M: mode.")
+  "KEYS SPC: portal  a: apropros  b: buffer info  c: char  e: elisp func  f: func  i: info  k: key  m: manul  o: org info  r: show *Help*  s: sys info  v: var  y: yas  F: face  M: mode.")
 
 (defconst *ergo-mark-map*
   (fc-make-keymap

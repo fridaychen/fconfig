@@ -27,3 +27,13 @@ tmp
 go/pkg
 bin/fbook
 bin/ff
+
+exam*.jpg
+exam*.png
+exam*.svg
+exam*.txt
+
+test*.jpg
+test*.png
+test*.svg
+test*.txt

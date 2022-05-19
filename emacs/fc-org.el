@@ -207,12 +207,21 @@
     (cl-defun fc--capture-edit ()
       (fc-modal-disable))
 
+    (cl-defun fc--org-get-property (name)
+      (when-let* ((keys (org-collect-keywords '("PROPERTY")))
+                  (props (cdar keys))
+                  (pair (--first
+                         (when (cl-equalp name (car (split-string it)))
+                           t)
+                         props)))
+        (string-join (cdr (split-string pair)) " ")))
+
     (cl-defun fc--auto-ingest ()
-      (when-let* ((org-buf (eq major-mode 'org-mode))
-                  (keys (org-collect-keywords '("PROPERTY")))
-                  (props (cdar keys)))
-        (when (member "AUTOINGEST" props)
-          (org-babel-lob-ingest buffer-file-name))))
+      (when (and
+             (eq major-mode 'org-mode)
+             (string-equal "true"
+                           (downcase (fc--org-get-property "AUTOINGEST"))))
+        (org-babel-lob-ingest buffer-file-name)))
 
     (add-hook 'org-capture-mode-hook #'fc--capture-edit)
     (add-hook 'org-capture-mode-hook #'fc--capture-copy-region)

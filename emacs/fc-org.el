@@ -603,7 +603,8 @@ BODY: usually a pcase block."
        (setq elt :footnote))
 
      (if (null elt)
-         (fc-funcall ,default)
+         (when ,default
+           (fc-funcall ,default))
        ,@body)))
 
 (cl-defun fc--org-looking-over-footnote ()
@@ -661,7 +662,7 @@ BODY: usually a pcase block."
       (:src-block (re-search-forward "^ *#\\+END"))
       (_ (message "context: %s" context)))))
 
-(defun fc--org-toogle-hideshow ()
+(defun fc--org-toggle-hideshow ()
   "Toggle hideshow by org context."
   (fc--org-smart-action nil
     (pcase elt

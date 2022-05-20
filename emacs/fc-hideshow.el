@@ -78,8 +78,9 @@
     (hs-toggle-hiding))
 
    ((eq major-mode 'org-mode)
-    (unless (fc--org-toogle-hideshow)
+    (unless (fc--org-toggle-hideshow)
       (ignore-errors
+        (message "=== outline toggle")
         (outline-toggle-children))))
 
    ((fc-hs--is-outline)

@@ -59,7 +59,8 @@
 (cl-defun fc-file-info ()
   "Create file info."
   `(("Name" ,buffer-file-name)
-    ("Basic" ,(format "%d bytes, %d lines, %s, point %d, %d"
+    ("Basic" ,(format "%s %d bytes, %d lines, %s, point %d, %d"
+                      major-mode
                       (buffer-size)
                       (fc-buffer-lines)
                       buffer-file-coding-system
@@ -74,8 +75,7 @@
 
 (defun fc-buffer-info ()
   "Create buffer info."
-  `(("Major" ,major-mode)
-    ("Tag/Xref" ,(format "%s %s"
+  `(("Tag/Xref" ,(format "%s %s"
                          (if (boundp 'fc-proj-tag) fc-proj-tag nil)
                          xref-backend-functions))
     ("Company" ,(s-join " "

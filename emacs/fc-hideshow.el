@@ -77,8 +77,12 @@
    ((fc-hs--is-hideshow)
     (hs-toggle-hiding))
 
-   ((or (eq major-mode 'org-mode)
-        (fc-hs--is-outline))
+   ((eq major-mode 'org-mode)
+    (unless (fc--org-toogle-hideshow)
+      (ignore-errors
+        (outline-toggle-children))))
+
+   ((fc-hs--is-outline)
     (ignore-errors
       (outline-toggle-children)))))
 

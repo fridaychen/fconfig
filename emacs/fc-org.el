@@ -217,10 +217,9 @@
         (string-join (cdr (split-string pair)) " ")))
 
     (cl-defun fc--auto-ingest ()
-      (when (and
-             (eq major-mode 'org-mode)
-             (string-equal "true"
-                           (downcase (fc--org-get-property "AUTOINGEST"))))
+      (when-let* ((correct-mode (eq major-mode 'org-mode))
+                  (value (fc--org-get-property "AUTOINGEST"))
+                  (flag (string-equal "true" (downcase value))))
         (org-babel-lob-ingest buffer-file-name)))
 
     (add-hook 'org-capture-mode-hook #'fc--capture-edit)
@@ -661,6 +660,19 @@ BODY: usually a pcase block."
     (pcase elt
       (:src-block (re-search-forward "^ *#\\+END"))
       (_ (message "context: %s" context)))))
+
+(defun fc--org-toogle-hideshow ()
+  "Toggle hideshow by org context."
+  (fc--org-smart-action nil
+    (pcase elt
+      (:src-block
+       (save-excursion
+         (unless (org-at-block-p)
+           (re-search-backward "^ *#\\+BEGIN"))
+         (org-cycle)
+         t))
+
+      (_ nil))))
 
 (defun fc--org-current-cell ()
   "Get the content of current table cell."

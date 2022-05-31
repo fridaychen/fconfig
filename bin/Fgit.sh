@@ -18,8 +18,10 @@ function fit-clean() {
 }
 
 function fit-current-branch() {
-    git branch 2>/dev/null |
-        sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+    if $(fit-in-work-tree); then
+        git branch 2>/dev/null |
+            sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+    fi
 }
 
 function fit-count-changes() {
@@ -59,8 +61,14 @@ function fit-switch-branch() {
             --bind="enter:execute(git checkout {})+abort"
 }
 
+function fit-in-work-tree() {
+    [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) == "true" ]]
+}
+
 function fit-root() {
-    git rev-parse --show-toplevel
+    if $(fit-in-work-tree); then
+        git rev-parse --show-toplevel
+    fi
 }
 
 function fit-top() {

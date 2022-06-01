@@ -3,6 +3,7 @@ from fcommon.easy_tag import EasyTag, easytag_argparser, easytag_getarg
 
 import os
 import sys
+import typing
 
 
 verbose = False
@@ -13,7 +14,9 @@ def P(s):
 
 
 def save_changes_p():
-    return verbose == False or len(input("Save change ? [Y|n] : ")) == 0
+    if verbose and len(input("Save change ? [Y|n] : ")) == 0:
+        return True
+    return False
 
 
 def log(str, end="\n"):
@@ -106,28 +109,25 @@ def main():
     meta = {}
     easytag_getarg(args, meta)
 
-    action = dump_info
+    def process(f: typing.Callable):
+        for x in EasyTag.multiple_open(args.otherthings):
+            f(x)
 
     if meta:
-        action = lambda x: set_tag(x, meta)
-
-    if args.copy_file:
+        process(lambda x: set_tag(x, meta))
+    elif args.copy_file:
         print(EasyTag.open(args.copy_file).album_map())
         meta.update(EasyTag.open(args.copy_file).album_map())
 
-        action = lambda x: set_tag(x, meta)
-
-    if args.pname:
-        action = lambda x: parse_tag_from_filename(x, args.pname)
-
-    if args.cname:
-        action = lambda x: generate_filename(x, args.cname)
-
-    if args.archive:
-        action = lambda x: archive(x)
-
-    for mt in EasyTag.multiple_open(args.otherthings):
-        action(mt)
+        process(lambda x: set_tag(x, meta))
+    elif args.pname:
+        process(lambda x: parse_tag_from_filename(x, args.pname))
+    elif args.cname:
+        process(lambda x: generate_filename(x, args.cname))
+    elif args.archive:
+        process(lambda x: archive(x))
+    else:
+        process(dump_info)
 
 
 if __name__ == "__main__":

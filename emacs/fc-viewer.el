@@ -39,8 +39,8 @@
   (interactive)
 
   (if fc-viewer-minor-mode
-      (fc-viewer-quit)
-    (fc-viewer-enter))
+      (fc--viewer-quit)
+    (fc--viewer-enter))
 
   (fc-run-hook '*fc-viewer-hook*))
 
@@ -59,7 +59,7 @@
            :separator " :"
            :keys *fc-buffer-id-keymap*))
 
-(defun fc-viewer-enter ()
+(defun fc--viewer-enter ()
   "Enter viewer mode."
   (interactive)
 
@@ -83,7 +83,7 @@
 
   (set-display-table-slot buffer-display-table 'wrap ?\x20))
 
-(defun fc-viewer-quit ()
+(defun fc--viewer-quit ()
   "Quit viewer mode."
   (interactive)
 

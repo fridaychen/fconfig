@@ -302,7 +302,7 @@ PRE-FORMAT: format the block content."
     (fc-replace-regexp "^\\*\\([^\n]+\\)\n+\\([^*\n]\\)"
                        "*\\1\n\n\\2" :from-start t)
 
-    (fc-replace-regexp "^\\*\\([^\n]+\\)\n+\\([[:alpha:]]+:\\|:PROPERTIES\\)"
+    (fc-replace-regexp "^\\*\\([^\n]+\\)\n+\\([[:alpha:]]+:\\|:PROPERTIES\\|[[:space:]]*CLOSED:\\)"
                        "*\\1\n\\2" :from-start t)))
 
 (cl-defun fc--org-convert-mk-verse ()

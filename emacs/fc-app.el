@@ -1070,8 +1070,8 @@ ARGS: the message of git commit."
                                   "New line space"
                                   (fc-string *fc-basic-line-spacing*))))
   (--each (fc-list-buffer)
-    (with-current-buffer
-        (setf line-spacing *fc-basic-line-spacing*))))
+    (with-current-buffer it
+      (setf line-spacing *fc-basic-line-spacing*))))
 
 (defconst *fc-app-font-size-map*
   (fc-make-keymap

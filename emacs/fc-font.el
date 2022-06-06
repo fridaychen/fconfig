@@ -60,7 +60,9 @@
                            nil
                            *fc-mode-line-font*
                            :height (+ *fc-font-height*
-                                      *fc-font-mode-line-delta*))))
+                                      *fc-font-mode-line-delta*)))
+
+  (fc-patch-font))
 
 (cl-defun fc-reset-buffer-font ()
   (apply #'buffer-face-set

@@ -150,6 +150,20 @@ COLOR: background color."
           (tango-dark "gray23"))
   (puthash (cl-first it) (cl-second it) *fc-soothe-color*))
 
+(defun fc-patch-font ()
+  "Patch font."
+  (let ((font (frame-parameter nil 'font))
+        (new-line-spacing 4))
+    (cond
+     ((string-search "Iosevka" font)
+      (setq new-line-spacing 0)))
+
+    (setq *fc-basic-line-spacing* new-line-spacing)
+
+    (--each (fc-list-buffer)
+      (with-current-buffer it
+        (setf line-spacing *fc-basic-line-spacing*)))))
+
 (defun fc-patch-theme ()
   "Patch theme."
   (let ((soothe-percent (if (fc-dark-theme-p)

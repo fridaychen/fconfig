@@ -57,14 +57,6 @@ FILTER: func for filter."
                               (--sort (string< (buffer-name it) (buffer-name other)) result)
                             result)))
 
-(cl-defmacro fc-run-buffer (buffers &rest rest)
-  "Run expressions within each buffer of buffers."
-  (declare (indent 1))
-
-  `(--each ,buffers
-     (with-current-buffer it
-       ,@rest)))
-
 (cl-defun fc-switch-to-buffer-re (regex &optional (n 0))
   "Switch to recent buffer which name match regex.
 REGEX: regex.

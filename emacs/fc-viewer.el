@@ -8,7 +8,7 @@
 (defvar-local *fc-reading-line-spacing* 10)
 (defconst *fc-reading-title-limit* 22)
 (defvar-local *fc-bak-line-spacing* nil)
-
+(defconst *fc-reading-face* nil)
 (defvar *fc-viewer-hook* nil "After viewer mode toggled hook.")
 
 (defvar *fc-viewer-keymap*
@@ -73,10 +73,12 @@
   (hl-line-mode 1)
   (read-only-mode 1)
 
-  (fc-modal-set-cursor-shape nil)
-
   (setf *fc-bak-line-spacing* line-spacing
         line-spacing *fc-reading-line-spacing*)
+
+  (when *fc-reading-face*
+    (setf buffer-face-mode-face *fc-reading-face*)
+    (buffer-face-mode 1))
 
   (unless buffer-display-table
     (setq-local buffer-display-table #^[nil nil display-table nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil 92 nil nil nil nil]))
@@ -91,6 +93,8 @@
         *fc-enable-state-seg* t
         *fc-enable-major-mode-seg* t
         *fc-buffer-title-seg* nil)
+
+  (buffer-face-mode -1)
 
   (hl-line-mode -1)
   (read-only-mode -1)

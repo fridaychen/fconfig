@@ -850,16 +850,17 @@ ARGS: the message of git commit."
   OPERATION: target operation.
   REST: commands."
   (declare (indent 1))
-  `(lambda () (interactive)
-     (let ((dir (read-directory-name (format "Select directory for %s :" ,operation))))
-       (when dir
-         (setf dir (concat (expand-file-name dir)
-                           (if (string-suffix-p "/" dir) "" "/")))
-
-         (when (fc-user-confirm (format "%s files under %s" (capitalize ,operation) dir))
-           (--each (fc-list-buffer :dir dir)
-             (with-current-buffer it
-               ,@rest)))))))
+  `(lambda ()
+     (interactive)
+     (when-let* ((dir (read-directory-name
+                       (format "Select directory for %s :" ,operation)))
+                 (real-dir (concat (expand-file-name dir)
+                                   (if (string-suffix-p "/" dir) "" "/")))
+                 (user-ans (fc-user-confirm
+                            (format "%s files under %s" (capitalize ,operation) dir))))
+       (--each (fc-list-buffer :dir dir)
+         (with-current-buffer it
+           ,@rest)))))
 
 (defun fc-select-multi-buffer-func ()
   "Select multi buffer function."

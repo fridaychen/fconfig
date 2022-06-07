@@ -15,6 +15,17 @@
 (defvar *fc-use-another-font-for-mode-line* nil)
 (defvar *fc-mode-line-font* nil)
 
+(cl-defun fc-setup-font-spec (fontset charset-specs)
+  (-map (lambda (n)
+          (dolist (charset (car n))
+            (set-fontset-font
+             fontset
+             charset
+             (apply #'font-spec
+                    (cdr n)))))
+
+        charset-specs))
+
 (defun fc-setup-font ()
   "Setup font."
   (fc-set-face-attribute
@@ -44,16 +55,7 @@
                           :font bold-italic-font
                           :height *fc-font-height*)))
 
-  (let ((font (frame-parameter nil 'font)))
-    (-map (lambda (n)
-            (dolist (charset (car n))
-              (set-fontset-font
-               font
-               charset
-               (apply #'font-spec
-                      (cdr n)))))
-
-          *fc-font*))
+  (fc-setup-font-spec (frame-parameter nil 'font) *fc-font*)
 
   (when *fc-use-another-font-for-mode-line*
     (fc-set-face-attribute 'mode-line

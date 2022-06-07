@@ -125,6 +125,12 @@ MODE-FUNC: mode and function definitions."
                         :region 'fc-hex2string))
      ("T" fc-insert-todo-block)
      ("S" fc-insert-figlet)
+     ("V" ,(fc-manual
+            (when (and (boundp 'lsp-mode)
+                       (lsp-mode))
+              (if lsp-semantic-tokens-mode
+                  (lsp-semantic-tokens-mode -1)
+                (lsp-semantic-tokens-mode 1)))))
      )
    "Basic func map"
    *fc-punctuation-map*))

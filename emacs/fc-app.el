@@ -1065,13 +1065,11 @@ ARGS: the message of git commit."
 
 (defun fc-config-line-space ()
   "Setup line space for all file buffers."
-  (setf *fc-basic-line-spacing* (string-to-number
-                                 (read-string
-                                  "New line space"
-                                  (fc-string *fc-basic-line-spacing*))))
-  (--each (fc-list-buffer)
-    (with-current-buffer it
-      (setf line-spacing *fc-basic-line-spacing*))))
+  (setf *fc-basic-line-spacing* (read-number
+                                 "New line space"
+                                 *fc-basic-line-spacing*))
+  ((fc-with-each-buffer
+    (setf line-spacing *fc-basic-line-spacing*))))
 
 (defconst *fc-app-font-size-map*
   (fc-make-keymap

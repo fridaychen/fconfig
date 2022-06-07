@@ -108,8 +108,9 @@
 
 (cl-defun fc-vc-refresh-repo-state (&rest _rest)
   "Refresh vc state for all files in current repo."
-  (fc-run-buffer (fc-list-buffer :dir (fc-vc-root))
-    (vc-refresh-state)))
+  (fc-with-each-buffer
+   :buffers (fc-list-buffer :dir (fc-vc-root))
+   (vc-refresh-state)))
 
 (cl-defun fc-vc-root (&optional (dir (expand-file-name default-directory)))
   "Find repo directory of current buffer."

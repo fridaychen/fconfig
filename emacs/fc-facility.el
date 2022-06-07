@@ -253,6 +253,11 @@ FUNC: new function."
      (with-current-buffer buf
        (progn ,@rest))))
 
+(cl-defmacro fc-with-each-buffer (&rest rest &key (buffers '(buffer-list)) &allow-other-keys)
+  `(--each ,buffers
+     (with-current-buffer it
+       ,@rest)))
+
 (provide 'fc-facility)
 
 ;; Local Variables:

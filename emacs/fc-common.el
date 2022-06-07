@@ -160,9 +160,8 @@ COLOR: background color."
 
     (setq *fc-basic-line-spacing* new-line-spacing)
 
-    (--each (fc-list-buffer)
-      (with-current-buffer it
-        (setf line-spacing *fc-basic-line-spacing*)))))
+    (fc-with-each-buffer
+     (setf line-spacing *fc-basic-line-spacing*))))
 
 (defun fc-patch-theme ()
   "Patch theme."

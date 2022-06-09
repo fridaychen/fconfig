@@ -43,12 +43,16 @@
    (t
     '(("Monaco")))))
 
-(defconst *fc-reading-fonts*
-  '((:family "DejaVu Serif")
+(defconst *fc-english-reading-fonts*
+  '((:family "Bookerly")
+    (:family "DejaVu Serif")
     (:family "Baskerville")
     (:family "Garamond")
     (:family "Literata")
     (:family "Constantia")))
+
+(defconst *fc-cjk-reading-fonts*
+  '((:family "方正宋刻本秀楷简补全")))
 
 (defconst *fc-mode-line-fonts*
   '((:family "Sarasa Mono Slab SC")
@@ -156,7 +160,7 @@ COLOR: background color."
         (new-line-spacing 4))
     (cond
      ((string-search "Iosevka" font)
-      (setq new-line-spacing 0)))
+      (setq new-line-spacing 1)))
 
     (setq *fc-basic-line-spacing* new-line-spacing)
 

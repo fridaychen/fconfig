@@ -1069,8 +1069,9 @@ ARGS: the message of git commit."
   (setf *fc-basic-line-spacing* (read-number
                                  "New line space"
                                  *fc-basic-line-spacing*))
-  ((fc-with-each-buffer
-    (setf line-spacing *fc-basic-line-spacing*))))
+  (fc-with-each-buffer
+   (unless fc-viewer-minor-mode
+     (setf line-spacing *fc-basic-line-spacing*))))
 
 (defconst *fc-app-font-size-map*
   (fc-make-keymap

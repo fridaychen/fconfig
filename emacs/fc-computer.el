@@ -15,7 +15,6 @@
 (defconst *fc-chinese-fonts* '("Microsoft Yahei"))
 (defconst *fc-japanese-fonts* '("Microsoft Yahei"))
 (defconst *fc-english-fonts* '("Monaco"))
-(defconst *fc-reading-fonts* '("Monaco"))
 
 (defconst *fc-assist-app*
   (cond
@@ -53,15 +52,28 @@
                         (--first (fc-font-exists-p it) font-list)))
            (cjk-font (funcall find-font *fc-cjk-fonts*))
            (symbol-font (funcall find-font *fc-symbol-fonts*))
-           (english-font (funcall find-font *fc-english-fonts*)))
+           (english-font (funcall find-font *fc-english-fonts*))
+           (cjk-reading-font (funcall find-font *fc-cjk-reading-fonts*))
+           (english-reading-font (funcall find-font *fc-english-reading-fonts*)))
       (message "Fonts :\tcjk -> %s\n\tenglish -> %s\n\tsymbol -> %s"
                cjk-font english-font symbol-font)
       (setf *fc-default-font* english-font
             *fc-font* (list
                        (cons '(kana han cjk-misc bopomofo) cjk-font)
                        (cons '(symbol) symbol-font))
-            *fc-mode-line-font* (funcall find-font *fc-mode-line-fonts*)
-            *fc-read-font* (funcall find-font *fc-reading-fonts*))))
+            *fc-mode-line-font* (funcall find-font *fc-mode-line-fonts*))
+
+      (make-face 'fc-viewer-face)
+      (setf *fc-reading-face* 'fc-viewer-face)
+
+      (apply #'set-face-attribute 'fc-viewer-face nil
+             :fontset (create-fontset-from-ascii-font
+                       (elt english-reading-font 1))
+             english-reading-font)
+
+      (fc-setup-font-spec
+       (create-fontset-from-ascii-font (elt english-reading-font 1))
+       `(((kana han cjk-misc bopomofo) ,@cjk-reading-font)))))
 
   (fc-idle-delay
     (fc-add-network-connected-hook #'fc-update-location)

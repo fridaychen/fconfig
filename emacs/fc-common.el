@@ -53,7 +53,8 @@
     (:family "Constantia")))
 
 (defconst *fc-cjk-reading-fonts*
-  '((:family "方正宋刻本秀楷简补全")))
+  '((:family "LXGW WenKai")
+    (:family "方正宋刻本秀楷简补全")))
 
 (defconst *fc-mode-line-fonts*
   '((:family "Sarasa Mono Slab SC")

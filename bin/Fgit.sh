@@ -19,8 +19,7 @@ function fit-clean() {
 
 function fit-current-branch() {
     if $(fit-in-work-tree); then
-        git branch 2>/dev/null |
-            sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+        git rev-parse --abbrev-ref HEAD
     fi
 }
 

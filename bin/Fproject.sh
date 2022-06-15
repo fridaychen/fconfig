@@ -25,6 +25,8 @@ function proj-build() {
         time make $*
     elif [[ -f PKGBUILD ]]; then
         makepkg -si
+    elif [[ -x ./build.sh ]]; then
+        ./build.sh
     else
         error-msg "DO NOT know how to build\n"
     fi

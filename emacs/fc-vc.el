@@ -15,6 +15,7 @@
            (magit-auto-revert-mode 0)
            (fullframe magit-status magit-mode-quit-window)
 
+           (fc-add-to-hook '*fc-ergo-restore-hook* #'magit-blame-quit)
            (setf magit-diff-arguments "-w")))
 
 (fc-install 'git-messenger 'git-timemachine 'git-lens)

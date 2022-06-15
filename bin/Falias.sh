@@ -105,7 +105,7 @@ alias r=proj-chtop
 alias p='fzf --ansi'
 
 function gb() {
-    if [[ ! $(gp | grep -i "already up to date") ]]; then
+    if [[ ! $(gp | grep -i " up to date") ]]; then
         proj-build
     fi
 }

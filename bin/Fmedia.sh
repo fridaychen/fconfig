@@ -36,7 +36,7 @@ function fj-play() {
 
 function fj-playa() {
     if [[ $# == 0 ]]; then
-        ff-run-loop -audio -video "fj --playa"
+        ff-run-loop "-video -audio" "fj --playa"
         return
     fi
 

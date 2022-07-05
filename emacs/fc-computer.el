@@ -18,7 +18,7 @@
 
 (defconst *fc-assist-app*
   (cond
-   (*is-mac* fc-home-path "fconfig/mac/assist.sh")
+   (*is-mac* (fc-home-path "fconfig/mac/assist.sh"))
    (*is-linux* (fc-home-path "fconfig/linux/assist.sh"))
    (*is-cygwin* (fc-home-path "fconfig/win/assist.sh"))))
 

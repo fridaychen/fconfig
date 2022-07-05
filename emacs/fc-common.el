@@ -16,7 +16,8 @@
       (:family "Microsoft Yahei")))
 
    (*is-mac*
-    '((:family "STFangSong")
+    '((:family "TsangerJinKai01-27533")
+      (:family "STFangSong")
       (:family "Microsoft Yahei")))
 
    (t
@@ -37,7 +38,9 @@
       ))
 
    (*is-mac*
-    '((:family "Fira Code")
+    '((:family "Iosevka Fixed SS07")
+      (:family "Iosevka Fixed")
+      (:family "Fira Code")
       (:family "Hack")
       (:family "Fira Mono")))
 

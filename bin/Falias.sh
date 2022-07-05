@@ -10,6 +10,7 @@ case $(uname) in
         alias du='gdu -BM'
         alias df='gdf -BM'
         alias test=gtest
+	alias date=gdate
 
         export GREP=ggrep
         export FIND=gfind

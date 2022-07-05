@@ -29,8 +29,8 @@ fc-add-path ${FCHOME}/bin
 
 case $(uname) in
     Darwin)
-        export LANG="UTF-8"
-        export LC_ALL="en_US.UTF-8"
+        export LANG="C"
+        export LC_ALL="C"
 
         ;;
     Linux)

@@ -7,7 +7,7 @@
 
 ;; fc-idle-hook
 (require 'cl-lib)
-(defvar *fc-enable-dbus* (executable-find "dbus-daemon"))
+(defvar *fc-enable-dbus* (and *is-linux* (executable-find "dbus-daemon")))
 
 (defvar *fc-idle-delay* 1200)
 
@@ -205,7 +205,7 @@ FUNC: new function."
     (add-hook 'fc-display-hook func))
 
   (cl-flet ((f (&optional ignored)
-              (run-hooks 'fc-display-hook)))
+               (run-hooks 'fc-display-hook)))
     (add-function :after pre-redisplay-function #'f)))
 
 (defun fc-home-path (path)

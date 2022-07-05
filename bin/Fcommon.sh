@@ -1,6 +1,15 @@
 #!/bin/bash
 
 NO_CONFIRM=false
+case $(uname) in
+    Darwin)
+	SHMDIR=/tmp
+	;;
+
+    Linux)
+	SHMDIR=/dev/shm
+	;;
+esac
 
 function fc-copy() {
     local src=$1
@@ -47,24 +56,24 @@ function fc-user-confirm() {
 }
 
 function fc-dhas() {
-    [[ -f "/dev/shm/$1" ]]
+    [[ -f "${SHMDIR}/$1" ]]
 }
 
 function fc-ddel() {
     for i in "$@"; do
-        rm -f "/dev/shm/$i"
+        rm -f "${SHMDIR}/$i"
     done
 }
 
 function fc-dput() {
-    local file="/dev/shm/$1"
+    local file="${SHMDIR}/$1"
     shift 1
 
     echo $* >$file
 }
 
 function fc-dget() {
-    local file="/dev/shm/$1"
+    local file="${SHMDIR}/$1"
     shift 1
 
     if [[ -f $file ]]; then

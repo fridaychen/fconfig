@@ -298,6 +298,8 @@ COLOR: background color."
       ('tango-dark
        (fc-set-face-attribute 'default nil
                               :background "#203420")
+       (fc-set-face-attribute 'mode-line nil
+                              :background "gray63")
        (fc-set-face-attribute 'hl-line nil
                               :foreground "LightPink2"
                               :background "gray30"))

@@ -1,0 +1,75 @@
+/' Usage:
+ '   !include %getenv("FCHOME")/org/fc.puml
+ '/
+
+!$BGCOLOR = "#FEFECE"
+!$LINECOLOR = "#A80036"
+
+!$ALTBG1 = "#Gold"
+!$ALTBG2 = "#LightBlue"
+!$ALTBG3 = "#LightGreen"
+!$ALTBG4 = "#Pink"
+
+skinparam shadowing true
+skinparam sequenceMessageAlign center
+
+skinparam defaultFontName Noto Sans
+skinparam defaultFontSize 14
+skinparam backgroundColor $BGCOLOR
+skinparam Padding         0
+
+skinparam activity {
+  BackgroundColor $BGCOLOR
+  BorderColor $LINECOLOR
+  BorderThickness 1.2
+}
+
+skinparam component {
+  BackgroundColor $BGCOLOR
+  BorderColor $LINECOLOR
+  BorderThickness 1.2
+}
+
+skinparam note {
+  BorderColor $LINECOLOR
+  BackgroundColor #fbfb77
+}
+
+skinparam package {
+  BackgroundColor Bisque
+  BorderThickness 1.2
+  FontColor Black
+}
+
+skinparam sequence {
+  ArrowColor $LINECOLOR
+  ActorBorderColor $LINECOLOR
+  ActorBorderThickness 1.5
+
+  LifeLineBorderColor $LINECOLOR
+  LifeLineBackgroundColor #FFFFFF
+
+  ParticipantBorderColor $LINECOLOR
+  ParticipantBorderThickness 1.5
+  ParticipantBackgroundColor $BGCOLOR
+
+  ActorBackgroundColor $BGCOLOR
+
+  DividerFontColor #White
+  DividerBackgroundColor #IndianRed
+}
+
+skinparam state {
+  StartColor MediumBlue
+  EndColor Red
+  BackgroundColor $BGCOLOR
+  BorderColor $LINECOLOR
+}
+
+skinparam title {
+  BorderRoundCorner 15
+  BorderThickness 0
+  BorderColor $LINECOLOR
+  BackgroundColor Azure
+  FontSize 16
+}

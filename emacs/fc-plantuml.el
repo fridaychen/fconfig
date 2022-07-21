@@ -32,8 +32,8 @@
            (unless (file-exists-p plantuml-jar-path)
              (plantuml-download-jar))
 
-           (add-to-list 'auto-mode-alist
-                        '("\\.plantuml\\'" . plantuml-mode))
+           (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
+           (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
 
            (with-eval-after-load 'org
              (require 'ob-plantuml))))

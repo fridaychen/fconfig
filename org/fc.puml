@@ -1,0 +1,17 @@
+!$FCORG = %getenv("FCHOME")/org
+
+!include $FCORG/puml-theme-fc.puml
+
+/'
+ ' Sequence Diagram
+ '/
+
+!procedure $init_seq()
+  hide footbox
+  autonumber "<b>0: "
+!endprocedure
+
+!procedure $trans($src, $dst, $msg, $resp)
+  $src -> $dst : $msg
+  $dst --> $src : $resp
+!endprocedure

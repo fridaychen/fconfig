@@ -29,10 +29,8 @@ fc-add-path ${FCHOME}/bin
 
 case $(uname) in
     Darwin)
-        export LANG="C"
-        export LC_ALL="C"
-
         ;;
+
     Linux)
         export FC_DISTRO=$(
             . /etc/os-release

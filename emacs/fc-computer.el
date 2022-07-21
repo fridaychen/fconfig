@@ -55,8 +55,9 @@
            (english-font (funcall find-font *fc-english-fonts*))
            (cjk-reading-font (funcall find-font *fc-cjk-reading-fonts*))
            (english-reading-font (funcall find-font *fc-english-reading-fonts*)))
-      (message "Fonts :\tcjk -> %s\n\tenglish -> %s\n\tsymbol -> %s"
-               cjk-font english-font symbol-font)
+      (message "Fonts :\tcjk -> %s\n\tenglish -> %s\n\tsymbol -> %s\n\teng-reading -> %s\n\tcjk-reading -> %s"
+               cjk-font english-font symbol-font
+               english-reading-font cjk-reading-font)
       (setf *fc-default-font* english-font
             *fc-font* (list
                        (cons '(kana han cjk-misc bopomofo) cjk-font)

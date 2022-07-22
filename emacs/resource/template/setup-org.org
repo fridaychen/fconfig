@@ -1,0 +1,6 @@
+#+SETUPFILE: ~/fconfig/org/fc.org
+#+startup: inlineimages
+#+startup: latexpreview
+
+#+AUTHOR:
+#+EMAIL:

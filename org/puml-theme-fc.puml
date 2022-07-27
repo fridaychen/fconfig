@@ -10,6 +10,14 @@
 !$ALTBG3 = "#LightGreen"
 !$ALTBG4 = "#Pink"
 
+<style>
+groupHeader {
+  BackgroundColor IndianRed
+  FontColor White
+  FontStyle bold
+}
+</style>
+
 skinparam shadowing true
 skinparam sequenceMessageAlign center
 
@@ -17,6 +25,8 @@ skinparam defaultFontName Noto Sans
 skinparam defaultFontSize 14
 skinparam backgroundColor $BGCOLOR
 skinparam Padding         0
+
+skinparam UseBetaStyle true
 
 skinparam activity {
   BackgroundColor $BGCOLOR
@@ -44,19 +54,19 @@ skinparam package {
 skinparam sequence {
   ArrowColor $LINECOLOR
   ActorBorderColor $LINECOLOR
-  ActorBorderThickness 1.5
+  ActorBorderThickness 2
 
   LifeLineBorderColor $LINECOLOR
-  LifeLineBackgroundColor #FFFFFF
+  LifeLineBackgroundColor #EEEEEE
 
   ParticipantBorderColor $LINECOLOR
-  ParticipantBorderThickness 1.5
+  ParticipantBorderThickness 2
   ParticipantBackgroundColor $BGCOLOR
 
   ActorBackgroundColor $BGCOLOR
 
-  DividerFontColor #White
-  DividerBackgroundColor #IndianRed
+  DividerFontColor White
+  DividerBackgroundColor IndianRed
 }
 
 skinparam state {
@@ -64,6 +74,8 @@ skinparam state {
   EndColor Red
   BackgroundColor $BGCOLOR
   BorderColor $LINECOLOR
+
+  BackgroundColor<<Stable>> Snow
 }
 
 skinparam title {

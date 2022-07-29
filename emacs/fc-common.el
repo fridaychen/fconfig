@@ -49,6 +49,7 @@
 
 (defconst *fc-english-reading-fonts*
   '((:family "Bookerly")
+    (:family "Helvetica")
     (:family "Baskerville")
     (:family "Garamond")
     (:family "Literata")

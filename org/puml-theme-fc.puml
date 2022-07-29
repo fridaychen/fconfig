@@ -16,10 +16,16 @@ groupHeader {
   FontColor White
   FontStyle bold
 }
+
+title {
+  HorizontalAlignment left
+  FontSize 24
+  FontColor blue
+}
+
 </style>
 
 skinparam shadowing true
-skinparam sequenceMessageAlign center
 
 skinparam defaultFontName Noto Sans
 skinparam defaultFontSize 14
@@ -52,6 +58,8 @@ skinparam package {
 }
 
 skinparam sequence {
+  MessageAlign center
+
   ArrowColor $LINECOLOR
   ActorBorderColor $LINECOLOR
   ActorBorderThickness 2

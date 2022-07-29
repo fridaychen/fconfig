@@ -11,7 +11,7 @@
   autonumber "<b>0 : "
 !endprocedure
 
-!procedure $seq_scene($title)
+!procedure $scene($title)
   == $title ==
 !endprocedure
 

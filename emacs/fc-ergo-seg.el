@@ -79,8 +79,8 @@
   "Returns the player states."
   (when (and *is-gui* (fc--right-bottom-window-p) (fc--wide-window-p) *fc-player*)
     (fc-text (pcase (fc-player--get-play-status *fc-player*)
-               ('Playing "⏸️")
-               ((or 'Paused 'Stopped) "▶️")
+               ('Playing "⏸")
+               ((or 'Paused 'Stopped) "▶")
                (_ ""))
              :tip '(fc--player-tip)
              :keys *fc--player-seg-keymap*)))

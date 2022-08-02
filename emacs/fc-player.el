@@ -176,4 +176,4 @@ TRACK: current track name."
 ;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:
 
-;;; fc-music.el ends here
+;;; fc-player.el ends here

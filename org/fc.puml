@@ -11,6 +11,10 @@
   autonumber "<b>0 : "
 !endprocedure
 
+!procedure $init_long_seq()
+  autonumber "<b>0 : "
+!endprocedure
+
 !procedure $scene($title)
   == $title ==
 !endprocedure

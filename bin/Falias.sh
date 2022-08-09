@@ -10,7 +10,7 @@ case $(uname) in
         alias du='gdu -BM'
         alias df='gdf -BM'
         alias test=gtest
-	alias date=gdate
+        alias date=gdate
 
         export GREP=ggrep
         export FIND=gfind
@@ -69,9 +69,9 @@ function fj-speak() {
 
 function fj-done() {
     if [[ $? -eq 0 ]]; then
-        fj-speak ${1:-great}
+        fj-speak en-US ${1:-great}
     else
-        fj-speak ${2:-oops}
+        fj-speak en-US ${2:-oops}
     fi
 }
 

@@ -11,10 +11,8 @@ function play-quietly() {
 function gspeak() {
     local lang=en
 
-    if [[ $1 =~ en|ja|zh ]]; then
-        lang=$1
-        shift 1
-    fi
+    lang=$1
+    shift 1
 
     local IFS=+
 

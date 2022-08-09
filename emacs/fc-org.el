@@ -152,6 +152,9 @@
 
     (require 'fc-org-ext)
 
+    (add-to-list 'org-babel-default-header-args:plantuml
+                 (cons :java "-Djava.awt.headless=true"))
+
     (cl-defun fc--org-hide-all ()
       (org-content)
       (org-hide-drawer-all)

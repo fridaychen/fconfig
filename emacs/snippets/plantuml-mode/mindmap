@@ -1,9 +1,11 @@
 # -*- mode: snippet -*-
-# name: sequence init
-# key: seq
+# name: mindmap init
+# key: mmap
 # --
 
+@startmindmap
 !include %getenv("FCHOME")/org/fc.puml
-$init_seq()
 
-title $0
+$0
+
+@endmindmap

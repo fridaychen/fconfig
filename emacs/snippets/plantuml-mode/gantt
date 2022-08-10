@@ -1,13 +1,15 @@
 # -*- mode: snippet -*-
 # name: gantt init
-# key: gant
+# key: gantt
 # --
 
-@startuml
+@startgantt
+!include %getenv("FCHOME")/org/fc.puml
+
 language en
 
 Project starts $1
 
 $0
 
-@enduml
+@endgantt

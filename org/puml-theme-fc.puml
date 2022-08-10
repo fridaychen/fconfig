@@ -25,6 +25,32 @@ title {
   FontSize 21
   FontColor Black
 }
+
+ganttDiagram {
+  task {
+    BackGroundColor #FEFECE
+    LineColor #A80036
+
+    unstarted {
+      BackGroundColor LightGreen
+      LineColor #A80036
+    }
+  }
+
+  closed {
+    BackGroundColor pink
+  }
+}
+
+mindmapDiagram {
+  node {
+    BackgroundColor lightGreen
+  }
+  boxless {
+    FontColor darkgreen
+  }
+}
+
 </style>
 
 skinparam shadowing true

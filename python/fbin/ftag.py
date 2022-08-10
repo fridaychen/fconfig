@@ -14,7 +14,7 @@ def P(s):
 
 
 def save_changes_p():
-    if verbose and len(input("Save change ? [Y|n] : ")) == 0:
+    if not verbose or len(input("Save change ? [Y|n] : ")) == 0:
         return True
     return False
 

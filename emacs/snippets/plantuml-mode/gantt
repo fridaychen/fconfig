@@ -5,10 +5,7 @@
 
 @startgantt
 !include %getenv("FCHOME")/org/fc.puml
-
-language en
-
-Project starts $1
+$init_gantt("$1")
 
 $0
 

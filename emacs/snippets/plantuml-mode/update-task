@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: update gantt task
+# key: utask
+# --
+
+[$1] is $2 complete
+$0

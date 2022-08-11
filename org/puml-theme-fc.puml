@@ -27,6 +27,13 @@ title {
 }
 
 ganttDiagram {
+  timeline {
+    BackgroundColor AliceBlue
+    FontStyle Bold
+    FontColor brown
+    FontSize 20
+  }
+
   task {
     BackGroundColor #FEFECE
     LineColor #A80036
@@ -38,7 +45,11 @@ ganttDiagram {
   }
 
   closed {
-    BackGroundColor pink
+    BackGroundColor application
+  }
+
+  separator {
+    LineColor white
   }
 }
 

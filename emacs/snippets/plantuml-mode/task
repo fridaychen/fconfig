@@ -3,4 +3,4 @@
 # key: task
 # --
 
-[$1] starts $2 and lasts $3 days and is $4 complete
+[$1] starts $2 and lasts $3 days

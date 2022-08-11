@@ -24,7 +24,7 @@
   !if $start != ""
     !$starts_str = "starts " + $start
     !$and_str = " and "
-  !endif
+!endif
 
   !local $ends_str = ""
   !if $end != ""

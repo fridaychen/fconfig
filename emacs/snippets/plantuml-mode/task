@@ -3,4 +3,5 @@
 # key: task
 # --
 
-[$1] starts $2 and lasts $3 days
+$def_task("$1", $alias="$2", $start="$3", $len="$4")
+$0

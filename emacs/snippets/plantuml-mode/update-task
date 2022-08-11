@@ -3,5 +3,5 @@
 # key: utask
 # --
 
-[$1] is $2 complete
+$update_task("$1", $2)
 $0

@@ -99,7 +99,10 @@ def extract_file(inputs):
         if re.search(r"\.zip$", x, re.IGNORECASE):
             fc.run("7z", ["7z", "e", x])
         elif re.search(r"\.rar$", x, re.IGNORECASE):
-            fc.run("unrar", ["unrar", "x", x])
+            try:
+                fc.run("unrar", ["unrar", "x", x])
+            except FileNotFoundError as e:
+                fc.run("unar", ["unar", x])
         elif re.search(r"\.tar\..+", x, re.IGNORECASE):
             fc.run("tar", ["tar", "xvf", x])
         elif re.search(r"\.gz$", x, re.IGNORECASE):

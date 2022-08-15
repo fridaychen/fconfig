@@ -31,18 +31,20 @@ Example:
 
 #+NAME: draw_bar
 #+BEGIN_SRC python :var fname="bar.svg" :var table=bardata :results file
-import matplotlib.pyplot as plt
-from matplotlib import rc as prc
+  import matplotlib.pyplot as plt
+  from matplotlib import rc as prc
 
-prc('font', family='TsangerJinKai01-27533')
+  prc("font", family="TsangerJinKai01-27533")
 
-x, y = zip(*table)
+  x, y = zip(*table)
 
-plt.xticks(rotation = 70)
-plt.bar(x, y)
-plt.savefig(fname, bbox_inches='tight')
+  plt.figure(figsize=(16, 3), dpi=80)
 
-return fname
+  plt.bar(range(len(y)), y, 1)
+  plt.xticks(range(len(y)), x)
+  plt.savefig(fname, bbox_inches="tight")
+
+  return fname
 #+END_SRC
 
 #+tblname: hello

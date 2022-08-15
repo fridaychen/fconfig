@@ -5,7 +5,6 @@
 /'
  ' Gantt Diagram
  '/
-
 !procedure $init_gantt($start_date, $scale=weekly, $zoom=2)
   printscale $scale zoom $zoom
 
@@ -14,7 +13,9 @@
   saturday are closed
   sunday are closed
 
-  Project starts $start_date
+  !if $start_date != ""
+    Project starts $start_date
+  !endif
 !endprocedure
 
 !procedure $def_task($name, $len="", $start="", $end="", $alias="", $after="")

@@ -1,11 +1,13 @@
 # -*- mode: snippet -*-
 # name: mindmap init
-# key: mmap
+# key: mindmap
 # --
 
 @startmindmap
 !include %getenv("FCHOME")/org/fc.puml
 
-$0
++ $0
+
+left side
 
 @endmindmap

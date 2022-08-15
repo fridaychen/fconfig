@@ -60,13 +60,20 @@ mindmapDiagram {
   boxless {
     FontColor darkgreen
   }
+
+  .important {
+    BackgroundColor #FFBBCC
+  }
+  .working {
+    BackgroundColor lightblue
+  }
 }
 
 </style>
 
 skinparam shadowing true
 
-skinparam defaultFontName Noto Sans
+skinparam defaultFontName Noto Sans CJK SC
 skinparam defaultFontSize 17
 skinparam backgroundColor $BGCOLOR
 skinparam Padding         1

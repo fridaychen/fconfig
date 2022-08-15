@@ -551,6 +551,8 @@ LANG: language."
       ("Ingest"                         . ,(fc-manual (org-babel-lob-ingest buffer-file-name)))
       ("Org ctrl-c-minus"		. org-ctrl-c-minus)
       ("Org Sort"			. org-sort)
+      ("Publish"                        . ,(fc-manual
+                                            (fc--org-run-src-block "publish")))
       ("Publish to html"		. org-html-export-to-html)
       ("Publish to markdown"		. org-md-export-to-markdown)
       ("Roam sync"			. org-roam-db-sync)
@@ -631,54 +633,54 @@ BODY: usually a pcase block."
 
 (cl-defun fc--org-dwell ()
   (fc--org-smart-action nil
-                        (pcase elt
-                          (:footnote (fc--org-show-footnote)))))
+    (pcase elt
+      (:footnote (fc--org-show-footnote)))))
 
 (cl-defun fc--org-do ()
   "Smart do."
   (fc--org-smart-action #'org-ctrl-c-ctrl-c
-                        (pcase elt
-                          (:checkbox (org-ctrl-c-ctrl-c))
-                          (:footnote (org-footnote-action))
-                          (:headline (org-insert-heading-respect-content)
-                                     (fc-modal-disable))
-                          (:item (fc--org-do-intert-item))
-                          (:item-bullet (org-ctrl-c-minus))
-                          ((or :latex-fragment :latex-preview)
-                           (org-latex-preview))
-                          (:link (org-open-at-point))
-                          (:src-block (org-ctrl-c-ctrl-c))
-                          (:tags (org-set-tags-command))
-                          (:timestamp (fc-funcall #'org-time-stamp))
-                          (:todo-keyword (org-todo))
-                          (_ (message "context: %s elt: %s" context elt)))))
+    (pcase elt
+      (:checkbox (org-ctrl-c-ctrl-c))
+      (:footnote (org-footnote-action))
+      (:headline (org-insert-heading-respect-content)
+                 (fc-modal-disable))
+      (:item (fc--org-do-intert-item))
+      (:item-bullet (org-ctrl-c-minus))
+      ((or :latex-fragment :latex-preview)
+       (org-latex-preview))
+      (:link (org-open-at-point))
+      (:src-block (org-ctrl-c-ctrl-c))
+      (:tags (org-set-tags-command))
+      (:timestamp (fc-funcall #'org-time-stamp))
+      (:todo-keyword (org-todo))
+      (_ (message "context: %s elt: %s" context elt)))))
 
 (defun fc--org-beginning ()
   "Goto the beginning of the current block."
   (fc--org-smart-action nil
-                        (pcase elt
-                          (:src-block (re-search-backward "^ *#\\+BEGIN"))
-                          (_ (message "context: %s" context)))))
+    (pcase elt
+      (:src-block (re-search-backward "^ *#\\+BEGIN"))
+      (_ (message "context: %s" context)))))
 
 (defun fc--org-end ()
   "Goto the end of the current block."
   (fc--org-smart-action nil
-                        (pcase elt
-                          (:src-block (re-search-forward "^ *#\\+END"))
-                          (_ (message "context: %s" context)))))
+    (pcase elt
+      (:src-block (re-search-forward "^ *#\\+END"))
+      (_ (message "context: %s" context)))))
 
 (defun fc--org-toggle-hideshow ()
   "Toggle hideshow by org context."
   (fc--org-smart-action nil
-                        (pcase elt
-                          (:src-block
-                           (save-excursion
-                             (unless (org-at-block-p)
-                               (re-search-backward "^ *#\\+BEGIN"))
-                             (org-cycle)
-                             t))
+    (pcase elt
+      (:src-block
+       (save-excursion
+         (unless (org-at-block-p)
+           (re-search-backward "^ *#\\+BEGIN"))
+         (org-cycle)
+         t))
 
-                          (_ nil))))
+      (_ nil))))
 
 (defun fc--org-current-cell ()
   "Get the content of current table cell."
@@ -688,9 +690,9 @@ BODY: usually a pcase block."
 (defun fc--org-copy ()
   "Copy the content of current table cell."
   (fc--org-smart-action nil
-                        (pcase elt
-                          (:table (kill-new (fc--org-current-cell)))
-                          (_ (message "context: %s" context)))))
+    (pcase elt
+      (:table (kill-new (fc--org-current-cell)))
+      (_ (message "context: %s" context)))))
 
 (defun fc-org-mode-mouse-func (_event)
   "Handle mouse event."
@@ -727,11 +729,11 @@ BODY: usually a pcase block."
 (defun fc--org-sparse-tree ()
   "Smart sparse tree."
   (fc--org-smart-action #'org-sparse-tree
-                        (pcase elt
-                          (:headline (fc--org-occur))
-                          (:tags (fc-funcall #'org-match-sparse-tree))
-                          (:todo-keyword (fc-funcall #'org-show-todo-tree))
-                          (_ (fc-funcall #'org-sparse-tree)))))
+    (pcase elt
+      (:headline (fc--org-occur))
+      (:tags (fc-funcall #'org-match-sparse-tree))
+      (:todo-keyword (fc-funcall #'org-show-todo-tree))
+      (_ (fc-funcall #'org-sparse-tree)))))
 
 (defun fc--org-insert-formula ()
   "Insert latex formula."
@@ -966,6 +968,37 @@ LANG: language of babel."
 
 (defun fc--org-mode-chapter-mark (level)
   (s-repeat level "*"))
+
+(defun fc--org-run-src-block (name)
+  (fc-whole-buffer
+    (org-babel-goto-named-src-block name)
+    (when (looking-at-p "#\\+BEGIN_SRC")
+      (org-ctrl-c-ctrl-c))))
+
+(cl-defun fc--org-publish (output-dir &optional (base-dir default-directory))
+  (setq org-publish-project-alist
+        `(
+          ("org-notes"
+           :base-directory ,base-dir
+           :base-extension "org"
+           :publishing-directory ,output-dir
+           :recursive t
+           :publishing-function org-html-publish-to-html
+           :headline-levels 4
+           :auto-preamble t
+           )
+
+          ("org-static"
+           :base-directory ,base-dir
+           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|svg"
+           :publishing-directory ,output-dir
+           :recursive t
+           :publishing-function org-publish-attachment
+           )
+
+          ("org" :components ("org-notes" "org-static"))))
+
+  (org-publish-current-project))
 
 (when (eq major-mode 'org-mode)
   (fc--setup-org-mode))

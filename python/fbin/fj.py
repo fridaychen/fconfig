@@ -101,7 +101,7 @@ def extract_file(inputs):
         elif re.search(r"\.rar$", x, re.IGNORECASE):
             try:
                 fc.run("unrar", ["unrar", "x", x])
-            except FileNotFoundError as e:
+            except FileNotFoundError:
                 fc.run("unar", ["unar", x])
         elif re.search(r"\.tar\..+", x, re.IGNORECASE):
             fc.run("tar", ["tar", "xvf", x])

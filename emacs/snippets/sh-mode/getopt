@@ -14,3 +14,5 @@ while getopts "$1" OPT; do
 	    ;;
     esac
 done
+
+shift $((OPTIND - 1))

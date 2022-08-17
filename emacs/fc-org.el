@@ -976,6 +976,9 @@ LANG: language of babel."
       (org-ctrl-c-ctrl-c))))
 
 (cl-defun fc--org-publish (output-dir &optional (base-dir default-directory))
+  (when (string-empty-p base-dir)
+    (setf base-dir default-directory))
+
   (setq org-publish-project-alist
         `(
           ("org-notes"

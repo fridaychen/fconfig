@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: publish block
+# key: pub
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+#+NAME: publish
+#+BEGIN_SRC emacs-lisp :exports none :results none
+  (fc--org-publish "${1:output-directory}")
+#+END_SRC
+$0

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function usage() {
     echo "
@@ -20,6 +20,25 @@ function player() {
     else
         mplayer -nolirc -really-quiet "$@" 1</dev/null
     fi
+}
+
+function waitkey() {
+    while read -e -t 0.1; do :; done
+    read -n 1 -s -r -p "Press key [r->run again q->quit other->done] ❓ " opt
+    echo
+
+    case ${opt} in
+        r)
+            return 0
+            ;;
+
+        q)
+            exit 1
+            ;;
+        *) ;;
+    esac
+
+    return 1
 }
 
 BASEDIR=$(dirname $(readlink -f $0))
@@ -53,41 +72,28 @@ done
 
 shift $((OPTIND - 1))
 
+(($# < 1)) && usage
+
 audio_files=("$@")
 audio_file_amount=${#audio_files[@]}
 
-if [[ ${audio_file_amount} -eq 0 ]]; then
-    echo -e "\nPlease specify audio files !!!"
-    exit -1
-fi
+for i in "${audio_files[@]}"; do
+    [[ ! -f "${i}" ]] && echo "audio file ${i} not founnd" && exit -1
+done
 
-while [[ $count -lt $total_count ]]; do
-    audiofile=${audio_files[$(($count % $audio_file_amount))]}
-    hl-msg "Count:" $count " File:" $audiofile
+for ((i=0; i < $total_count; i++)); do
+    audiofile=${audio_files[$(($i % $audio_file_amount))]}
 
-    [[ ! -f "${audiofile}" ]] && echo "file not founnd ${audiofile}" && exit -1
+    hl-msg "Count:" $i " File:" $audiofile
 
     player $audiofile
 
     if [[ $anykey2continue == true ]]; then
-        while read -e -t 0.1; do :; done
-        read -n 1 -s -r -p "Press key [r->run again q->quit other->done] ❓ " opt
-        echo
-
-        case ${opt} in
-            r)
-                continue
-                ;;
-
-            q)
-                exit 0
-                ;;
-            *) ;;
-        esac
+	while waitkey; do
+	    player $audiofile
+	done
     else
         echo "Sleep ${span} seconds ..."
         sleep ${span}
     fi
-
-    ((count++))
 done

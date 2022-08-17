@@ -50,7 +50,7 @@ total_count=30
 span=4
 anykey2continue=false
 
-while getopts "ac:hs:" OPTION; do
+while getopts "ac:hs:C" OPTION; do
     case $OPTION in
         a)
             anykey2continue=true
@@ -63,6 +63,9 @@ while getopts "ac:hs:" OPTION; do
             ;;
         s)
             span=$OPTARG
+            ;;
+        C)
+            read -p "How many times do you want to run ? " total_count
             ;;
         *)
             usage
@@ -81,7 +84,7 @@ for i in "${audio_files[@]}"; do
     [[ ! -f "${i}" ]] && echo "audio file ${i} not founnd" && exit -1
 done
 
-for ((i=0; i < $total_count; i++)); do
+for ((i = 0; i < $total_count; i++)); do
     audiofile=${audio_files[$(($i % $audio_file_amount))]}
 
     hl-msg "Count:" $i " File:" $audiofile
@@ -89,9 +92,9 @@ for ((i=0; i < $total_count; i++)); do
     player $audiofile
 
     if [[ $anykey2continue == true ]]; then
-	while waitkey; do
-	    player $audiofile
-	done
+        while waitkey; do
+            player $audiofile
+        done
     else
         echo "Sleep ${span} seconds ..."
         sleep ${span}

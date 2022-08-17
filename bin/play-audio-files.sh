@@ -6,9 +6,11 @@ play audio files continuous
 
 play options audio-files
 
--a any key to continue
 -c total count
+-h usage
+-i interactive mode
 -s span between two files
+-C ask user for total count
 "
 
     exit -1
@@ -48,18 +50,18 @@ BASEDIR=$(dirname $(readlink -f $0))
 count=0
 total_count=30
 span=4
-anykey2continue=false
+interactive=false
 
-while getopts "ac:hs:C" OPTION; do
+while getopts "c:his:C" OPTION; do
     case $OPTION in
-        a)
-            anykey2continue=true
-            ;;
         c)
             total_count=$OPTARG
             ;;
         h)
             usage
+            ;;
+        i)
+            interactive=true
             ;;
         s)
             span=$OPTARG
@@ -91,7 +93,7 @@ for ((i = 0; i < $total_count; i++)); do
 
     player $audiofile
 
-    if [[ $anykey2continue == true ]]; then
+    if [[ $interactive == true ]]; then
         while waitkey; do
             player $audiofile
         done

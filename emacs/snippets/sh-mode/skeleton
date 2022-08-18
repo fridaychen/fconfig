@@ -6,7 +6,7 @@
 #!/usr/bin/env bash
 
 function usage() {
-    echo "Usage: $(basename \$0) ${1:argument}"
+    echo "Usage: ${0##*/} ${1:argument}"
 }
 
 getopty$0

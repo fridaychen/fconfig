@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function usage() {
-    echo "Usage:  $(basename $0) audio-files"
+    echo "Usage:  ${0##*/} audio-files"
     exit
 }
 

@@ -3,12 +3,12 @@
 NO_CONFIRM=false
 case $(uname) in
     Darwin)
-	SHMDIR=/tmp
-	;;
+        SHMDIR=/tmp
+        ;;
 
     Linux)
-	SHMDIR=/dev/shm
-	;;
+        SHMDIR=/dev/shm
+        ;;
 esac
 
 function fc-copy() {
@@ -45,7 +45,7 @@ function fc-net-connected() {
 
 function fc-user-confirm() {
     if [[ $NO_CONFIRM == true ]]; then
-	return 0
+        return 0
     fi
 
     local opt
@@ -104,4 +104,8 @@ function fc-wait-children() {
 
 function decolor() {
     sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g"
+}
+
+function calc() {
+    awk "BEGIN { print $* }"
 }

@@ -252,7 +252,10 @@ def _play(file, noaudio=False, novideo=False):
         f"""{fc.vt.fmt(file, fg=fc.vt.GREEN)}"""
     )
 
-    fc.run("mpv", args)
+    try:
+        fc.run("mpv", args)
+    except KeyboardInterrupt:
+        return
 
 
 @action(cmd="play")

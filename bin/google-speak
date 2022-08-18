@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Play the remote audio
+# $1 : URL of the audio
 function play-quietly() {
     if [[ $(which mpv) ]]; then
         mpv --really-quiet "$@" 1</dev/null
@@ -8,11 +10,15 @@ function play-quietly() {
     fi
 }
 
+# Execute Google TTS service
+# $1 : locale, if matches locale string such as ja-JP or en-US
 function gspeak() {
-    local lang=en
+    local lang="en-US"
 
-    lang=$1
-    shift 1
+    if [[ $1 =~ ^[[:lower:]]{2}-[[:upper:]]{2}$ ]]; then
+        lang=$1
+        shift 1
+    fi
 
     local IFS=+
 

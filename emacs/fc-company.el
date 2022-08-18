@@ -6,7 +6,7 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defvar *fc-company-delay* 0.2)
+(defvar *fc-company-delay* 0.3)
 (defvar *fc-company-minimum-prefix-len* 3)
 
 (fc-load 'company

@@ -6,9 +6,9 @@
 while getopts "$1" OPT; do
     case $OPT in
 	$2)
-	    $0
+	    $3=$OPTARG
 	    ;;
-
+	$0
 	*)
 	    usage
 	    ;;

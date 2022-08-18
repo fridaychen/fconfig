@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name:  skeleton
+# key: skeleton
+# expand-env: ((yas-indent-line 'fixed))
+# --
+#!/usr/bin/env bash
+
+function usage() {
+    echo "Usage: $(basename \$0) ${1:argument}"
+}
+
+getopty$0

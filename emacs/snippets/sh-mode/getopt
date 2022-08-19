@@ -12,6 +12,9 @@ while getopts "$1" OPT; do
 	h)
 	    usage
 	    ;;
+	v)
+	    VERBOSE='echo'
+	    ;;
 	*)
 	    usage
 	    ;;

@@ -5,8 +5,18 @@
 # --
 #!/usr/bin/env bash
 
+VERBOSE=:
+
 function usage() {
-    echo "Usage: ${0##*/} ${1:argument}"
+    cat <<-EOF
+Usage: \$\{0##*/\} ${1:argument}"
+    ${2:synopsis}
+
+    -h usage
+    -v verbose
+EOF
+
+    exit
 }
 
 getopty$0

@@ -2,11 +2,12 @@
 
 function fc-include() {
     for x in $*; do
-        [[ -f $x ]] && . "${x}"
+        [[ -f $x ]] && source "${x}"
     done
 }
 
-fc-include ${FCHOME}/bin/Fcommon.sh \
+fc-include \
+    ${FCHOME}/bin/Fcommon.sh \
     ${FCHOME}/bin/Fansi.sh \
     ${FCHOME}/bin/Falias.sh \
     ${FCHOME}/bin/Fproject.sh \

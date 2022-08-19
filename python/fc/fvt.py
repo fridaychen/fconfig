@@ -34,38 +34,38 @@ class vt:
     CLEAR_SCREEN = 2
 
     @staticmethod
-    def reset():
-        """ reset screen """
-        print("\u001bc", end=" ", flush=True)
+    def reset(file=sys.stdout):
+        """reset screen"""
+        print("\u001bc", flush=True, file=file)
 
     @staticmethod
-    def clear_screen(clear):
-        """ clear screen """
-        print("\u001b[%dJ" % clear, end="", flush=True)
+    def clear_screen(clear, file=sys.stdout):
+        """clear screen"""
+        print("\u001b[%dJ" % clear, flush=True, file=file)
 
     @staticmethod
     def pos(x, y):
-        """ jump to x,y """
+        """jump to x,y"""
         print("\u001b[%d;%dH" % (y, x), end="", flush=True)
 
     @staticmethod
     def background(color, file=sys.stdout):
-        """ setup background color """
+        """setup background color"""
         print("\u001b[%dm" % (color + 40), end="", flush=True, file=file)
 
     @staticmethod
     def foreground(color, file=sys.stdout):
-        """ setup foreground color """
+        """setup foreground color"""
         print("\u001b[%dm" % (color + 30), end="", flush=True, file=file)
 
     @staticmethod
     def text_attr(attr, file=sys.stdout):
-        """ setup text attribute """
+        """setup text attribute"""
         print(f"\u001b[{attr}m", end="", flush=True, file=file)
 
     @staticmethod
     def erase(erase):
-        """ erase from screen """
+        """erase from screen"""
         print("\u001b[%dK" % erase, end="", flush=True)
 
     @staticmethod

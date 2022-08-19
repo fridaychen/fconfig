@@ -99,7 +99,8 @@
 
     (cond
      (compile-json-file
-      (lsp t)
+      (when *fc-lsp-mode*
+        (lsp t))
       (add-to-list 'company-backends 'company-capf))
 
      (gtags-file

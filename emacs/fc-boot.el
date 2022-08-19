@@ -152,7 +152,8 @@
 (fc-require 'fc-global)
 (fc-load 'fc-lsp
   :local t
-  :after (add-hook '*fc-ergo-restore-hook* #'lsp-ui-doc-hide))
+  :after (when *fc-lsp-mode*
+           (add-hook '*fc-ergo-restore-hook* #'lsp-ui-doc-hide)))
 (fc-require 'fc-tag)
 
 (fc-require 'fc-math t)

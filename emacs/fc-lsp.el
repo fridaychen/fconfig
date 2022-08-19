@@ -6,8 +6,16 @@
 ;;; Code:
 (require 'cl-lib)
 
+(defvar *fc-lsp-mode* t)
+
+(fc-load 'lsp-bridge
+  :local t
+  :after (progn
+           (global-lsp-bridge-mode)
+           (setf *fc-lsp-mode* nil)))
+
 (fc-load 'lsp-mode
-  :autoload t
+  :enable *fc-lsp-mode*
   :after (progn
            (require 'lsp)
            (require 'lsp-mode)

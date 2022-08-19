@@ -58,7 +58,7 @@ REST: include :package :local :enable :bind :before :after :autoload :run"
          (cond
           ;; load locally
           ((and ,local (eval ,local t))
-           (require ,n))
+           (require ,n nil t))
 
           ;; load package
           (t

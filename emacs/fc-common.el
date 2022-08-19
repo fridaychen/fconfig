@@ -248,9 +248,11 @@ COLOR: background color."
                               :background "honeydew"))
 
       ('modus-operandi
-       (setf soothe-percent 6)
-       (fc-set-face-attribute 'default nil :background *fc-common-light-theme-bg*)
-       (fc-set-face-attribute 'markdown-code-face nil :background "gray90"))
+       (defvar modus-modified nil)
+       (unless modus-modified
+         (setf soothe-percent 6)
+         (fc-set-face-attribute 'default nil :background *fc-common-light-theme-bg*)
+         (fc-set-face-attribute 'markdown-code-face nil :background "gray90")))
 
       ('monokai
        (when *is-gui*

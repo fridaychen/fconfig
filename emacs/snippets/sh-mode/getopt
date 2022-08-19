@@ -9,6 +9,9 @@ while getopts "$1" OPT; do
 	    $3=$OPTARG
 	    ;;
 	$0
+	h)
+	    usage
+	    ;;
 	*)
 	    usage
 	    ;;

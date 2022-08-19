@@ -29,6 +29,9 @@ function extract() {
         zip | ZIP | 7z | 7Z)
             7z e "$1"
             ;;
+	*)
+	    echo "Unknown extension: $ext"
+	    ;;
     esac
 }
 

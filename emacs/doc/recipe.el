@@ -229,7 +229,8 @@ default-frame-alist
 ;; shell command
 (let* ((s (shell-command-to-string "amixer get Master"))
        (start (string-match "\[[0-9]+%\]" s)))
-  (when startch-end 0) 2)
+  (when (match-end 0)
+    2))
 
 ;; simulate key
 (defun fc-test ()

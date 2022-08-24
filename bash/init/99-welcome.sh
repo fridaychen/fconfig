@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. ${FCHOME}/bin/Fcommon.sh
-
 function fj-welcome() {
     cmd=""
 

@@ -2,8 +2,7 @@
 
 CPUS=$(nproc)
 
-. $FCHOME/bin/Fansi.sh
-. ${FCHOME}/bin/Fcommon.sh
+source $FCHOME/bash/lib.sh
 
 function clone() {
     git clone git://github.com/emacs-mirror/emacs.git

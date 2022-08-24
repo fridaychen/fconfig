@@ -1,9 +1,6 @@
 #!/bin/bash
 
-. $FCHOME/bin/Fcommon.sh
-. $FCHOME/bin/Fansi.sh
-. $FCHOME/bin/Falias.sh
-. $FCHOME/bin/Fproject.sh
+source $FCHOME/bash/lib.sh
 
 echo $*
 proj-build $*

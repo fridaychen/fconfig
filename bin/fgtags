@@ -1,7 +1,6 @@
 #!/bin/bash
 
-. $FCHOME/bin/Fansi.sh
-. $FCHOME/bin/Fproject.sh
+source $FCHOME/bash/lib.sh
 
 OLDPWD_BAK=$OLDPWD
 CURPWD=$(pwd)

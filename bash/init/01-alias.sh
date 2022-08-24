@@ -9,14 +9,13 @@ case $(uname) in
         alias sed=gsed
         alias du='gdu -BM'
         alias df='gdf -BM'
-        alias test=gtest
         alias date=gdate
 
         export GREP=ggrep
         export FIND=gfind
         export XARGS=gxargs
 
-        test -r ~/.dircolors && eval "$(gdircolors -b ~/.dircolors)" || eval "$(gdircolors -b)"
+        [[ -r ~/.dircolors ]] && eval "$(gdircolors -b ~/.dircolors)" || eval "$(gdircolors -b)"
         ;;
     Linux)
         export GREP=grep
@@ -69,14 +68,14 @@ function fj-speak() {
 
 function fj-done() {
     if [[ $? -eq 0 ]]; then
-        fj-speak en-US ${1:-great}
+        fj-speak ${1:-great}
     else
-        fj-speak en-US ${2:-oops}
+        fj-speak ${2:-oops}
     fi
 }
 
 # basic
-alias fj-reload=". $FCHOME/bin/FC"
+alias fj-reload="source $FCHOME/bin/FC"
 alias S='sudo'
 
 alias la='ls -AF'
@@ -122,99 +121,12 @@ function fargs() {
         -o ${cmd}
 }
 
-function fzf-run() {
-    local cmd=${1}
-
-    [[ ! ${cmd} == "*{}*" ]] && cmd="${cmd} {}"
-
-    fzf --ansi |
-        xargs --no-run-if-empty \
-            -d "\n" \
-            -I {} \
-            -o ${cmd}
-}
-
-function fzf-run-loop() {
-    local cmd=${1}
-
-    [[ ! ${cmd} == "*{}*" ]] && cmd="${cmd} {}"
-
-    fzf --ansi \
-        --bind="enter:execute(${cmd})"
-}
-
-function ff-run() {
-    local pattern=${1}
-    shift
-
-    eval "ff -color ${pattern}" |
-        sort -h |
-        fzf-run "$@"
-}
-
-function ff-run-all() {
-    local pattern=${1}
-    shift
-
-    eval "ff ${pattern}" |
-        sort -h |
-        xargs --no-run-if-empty \
-            -d "\n" \
-            -I {} \
-            -o "$@"
-}
-
-function ff-run-loop() {
-    local pattern=${1}
-    shift
-
-    eval "ff -color ${pattern}" |
-        sort -h |
-        fzf-run-loop "$@"
-}
-
 function fj-run() {
     sort -h |
         xargs --no-run-if-empty \
             -d "\n" \
             -I {} \
             -o "$@"
-}
-
-function fj-active-emacs-server() {
-    local emacs_servers=(
-        "/var/run/user/${UID}/emacs/server"
-        "/tmp/emacs${UID}/server"
-        "${TMPDIR}/emacs${UID}/server"
-    )
-
-    for i in ${emacs_servers[@]}; do
-        [[ -S $i ]] && return 0
-    done
-
-    return 1
-}
-
-function e() {
-    if fj-active-emacs-server; then
-        ec "$@"
-    elif [[ ! -t 0 ]]; then
-        fzf-run nvim
-    elif [[ $# -eq 0 ]]; then
-        ff-run "" nvim
-    else
-        nvim "$@"
-    fi
-}
-
-function ec() {
-    if [[ ! -t 0 ]]; then
-        fzf-run "emacsclient -n"
-    elif [[ $# -eq 0 ]]; then
-        ff-run "" "emacsclient -n"
-    else
-        emacsclient -n "$@"
-    fi
 }
 
 function install_color_scheme() {
@@ -234,15 +146,6 @@ alias fpltuml="java -jar ${FCHOME}/emacs/resource/plantuml.jar"
 
 alias fj-open="fj --open"
 
-function fjf() {
-    ff "$@" |
-        fzf --ansi \
-            --bind=?:toggle-preview --preview-window right:wrap:hidden \
-            -e \
-            --preview "fj --preview {}" \
-            --bind "enter:execute(fj --view {})"
-}
-
 alias v="fj --view"
 
 if app-exists batcat; then
@@ -250,35 +153,3 @@ if app-exists batcat; then
 else
     alias c="bat --color=always -n --theme OneHalfDark"
 fi
-
-function workzone() {
-    ansi-title "ℤ: " "$*"
-}
-
-# clipboard functions
-
-function clp-copy() {
-    case $(uname) in
-        Darwin)
-            pbcopy
-            ;;
-
-        Linux)
-            xsel -b
-            ;;
-
-    esac
-}
-
-function clp-paste() {
-    case $(uname) in
-        Darwin)
-            pbpaste
-            ;;
-
-        Linux)
-            xsel -o
-            ;;
-
-    esac
-}

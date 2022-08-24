@@ -1,14 +1,6 @@
 #!/bin/bash
 
-# Play the remote audio
-# $1 : URL of the audio
-function play-quietly() {
-    if [[ $(which mpv) ]]; then
-        mpv --really-quiet "$@" 1</dev/null
-    else
-        mplayer -nolirc -really-quiet "$@" 1</dev/null
-    fi
-}
+source $FCHOME/bash/lib.sh
 
 # Execute Google TTS service
 # $1 : locale, if matches locale string such as ja-JP or en-US

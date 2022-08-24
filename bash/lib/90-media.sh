@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Play the remote audio
+# $1 : URL of the audio
+function play-quietly() {
+    if [[ $(which mpv) ]]; then
+        mpv --really-quiet "$@" 1</dev/null
+    else
+        mplayer -nolirc -really-quiet "$@" 1</dev/null
+    fi
+}
+
 function fj-info() {
     for i in "$@"; do
         fj-title "$i"

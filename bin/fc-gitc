@@ -1,7 +1,6 @@
 #!/bin/bash
 
-. ${FCHOME}/bin/Fgit.sh
-. ${FCHOME}/bin/Fansi.sh
+source $FCHOME/bash/lib.sh
 
 reporoot=
 branch=

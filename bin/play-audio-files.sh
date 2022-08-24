@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
 
+source $FCHOME/bash/lib.sh
+
 function usage() {
-    echo "
-play audio files continuous
+    cat <<-EOF
+Usage:  ${0##*/} [OPTION] audio-files
+    Play audio files continuous
 
-play options audio-files
+    -c total count
+    -h usage
+    -i interactive mode
+    -s span between two files
+    -C ask user for total count
+EOF
 
--c total count
--h usage
--i interactive mode
--s span between two files
--C ask user for total count
-"
-
-    exit -1
+    exit
 }
 
 function player() {
@@ -42,10 +43,6 @@ function waitkey() {
 
     return 1
 }
-
-BASEDIR=$(dirname $(readlink -f $0))
-
-. ${BASEDIR}/Fansi.sh
 
 count=0
 total_count=30

@@ -170,6 +170,8 @@ TRACK: current track name."
   (cl-defmethod fc-player--app ((x fc-player-itunes))
     (fc-exec-itune-cmd "activate")))
 
+(require 'fc-player-quodlibet)
+
 (provide 'fc-player)
 
 ;; Local Variables:

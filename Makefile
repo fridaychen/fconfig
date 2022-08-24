@@ -5,8 +5,8 @@ all: init build
 build: bin/fbook bin/ff
 
 setup: init setup-app setup-env
-	@bin/Fsetup.sh
-	@bin/Fsetup-emacs.sh
+	@bash/setup/setup.sh
+	@bash/setup/setup-emacs.sh
 
 setup-env: setup-emacs setup-go setup-nvim  setup-python
 
@@ -21,22 +21,22 @@ bin/ff:
 
 init:
 	@chmod +x bin/* emacs/linux/* emacs/mac/*
-	@bin/Fsetup-bash.sh
+	@bash/setup/setup-bash.sh
 
 setup-app:
-	@bin/Fsetup-app.sh
+	@bash/setup/setup-app.sh
 
 setup-emacs:
-	@bin/Fsetup-emacs.sh
+	@bash/setup/setup-emacs.sh
 
 setup-go:
-	@bin/Fsetup-go.sh
+	@bash/setup/setup-go.sh
 
 setup-python:
 	@cd python; python3 setup.py egg_info; pip3 install -r fconfig.egg-info/requires.txt
 
 setup-nvim:
-	@bin/Fsetup-nvim.sh
+	@bash/setup/setup-nvim.sh
 
 help:
 	@echo "setup :- setup the whole environment"

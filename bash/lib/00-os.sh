@@ -10,9 +10,11 @@ function fc-copy() {
 }
 
 function fc-add-path() {
-    if [[ -d $1 && ! :$PATH: == *:$1:* ]]; then
-        export PATH=$PATH:$1
-    fi
+    for x in "$@"; do
+        if [[ -d "$x" && ! :$PATH: == *:"$x":* ]]; then
+            export PATH=$PATH:"$x"
+        fi
+    done
 }
 
 function app-exists() {

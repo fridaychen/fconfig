@@ -2,18 +2,36 @@
 
 source $FCHOME/bash/lib.sh
 
-reporoot=
+repo_root=$(pwd)
 branch=
 status=true
 
-while getopts "b:r:S" OPTION; do
+function usage() {
+    cat <<-EOF
+Usage:  ${0##*/} [OPTION]
+    Dump git repository state summary.
+
+    -b target branch name
+    -h usage
+    -r repo root path
+    -S suppress state summary
+EOF
+
+    exit
+}
+
+while getopts "b:hr:S" OPTION; do
     case $OPTION in
         b)
             branch=$OPTARG
             ;;
 
+        h)
+            usage
+            ;;
+
         r)
-            reporoot=$OPTARG
+            repo_root=$OPTARG
             ;;
 
         S)
@@ -42,6 +60,6 @@ fi
 
 if [[ ! -z $output ]]; then
     echo -n "project"
-    ansi-format $ANSI_HIGHLIGHT $ANSI_BLUE $ANSI_BLACK " %s" "${REPO_PATH}"
+    ansi-format $ANSI_HIGHLIGHT $ANSI_BLUE $ANSI_BLACK " %s" "${repo_root}"
     ansi-format $ANSI_HIGHLIGHT $ANSI_RED $ANSI_BLACK " %s""${output}"
 fi

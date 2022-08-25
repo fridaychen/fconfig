@@ -43,37 +43,6 @@ esac
 
 alias sl='ls'
 
-# program
-function fj-title() {
-    hl-msg "<(^.^)>" "$@"
-}
-
-function fj-speak() {
-    if app-exists say; then
-        say "$*"
-    elif fc-net-connected; then
-        google-speak "$*"
-    elif app-exists pico-tts; then
-        echo "$*" | pico-tts -l en-US | aplay -q -f S16_LE -r 16 -
-    elif app-exists espeak-ng; then
-        if app-exists mbrola; then
-            espeak-ng -s 140 -a 40 -v us-mbrola-2 "$*"
-        else
-            espeak-ng -s 140 -a 40 "$*"
-        fi
-    elif app-exists espeak; then
-        espeak "$*"
-    fi
-}
-
-function fj-done() {
-    if [[ $? -eq 0 ]]; then
-        fj-speak ${1:-great}
-    else
-        fj-speak ${2:-oops}
-    fi
-}
-
 # basic
 alias fj-reload="source $FCHOME/bin/FC"
 alias S='sudo'

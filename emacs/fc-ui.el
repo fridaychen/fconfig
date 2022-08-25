@@ -25,7 +25,7 @@ MOUSE: allow user to select with mouse."
     (let ((helm-full-frame t))
       (helm :sources
             (helm-build-sync-source prompt
-              :candidates collection))))
+                                    :candidates collection))))
 
    ((and (> 9 (length collection))
          (> (- (frame-width) 20 (length prompt))
@@ -36,9 +36,23 @@ MOUSE: allow user to select with mouse."
     (ivy-read (fc-prompt prompt) collection))))
 
 (defun fc--gen-names (collection)
-  (if (listp (cl-first collection))
-      (-map 'car collection)
-    collection))
+  (cond ((listp (cl-first collection))
+         (fc--gen-names (-map 'car collection)))
+
+        ((stringp (cl-first collection))
+         collection)
+
+        (t
+         (-map 'fc-string collection))))
+
+(defun fc--gen-collection (collection)
+  (cond ((or (listp (cl-first collection))
+             (stringp (cl-first collection)))
+
+         collection)
+
+        (t
+         (--map (cons (fc-string it) it) collection))))
 
 (defun fc--get-result (collection name)
   (if (listp (cl-first collection))
@@ -61,7 +75,7 @@ MOUSE: allow user to select with mouse."
                          (cl-first (fc--gen-names collection))))
 
         (t
-         (fc--get-result collection
+         (fc--get-result (fc--gen-collection collection)
                          (fc--user-select prompt
                                           (fc--gen-names collection)
                                           :fullscreen fullscreen

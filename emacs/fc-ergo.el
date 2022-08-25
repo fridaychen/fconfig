@@ -621,11 +621,11 @@ N: number."
   (let ((user (format "%s@%s" user-login-name (system-name))))
     (if *is-gui*
         `(
-          ("Emacs" ,(format "%s, DPI %d, fringe %d"
+          ("Emacs" ,(format "%s (%s), DPI %d, fringe %d"
                             emacs-version
+                            (format-time-string "%Y-%m-%d" emacs-build-time)
                             (fc-display-ppi) *fc-fringe-width*))
-          ("User" ,user)
-          ("Loc" ,*fc-location*)
+          ("User" ,(format "%s, %s" user *fc-location*))
           ("Font" ,(format "%s, %s, %d"
                            *fc-default-font*
                            *fc-font-weight-of-default*

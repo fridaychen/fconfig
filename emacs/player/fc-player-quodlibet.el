@@ -14,7 +14,7 @@
          :initform nil
          :type list)
    (app :initform (cond (*is-linux* "quodlibet")
-                        (*is-mac* "")
+                        (*is-mac* "/Applications/QuodLibet.app/Contents/MacOS/quodlibet")
                         (t nil))
         :type string)))
 

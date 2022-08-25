@@ -16,7 +16,7 @@
          :initform ""
          :type string)
    (volume :initarg :volume
-           :initform 0
+           :initform 40
            :type integer)
    (vol-big-step :initarg :vol-big-step
                  :initform 10
@@ -81,96 +81,39 @@ TRACK: current track name."
 (cl-defmethod fc-player--app ((x fc-player))
   (message "Not implemented yet"))
 
-(when *is-linux*
-  (setf *fc-enable-player* *fc-enable-dbus*))
+(add-to-list 'load-path (concat *fc-home* "/emacs/player"))
 
-(when (and *is-linux* *fc-enable-player*)
-  (require 'fc-player-mpris))
+(when *is-linux*
+  (setf *fc-enable-player* *fc-enable-dbus*)
+
+  (when *fc-enable-player*
+    (require 'fc-player-mpris))
+
+  (defun fc-player--get-players ()
+    (fc-concat nil
+               (when *fc-enable-player*
+                 (fc-player--get-mpris-players)))))
 
 (when *is-cygwin*
-  (defclass fc-player-foobar (fc-player)
-    ((vol :initform 0
-          :type integer)
+  (require 'fc-player-foobar)
 
-     (playing :initform nil)))
-
-  (defconst *fc-win-music-app* (fc-file-first-exists
-                                '("/cygdrive/c/Program Files/foobar2000/foobar2000"
-                                  "/cygdrive/c/Program Files (x86)/foobar2000/foobar2000")))
-
-  (cl-defmethod fc-player--play-pause ((x fc-player-foobar))
-    (fc-exec-command *fc-win-music-app* "/playpause")
-    (oset x playing (if (oref x playing) nil t))
-    (cl-call-next-method x))
-
-  (cl-defmethod fc-player--next ((x fc-player-foobar))
-    (fc-exec-command *fc-win-music-app* "/next")
-    (cl-call-next-method x))
-
-  (cl-defmethod fc-player--previous ((x fc-player-foobar))
-    (fc-exec-command *fc-win-music-app* "/prev")
-    (cl-call-next-method x))
-
-  (cl-defmethod fc-player--get-volume ((x fc-player-foobar))
-    (oref x vol))
-
-  (cl-defmethod fc-player--get-play-status ((x fc-player-foobar))
-    (if (oref x playing)
-        'Playing
-      'Paused))
-
-  (cl-defmethod fc-player--set-volume ((x fc-player-foobar) vol)
-    (oset x vol vol)
-    (fc-exec-command *fc-assist-app* "--setappvol" (int-to-string vol)))
-
-  (fc-exec-command *fc-win-music-app* "/pause"))
+  (defun fc-player--get-players ()
+    (list
+     (fc-player-footbar :name "foobar"))))
 
 (when *is-mac*
-  ;; support iTunes
-  (defclass fc-player-itunes (fc-player)
-    ())
+  (require 'fc-player-itunes)
+  (require 'fc-player-quodlibet)
 
-  (defun fc-exec-itune-cmd (cmd)
-    (fc-exec-command-to-string
-     "osascript"
-     "-s" "o"
-     "-e" "tell application \"Music\""
-     "-e" cmd
-     "-e" "end tell"))
+  (defun fc-player--get-players ()
+    (list
+     (fc-player-quodlibet :name "Quod Libet [app]")
+     (fc-player-itunes :name "iTunes"))))
 
-  (cl-defmethod fc-player--play-pause ((x fc-player-itunes))
-    (fc-exec-itune-cmd "playpause")
-    (cl-call-next-method x))
-
-  (cl-defmethod fc-player--next ((x fc-player-itunes))
-    (fc-exec-itune-cmd "next track")
-    (cl-call-next-method x))
-
-  (cl-defmethod fc-player--previous ((x fc-player-itunes))
-    (fc-exec-itune-cmd "previous track")
-    (cl-call-next-method x))
-
-  (cl-defmethod fc-player--get-volume ((x fc-player-itunes))
-    (string-to-number (fc-exec-itune-cmd "sound volume as integer")))
-
-  (cl-defmethod fc-player--get-play-status ((x fc-player-itunes))
-    (s-trim (fc-exec-itune-cmd "player state as string")))
-
-  (cl-defmethod fc-player--set-volume ((x fc-player-itunes) vol)
-    (fc-exec-itune-cmd (format "set sound volume to %d" vol)))
-
-  (cl-defmethod fc-player--show-metadata ((x fc-player-itunes))
-    (let* ((meta (s-trim (fc-exec-itune-cmd "get {artist,album,name} of current track")))
-           (data (s-split "," meta t)))
-      (cl-call-next-method x
-                           (s-trim (cl-first data))
-                           (s-trim (cl-second data))
-                           (s-trim (cl-third data)))))
-
-  (cl-defmethod fc-player--app ((x fc-player-itunes))
-    (fc-exec-itune-cmd "activate")))
-
-(require 'fc-player-quodlibet)
+(defun fc-player-user-select ()
+  (setf *fc-player*
+        (fc-user-select "Select player"
+                        (fc-player--get-players))))
 
 (provide 'fc-player)
 

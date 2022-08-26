@@ -6,6 +6,7 @@
 ;;; Code:
 (require 'cl-lib)
 
+(fc-require 'fc-patch)
 (fc-load (if (and *is-gui*
                   (<= 26 emacs-major-version))
              'posframe

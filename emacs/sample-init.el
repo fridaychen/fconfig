@@ -18,7 +18,9 @@
     (cl-incf *fc-font-height* 2)
     (setf *fc-enable-nyan* nil))
 
-  (defconst *fc-work-gateway-mac* '("00:25:36:b7:5c:09")))
+  (defconst *fc-location-gateway*
+    '((work . "mac-addr")
+      (home . "mac-addr"))))
 
 (setenv "FCHOME" "${FCHOME}")
 

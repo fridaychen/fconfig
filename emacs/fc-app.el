@@ -1003,12 +1003,10 @@ ARGS: the message of git commit."
 ;; theme
 (cl-defun fc-select-theme ()
   "Allow user to select theme."
-  (let* ((s (fc-user-select "Themes"
-                            (custom-available-themes)))
-         (theme (when s (intern s))))
-    (when (and theme
-               (not (eql theme *fc-current-theme*)))
-      (fc-load-theme theme))))
+  (when-let* ((theme (fc-user-select "Themes"
+                                     (custom-available-themes)))
+              (_ (not (eql theme *fc-current-theme*))))
+    (fc-load-theme theme)))
 
 (defun fc-init-dir-locals ()
   "Copy default .dir-locals.el."

@@ -644,11 +644,12 @@ N: number."
 
 (defun fc-process-info ()
   "Return list of process info."
-  (cl-loop for i in (and (fboundp 'process-list)
-                         (process-list))
-           for j from 1
-           collect (list (format "Process %d" j)
-                         (process-name i))))
+  `(("Process"
+     ,(s-join ", "
+              (cl-loop for i in (and (fboundp 'process-list)
+                                     (process-list))
+                       for j from 1
+                       collect (format "[%d] %s" j (process-name i)))))))
 
 (defun fc-convert-info (info)
   "Convert info to string.

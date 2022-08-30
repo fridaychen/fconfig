@@ -1,4 +1,3 @@
-import getopt
 import os
 import re
 import sys
@@ -30,7 +29,6 @@ def use_pacman():
 def sys_install(args):
     "install software"
     if sys.platform == "linux":
-        distro = os.getenv("FC_DISTRO")
         if use_apt():
             cmd = "sudo apt install %s"
         elif use_pacman():
@@ -52,8 +50,6 @@ def sys_install(args):
 def sys_update(_):
     "update system packages"
     if sys.platform == "linux":
-        distro = os.getenv("FC_DISTRO")
-
         if use_apt():
             fc.info("@Linux update by apt")
             os.system("sudo apt update;sudo apt upgrade")
@@ -216,7 +212,16 @@ def emacs_update(inputs):
             "emacs",
             "--batch",
             "--eval",
-            """(progn (defun foo () (setf *fc-boot* nil) (require 'package) (package-initialize) (load-file "~/.emacs.d/init.el") (package-utils-upgrade-all)) (foo))""",
+            """
+(progn
+  (defun foo ()
+     (setf *fc-boot* nil)
+     (require 'package)
+     (package-initialize)
+     (load-file "~/.emacs.d/init.el")
+     (package-utils-upgrade-all))
+  (foo))
+""",
         ],
     )
 

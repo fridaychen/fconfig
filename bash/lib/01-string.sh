@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 # produce a string contains char $2 with length $1
 function make-string() {

@@ -29,7 +29,8 @@
            (capitalize
             (car
              (split-string
-              (fc-exec-command-to-string (oref x app) "--status")))))))
+              (fc-exec-command-to-string (oref x app) "--status"))))))
+    (run-hooks '*fc-player-hook*))
   (cl-call-next-method x))
 
 (cl-defmethod fc-player--next ((x fc-player-quodlibet))

@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 NO_CONFIRM=false
 
@@ -23,19 +23,19 @@ function fj-title() {
 }
 
 function fj-speak() {
-    if app-exists say; then
+    if fc-app-exists say; then
         say "$*"
     elif fc-net-connected; then
         google-speak "$*"
-    elif app-exists pico-tts; then
+    elif fc-app-exists pico-tts; then
         echo "$*" | pico-tts -l en-US | aplay -q -f S16_LE -r 16 -
-    elif app-exists espeak-ng; then
-        if app-exists mbrola; then
+    elif fc-app-exists espeak-ng; then
+        if fc-app-exists mbrola; then
             espeak-ng -s 140 -a 40 -v us-mbrola-2 "$*"
         else
             espeak-ng -s 140 -a 40 "$*"
         fi
-    elif app-exists espeak; then
+    elif fc-app-exists espeak; then
         espeak "$*"
     fi
 }

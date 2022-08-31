@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 function fjf() {
     ff "$@" |

@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 function fc-copy() {
     local src=$1
@@ -17,8 +17,17 @@ function fc-add-path() {
     done
 }
 
-function app-exists() {
+function fc-app-exists() {
     type "$1" &>/dev/null
+}
+
+function fc-find-app() {
+    for x; do
+        if fc-app-exists $x; then
+            echo $x
+            return
+        fi
+    done
 }
 
 function fc-net-connected() {

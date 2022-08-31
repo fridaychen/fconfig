@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 function fc-include() {
     for x in $*; do

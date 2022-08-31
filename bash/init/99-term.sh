@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 export PAGER=less
 export BAT_PAGER="less -RF"

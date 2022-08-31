@@ -88,7 +88,7 @@
 (defun fc--player-modeline-cb ()
   (force-mode-line-update))
 
-(when (and *is-gui* *fc-enable-dbus*)
+(when *is-gui*
   (add-hook '*fc-player-hook* #'fc--player-modeline-cb)
   (add-to-list 'global-mode-string '(t (:eval (fc--player-modeline)))))
 

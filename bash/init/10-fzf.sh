@@ -1,4 +1,4 @@
-#!/bin/sh
+# -*- mode: sh -*-
 
 fc-include \
     ~/.fzf.bash \

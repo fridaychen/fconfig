@@ -1,6 +1,6 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
-if app-exists fasd; then
+if fc-app-exists fasd; then
     eval "$(fasd --init auto)"
     export _FASD_FUZZY=16
     alias j='fasd_cd -d'

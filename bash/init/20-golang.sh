@@ -1,1 +1,1 @@
-#!/bin/bash
+# -*- mode: sh -*-

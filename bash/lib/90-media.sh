@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 # Play the remote audio
 # $1 : URL of the audio

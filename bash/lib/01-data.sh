@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 case $(uname) in
     Darwin)

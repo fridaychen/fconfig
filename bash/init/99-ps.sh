@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 if [[ -z ${NODE_ICON[@]} ]]; then
     NODE_ICON=(
@@ -24,6 +24,9 @@ FC_EXITCODE_FILE=${USER}.bashexit.${FCROOTPID}
 FC_EXEC_FILE=${USER}.bashtime.${FCROOTPID}
 
 # Color definitions
+# FG_USER: Cyan
+# FG_AT: Red
+# FG_HOST: Green
 # FG_EXEC_TIME : Green
 # FG_FIT : Magenta
 # FG_OVERLOAD : White
@@ -185,24 +188,18 @@ function setup-ps() {
 
     export PROMPT_DIRTRIM=4
 
-    if [[ -z ${NODE_ICON_FG} ]]; then
-        if [[ -z $SSH_TTY ]]; then
-            NODE_ICON_FG=$FG_YELLOW
-        else
-            NODE_ICON_FG=$FG_MAGENTA
-        fi
-    fi
+    [[ -z $NODE_ICON_FG ]] && NODE_ICON_FG=$FG_YELLOW
 
     PS0='$(ps-exec-start)'
     PS1='$(ps-save-exit-code)'
-    PS1+=$(ps-part $HIGHLIGHT $NODE_ICON_FG $NODE_ICON_BG $PS_ART_L0 "\n")
-    PS1+=$(ps-part $HIGHLIGHT $NODE_ICON_FG $NODE_ICON_BG $PS_ART_L1 $RESET $FG_CYAN "\u")
+    PS1+=$(ps-part $RESET $HIGHLIGHT $NODE_ICON_FG $NODE_ICON_BG $PS_ART_L0 "\n")
+    PS1+=$(ps-part $HIGHLIGHT $NODE_ICON_FG $NODE_ICON_BG $PS_ART_L1 $RESET ${FG_USER:-36} "\u")
 
     if [[ ! -z $SSH_TTY ]]; then
-        PS1+=$(ps-part $FG_RED "@" $FG_GREEN "\h")
+        PS1+=$(ps-part ${FG_AT:-31} "@" ${FG_HOST:-32} "\h")
     fi
 
-    PS1+=$(ps-part $FG_RED ":" $FG_YELLOW "\w\n")
+    PS1+=$(ps-part ${FG_AT:-31} ":" ${FG_DIR:-33} "\w\n")
     PS1+=$(
         ps-part \
             $HIGHLIGHT $NODE_ICON_FG $NODE_ICON_BG $PS_ART_L2 $RESET \

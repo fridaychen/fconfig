@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 function fj-active-emacs-server() {
     local emacs_servers=(

@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 case $(uname) in
     Darwin)
@@ -117,8 +117,7 @@ alias fj-open="fj --open"
 
 alias v="fj --view"
 
-if app-exists batcat; then
-    alias c="batcat --color=always -n --theme OneHalfDark"
-else
-    alias c="bat --color=always -n --theme OneHalfDark"
-fi
+# bat / batcat
+alias c="$(fc-find-app batcat bat) -n --theme $(if [[ $FC_LIGHT_THEME == true ]]; then echo gruvbox-light; else echo gruvbox-dark; fi)"
+
+alias icat="kitty +kitten icat"

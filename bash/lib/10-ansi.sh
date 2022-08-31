@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 ANSI_NORMAL=0
 ANSI_HIGHLIGHT=1
@@ -31,6 +31,31 @@ ANSI_WHITE=7
 #      5 pink
 #      6 cyan
 #      7 white
+
+ANSI_FG_OFFSET=30
+ANSI_256_FG_OFFSET=256
+ANSI_BG_OFFSET=40
+ANSI_256_BG_OFFSET=512
+
+function ansi-part() {
+    local rst=""
+
+    for x in "$@"; do
+        if [[ $x =~ ^[0-9]+$ ]]; then
+            if [[ $x -lt 256 ]]; then
+                rst+="\033[${x}m"
+            elif [[ $x -lt 512 ]]; then
+                rst+="\033[38;5;$(($x - 256))m"
+            else
+                rst+="\033[48;5;$(($x - 512))m"
+            fi
+        else
+            rst+="$x"
+        fi
+    done
+
+    echo -en $rst
+}
 
 # Ansi output function
 # parameter
@@ -81,10 +106,7 @@ function ansi-reset() {
 }
 
 function hl-msg() {
-    ansi-output $ANSI_HIGHLIGHT $ANSI_BLUE $ANSI_BLACK ""
-    ansi-output $ANSI_HIGHLIGHT $ANSI_WHITE $ANSI_BLUE " $* "
-    ansi-output $ANSI_HIGHLIGHT $ANSI_BLUE $ANSI_BLACK ""
-    echo
+    ansi-part ${ANSI_HIGHLIGHT} "❗❗" $((ANSI_WHITE + 30)) $((ANSI_BLACK + 40)) "$* "
 }
 
 function error-msg() {

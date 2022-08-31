@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 alias gp='git pull'
 alias gq='git push'

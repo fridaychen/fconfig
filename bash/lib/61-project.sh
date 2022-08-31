@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 function proj-build() {
     local old_dir=$(pwd)

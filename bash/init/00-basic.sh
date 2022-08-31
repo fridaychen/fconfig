@@ -1,4 +1,4 @@
-#!/bin/bash
+# -*- mode: sh -*-
 
 fc-add-path ~/.local/bin/ \
     ${FCHOME}/bin \

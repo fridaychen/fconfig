@@ -26,3 +26,5 @@ case $(uname) in
         fi
         ;;
 esac
+
+fc-include ~/.fclocal.rc

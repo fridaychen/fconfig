@@ -23,6 +23,12 @@ fi
 FC_EXITCODE_FILE=${USER}.bashexit.${FCROOTPID}
 FC_EXEC_FILE=${USER}.bashtime.${FCROOTPID}
 
+# Color definitions
+# FG_EXEC_TIME : Green
+# FG_FIT : Magenta
+# FG_OVERLOAD : White
+# FG_LOCAL : Blue
+
 # construct colorful PS part with attr, fg, bg
 # 256 <= number < 512 : 256colors FG
 # 512 <= number : 256colors BG
@@ -201,10 +207,10 @@ function setup-ps() {
         ps-part \
             $HIGHLIGHT $NODE_ICON_FG $NODE_ICON_BG $PS_ART_L2 $RESET \
             $HIGHLIGHT $PS_LAST \
-            $FG_GREEN $PS_EXEC_TIME " " \
-            $FG_MAGENTA $PS_FIT \
-            $FG_WHITE $PS_OVERLOAD \
-            $FG_BLUE $PS_LOCAL \
+            ${FG_EXEC_TIME:-32} $PS_EXEC_TIME " " \
+            ${FG_FIT:-35} $PS_FIT \
+            ${FG_OVERLOAD:-37} $PS_OVERLOAD \
+            ${FG_LOCAL:-34} $PS_LOCAL \
             "\n"
     )
 

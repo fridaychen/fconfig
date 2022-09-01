@@ -7,7 +7,7 @@
 
 VERBOSE=:
 
-function usage() {
+function usage {
     cat <<-EOF
 Usage: \$\{0##*/\} ${1:argument}"
     ${2:synopsis}

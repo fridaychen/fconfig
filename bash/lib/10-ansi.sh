@@ -37,23 +37,23 @@ ANSI_256_FG=256
 ANSI_BG=40
 ANSI_256_BG=512
 
-function ansi-fg() {
+function ansi-fg {
     echo $(($@ + ANSI_FG))
 }
 
-function ansi-256-fg() {
+function ansi-256-fg {
     echo $(($@ + ANSI_256_FG))
 }
 
-function ansi-bg() {
+function ansi-bg {
     echo $(($@ + ANSI_BG))
 }
 
-function ansi-256-bg() {
+function ansi-256-bg {
     echo $(($@ + ANSI_256_BG))
 }
 
-function ansi-part() {
+function ansi-part {
     local rst=""
 
     for x in "$@"; do
@@ -73,23 +73,23 @@ function ansi-part() {
     echo -en $rst
 }
 
-function ansi-pos() {
+function ansi-pos {
     printf '\033[%d;%dH' $1 $2
 }
 
-function ansi-reset() {
+function ansi-reset {
     printf '\033c'
 }
 
-function hl-msg() {
+function hl-msg {
     ansi-part ${ANSI_HT} $((ANSI_WHITE + 30)) $((ANSI_BLACK + 40)) "🏮 $*\n" $ANSI_NORMAL
 }
 
-function err-msg() {
+function err-msg {
     ansi-part "\n" ${ANSI_HT} $((ANSI_WHITE + 30)) $((ANSI_BLACK + 40)) "💩 $*\n\n" $ANSI_NORMAL
 }
 
-function ansi-title() {
+function ansi-title {
     printf "\\033]0;$*\\007"
 }
 

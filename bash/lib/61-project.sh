@@ -1,6 +1,6 @@
 # -*- mode: sh -*-
 
-function proj-build() {
+function proj-build {
     local old_dir=$(pwd)
 
     if ! proj-chtop; then
@@ -35,11 +35,11 @@ function proj-build() {
     cd "$old_dir"
 }
 
-function proj-root() {
+function proj-root {
     fc-locate-file-in-path ".TOP" ".top"
 }
 
-function proj-chtop() {
+function proj-chtop {
     local root=$(proj-root)
 
     if [[ -z ${root} ]]; then
@@ -51,7 +51,7 @@ function proj-chtop() {
     return 0
 }
 
-function create-project() {
+function create-project {
     local name=$1
 
     mkdir $name
@@ -62,7 +62,7 @@ function create-project() {
     touch $name/notes
 }
 
-function proj-cmake() {
+function proj-cmake {
     mkdir build
     cd build
     cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -G Ninja

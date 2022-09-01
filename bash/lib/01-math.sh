@@ -1,5 +1,5 @@
 # -*- mode: sh -*-
 
-function fc-calc() {
+function fc-calc {
     awk "BEGIN { print $* }"
 }

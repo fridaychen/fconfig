@@ -1,6 +1,6 @@
 # -*- mode: sh -*-
 
-function fj-welcome() {
+function fj-welcome {
     cmd=""
 
     if fc-app-exists "fortune"; then

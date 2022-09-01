@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function init_darwin_font() {
+function init_darwin_font {
     # install personal fonts
     local font_src_path=${FCHOME}/fonts/
     local font_target_path=~/Library/Fonts/
@@ -16,7 +16,7 @@ function init_darwin_font() {
     brew cask install font-firacode font-hack
 }
 
-function init_linux_font() {
+function init_linux_font {
     fc-copy ${FCHOME}/fonts/fonts.conf ~/.config/fontconfig/fonts.conf
 
     # install personal fonts

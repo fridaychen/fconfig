@@ -2,7 +2,7 @@
 
 NO_CONFIRM=false
 
-function fc-user-confirm() {
+function fc-user-confirm {
     if [[ $NO_CONFIRM == true ]]; then
         return 0
     fi
@@ -14,15 +14,15 @@ function fc-user-confirm() {
     [[ ${opt} = "y" || ${opt} = "Y" ]]
 }
 
-function fc-clear-input() {
+function fc-clear-input {
     while read -e -t 0.1; do :; done
 }
 
-function fj-title() {
+function fj-title {
     hl-msg "<(^.^)>" "$@"
 }
 
-function fj-speak() {
+function fj-speak {
     if fc-app-exists say; then
         say "$*"
     elif fc-net-connected; then
@@ -40,7 +40,7 @@ function fj-speak() {
     fi
 }
 
-function fj-done() {
+function fj-done {
     if [[ $? -eq 0 ]]; then
         fj-speak ${1:-great}
     else

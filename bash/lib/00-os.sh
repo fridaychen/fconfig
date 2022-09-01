@@ -1,6 +1,6 @@
 # -*- mode: sh -*-
 
-function fc-copy() {
+function fc-copy {
     local src=$1
     local target=$2
 
@@ -9,7 +9,7 @@ function fc-copy() {
         cp "$src" "$target"
 }
 
-function fc-add-path() {
+function fc-add-path {
     for x in "$@"; do
         if [[ -d "$x" && ! :$PATH: == *:"$x":* ]]; then
             export PATH=$PATH:"$x"
@@ -17,11 +17,11 @@ function fc-add-path() {
     done
 }
 
-function fc-app-exists() {
+function fc-app-exists {
     type "$1" &>/dev/null
 }
 
-function fc-find-app() {
+function fc-find-app {
     for x; do
         if fc-app-exists $x; then
             echo $x
@@ -30,7 +30,7 @@ function fc-find-app() {
     done
 }
 
-function fc-net-connected() {
+function fc-net-connected {
     case $(uname) in
         Darwin)
             /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport -I | grep running >/dev/null
@@ -41,13 +41,13 @@ function fc-net-connected() {
     esac
 }
 
-function fc-wait-children() {
+function fc-wait-children {
     while true; do
         wait -n || break
     done
 }
 
-function fc-locate-file-in-path() {
+function fc-locate-file-in-path {
     local dir="$(realpath .)"
 
     while [[ "${dir}" != "/" ]]; do

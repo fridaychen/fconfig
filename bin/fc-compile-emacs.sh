@@ -4,30 +4,30 @@ CPUS=$(nproc)
 
 source $FCHOME/bash/lib.sh
 
-function clone() {
+function clone {
     git clone git://github.com/emacs-mirror/emacs.git
 }
 
-function update() {
+function update {
     git pull
 }
 
-function compile() {
+function compile {
     git clean -xdf
     ./autogen.sh
     ./configure --with-native-compilation --with-json --with-pgtk --with-xwidgets
     time make -j$CPUS
 }
 
-function install() {
+function install {
     sudo make install
 }
 
-function update_package() {
+function update_package {
     fj --emup
 }
 
-function usage() {
+function usage {
     echo "Update and compile emacs"
     echo ""
     echo "  -c number of cpus will be used for compilation"

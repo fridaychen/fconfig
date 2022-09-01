@@ -1,6 +1,6 @@
 # -*- mode: sh -*-
 
-function ff-run() {
+function ff-run {
     local pattern=${1}
     shift
 
@@ -9,7 +9,7 @@ function ff-run() {
         fzf-run "$@"
 }
 
-function ff-run-all() {
+function ff-run-all {
     local pattern=${1}
     shift
 
@@ -21,7 +21,7 @@ function ff-run-all() {
             -o "$@"
 }
 
-function ff-run-loop() {
+function ff-run-loop {
     local pattern=${1}
     shift
 

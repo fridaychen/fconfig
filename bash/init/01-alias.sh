@@ -52,7 +52,7 @@ alias ll='ls -AlFh'
 alias lst="ll -rt"
 alias lss="ll -rS"
 
-function lsd() {
+function lsd {
     if [[ -z $1 ]]; then
         ls -d */ 2>/dev/null
     else
@@ -73,13 +73,13 @@ alias b=proj-build
 alias r=proj-chtop
 alias p='fzf --ansi'
 
-function gb() {
+function gb {
     if [[ ! $(gp | grep -i " up to date") ]]; then
         proj-build
     fi
 }
 
-function fargs() {
+function fargs {
     local cmd=${1}
 
     [[ ! ${cmd} == "*{}*" ]] && cmd="${cmd} {}"
@@ -90,7 +90,7 @@ function fargs() {
         -o ${cmd}
 }
 
-function fj-run() {
+function fj-run {
     sort -h |
         xargs --no-run-if-empty \
             -d "\n" \
@@ -98,7 +98,7 @@ function fj-run() {
             -o "$@"
 }
 
-function install_color_scheme() {
+function install_color_scheme {
     bash -c "$(wget -qO- https://git.io/vQgMr)"
 }
 

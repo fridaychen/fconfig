@@ -35,7 +35,7 @@ FC_EXEC_FILE=${USER}.bashtime.${FCROOTPID}
 # construct colorful PS part with attr, fg, bg
 # 256 <= number < 512 : 256colors FG
 # 512 <= number : 256colors BG
-function ps-part() {
+function ps-part {
     local rst=""
 
     for x in "$@"; do
@@ -55,11 +55,11 @@ function ps-part() {
     echo $rst
 }
 
-function ps-save-exit-code() {
+function ps-save-exit-code {
     fc-dput $FC_EXITCODE_FILE $?
 }
 
-function last-command-result() {
+function last-command-result {
     local exitcode
     fc-dget $FC_EXITCODE_FILE exitcode
 
@@ -68,7 +68,7 @@ function last-command-result() {
     fi
 }
 
-function ps-resource-overload() {
+function ps-resource-overload {
     case $(uname) in
         Darwin) ;;
 
@@ -83,7 +83,7 @@ function ps-resource-overload() {
     esac
 }
 
-function ps-local() {
+function ps-local {
     local dir=$(fc-locate-file-in-path .localinfo)
 
     if [[ (! -z ${dir}) && -f "${dir}/.localinfo" ]]; then
@@ -100,11 +100,11 @@ function ps-local() {
     fi
 }
 
-function ps-now() {
+function ps-now {
     date +%H:%M:%S
 }
 
-function ps-fit-info() {
+function ps-fit-info {
     local branch=$(fit-current-branch)
 
     if [[ ! -z $branch ]]; then
@@ -118,12 +118,12 @@ function ps-fit-info() {
 
 }
 
-function ps-exec-start() {
+function ps-exec-start {
     # places the epoch time in ns into shared memory
     fc-dput $FC_EXEC_FILE $(date +%s.%N)
 }
 
-function ps-exec-time() {
+function ps-exec-time {
     if $(fc-dhas $FC_EXEC_FILE); then
         local endtime=$(date +%s.%N)
         local starttime=""
@@ -133,23 +133,23 @@ function ps-exec-time() {
     fi
 }
 
-function ps-art-l0() {
+function ps-art-l0 {
     echo "${NODE_ICON[0]}"
 }
 
-function ps-art-l1() {
+function ps-art-l1 {
     echo "${NODE_ICON[1]}"
 }
 
-function ps-art-l2() {
+function ps-art-l2 {
     echo "${NODE_ICON[2]}"
 }
 
-function ps-art-l3() {
+function ps-art-l3 {
     echo "${NODE_ICON[3]}"
 }
 
-function setup-ps() {
+function setup-ps {
     local RESET=0
     local NORMAL=0
     local HIGHLIGHT=1
@@ -218,7 +218,7 @@ function setup-ps() {
     PS2=$(ps-part $RESET $HIGHLIGHT $FG_BLUE ">+${S}+('> " $RESET)
 }
 
-function ps-cleanup() {
+function ps-cleanup {
     fc-ddel $FC_EXEC_FILE $FC_EXITCODE_FILE
 }
 

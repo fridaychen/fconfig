@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function run-latex() {
+function run-latex {
     export TEXINPUTS=".:..:${FCHOME}/latex//:"
     xelatex --shell-escape ../$(basename "${1}")
 }

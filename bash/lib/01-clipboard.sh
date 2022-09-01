@@ -1,6 +1,6 @@
 # -*- mode: sh -*-
 
-function clp-copy() {
+function clp-copy {
     case $(uname) in
         Darwin)
             pbcopy
@@ -13,7 +13,7 @@ function clp-copy() {
     esac
 }
 
-function clp-paste() {
+function clp-paste {
     case $(uname) in
         Darwin)
             pbpaste

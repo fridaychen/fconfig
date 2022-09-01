@@ -1,6 +1,6 @@
 # -*- mode: sh -*-
 
-function fj-active-emacs-server() {
+function fj-active-emacs-server {
     local emacs_servers=(
         "/var/run/user/${UID}/emacs/server"
         "/tmp/emacs${UID}/server"
@@ -14,7 +14,7 @@ function fj-active-emacs-server() {
     return 1
 }
 
-function e() {
+function e {
     if fj-active-emacs-server; then
         ec "$@"
     elif [[ ! -t 0 ]]; then
@@ -26,7 +26,7 @@ function e() {
     fi
 }
 
-function ec() {
+function ec {
     if [[ ! -t 0 ]]; then
         fzf-run "emacsclient -n"
     elif [[ $# -eq 0 ]]; then

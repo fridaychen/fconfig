@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function usage() {
+function usage {
     echo "Usage of pb-decode.sh:
   pb-decode.sh -p proto-file -m message-type -s start-offset input-files
 
@@ -13,7 +13,7 @@ function usage() {
     exit -1
 }
 
-function decode-file() {
+function decode-file {
     while read line; do
         [[ $line =~ ^# || $line =~ ^$ ]] && echo $line && continue
 

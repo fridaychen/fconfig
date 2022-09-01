@@ -2,7 +2,7 @@
 
 VERBOSE=:
 
-function usage() {
+function usage {
     cat <<-EOF
 Usage:  ${0##*/} [OPTION] package-files
     Extract packages into current directory.
@@ -14,7 +14,7 @@ EOF
     exit
 }
 
-function extract() {
+function extract {
     local longext=${1#*.}
     local ext=${1##*.}
 

@@ -2,7 +2,7 @@
 
 source $FCHOME/bash/lib.sh
 
-function usage() {
+function usage {
     cat <<-EOF
 Usage:  ${0##*/} [OPTION] audio-files
     Play audio files continuous
@@ -17,7 +17,7 @@ EOF
     exit
 }
 
-function player() {
+function player {
     if [[ $(which mpv) ]]; then
         mpv --really-quiet "$@" 1</dev/null
     else
@@ -25,7 +25,7 @@ function player() {
     fi
 }
 
-function waitkey() {
+function waitkey {
     while read -e -t 0.1; do :; done
     read -n 1 -s -r -p "Press key [r->run again q->quit other->done] ❓ " opt
     echo

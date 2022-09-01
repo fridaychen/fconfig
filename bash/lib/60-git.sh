@@ -2,7 +2,7 @@
 
 alias gp='git pull'
 alias gq='git push'
-function gb() {
+function gb {
     if [[ ! $(gp | grep -i " up to date") ]]; then
         proj-build
     fi
@@ -10,7 +10,7 @@ function gb() {
 
 alias fit-cancel="git reset @~"
 
-function fit-amend() {
+function fit-amend {
     if [[ $# == 0 ]]; then
         git commit --amend --no-edit
     else
@@ -18,27 +18,27 @@ function fit-amend() {
     fi
 }
 
-function fit-clean() {
+function fit-clean {
     git clean -xdf
 }
 
-function fit-current-branch() {
+function fit-current-branch {
     if $(fit-in-work-tree); then
         git rev-parse --abbrev-ref HEAD
     fi
 }
 
-function fit-count-changes() {
+function fit-count-changes {
     git status --short 2>/dev/null |
         wc -l |
         sed -e "s/ //g"
 }
 
-function fit-select-branch() {
+function fit-select-branch {
     git branch $@ | fzf --prompt="Select branch > "
 }
 
-function fit-select-commit() {
+function fit-select-commit {
     git log \
         --graph \
         --date="format:%y/%m/%d %H:%M" \
@@ -56,7 +56,7 @@ function fit-select-commit() {
         grep -o "[a-f0-9]\{7\}"
 }
 
-function fit-switch-branch() {
+function fit-switch-branch {
     git branch |
         sed -e "/^\\*/d" |
         cut -b 3- |
@@ -65,17 +65,17 @@ function fit-switch-branch() {
             --bind="enter:execute(git checkout {})+abort"
 }
 
-function fit-in-work-tree() {
+function fit-in-work-tree {
     [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) == "true" ]]
 }
 
-function fit-root() {
+function fit-root {
     if $(fit-in-work-tree); then
         git rev-parse --show-toplevel
     fi
 }
 
-function fit-top() {
+function fit-top {
     local number=1
     if [[ $# -ne 0 ]]; then
         number=$1
@@ -84,11 +84,11 @@ function fit-top() {
     git log --oneline -${number}
 }
 
-function fit-search() {
+function fit-search {
     git log --oneline --grep "$1"
 }
 
-function fit-show() {
+function fit-show {
     if [[ -t 0 ]]; then
         git log --oneline -1 |
             cut -f1 -d" " |
@@ -100,6 +100,6 @@ function fit-show() {
     fi
 }
 
-function fit-cherry-pick() {
+function fit-cherry-pick {
     git cherry-pick --strategy=recursive -X theirs $@
 }

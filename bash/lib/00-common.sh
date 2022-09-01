@@ -1,12 +1,12 @@
 # -*- mode: sh -*-
 
-function fc-include() {
+function fc-include {
     for x in $*; do
         [[ -f $x ]] && source "${x}"
     done
 }
 
-function fc-run-drop-in() {
+function fc-run-drop-in {
     local dir=$1
     local pattern=$2
 

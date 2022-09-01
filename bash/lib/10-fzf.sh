@@ -1,6 +1,6 @@
 # -*- mode: sh -*-
 
-function fjf() {
+function fjf {
     ff "$@" |
         fzf --ansi \
             --bind=?:toggle-preview --preview-window right:wrap:hidden \
@@ -9,7 +9,7 @@ function fjf() {
             --bind "enter:execute(fj --view {})"
 }
 
-function fzf-run() {
+function fzf-run {
     local cmd="${@}"
 
     [[ ! ${cmd} == "*{}*" ]] && cmd="${cmd} {}"
@@ -21,7 +21,7 @@ function fzf-run() {
             -o ${cmd}
 }
 
-function fzf-run-loop() {
+function fzf-run-loop {
     local cmd=${1}
 
     [[ ! ${cmd} == "*{}*" ]] && cmd="${cmd} {}"

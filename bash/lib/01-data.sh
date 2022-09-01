@@ -10,24 +10,24 @@ case $(uname) in
         ;;
 esac
 
-function fc-dhas() {
+function fc-dhas {
     [[ -f "${SHMDIR}/$1" ]]
 }
 
-function fc-ddel() {
+function fc-ddel {
     for i in "$@"; do
         rm -f "${SHMDIR}/$i"
     done
 }
 
-function fc-dput() {
+function fc-dput {
     local file="${SHMDIR}/$1"
     shift 1
 
     echo $* >$file
 }
 
-function fc-dget() {
+function fc-dget {
     local file="${SHMDIR}/$1"
     shift 1
 

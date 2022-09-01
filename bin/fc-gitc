@@ -59,7 +59,9 @@ if [[ $status == true ]]; then
 fi
 
 if [[ ! -z $output ]]; then
-    echo -n "project"
-    ansi-format $ANSI_HIGHLIGHT $ANSI_BLUE $ANSI_BLACK " %s" "${repo_root}"
-    ansi-format $ANSI_HIGHLIGHT $ANSI_RED $ANSI_BLACK " %s""${output}"
+    ansi-part \
+        $ANSI_NORMAL "project " \
+        $ANSI_HT $(ansi-fg $ANSI_BLUE) $(ansi-bg $ANSI_BLACK) "${repo_root}" \
+        $ANSI_NORMAL " " \
+        $ANSI_HT $(ansi-fg $ANSI_RED) $(ansi-bg $ANSI_BLACK) "${output}"
 fi

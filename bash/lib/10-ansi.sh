@@ -1,7 +1,7 @@
 # -*- mode: sh -*-
 
 ANSI_NORMAL=0
-ANSI_HIGHLIGHT=1
+ANSI_HT=1
 ANSI_UNDERSCORE=4
 ANSI_BLINK=5
 ANSI_REVERSE=7
@@ -32,10 +32,26 @@ ANSI_WHITE=7
 #      6 cyan
 #      7 white
 
-ANSI_FG_OFFSET=30
-ANSI_256_FG_OFFSET=256
-ANSI_BG_OFFSET=40
-ANSI_256_BG_OFFSET=512
+ANSI_FG=30
+ANSI_256_FG=256
+ANSI_BG=40
+ANSI_256_BG=512
+
+function ansi-fg() {
+    echo $(($@ + ANSI_FG))
+}
+
+function ansi-256-fg() {
+    echo $(($@ + ANSI_256_FG))
+}
+
+function ansi-bg() {
+    echo $(($@ + ANSI_BG))
+}
+
+function ansi-256-bg() {
+    echo $(($@ + ANSI_256_BG))
+}
 
 function ansi-part() {
     local rst=""
@@ -57,48 +73,8 @@ function ansi-part() {
     echo -en $rst
 }
 
-# Ansi output function
-# parameter
-#  $1 : attribute
-#  $2 : foreground
-#  $3 : background
-#  $4.. : contents
-function ansi-output() {
-    if [[ (! -t 1) || -z $FC_COLORFUL || $FC_COLORFUL == false ]]; then
-        shift 3
-        format=$1
-        shift
-        printf "$format" "$@"
-    else
-        ansi-format "$@"
-    fi
-}
-
-function ansi-format() {
-    printf '\033[%s;%s;%sm' $1 $(($2 + 30)) $(($3 + 40))
-    shift 3
-    format=$1
-    shift
-    printf "$format" "$@"
-    printf '\033[0;m'
-}
-
 function ansi-pos() {
     printf '\033[%d;%dH' $1 $2
-}
-
-function ansi-test() {
-    for attr in 0 1 4 5 7; do
-        for fore in 30 31 32 33 34 35 36 37; do
-            for back in 40 41 42 43 44 45 46 47; do
-                printf '\033[%s;%s;%sm %02s;%02s ' $attr $fore $back $fore $back
-            done
-
-            printf "\n"
-        done
-
-        printf '\033[0;m'
-    done
 }
 
 function ansi-reset() {
@@ -106,11 +82,11 @@ function ansi-reset() {
 }
 
 function hl-msg() {
-    ansi-part ${ANSI_HIGHLIGHT} $((ANSI_WHITE + 30)) $((ANSI_BLACK + 40)) "🏮 $*\n" $ANSI_NORMAL
+    ansi-part ${ANSI_HT} $((ANSI_WHITE + 30)) $((ANSI_BLACK + 40)) "🏮 $*\n" $ANSI_NORMAL
 }
 
 function err-msg() {
-    ansi-part "\n" ${ANSI_HIGHLIGHT} $((ANSI_WHITE + 30)) $((ANSI_BLACK + 40)) "💩 $*\n\n" $ANSI_NORMAL
+    ansi-part "\n" ${ANSI_HT} $((ANSI_WHITE + 30)) $((ANSI_BLACK + 40)) "💩 $*\n\n" $ANSI_NORMAL
 }
 
 function ansi-title() {

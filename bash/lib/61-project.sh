@@ -5,9 +5,9 @@ function proj-build() {
 
     if ! proj-chtop; then
         hl-msg "NO TOP, try to do it at here."
+    else
+        hl-msg "TOP at $(pwd)"
     fi
-
-    hl-msg "TOP at $(pwd)"
 
     if [[ -f CMakeLists.txt && ! -d build ]]; then
         proj-cmake
@@ -28,7 +28,7 @@ function proj-build() {
     elif [[ -x ./build.sh ]]; then
         ./build.sh
     else
-        error-msg "DO NOT know how to build\n"
+        err-msg "DO NOT know how to build"
     fi
 
     fj-done "great" "oops"
@@ -43,8 +43,7 @@ function proj-chtop() {
     local root=$(proj-root)
 
     if [[ -z ${root} ]]; then
-        ansi-output $ANSI_BLINK $ANSI_YELLOW $ANSI_RED "failed to find TOP"
-        echo
+        err-msg "failed to find TOP"
         return 1
     fi
 

@@ -106,14 +106,11 @@ function ansi-reset() {
 }
 
 function hl-msg() {
-    ansi-part ${ANSI_HIGHLIGHT} "❗❗" $((ANSI_WHITE + 30)) $((ANSI_BLACK + 40)) "$* "
+    ansi-part ${ANSI_HIGHLIGHT} $((ANSI_WHITE + 30)) $((ANSI_BLACK + 40)) "🏮 $*\n" $ANSI_NORMAL
 }
 
-function error-msg() {
-    ansi-output $ANSI_BLINK $ANSI_WHITE $ANSI_RED "ERROR >> "
-    ansi-output $ANSI_HIGHLIGHT $ANSI_WHITE $ANSI_MAGENTA "$*"
-
-    echo
+function err-msg() {
+    ansi-part "\n" ${ANSI_HIGHLIGHT} $((ANSI_WHITE + 30)) $((ANSI_BLACK + 40)) "💩 $*\n\n" $ANSI_NORMAL
 }
 
 function ansi-title() {

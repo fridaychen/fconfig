@@ -29,7 +29,7 @@ FC_EXEC_FILE=${USER}.bashtime.${FCROOTPID}
 # FG_HOST: Green
 # FG_EXEC_TIME : Green
 # FG_FIT : Magenta
-# FG_OVERLOAD : White
+# FG_OVERLOAD : Red
 # FG_LOCAL : Blue
 
 # construct colorful PS part with attr, fg, bg
@@ -206,7 +206,7 @@ function setup-ps() {
             $HIGHLIGHT $PS_LAST \
             ${FG_EXEC_TIME:-32} $PS_EXEC_TIME " " \
             ${FG_FIT:-35} $PS_FIT \
-            ${FG_OVERLOAD:-37} $PS_OVERLOAD \
+            ${FG_OVERLOAD:-31} $PS_OVERLOAD \
             ${FG_LOCAL:-34} $PS_LOCAL \
             "\n"
     )

@@ -1,1 +1,1 @@
-# -*- mode: sh -*-
+# -*- mode: sh; sh-shell: bash; -*-

@@ -1,4 +1,15 @@
-# -*- mode: sh -*-
+# -*- mode: sh; sh-shell: bash; -*-
+
+function fargs {
+    local cmd=${1}
+
+    [[ ! ${cmd} == "*{}*" ]] && cmd="${cmd} {}"
+
+    xargs --no-run-if-empty \
+        -d "\n" \
+        -I {} \
+        -o ${cmd}
+}
 
 function fjf {
     ff "$@" |

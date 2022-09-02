@@ -1,4 +1,4 @@
-# -*- mode: sh -*-
+# -*- mode: sh; sh-shell: bash; -*-
 
 if fc-app-exists fasd; then
     eval "$(fasd --init auto)"

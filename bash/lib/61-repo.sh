@@ -1,4 +1,4 @@
-# -*- mode: sh -*-
+# -*- mode: sh; sh-shell: bash; -*-
 
 alias R='repo'
 alias RA='fj-repo-forall'

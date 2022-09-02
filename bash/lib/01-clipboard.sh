@@ -1,4 +1,4 @@
-# -*- mode: sh -*-
+# -*- mode: sh; sh-shell: bash; -*-
 
 function clp-copy {
     case $(uname) in

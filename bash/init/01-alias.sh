@@ -1,4 +1,4 @@
-# -*- mode: sh -*-
+# -*- mode: sh; sh-shell: bash; -*-
 
 case $(uname) in
     Darwin)
@@ -77,17 +77,6 @@ function gb {
     if [[ ! $(gp | grep -i " up to date") ]]; then
         proj-build
     fi
-}
-
-function fargs {
-    local cmd=${1}
-
-    [[ ! ${cmd} == "*{}*" ]] && cmd="${cmd} {}"
-
-    xargs --no-run-if-empty \
-        -d "\n" \
-        -I {} \
-        -o ${cmd}
 }
 
 function fj-run {

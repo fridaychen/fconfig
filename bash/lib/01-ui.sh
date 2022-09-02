@@ -1,4 +1,4 @@
-# -*- mode: sh -*-
+# -*- mode: sh; sh-shell: bash; -*-
 
 NO_CONFIRM=false
 
@@ -45,5 +45,37 @@ function fj-done {
         fj-speak ${1:-great}
     else
         fj-speak ${2:-oops}
+    fi
+}
+
+function fc-user-select-with-select() {
+    local prompt="$1 : "
+    shift 1
+
+    PS3=$prompt
+    select x in "$@"; do
+        case $x in
+            *)
+                echo $x
+                break
+                ;;
+        esac
+    done
+}
+
+function fc-user-select-with-fzf() {
+    local prompt="$1 : "
+    shift 1
+
+    for x; do
+        echo $x
+    done | fzf --ansi --prompt="${prompt}" | fargs echo
+}
+
+function fc-user-select() {
+    if fc-app-exists "fzf"; then
+        fc-user-select-with-fzf "$@"
+    else
+        fc-user-select-with-select "$@"
     fi
 }

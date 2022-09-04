@@ -56,7 +56,7 @@ function ansi-256-bg {
 function ansi-part {
     local rst=""
 
-    for x in "$@"; do
+    for x; do
         if [[ $x =~ ^[0-9]+$ ]]; then
             if [[ $x -lt 256 ]]; then
                 rst+="\033[${x}m"

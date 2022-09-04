@@ -11,7 +11,7 @@ function play-quietly {
 }
 
 function fj-info {
-    for i in "$@"; do
+    for i; do
         fj-title "$i"
         ffprobe -hide_banner "$i"
     done
@@ -26,7 +26,7 @@ function fj-mcopy {
 }
 
 function fj-extracta {
-    for i in "$@"; do
+    for i; do
         fj-title "$i"
         fj --exa "$i"
     done
@@ -38,7 +38,7 @@ function fj-play {
         return
     fi
 
-    for i in "$@"; do
+    for i; do
         fj-title "$i"
         fj --play "$i"
     done
@@ -50,7 +50,7 @@ function fj-playa {
         return
     fi
 
-    for i in "$@"; do
+    for i; do
         fj-title "$i"
         fj --playa "$i"
     done
@@ -62,7 +62,7 @@ function fj-playv {
         return
     fi
 
-    for i in "$@"; do
+    for i; do
         fj-title "$i"
         fj --playv "$i"
     done

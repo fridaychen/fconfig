@@ -10,7 +10,7 @@ function fc-copy {
 }
 
 function fc-add-path {
-    for x in "$@"; do
+    for x; do
         if [[ -d "$x" && ! :$PATH: == *:"$x":* ]]; then
             export PATH=$PATH:"$x"
         fi
@@ -51,7 +51,7 @@ function fc-locate-file-in-path {
     local dir="$(realpath .)"
 
     while [[ "${dir}" != "/" ]]; do
-        for i in "$@"; do
+        for i; do
             if [[ -f "${dir}/$i" || -d "${dir}/$i" ]]; then
                 echo ${dir}
                 return

@@ -56,7 +56,7 @@ function lsd {
     if [[ -z $1 ]]; then
         ls -d */ 2>/dev/null
     else
-        for x in $@; do
+        for x; do
             ls -d "$x"/*/ 2>/dev/null
         done
     fi

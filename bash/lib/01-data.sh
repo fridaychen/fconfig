@@ -15,7 +15,7 @@ function fc-dhas {
 }
 
 function fc-ddel {
-    for i in "$@"; do
+    for i; do
         rm -f "${SHMDIR}/$i"
     done
 }

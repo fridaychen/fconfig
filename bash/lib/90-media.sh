@@ -2,9 +2,9 @@
 
 # Play the remote audio
 # $1 : URL of the audio
-function play-quietly {
+function fc-play-audio {
     if [[ $(which mpv) ]]; then
-        mpv --really-quiet "$@" 1</dev/null
+        mpv --audio-display=no --really-quiet "$@" 1</dev/null
     else
         mplayer -nolirc -really-quiet "$@" 1</dev/null
     fi

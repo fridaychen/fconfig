@@ -1,8 +1,21 @@
 #!/bin/bash
 
 BASEDIR=$(dirname $(readlink -f $0))
-FCHOME=$(dirname $BASEDIR)
+FCHOME=$(readlink -f "$BASEDIR/../../")
 
-if [[ ! $(grep FCHOME ~/.bashrc) ]]; then
-    echo -e "\nexport FCHOME=$FCHOME;. ${FCHOME}/bin/FC\n" >>~/.bashrc
+case $(uname) in
+    Darwin)
+        RC=~/.profile
+        ;;
+    Linux)
+        RC=~/.bashrc
+        ;;
+    *)
+        echo "Unknown OS"
+        exit
+        ;;
+esac
+
+if [[ ! $(grep FCHOME "$RC") ]]; then
+    echo -e "\nexport FCHOME=$FCHOME;source ${FCHOME}/bin/FC\n" >>$RC
 fi

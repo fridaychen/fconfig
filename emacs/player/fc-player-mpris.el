@@ -95,9 +95,10 @@
              *fc-prefer-players*)))
 
 (defun fc-player--get-mpris-players ()
-  (--map (fc-player-mpris (s-chop-prefix "org.mpris.MediaPlayer2." it))
-         (--filter (string-prefix-p "org.mpris.MediaPlayer2." it)
-                   (dbus-list-names :session))))
+  (let ((names (--filter (string-prefix-p "org.mpris.MediaPlayer2." it)
+                         (dbus-list-names :session))))
+    (--map (fc-player-mpris :name (s-chop-prefix "org.mpris.MediaPlayer2." it))
+           names)))
 
 (provide 'fc-player-mpris)
 

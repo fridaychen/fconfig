@@ -4,16 +4,16 @@
 # $1 : URL of the audio
 function fc-play-audio {
     if [[ $(which mpv) ]]; then
-        mpv --audio-display=no --really-quiet "$@" 1</dev/null
+        mpv --no-video --audio-display=no --really-quiet "$@" 1</dev/null
     else
         mplayer -nolirc -really-quiet "$@" 1</dev/null
     fi
 }
 
 function fj-info {
-    for i; do
-        fj-title "$i"
-        ffprobe -hide_banner "$i"
+    for x; do
+        fj-title "$x"
+        ffprobe -hide_banner "$x"
     done
 }
 
@@ -26,9 +26,9 @@ function fj-mcopy {
 }
 
 function fj-extracta {
-    for i; do
-        fj-title "$i"
-        fj --exa "$i"
+    for x; do
+        fj-title "$x"
+        fj --exa "$x"
     done
 }
 

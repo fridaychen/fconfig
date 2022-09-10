@@ -51,8 +51,8 @@ function fc-locate-file-in-path {
     local dir="$(realpath .)"
 
     while [[ "${dir}" != "/" ]]; do
-        for i; do
-            if [[ -f "${dir}/$i" || -d "${dir}/$i" ]]; then
+        for x; do
+            if [[ -f "${dir}/$x" || -d "${dir}/$x" ]]; then
                 echo ${dir}
                 return
             fi

@@ -9,7 +9,6 @@ function clp-copy {
         Linux)
             xsel -b
             ;;
-
     esac
 }
 
@@ -22,6 +21,5 @@ function clp-paste {
         Linux)
             xsel -o
             ;;
-
     esac
 }

@@ -92,7 +92,8 @@ function install_color_scheme {
 }
 
 # emacs
-alias fj-rm-bak='find . -name "*~" -delete'
+alias fj-clean='find . -name "*~" -delete'
+
 if [[ $FC_TRUECOLOR == true ]]; then
     alias fje="TERM=xterm-24bit emacs -nw --eval '(fc-after-restart)'"
 else

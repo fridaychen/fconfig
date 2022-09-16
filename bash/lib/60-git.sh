@@ -88,6 +88,10 @@ function fit-search {
     git log --oneline --grep "$1"
 }
 
+function fit-show-obj {
+    git cat-file -p $1
+}
+
 function fit-show {
     if [[ -t 0 ]]; then
         git log --oneline -1 |

@@ -133,7 +133,13 @@ skinparam state {
   BackgroundColor $BGCOLOR
   BorderColor $LINECOLOR
 
+  BorderThickness 2
+  BackgroundColor Business
+
+  BorderThickness<<Stable>> 3
   BackgroundColor<<Stable>> Snow
+
+  BorderThickness<<Transient>> 1
   BackgroundColor<<Transient>> LightGreen
 }
 

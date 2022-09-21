@@ -12,6 +12,7 @@
 !$ALTBG4 = "#Pink"
 
 !$LIFE1 = "#EB937F"
+!$LIFE2 = "#Physical"
 
 <style>
 groupHeader {

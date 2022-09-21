@@ -100,3 +100,10 @@
   $src -> $dst : $msg
   $dst --> $src : $resp
 !endprocedure
+
+/'
+ ' State Diagram
+ '/
+!procedure $init_state()
+  hide empty description
+!endprocedure

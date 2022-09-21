@@ -116,6 +116,7 @@
           org-startup-indented nil
           org-fontify-quote-and-verse-blocks t
           org-superstar-headline-bullets-list '(?◉ ?🞛 ?○ ?▷)
+          org-imenu-depth 4
           )
 
     (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)

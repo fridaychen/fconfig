@@ -93,7 +93,7 @@ skinparam component {
   BorderColor $LINECOLOR
   BorderThickness 1.2
 
-  BackgroundColor<<focus>> %darken($BGCOLOR, 5)
+  BackgroundColor<<focus>> Yellow
   FontStyle<<focus>> Bold
 }
 

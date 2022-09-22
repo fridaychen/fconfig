@@ -101,6 +101,38 @@
   $dst --> $src : $resp
 !endprocedure
 
+!procedure $actv($part)
+  !local $var="\$actv_level_" + $part
+  !local $level=0
+
+  !if %variable_exists($var)
+    !$level = %intval(%get_variable_value($var))
+  !endif
+
+  !$level = $level + 1
+  %set_variable_value($var, $level)
+
+  !if $level == 2 || $level == 4 || $level == 6
+     activate $part $LIFE1
+  !else
+     activate $part
+  !endif
+!endprocedure
+
+!procedure $deactv($part)
+  !local $var="\$actv_level_" + $part
+  !local $level=1
+
+  !if %variable_exists($var)
+    !$level = %intval(%get_variable_value($var))
+  !endif
+
+  !$level = $level - 1
+  %set_variable_value($var, $level)
+
+  deactivate $part
+!endprocedure
+
 /'
  ' State Diagram
  '/

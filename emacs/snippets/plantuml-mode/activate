@@ -3,8 +3,8 @@
 # key: actv
 # --
 
-activate $1
+$actv($1)
 
 $0
 
-deactivate $1
+$deactv($1)

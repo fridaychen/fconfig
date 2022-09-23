@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: state init
+# key: state
+# --
+
+!include %getenv("FCHOME")/org/fc.puml
+
+$init_state()
+
+title $0

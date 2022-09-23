@@ -84,42 +84,40 @@ skinparam UseBetaStyle true
 
 skinparam activity {
   BackgroundColor $BGCOLOR
-  BorderColor $LINECOLOR
+  BorderColor     $LINECOLOR
   BorderThickness 1.2
 }
 
 skinparam component {
   BackgroundColor $BGCOLOR
-  BorderColor $LINECOLOR
+  BorderColor     $LINECOLOR
   BorderThickness 1.2
 
-  BackgroundColor<<focus>> Yellow
-  FontStyle<<focus>> Bold
+  BackgroundColor<<focus>> Technology/Physical
+  FontStyle<<focus>>       Bold
 }
 
 skinparam note {
-  BorderColor $LINECOLOR
+  BorderColor     $LINECOLOR
   BackgroundColor #fbfb77
 
-  BackgroundColor<<focus>> Yellow
-  FontColor<<focus>> Black
-  FontStyle<<focus>> bold
+  BackgroundColor<<focus>> Technology/Physical
+  FontColor<<focus>>       Black
+  FontStyle<<focus>>       bold
 }
 
 skinparam package {
   BackgroundColor Bisque
   BorderThickness 1.2
-  FontColor Black
+  FontColor       Black
 }
 
 skinparam sequence {
   MessageAlign center
 
   ArrowColor $LINECOLOR
-  ActorBorderColor $LINECOLOR
-  ActorBorderThickness 2
 
-  LifeLineBorderColor $LINECOLOR
+  LifeLineBorderColor     $LINECOLOR
   LifeLineBackgroundColor #EEEEEE
 
   ParticipantBorderColor     $LINECOLOR
@@ -127,34 +125,41 @@ skinparam sequence {
   ParticipantBackgroundColor $BGCOLOR
   ParticipantPadding         5
 
-  ActorBackgroundColor $BGCOLOR
-
-  DividerFontColor White
+  DividerFontColor       White
   DividerBackgroundColor IndianRed
 
   BoxBackgroundColor Beige
+
+  ReferenceBorderColor           $LINECOLOR
+  ReferenceBackgroundColor       Technology
+  ReferenceHeaderBackgroundColor Business
 }
 
 skinparam state {
   StartColor MediumBlue
-  EndColor Red
+  EndColor   Red
+
   BackgroundColor $BGCOLOR
-  BorderColor $LINECOLOR
-
+  BorderColor     $LINECOLOR
   BorderThickness 2
-  BackgroundColor Business
 
-  BorderThickness<<Stable>> 3
   BackgroundColor<<Stable>> Snow
+  BorderThickness<<Stable>> 3
 
-  BorderThickness<<Transient>> 1
   BackgroundColor<<Transient>> LightGreen
+  BorderThickness<<Transient>> 1
 }
 
 skinparam title {
   BorderRoundCorner 15
-  BorderThickness 0
-  BorderColor $LINECOLOR
-  BackgroundColor Azure
-  FontSize 20
+  BorderThickness   0
+  BorderColor       $LINECOLOR
+  BackgroundColor   Azure
+  FontSize          20
+}
+
+skinparam actor {
+    BackgroundColor #Yellow/Orange
+    BorderColor     $LINECOLOR
+    BorderThickness 2
 }

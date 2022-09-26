@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: reference
+# key: ref
+# --
+
+ref over $1
+  $0
+end ref

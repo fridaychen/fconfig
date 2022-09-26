@@ -139,7 +139,7 @@ skinparam state {
   StartColor #MediumBlue
   EndColor   #Red
 
-  BackgroundColor $BGCOLOR
+  BackgroundColor #Implementation
   BorderColor     $LINECOLOR
   BorderThickness 2
 

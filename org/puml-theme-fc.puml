@@ -9,7 +9,7 @@
 !$ALTBG1 = "#Gold"
 !$ALTBG2 = "#LightBlue"
 !$ALTBG3 = "#LightGreen"
-!$ALTBG4 = "#Pink"
+!$ALTBG4 = "#Implementation"
 
 !$LIFE1 = "#EB937F"
 !$LIFE2 = "#Physical"
@@ -101,15 +101,15 @@ skinparam note {
   BorderColor     $LINECOLOR
   BackgroundColor #fbfb77
 
-  BackgroundColor<<focus>> Technology/Physical
+  BackgroundColor<<focus>> #Technology/Physical
   FontColor<<focus>>       Black
   FontStyle<<focus>>       bold
 }
 
 skinparam package {
-  BackgroundColor Bisque
+  BackgroundColor #Bisque
   BorderThickness 1.2
-  FontColor       Black
+  FontColor       #Black
 }
 
 skinparam sequence {
@@ -125,28 +125,28 @@ skinparam sequence {
   ParticipantBackgroundColor $BGCOLOR
   ParticipantPadding         5
 
-  DividerFontColor       White
-  DividerBackgroundColor IndianRed
+  DividerFontColor       #White
+  DividerBackgroundColor #IndianRed
 
-  BoxBackgroundColor Beige
+  BoxBackgroundColor #Beige
 
   ReferenceBorderColor           $LINECOLOR
-  ReferenceBackgroundColor       Technology
-  ReferenceHeaderBackgroundColor Business
+  ReferenceBackgroundColor       #Technology
+  ReferenceHeaderBackgroundColor #Business
 }
 
 skinparam state {
-  StartColor MediumBlue
-  EndColor   Red
+  StartColor #MediumBlue
+  EndColor   #Red
 
   BackgroundColor $BGCOLOR
   BorderColor     $LINECOLOR
   BorderThickness 2
 
-  BackgroundColor<<Stable>> Snow
+  BackgroundColor<<Stable>> #Snow
   BorderThickness<<Stable>> 3
 
-  BackgroundColor<<Transient>> LightGreen
+  BackgroundColor<<Transient>> #LightGreen
   BorderThickness<<Transient>> 1
 }
 
@@ -154,7 +154,7 @@ skinparam title {
   BorderRoundCorner 15
   BorderThickness   0
   BorderColor       $LINECOLOR
-  BackgroundColor   Azure
+  BackgroundColor   #Azure
   FontSize          20
 }
 

@@ -13,9 +13,7 @@
    (meta :initarg :meta
          :initform nil
          :type list)
-   (app :initform (cond (*is-linux* "quodlibet")
-                        (*is-mac* "/Applications/QuodLibet.app/Contents/MacOS/quodlibet")
-                        (t nil))
+   (app :initarg *fc-quodlibet*
         :type string)))
 
 (cl-defmethod initialize-instance :after ((x fc-player-quodlibet) &rest args)

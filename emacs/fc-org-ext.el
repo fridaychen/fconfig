@@ -11,9 +11,9 @@
                          :follow #'fc--music-open)
 
 (defun fc--music-open (path _)
-  (fc-exec-command "quodlibet" "--query" path)
+  (fc-exec-command *fc-quodlibet* "--query" path)
   (sit-for 1)
-  (fc-exec-command "quodlibet" "--next"))
+  (fc-exec-command *fc-quodlibet* "--next"))
 
 (org-link-set-parameters "mybook"
                          :follow #'fc--mybook-open)

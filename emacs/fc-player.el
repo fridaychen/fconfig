@@ -6,6 +6,11 @@
 ;;; Code:
 (require 'cl-lib)
 
+(defvar *fc-quodlibet*
+  (cond (*is-linux* "quodlibet")
+        (*is-mac* "/Applications/QuodLibet.app/Contents/MacOS/quodlibet")
+        (t nil)))
+
 (defvar *fc-enable-player* t)
 (defvar *fc-prefer-players* nil)
 (defvar *fc-player* nil)

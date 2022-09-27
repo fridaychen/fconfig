@@ -154,7 +154,7 @@ skinparam title {
   BorderRoundCorner 15
   BorderThickness   0
   BorderColor       $LINECOLOR
-  BackgroundColor   #Azure
+  BackgroundColor   #Azure/LightBlue
   FontSize          20
 }
 

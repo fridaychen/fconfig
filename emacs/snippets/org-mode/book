@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: book
 # key: b
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 #+TITLE: ${1:title}

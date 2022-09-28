@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: group
 # key: g
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 group $1 [$2]

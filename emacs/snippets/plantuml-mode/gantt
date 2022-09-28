@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: gantt init
 # key: gantt
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 @startgantt

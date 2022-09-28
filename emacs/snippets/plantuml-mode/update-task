@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: update gantt task
 # key: utask
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 $update_task("$1", $2)

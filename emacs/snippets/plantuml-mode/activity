@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: activity init
 # key: acti
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 @startuml

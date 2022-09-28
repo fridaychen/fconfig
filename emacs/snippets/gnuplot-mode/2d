@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: 2D
 # key: 2d
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 set title "${1:title}"

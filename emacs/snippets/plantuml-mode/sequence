@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: sequence init
 # key: seq
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 !include %getenv("FCHOME")/org/fc.puml

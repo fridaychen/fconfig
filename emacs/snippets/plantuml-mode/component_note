@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: component note
 # key: cn
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 note `(fc--insert-component-note)` of $1

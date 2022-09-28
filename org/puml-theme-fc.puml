@@ -11,6 +11,7 @@
 !$ALTBG3 = "#LightGreen"
 !$ALTBG4 = "#Implementation"
 
+!$LIFE0 = "#EEEEEE"
 !$LIFE1 = "#EB937F"
 !$LIFE2 = "#Physical"
 

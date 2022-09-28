@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: alt
 # key: alt
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 alt $1

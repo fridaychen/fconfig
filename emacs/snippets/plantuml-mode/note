@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: note
 # key: n
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 note `(fc--insert-note)` : $0

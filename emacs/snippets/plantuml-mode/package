@@ -1,8 +1,9 @@
 # -*- mode: snippet -*-
 # name: package
 # key: pkg
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 package "${1:package-name}" {
-	["${2:component-title}" as ${3:short-name}]$0
+  ["${2:component-title}" as ${3:short-name}]$0
 }

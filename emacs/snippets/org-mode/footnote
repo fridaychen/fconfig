@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: footnote
 # key: fn
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 [fn:: $0]

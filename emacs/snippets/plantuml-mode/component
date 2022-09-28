@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: component init
 # key: com
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 @startuml

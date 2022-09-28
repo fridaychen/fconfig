@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: state init
 # key: state
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 !include %getenv("FCHOME")/org/fc.puml

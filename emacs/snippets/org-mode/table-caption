@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: table caption
 # key: tc
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 #+CAPTION: $0

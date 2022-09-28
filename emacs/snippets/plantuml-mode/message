@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: message
 # key: m
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 ${1:sender} -> ${2:receiver} : ${message}

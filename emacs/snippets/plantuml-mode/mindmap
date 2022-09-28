@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: mindmap init
 # key: mindmap
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 @startmindmap

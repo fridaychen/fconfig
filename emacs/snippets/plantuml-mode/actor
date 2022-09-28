@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: actor
 # key: act
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 actor "${1:full-name}" as ${2:short-name}

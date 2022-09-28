@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: packet
 # key: pkt
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 #+BEGIN_SRC packetdiag :file ${1:foo.svg}

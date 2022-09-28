@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: gantt task
 # key: task
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 $def_task("$1", $alias="$2", $start="$3", $len="$4")

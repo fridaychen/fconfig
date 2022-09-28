@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: transaction
 # key: tr
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 ${1:sender} -> ${2:receiver} : ${3:message}

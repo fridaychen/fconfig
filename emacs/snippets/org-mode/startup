@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: startup
 # key: s
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 #+startup: inlineimages

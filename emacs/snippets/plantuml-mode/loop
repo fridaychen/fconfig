@@ -1,8 +1,9 @@
 # -*- mode: snippet -*-
 # name: loop
 # key: l
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 loop $1
-      $0
+  $0
 end

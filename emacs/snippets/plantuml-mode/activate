@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: activate
 # key: actv
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 $actv($1)

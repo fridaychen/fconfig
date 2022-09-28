@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: api
 # key: api
+# expand-env: ((yas-indent-line 'fixed))
 # --
 /**
    @brief

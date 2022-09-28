@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: plot
 # key: p
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 plot ${1:[xrange] [yrange]} ${2: functions or data files}

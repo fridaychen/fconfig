@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: reference
 # key: ref
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 ref over $1

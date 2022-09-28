@@ -85,6 +85,8 @@
 
 !procedure $init_seq()
   hide footbox
+  hide unlinked
+
   autonumber "<b>0 : "
 !endprocedure
 

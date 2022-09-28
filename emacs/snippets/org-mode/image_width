@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: image width
 # key: iw
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 #+ATTR_ORG: :width ${1:width-in-pixel}

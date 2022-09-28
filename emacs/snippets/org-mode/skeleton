@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: skeleton
+# key: skeleton
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+#+SETUPFILE: ~/org/setup-job.org
+
+#+PROPERTY: PUBLISH ${1:publish-dir}
+
+#+TITLE: ${2:title}
+#+LANGUAGE: ${3:lang}

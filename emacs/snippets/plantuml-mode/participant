@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: participant
 # key: part
+# expand-env: ((yas-indent-line 'fixed))
 # --
 
 participant "${1:full-name}" as ${2:short-name}

@@ -552,8 +552,7 @@ LANG: language."
       ("Ingest"                         . ,(fc-manual (org-babel-lob-ingest buffer-file-name)))
       ("Org ctrl-c-minus"		. org-ctrl-c-minus)
       ("Org Sort"			. org-sort)
-      ("Publish"                        . ,(fc-manual
-                                            (fc--org-run-src-block "publish")))
+      ("Publish"                        . fc--org-publish)
       ("Publish to html"		. org-html-export-to-html)
       ("Publish to markdown"		. org-md-export-to-markdown)
       ("Roam sync"			. org-roam-db-sync)
@@ -976,9 +975,11 @@ LANG: language of babel."
     (when (looking-at-p "#\\+BEGIN_SRC")
       (org-ctrl-c-ctrl-c))))
 
-(cl-defun fc--org-publish (output-dir &optional (base-dir default-directory))
-  (when (string-empty-p base-dir)
-    (setf base-dir default-directory))
+(cl-defun fc--org-publish (&optional (output-dir (fc--org-get-property "publish"))
+                                     (base-dir default-directory))
+  (unless output-dir
+    (message "Cannot find publish directory")
+    (return-from fc--org-publish))
 
   (setq org-publish-project-alist
         `(

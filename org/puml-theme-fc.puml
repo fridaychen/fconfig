@@ -100,7 +100,7 @@ skinparam component {
 
 skinparam note {
   BorderColor     $LINECOLOR
-  BackgroundColor #fbfb77
+  BackgroundColor #fbfb77/Yellow
 
   BackgroundColor<<focus>> #Technology/Physical
   FontColor<<focus>>       Black

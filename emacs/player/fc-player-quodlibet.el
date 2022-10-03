@@ -7,14 +7,11 @@
 (require 'cl-lib)
 
 (defclass fc-player-quodlibet (fc-player)
-  ((play-state :initarg :play-state
-               :initform 'Paused
+  ((play-state :initform 'Paused
                :type symbol)
-   (meta :initarg :meta
-         :initform nil
+   (meta :initform nil
          :type list)
-   (app :initarg *fc-quodlibet*
-        :type string)))
+   (app :initform (symbol-value '*fc-quodlibet*))))
 
 (cl-defmethod initialize-instance :after ((x fc-player-quodlibet) &rest args)
   )

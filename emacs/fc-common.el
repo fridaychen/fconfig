@@ -338,7 +338,7 @@ COLOR: background color."
     (setf *fc-player* (fc-player-foobar :name "foobar")))
 
    (*is-mac*
-    (setf *fc-player* (fc-player-itunes :name "iTunes"))))
+    (setf *fc-player* (fc-player-quodlibet :name "Quod Libet [app]"))))
 
   (when (fboundp #'fc-player-auto-select)
     (fc-idle-delay

@@ -609,6 +609,9 @@ BODY: usually a pcase block."
      (when (fc--org-looking-over-footnote)
        (setq elt :footnote))
 
+     (when (fc--org-looking-include)
+       (setq elt :include))
+
      (if (null elt)
          (when ,default
            (fc-funcall ,default))
@@ -617,6 +620,10 @@ BODY: usually a pcase block."
 (cl-defun fc--org-looking-over-footnote ()
   "Test if current point is over a footnote."
   (org-in-regexp "\\[fn:[^\]]+\\]"))
+
+(cl-defun fc--org-looking-include ()
+  "Test if current point is over a include."
+  (org-in-regexp "^#\\+include: .+"))
 
 (cl-defun fc--org-show-footnote ()
   (when-let ((fn (org-footnote-at-reference-p))
@@ -644,6 +651,7 @@ BODY: usually a pcase block."
       (:footnote (org-footnote-action))
       (:headline (org-insert-heading-respect-content)
                  (fc-modal-disable))
+      (:include (fc--org-toggle-special-edit))
       (:item (fc--org-do-intert-item))
       (:item-bullet (org-ctrl-c-minus))
       ((or :latex-fragment :latex-preview)

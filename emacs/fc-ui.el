@@ -25,7 +25,7 @@ MOUSE: allow user to select with mouse."
     (let ((helm-full-frame t))
       (helm :sources
             (helm-build-sync-source prompt
-                                    :candidates collection))))
+              :candidates collection))))
 
    ((and (> 9 (length collection))
          (> (- (frame-width) 20 (length prompt))
@@ -177,7 +177,9 @@ CONTENT: buffer content.
 TIMEOUT: buffer show timeout in seconds."
   (if (and (<= 26 emacs-major-version)
            *is-gui*)
-      (fc--popup-posframe "*fc-tip*" content)
+      (fc--popup-posframe "*fc-tip*" content
+                          :poshandler #'posframe-poshandler-point-bottom-left-corner
+                          :max-width 60)
     (fc--popup-tip content)))
 
 (defun fc-popup-tip-hide ()

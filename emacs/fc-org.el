@@ -180,7 +180,10 @@
       (fc--org-hide-all)
       (fc-idle-delay-task #'fc-hs-toggle 0.1)
 
-      (setq org-image-actual-width (/ (- (display-pixel-width) 40) 2))
+      (setq org-image-actual-width
+            (if (fc--org-get-property "RESIZEIMAGE")
+                (/ (- (display-pixel-width) 40) 2)
+              nil))
 
       (fc-dwell-enable #'fc--org-dwell)
       (add-hook 'pre-command-hook #'fc--org-hide-footnote)
@@ -644,10 +647,16 @@ BODY: usually a pcase block."
   (fc--org-smart-action nil
     (pcase elt
       (:footnote (fc--org-show-footnote))
-      (:link (when-let* ((text (apply #'buffer-substring-no-properties
-                                      (cdr (car  (org-context)))))
-                         (match (string-match "\\[\\[\\([^\]]+\\)" text)))
-               (message "Link: %s" (substring text (match-beginning 1) (match-end 1))))))))
+      (:link (when-let* ((range (alist-get :link (org-context)))
+                         (cell-text (fc--org-current-cell))
+                         (text (or (unless (zerop (length cell-text))
+                                     (fc-remove-properties cell-text)
+                                     cell-text)
+                                   (apply #'buffer-substring-no-properties
+                                          range)))
+                         (match (string-match "\\[\\[\\([^\]]+\\)" text))
+                         (link (substring text (match-beginning 1) (match-end 1))))
+               (message "Link: %s" link))))))
 
 (cl-defun fc--org-do ()
   "Smart do."

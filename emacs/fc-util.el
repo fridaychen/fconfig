@@ -553,6 +553,11 @@ REST: strings."
                  ""
                  rest))
 
+(cl-defun fc-remove-properties (text)
+  "Remove all properties of text.
+TEXT: target."
+  (set-text-properties 0 (length text) nil text))
+
 (cl-defun fc-text (obj &key face tip keys pointer (separator " ") limit display)
   "Format text.
 OBJ: text source.

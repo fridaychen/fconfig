@@ -29,6 +29,10 @@
     (fc-funcall f :default 'whitespace-cleanup)
     (fc-funcall g :default 'fc--remove-empty-line)))
 
+(cl-defun fc--default-fmt-with-indent ()
+  (fc--default-fmt)
+  (fc-indent-all))
+
 (cl-defun fc--run-external-fmt (command-args)
   "Run external tool to format buffer.
 COMMAND-ARGS: command args."

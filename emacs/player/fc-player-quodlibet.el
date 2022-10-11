@@ -6,6 +6,15 @@
 ;;; Code:
 (require 'cl-lib)
 
+(defvar *fc-quodlibet*
+  (cond (*is-linux* "quodlibet")
+        (*is-mac* "/Applications/QuodLibet.app/Contents/MacOS/quodlibet")
+        (t nil)))
+
+(defvar *fc-quodlibet-control*
+  (fc-file-first-exists '("~/.config/quodlibet/control"
+                          "~/.quodlibet/control")))
+
 (defclass fc-player-quodlibet (fc-player)
   ((play-state :initform 'Paused
                :type symbol)

@@ -49,9 +49,7 @@
 (defun fc--viewer-seg ()
   "Generate viewer state string."
   (fc-text (list *fc--viewer-mark*
-                 (which-function)
-                 (file-name-sans-extension
-                  (buffer-name)))
+                 (which-function))
            :face `(:foreground ,(color-complement-hex
                                  (fc-get-face-attribute (fc--modeline-base-face) :background))
                                :inherit ,(fc--modeline-base-face))
@@ -70,7 +68,7 @@
 
   (-fc-viewer-adjust-width)
 
-  (hl-line-mode 1)
+  (hl-line-mode -1)
   (read-only-mode 1)
 
   (setf *fc-bak-line-spacing* line-spacing

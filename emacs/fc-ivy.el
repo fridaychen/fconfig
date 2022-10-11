@@ -40,7 +40,7 @@
               :min-height (or ivy-posframe-min-height
                               (let ((height (+ ivy-height 1)))
                                 (min height (or ivy-posframe-height height))))
-              :min-width (round (* 0.9 (frame-width)))))
+              :min-width (round (* 0.7 (frame-width)))))
 
            (setf ivy-posframe-size-function #'fc--posframe-get-size)
            (ivy-posframe-mode 1)))

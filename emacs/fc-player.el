@@ -13,7 +13,7 @@
 
 (defvar *fc-quodlibet-control*
   (fc-file-first-exists '("~/.config/quodlibet/control"
-                          "~/quodlibet/control")))
+                          "~/.quodlibet/control")))
 
 (defvar *fc-enable-player* t)
 (defvar *fc-prefer-players* nil)

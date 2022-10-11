@@ -11,6 +11,10 @@
         (*is-mac* "/Applications/QuodLibet.app/Contents/MacOS/quodlibet")
         (t nil)))
 
+(defvar *fc-quodlibet-control*
+  (fc-file-first-exists '("~/.config/quodlibet/control"
+                          "~/quodlibet/control")))
+
 (defvar *fc-enable-player* t)
 (defvar *fc-prefer-players* nil)
 (defvar *fc-player* nil)

@@ -17,7 +17,7 @@
   )
 
 (cl-defmethod fc-player--play-pause ((x fc-player-quodlibet))
-  (fc-exec-command (oref x app) "--play-pause")
+  (fc-quodlibet-cmd "play-pause")
   (fc-delay
     (oset x play-state
           (intern
@@ -29,11 +29,11 @@
   (cl-call-next-method x))
 
 (cl-defmethod fc-player--next ((x fc-player-quodlibet))
-  (fc-exec-command (oref x app) "--next")
+  (fc-quodlibet-cmd "next")
   (cl-call-next-method x))
 
 (cl-defmethod fc-player--previous ((x fc-player-quodlibet))
-  (fc-exec-command (oref x app) "--previous")
+  (fc-quodlibet-cmd "previous")
   (cl-call-next-method x))
 
 (cl-defmethod fc-player--get-play-status ((x fc-player-quodlibet))
@@ -44,7 +44,7 @@
 
 (cl-defmethod fc-player--set-volume ((x fc-player-quodlibet) vol)
   (oset x volume vol)
-  (fc-exec-command (oref x app) (format "--volume=%d" vol)))
+  (fc-quodlibet-cmd (format "--volume=%d" vol)))
 
 (cl-defmethod fc-player--get-metadata ((x fc-player-quodlibet))
   (fc-exec-command (oref x app) "--print-playing" "<artist> \\| <album> \\| <title>"))
@@ -56,6 +56,12 @@
     (apply
      #'cl-call-next-method x
      (split-string data " | "))))
+
+(defun fc-quodlibet-cmd (cmds)
+  (f-write-text
+   (fc-text cmds :separator "\n")
+   'utf-8
+   *fc-quodlibet-control*))
 
 (provide 'fc-player-quodlibet)
 

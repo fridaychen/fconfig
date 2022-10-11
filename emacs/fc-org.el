@@ -180,6 +180,8 @@
       (fc--org-hide-all)
       (fc-idle-delay-task #'fc-hs-toggle 0.1)
 
+      (setq org-image-actual-width (/ (- (display-pixel-width) 40) 2))
+
       (fc-dwell-enable #'fc--org-dwell)
       (add-hook 'pre-command-hook #'fc--org-hide-footnote)
 
@@ -641,7 +643,11 @@ BODY: usually a pcase block."
 (cl-defun fc--org-dwell ()
   (fc--org-smart-action nil
     (pcase elt
-      (:footnote (fc--org-show-footnote)))))
+      (:footnote (fc--org-show-footnote))
+      (:link (when-let* ((text (apply #'buffer-substring-no-properties
+                                      (cdr (car  (org-context)))))
+                         (match (string-match "\\[\\[\\([^\]]+\\)" text)))
+               (message "Link: %s" (substring text (match-beginning 1) (match-end 1))))))))
 
 (cl-defun fc--org-do ()
   "Smart do."

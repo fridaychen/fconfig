@@ -180,11 +180,6 @@
       (fc--org-hide-all)
       (fc-idle-delay-task #'fc-hs-toggle 0.1)
 
-      (setq org-image-actual-width
-            (if (fc--org-get-property "RESIZEIMAGE")
-                (/ (- (display-pixel-width) 40) 2)
-              nil))
-
       (fc-dwell-enable #'fc--org-dwell)
       (add-hook 'pre-command-hook #'fc--org-hide-footnote)
 

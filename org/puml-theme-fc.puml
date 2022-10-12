@@ -1,6 +1,6 @@
 /' Usage:
- '   !include %getenv("FCHOME")/org/fc.puml
- '/
+'   !include %getenv("FCHOME")/org/fc.puml
+'/
 
 !$BGCOLOR = "#FEFECE"
 !$LINECOLOR = "#A80036"
@@ -19,58 +19,58 @@
 
 <style>
 groupHeader {
-  BackgroundColor IndianRed
-  FontColor White
-  FontStyle bold
+    BackgroundColor IndianRed
+    FontColor White
+    FontStyle bold
 }
 
 title {
-  HorizontalAlignment left
-  FontSize 21
-  FontColor Black
+    HorizontalAlignment left
+    FontSize 21
+    FontColor Black
 }
 
 ganttDiagram {
-  timeline {
-    BackgroundColor AliceBlue
-    FontStyle Bold
-    FontColor brown
-    FontSize 20
-  }
-
-  task {
-    BackGroundColor #FEFECE
-    LineColor #A80036
-
-    unstarted {
-      BackGroundColor LightGreen
-      LineColor #A80036
+    timeline {
+        BackgroundColor AliceBlue
+        FontStyle Bold
+        FontColor brown
+        FontSize 20
     }
-  }
 
-  closed {
-    BackGroundColor application
-  }
+    task {
+        BackGroundColor #FEFECE
+        LineColor #A80036
 
-  separator {
-    LineColor white
-  }
+        unstarted {
+            BackGroundColor LightGreen
+            LineColor #A80036
+        }
+    }
+
+    closed {
+        BackGroundColor application
+    }
+
+    separator {
+        LineColor white
+    }
 }
 
 mindmapDiagram {
-  node {
-    BackgroundColor lightGreen
-  }
-  boxless {
-    FontColor darkgreen
-  }
+    node {
+        BackgroundColor lightGreen
+    }
+    boxless {
+        FontColor darkgreen
+    }
 
-  .important {
-    BackgroundColor #FFBBCC
-  }
-  .working {
-    BackgroundColor lightblue
-  }
+    .important {
+        BackgroundColor #FFBBCC
+    }
+    .working {
+        BackgroundColor lightblue
+    }
 }
 
 </style>
@@ -86,79 +86,79 @@ skinparam BoxPadding      60
 skinparam UseBetaStyle true
 
 skinparam activity {
-  BackgroundColor $BGCOLOR
-  BorderColor     $LINECOLOR
-  BorderThickness 1.2
+    BackgroundColor $BGCOLOR
+    BorderColor     $LINECOLOR
+    BorderThickness 1.2
 }
 
 skinparam component {
-  BackgroundColor $BGCOLOR
-  BorderColor     $LINECOLOR
-  BorderThickness 1.2
+    BackgroundColor $BGCOLOR
+    BorderColor     $LINECOLOR
+    BorderThickness 1.2
 
-  BackgroundColor<<focus>> Technology/Physical
-  FontStyle<<focus>>       Bold
+    BackgroundColor<<focus>> Technology/Physical
+    FontStyle<<focus>>       Bold
 }
 
 skinparam note {
-  BorderColor     $LINECOLOR
-  BackgroundColor #fbfb77/Yellow
+    BorderColor     $LINECOLOR
+    BackgroundColor #fbfb77/Yellow
 
-  BackgroundColor<<focus>> #Technology/Physical
-  FontColor<<focus>>       Black
-  FontStyle<<focus>>       bold
+    BackgroundColor<<focus>> #Technology/Physical
+    FontColor<<focus>>       Black
+    FontStyle<<focus>>       bold
 }
 
 skinparam package {
-  BackgroundColor #Bisque
-  BorderThickness 1.2
-  FontColor       #Black
+    BackgroundColor #Bisque
+    BorderThickness 1.2
+    FontColor       #Black
 }
 
 skinparam sequence {
-  MessageAlign center
+    MessageAlign center
 
-  ArrowColor $LINECOLOR
+    ArrowColor $LINECOLOR
 
-  LifeLineBorderColor     $LINECOLOR
-  LifeLineBackgroundColor #EEEEEE
+    LifeLineBorderColor     $LINECOLOR
+    LifeLineBackgroundColor #EEEEEE
 
-  ParticipantBorderColor     $LINECOLOR
-  ParticipantBorderThickness 2
-  ParticipantBackgroundColor $BGCOLOR
-  ParticipantPadding         5
+    ParticipantBorderColor     $LINECOLOR
+    ParticipantBorderThickness 2
+    ParticipantBackgroundColor $BGCOLOR
+    ParticipantPadding         5
 
-  DividerFontColor       #White
-  DividerBackgroundColor #IndianRed
+    DividerFontColor       #White
+    DividerBackgroundColor #IndianRed
 
-  BoxBackgroundColor #Beige
+    BoxBackgroundColor #Beige
 
-  ReferenceBorderColor           $LINECOLOR
-  ReferenceBackgroundColor       #Technology
-  ReferenceHeaderBackgroundColor #Business
+    ReferenceBorderColor           $LINECOLOR
+    ReferenceBackgroundColor       #Technology
+    ReferenceHeaderBackgroundColor #Business
 }
 
 skinparam state {
-  StartColor #MediumBlue
-  EndColor   #Red
+    StartColor #MediumBlue
+    EndColor   #Red
 
-  BackgroundColor #Implementation
-  BorderColor     $LINECOLOR
-  BorderThickness 2
+    BackgroundColor #Implementation
+    BorderColor     $LINECOLOR
+    BorderThickness 2
 
-  BackgroundColor<<Stable>> #Snow
-  BorderThickness<<Stable>> 3
+    BackgroundColor<<Stable>> #Snow
+    BorderThickness<<Stable>> 3
 
-  BackgroundColor<<Transient>> #LightGreen
-  BorderThickness<<Transient>> 1
+    BackgroundColor<<Transient>> #LightGreen
+    BorderThickness<<Transient>> 1
 }
 
 skinparam title {
-  BorderRoundCorner 15
-  BorderThickness   0
-  BorderColor       $LINECOLOR
-  BackgroundColor   #Azure/LightBlue
-  FontSize          20
+    BorderRoundCorner 15
+    BorderThickness   0
+    BorderColor       $LINECOLOR
+    BackgroundColor   #Azure/LightBlue
+    FontSize          20
 }
 
 skinparam actor {

@@ -67,7 +67,8 @@ WORDS: target words."
   (let ((lang (if (fc-detect-has-wide-char string)
                   "en-US"
                 "zh-CN")))
-    (fc-exec-command-to-string "trans" "-brief" (concat ":" lang) string)))
+    (ansi-color-apply
+     (fc-exec-command-to-string "trans" "-brief" (concat ":" lang) string))))
 
 (provide 'fc-dict)
 

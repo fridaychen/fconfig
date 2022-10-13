@@ -3,141 +3,112 @@
 !include $FCORG/puml-theme-fc.puml
 
 /'
- ' Gantt Diagram
- '/
+' Gantt Diagram
+'/
 !procedure $init_gantt($start_date, $scale=weekly, $zoom=2)
-  printscale $scale zoom $zoom
+printscale $scale zoom $zoom
 
-  hide footbox
+hide footbox
 
-  saturday are closed
-  sunday are closed
+saturday are closed
+sunday are closed
 
-  !if $start_date != ""
-    Project starts $start_date
-  !endif
+!if $start_date != ""
+Project starts $start_date
+!endif
 !endprocedure
 
 !procedure $def_task($name, $len="", $start="", $end="", $alias="", $after="")
-  !local $and_str = ""
+!local $and_str = ""
 
-  !local $starts_str = ""
-  !if $start != ""
-    !$starts_str = "starts " + $start
-    !$and_str = " and "
+!local $starts_str = ""
+!if $start != ""
+!$starts_str = "starts " + $start
+!$and_str = " and "
 !endif
 
-  !local $ends_str = ""
-  !if $end != ""
-    !$ends_str = $and_str + " ends " + $end
-    !$and_str = " and "
-  !endif
+!local $ends_str = ""
+!if $end != ""
+!$ends_str = $and_str + " ends " + $end
+!$and_str = " and "
+!endif
 
-  !local $lasts_str = ""
-  !if $len != ""
-    !$lasts_str = $and_str + " lasts " + $len
-  !endif
+!local $lasts_str = ""
+!if $len != ""
+!$lasts_str = $and_str + " lasts " + $len
+!endif
 
-  !local $alias_str = ""
-  !if $alias != ""
-     !$alias_str = "as [" + $alias + "] "
-  !endif
+!local $alias_str = ""
+!if $alias != ""
+!$alias_str = "as [" + $alias + "] "
+!endif
 
-  [$name] $alias_str $starts_str $ends_str $lasts_str
+[$name] $alias_str $starts_str $ends_str $lasts_str
 
-  !if $after != ""
-    [$after] -> [$name]
-  !endif
+!if $after != ""
+[$after] -> [$name]
+!endif
 
 !endprocedure
 
 !procedure $update_task($name, $percent)
-  !local $bg=white
+!local $bg=white
 
-  !if $percent == 100
-    !$bg=green
-  !elseif $percent < 25
-    !$bg=red
-  !elseif $percent < 50
-    !$bg=orange
-  !elseif $percent < 75
-    !$bg=yellow
-  !elseif $percent >= 75
-    !$bg=lightgreen
-  !endif
+!if $percent == 100
+!$bg=green
+!elseif $percent < 25
+!$bg=red
+!elseif $percent < 50
+!$bg=orange
+!elseif $percent < 75
+!$bg=yellow
+!elseif $percent >= 75
+!$bg=lightgreen
+!endif
 
-  [$name] is $percent% complete and is colored in $bg
+[$name] is $percent% complete and is colored in $bg
 !endprocedure
 
 !function $after_task_end($task, $len="") !return $len + " after [" + $task + "]'s end"
 
 !procedure $milestone($name, $date)
-  [$name] happens $date
+[$name] happens $date
 !endprocedure
 
 !procedure $same_row($t1, $t2)
-  [$t1] displays on same row as [$t2]
+[$t1] displays on same row as [$t2]
 !endprocedure
 
 /'
- ' Sequence Diagram
- '/
+' Sequence Diagram
+'/
 
 !procedure $init_seq()
-  hide footbox
-  hide unlinked
+hide footbox
+hide unlinked
 
-  autonumber "<b>0 : "
+autonumber "<b>0 : "
 !endprocedure
 
 !procedure $init_long_seq()
-  autonumber "<b>0 : "
+autonumber "<b>0 : "
 !endprocedure
 
 !procedure $scene($title)
-  == $title ==
-!endprocedure
-
-!procedure $trans($src, $dst, $msg, $resp)
-  $src -> $dst : $msg
-  $dst --> $src : $resp
-!endprocedure
-
-!procedure $actv($part)
-  !local $var="\$actv_level_" + $part
-  !local $level=0
-
-  !if %variable_exists($var)
-    !$level = %intval(%get_variable_value($var))
-  !endif
-
-  !$level = $level + 1
-  %set_variable_value($var, $level)
-
-  !if $level == 2 || $level == 4 || $level == 6
-     activate $part $LIFE1
-  !else
-     activate $part
-  !endif
-!endprocedure
-
-!procedure $deactv($part)
-  !local $var="\$actv_level_" + $part
-  !local $level=1
-
-  !if %variable_exists($var)
-    !$level = %intval(%get_variable_value($var))
-  !endif
-
-  !$level = $level - 1
-  %set_variable_value($var, $level)
-
-  deactivate $part
+== $title ==
 !endprocedure
 
 /'
- ' State Diagram
- '/
+' State Diagram
+'/
 !procedure $init_state()
-  hide empty description
+hide empty description
+!endprocedure
+
+/'
+' Class Diagram
+'/
+
+!procedure $init_class()
+skinparam groupInheritance 2
 !endprocedure

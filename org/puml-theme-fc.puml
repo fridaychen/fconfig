@@ -166,3 +166,9 @@ skinparam actor {
     BorderColor     $LINECOLOR
     BorderThickness 2
 }
+
+skinparam class {
+    BackgroundColor $BGCOLOR
+    ArrowColor      $LINECOLOR
+    BorderColor     $LINECOLOR
+}

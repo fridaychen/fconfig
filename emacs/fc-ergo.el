@@ -241,7 +241,7 @@ FROM-BEGINNING: start from beginnning."
         (minibuffer-keyboard-quit))))
 
    (iedit-mode
-    (iedit-quit)
+    (iedit-mode -1)
     (fc-modal-enable))
 
    ((region-active-p)

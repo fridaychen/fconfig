@@ -1504,7 +1504,7 @@ AUTO: auto select face."
                                          (fc-modal-disable))))
    ("G" ,(fc-cond-key :normal (fc-manual (fc-text-retrieve default-directory :ignore-files *fc--ignore-files*))
                       :proj (fc-manual (fc-text-retrieve (fc-proj-root) :ignore-files *fc--ignore-files*))
-                      :prefix (fc-manual (fc-text-retrieve default-directory :ignore-files *fc--ignore-files*son))))
+                      :prefix (fc-manual (fc-text-retrieve default-directory :ignore-files *fc--ignore-files*))))
    ("H" ,(fc-cond-key :normal 'swiper
                       :region (fc-manual
                                (swiper (fc-current-thing :ask nil)))))

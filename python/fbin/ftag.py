@@ -126,6 +126,15 @@ def main():
         process(lambda x: generate_filename(x, args.cname))
     elif args.archive:
         process(lambda x: archive(x))
+
+        # auto refresh quodlibet
+        for x in ["~/.config/quodlibet/control", "~/.quodlibet/control"]:
+            y = os.path.expanduser(x)
+
+            if os.path.exists(y):
+                with open(y, "a") as f:
+                    f.write("refresh\n")
+                    break
     else:
         process(dump_info)
 

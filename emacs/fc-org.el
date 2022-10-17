@@ -997,7 +997,7 @@ LANG: language of babel."
                                      (base-dir default-directory))
   (unless output-dir
     (message "Cannot find publish directory")
-    (return-from fc--org-publish))
+    (cl-return-from fc--org-publish))
 
   (setq org-publish-project-alist
         `(
@@ -1021,7 +1021,7 @@ LANG: language of babel."
 
           ("org" :components ("org-notes" "org-static"))))
 
-  (org-publish-current-project))
+  (org-publish-current-project nil t))
 
 (when (eq major-mode 'org-mode)
   (fc--setup-org-mode))

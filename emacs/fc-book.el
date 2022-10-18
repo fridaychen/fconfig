@@ -123,7 +123,26 @@ TO-STRING: new string."
 
 (let ((fbook-tmp-test-regex nil)
       (fbook-check-finished t)
-      (fc-last-overlay nil))
+      (fc-last-overlay nil)
+      (fc-ignore-chain (list #'fc--looking-at-scene-sep)))
+
+  (defun fc--looking-at-scene-sep ()
+    (save-excursion
+      (beginning-of-line 0)
+      (looking-at "^\-+$")))
+
+  (defun fc--check-regex (regex)
+    (cl-loop
+     do
+     (unless (re-search-forward (car fbook-tmp-test-regex) (- (point-max) 2) t)
+       (cl-return nil))
+
+     (unless (fc-run-command-chain fc-ignore-chain)
+       (setf fc-last-overlay (make-overlay (match-beginning 0) (point)))
+       (overlay-put fc-last-overlay 'face 'underline)
+       (when *fc-dev-mode*
+         (message (car fbook-tmp-test-regex)))
+       (cl-return t))))
 
   (defun fc-check-regex ()
     (if (null fbook-tmp-test-regex)
@@ -134,13 +153,7 @@ TO-STRING: new string."
       (if fc-last-overlay
           (delete-overlay fc-last-overlay))
 
-      (if (re-search-forward (car fbook-tmp-test-regex) (- (point-max) 2) t)
-          (progn
-            (setf fc-last-overlay (make-overlay (match-beginning 0) (point)))
-            (overlay-put fc-last-overlay 'face 'underline)
-            (when *fc-dev-mode*
-              (message (car fbook-tmp-test-regex))))
-
+      (unless (fc--check-regex (car fbook-tmp-test-regex))
         (goto-char (point-min))
         (setf fbook-tmp-test-regex (cdr fbook-tmp-test-regex))
         (fc-check-regex))))

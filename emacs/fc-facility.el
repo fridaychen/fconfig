@@ -205,7 +205,7 @@ FUNC: new function."
     (add-hook 'fc-display-hook func))
 
   (cl-flet ((f (&optional ignored)
-               (run-hooks 'fc-display-hook)))
+              (run-hooks 'fc-display-hook)))
     (add-function :after pre-redisplay-function #'f)))
 
 (defun fc-home-path (path)
@@ -257,6 +257,13 @@ FUNC: new function."
   `(--each ,buffers
      (with-current-buffer it
        ,@rest)))
+
+(cl-defun fc-run-command-chain (chain &rest args)
+  (cl-loop for x in chain
+           do
+           (let ((r (apply x args)))
+             (when r
+               (cl-return r)))))
 
 (provide 'fc-facility)
 

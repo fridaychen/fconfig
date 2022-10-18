@@ -42,6 +42,8 @@
 (defvar *fc-org-dwell-timer* nil)
 (defvar *fc-org-pop-footnote* nil)
 
+(defvar *fc--org-get-elt* nil)
+
 (fc-install 'blockdiag-mode
             'gnuplot
             'ob-blockdiag
@@ -587,13 +589,11 @@ LANG: language."
 
   (fc-modal-disable))
 
-(cl-defmacro fc--org-smart-action (default &rest body)
-  "Smart action according to current position.
-DEFAULT: defaul function.
-BODY: usually a pcase block."
-  (declare (indent 1))
-
-  `(let* ((context (org-context))
+(cl-defun fc--org-current-elt ()
+  "Current org element."
+  (or
+   (fc-run-command-chain *fc--org-get-elt*)
+   (let* ((context (org-context))
           (1st-elt (caar context))
           (2nd-elt (caadr context))
           (elt (cond
@@ -603,15 +603,19 @@ BODY: usually a pcase block."
                  :item-bullet)
                 ((null 2nd-elt) 1st-elt)
                 (t 2nd-elt))))
-     (when (looking-at-p "\\$[^\\$]+\\$")
-       (setq elt :latex-fragment))
+     elt)))
 
-     (when (fc--org-looking-over-footnote)
-       (setq elt :footnote))
+(push #'(lambda () (and (looking-at-p "\\$[^\\$]+\\$") :latex-fragment)) *fc--org-get-elt*)
+(push #'(lambda () (and (fc--org-looking-over-footnote) :footnote)) *fc--org-get-elt*)
+(push #'(lambda () (and (fc--org-looking-include) :include)) *fc--org-get-elt*)
 
-     (when (fc--org-looking-include)
-       (setq elt :include))
+(cl-defmacro fc--org-smart-action (default &rest body)
+  "Smart action according to current position.
+DEFAULT: defaul function.
+BODY: usually a pcase block."
+  (declare (indent 1))
 
+  `(let ((elt (fc--org-current-elt)))
      (if (null elt)
          (when ,default
            (fc-funcall ,default))

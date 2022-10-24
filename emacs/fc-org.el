@@ -557,7 +557,6 @@ LANG: language."
       ("Publish"                        . fc--org-publish)
       ("Publish to html"		. org-html-export-to-html)
       ("Publish to markdown"		. org-md-export-to-markdown)
-      ("Roam sync"			. org-roam-db-sync)
       ("Redisplay inline image"		. org-redisplay-inline-images)
       ("Update dblock"			. org-update-all-dblocks)
       ("Update source block"		. org-babel-execute-buffer)
@@ -646,7 +645,8 @@ BODY: usually a pcase block."
   (fc--org-smart-action nil
     (pcase elt
       (:footnote (fc--org-show-footnote))
-      (:link (when-let* ((range (alist-get :link (org-context)))
+      (:link (when-let* ((msg (not (current-message)))
+                         (range (alist-get :link (org-context)))
                          (cell-text (fc--org-current-cell))
                          (text (or (unless (zerop (length cell-text))
                                      (fc-remove-properties cell-text)

@@ -962,14 +962,19 @@ KEYMAP: keymap to run."
      ("p" ,(fc-manual
             (when buffer-file-name
               (kill-new buffer-file-name))))
+     ("q" ,(fc-manual
+            (insert "./" (f-relative
+                          (read-file-name "Insert filename")
+                          default-directory))))
      ("u" ,(fc-cond-key :normal 'upcase-word
                         :region 'upcase-region))
      ("D" unix2dos)
      ("M" fc-merge-all-line)
+     ("T" text-mode)
      ("U" dos2unix)
      )
    "ergo-basic-map")
-  "KEYS c: capitalize  l: downcase  m: merge  p: copy path  u: upcase  D: to-dos  U: to-unix.")
+  "KEYS c: capitalize  l: downcase  m: merge  p: copy path  u: upcase  D: to-dos  M: merge all  T: text  U: to-unix.")
 
 (defconst *ergo-goto-map*
   (fc-make-keymap
@@ -1030,9 +1035,20 @@ KEYMAP: keymap to run."
    "ergo-goto-region-map")
   "KEYS a: to begin of buffer  e: to end of buffer.")
 
+(defun fc-gtd-portal ()
+  "Run gtd portal."
+  (interactive)
+
+  (fc-user-select-func
+   "GTD"
+   `(
+     ("Org-roam sync"  . org-roam-db-sync)
+     )))
+
 (defconst *ergo-gtd-map*
   (fc-make-keymap
    `(
+     ("SPC" fc-gtd-portal)
      ("3" org-agenda-list)
      ("a" org-agenda)
      ("c" org-capture)
@@ -1042,7 +1058,7 @@ KEYMAP: keymap to run."
      ("m" org-tags-view)
      ("t" org-todo-list))
    "ergo-gtd-map")
-  "KEYS a: agenda  c: capture  f: find node  j: capture node  l: store link  m: view tag  t: todo list.")
+  "KEYS SPC: portal  a: agenda  c: capture  f: find node  j: capture node  l: store link  m: view tag  t: todo list.")
 
 (cl-defun fc-ergo-which-function ()
   "Which function wrapper."

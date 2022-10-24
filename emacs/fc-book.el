@@ -124,7 +124,13 @@ TO-STRING: new string."
 (let ((fbook-tmp-test-regex nil)
       (fbook-check-finished t)
       (fc-last-overlay nil)
-      (fc-ignore-chain (list #'fc--looking-at-scene-sep)))
+      (fc-ignore-chain (list #'fc--looking-at-scene-sep
+                             #'fc--looking-at-table)))
+
+  (defun fc--looking-at-table ()
+    (save-excursion
+      (beginning-of-line 0)
+      (org-table-p)))
 
   (defun fc--looking-at-scene-sep ()
     (save-excursion

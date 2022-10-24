@@ -2,6 +2,25 @@
 
 NO_CONFIRM=false
 
+function fc-waitkey {
+    while read -e -t 0.1; do :; done
+    read -n 1 -s -r -p "Press key [r->run again q->quit other->done] ❓ " opt
+    echo
+
+    case ${opt} in
+        r)
+            return 0
+            ;;
+
+        q)
+            exit 1
+            ;;
+        *) ;;
+    esac
+
+    return 1
+}
+
 function fc-user-confirm {
     if [[ $NO_CONFIRM == true ]]; then
         return 0

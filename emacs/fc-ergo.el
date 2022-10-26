@@ -966,15 +966,15 @@ KEYMAP: keymap to run."
             (insert "./" (f-relative
                           (read-file-name "Insert filename")
                           default-directory))))
+     ("t" text-mode)
      ("u" ,(fc-cond-key :normal 'upcase-word
                         :region 'upcase-region))
      ("D" unix2dos)
      ("M" fc-merge-all-line)
-     ("T" text-mode)
      ("U" dos2unix)
      )
    "ergo-basic-map")
-  "KEYS c: capitalize  l: downcase  m: merge  p: copy path  u: upcase  D: to-dos  M: merge all  T: text  U: to-unix.")
+  "KEYS c: capitalize  l: downcase  m: merge  p: copy path  t: text mode  u: upcase  D: to-dos  M: merge all  U: to-unix.")
 
 (defconst *ergo-goto-map*
   (fc-make-keymap

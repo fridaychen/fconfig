@@ -79,8 +79,8 @@ OBJ: object"
         ((stringp obj)
          obj)
 
-        ((numberp v)
-         (number-to-string v))
+        ((numberp obj)
+         (number-to-string obj))
 
         ((symbolp obj)
          (symbol-name obj))

@@ -1293,9 +1293,23 @@ STEP: pixels."
    "ergo-prefix-quick-map")
   "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: select theme  w: work theme  z: suspend  T: deep work theme.")
 
+(defun fc-vc-portal ()
+  "Run vc portal."
+  (interactive)
+
+  (fc-user-select-func
+   "VC"
+   `(
+     ("Diff with other branch"  . fc-vc-diff-with-other-branch)
+     ("Diff current file with other branch"  . fc-vc-diff-file-with-other-branch)
+     ("Gitk with current file" ,(fc-manual (start-process "gitk" nil "gitk" buffer-file-name)))
+     ("Gitk" ,(fc-manual (start-process "gitk" nil "gitk")))
+     )))
+
 (defconst *ergo-vc-map*
   (fc-make-keymap
-   `(("a" fc-git-amend)
+   `(("SPC" fc-vc-portal)
+     ("a" fc-git-amend)
      ("c" vc-next-action)
      ("h" git-messenger:popup-message)
      ("j" ,(fc-manual (shell-command-to-string "fit -s")))
@@ -1308,10 +1322,9 @@ STEP: pixels."
      ("u" vc-revert)
      ("v" vc-diff)
      ("x" magit-status)
-     ("F" ,(fc-manual (start-process "gitk" nil "gitk" buffer-file-name)))
      ("H" magit-blame-addition)
      ("L" magit-log-all)
-     ("V" fc-git-diff-repo)
+     ("V" magit-diff-working-tree)
      ("X" ,(fc-manual (start-process "gitk" nil "gitk")))
      )
    "ergo-vc-map")

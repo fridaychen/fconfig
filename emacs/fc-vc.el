@@ -97,7 +97,7 @@
       (search-forward filename nil t)
       (diff-mode))
 
-    (fc-pop-buf buf :read-only t)))
+    (fc-pop-buf buf :read-only t :escape t)))
 
 (cl-defun fc-vc-rename-file ()
   (interactive)
@@ -126,6 +126,50 @@
     (let* ((backend (symbol-name (vc-backend (buffer-file-name))))
            (branch (substring-no-properties vc-mode (+ (length backend) 2))))
       branch)))
+
+(cl-defun fc-vc-select-branch (&optional remote)
+  "Select git branch.
+REMOTE: select from local or remote branchs."
+  (fc-user-select (if remote "Remote branch" "Branch")
+                  (split-string
+                   (with-temp-buffer
+                     (shell-command (format "git branch %s | sed -e \"/^\\*/d\" | cut -b 3-"
+                                            (if remote "-r" ""))
+                                    (current-buffer))
+                     (s-trim (buffer-string)))
+                   "\n")))
+
+(cl-defun fc-vc-diff-with-other-branch ()
+  "Diff work dir with other branch."
+  (interactive)
+
+  (let* ((branch (fc-vc-select-branch))
+         (buf (get-buffer-create (format "*git-diff with branch %s*" branch))))
+    (with-current-buffer buf
+      (setf enable-local-variables :all
+            enable-dir-local-variables nil)
+      (erase-buffer)
+
+      (shell-command (format "git diff %s" branch) (current-buffer)))
+
+    (fc-pop-buf buf :automode t :select t :local-vars `(("mode" . diff)
+                                                        ("default-directory" . ,(fc-vc-root))))))
+
+(cl-defun fc-vc-diff-file-with-other-branch ()
+  "Diff current file with other branch."
+  (interactive)
+
+  (let* ((branch (fc-vc-select-branch))
+         (filename buffer-file-name)
+         (buf (get-buffer-create (format "*git-diff %s with branch %s*" (buffer-name) branch))))
+    (with-current-buffer buf
+      (setf enable-local-variables :all
+            enable-dir-local-variables nil)
+      (erase-buffer)
+      (shell-command (format "git diff %s -- %s" branch filename) (current-buffer)))
+
+    (fc-pop-buf buf :automode t :select t :local-vars `(("mode" . diff)
+                                                        ("default-directory" . ,(fc-vc-root))))))
 
 (fc-add-network-advice 'fc-git-pull 'fc-git-push)
 

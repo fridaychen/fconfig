@@ -674,7 +674,9 @@ BODY: usually a pcase block."
       (:src-block (org-ctrl-c-ctrl-c))
       (:tags (org-set-tags-command))
       (:timestamp (fc-funcall #'org-time-stamp))
-      (:todo-keyword (org-todo))
+      (:todo-keyword (let ((org-use-fast-todo-selection (when *fc-ergo-prefix*
+                                                          'export)))
+                       (org-todo)))
       (_ (message "context: %s elt: %s" context elt)))))
 
 (defun fc--org-beginning ()
@@ -896,7 +898,7 @@ CONTENT: content of new footnote."
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-func-mode-map*)
-  "KEYS b: emphasize  c: C-c C-c  d: de/en-crypt  i c: clip link  i d: drawer  i f: formula  i n: roam node  i q: quote  i t: timestamp  i u: uml  i N: note  i T: insert title  l: link  m: mark element  o: open  t: todo  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  B: backlink  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
+  "KEYS b: emphasize  c: C-c C-c  d: de/en-crypt  i c: clip link  i d: drawer  i f: formula  i n: roam node  i q: quote  i t: timestamp  i u: uml  i N: note  i T: insert title  l: link  m: mark element  o: open  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  B: backlink  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc-org-mode-func ()
   "Mode func."
@@ -905,11 +907,14 @@ CONTENT: content of new footnote."
 (defconst *fc-org-agenda-map*
   (fc-make-keymap
    `(
-     ("M" org-agenda-month-view)
+     ("c" org-agenda-columns)
+     ("m" org-agenda-month-view)
+     ("t" org-agenda-todo)
+     ("w" org-agenda-week-view)
      )
    "fc-org-agenda-map"
    *fc-org-map*)
-  "KEYS M: month.")
+  "KEYS c: columns  m: month  t: todo  w: week.")
 
 (cl-defun fc-org-agenda-mode-func ()
   "FC org-agenda-mode func."
@@ -943,15 +948,11 @@ TEMPLATES: fconfig templates."
   "Auto config org."
   (fc--org-init-dir)
 
-  (--each '(org-agenda
-            org-agenda-list)
-    (advice-add it :before #'fc--before-agenda))
-
-  (setf org-agenda-files (directory-files *fc-org-dir* t "org$")
+  (setf org-agenda-files `(,*fc-org-dir*)
         org-capture-templates nil
-        org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "REMIND(r)"
-                                      "|"
-                                      "DONE(d)" "SOMEDAY(s)"))
+        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
+                            (sequence "WAIT(w!/!)" "REMIND(r)" "SOMEDAY(s!/!)" "|" "MEETING(m)"))
+        org-use-fast-todo-selection 'export
         org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate)
 
   (fc-org-add-capture-template *fc-org-captrue-template*)
@@ -959,10 +960,6 @@ TEMPLATES: fconfig templates."
 
   (--each *fc-org-captrue-raw-templates*
     (add-to-list 'org-capture-templates it)))
-
-(cl-defun fc--before-agenda (&rest _rest)
-  "Wrapper function."
-  (setf org-agenda-files (directory-files *fc-org-dir* t "^[^#].+org$")))
 
 (cl-defun fc--org-toggle-special-edit ()
   "Toggle block editor mode."

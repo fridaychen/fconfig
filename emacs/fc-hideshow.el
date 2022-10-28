@@ -17,12 +17,10 @@
 (fc-require 'outline)
 
 (defun fc-hs--is-hideshow ()
-  (and (boundp 'hs-minor-mode)
-       hs-minor-mode))
+  (bound-and-true-p hs-minor-mode))
 
 (defun fc-hs--is-outline ()
-  (and (boundp 'outline-minor-mode)
-       outline-minor-mode))
+  (bound-and-true-p outline-minor-mode))
 
 (defun fc-hs-init ()
   (when (member major-mode *fc-hs-init-hide-all-modes*)

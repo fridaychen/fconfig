@@ -17,7 +17,7 @@
 
 (defun fc-modeline-proj-name ()
   "Get project name of current buffer."
-  (and (boundp 'fc-proj-name) fc-proj-name))
+  (bound-and-true-p fc-proj-name))
 
 (defun fc-user-select-theme-mode ()
   (let ((mode (fc-user-select (format "Theme mode")

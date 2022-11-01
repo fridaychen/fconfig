@@ -413,7 +413,7 @@ func filterFileNamePattern() func(fi os.FileInfo) bool {
 	)
 
 	if pattern, ok := produceUserFileNameRegexPattern(); ok {
-		userFileNameReg = regexp.MustCompile(pattern)
+		userFileNameReg = regexp.MustCompile("(?i)" + pattern)
 	}
 
 	return func(fi os.FileInfo) bool {

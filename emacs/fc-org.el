@@ -473,8 +473,6 @@ LANG: language."
         (def-num 0))
     (while (re-search-forward "\\[fn:\\([0-9]+\\)\\]" nil t)
       (let ((num (string-to-number (match-string 1))))
-        (message "-- find %d" num)
-
         (if (zerop (- (current-column) (- (match-end 0) (match-beginning 0))))
             (progn
               (when (>= def-num num)
@@ -679,6 +677,15 @@ BODY: usually a pcase block."
                        (org-todo)))
       (_ (message "context: %s elt: %s" context elt)))))
 
+(cl-defun fc--org-todo ()
+  (let ((org-use-fast-todo-selection (when *fc-ergo-prefix*
+                                       'export)))
+    (org-todo)))
+
+(cl-defun fc--org-todo ()
+  (setq org-use-fast-todo-selection 'export)
+  (org-todo))
+
 (defun fc--org-beginning ()
   "Goto the beginning of the current block."
   (fc--org-smart-action nil
@@ -879,7 +886,7 @@ CONTENT: content of new footnote."
      ("o" org-open-at-point)
      ("p" org-set-property)
      ("s" ,(fc-manual (fc-org-add-block "SRC" :ask "Programming language")))
-     ("t" org-todo)
+     ("t" fc--org-todo)
      ("u" fc--org-do)
      ("v t" ,(fc-manual (org-tags-view t)))
      ("v T" org-tags-view)
@@ -949,9 +956,10 @@ TEMPLATES: fconfig templates."
   (fc--org-init-dir)
 
   (setf org-agenda-files `(,*fc-org-dir*)
-        org-capture-templates nil
-        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
-                            (sequence "WAIT(w!/!)" "REMIND(r)" "SOMEDAY(s!/!)" "|" "MEETING(m)"))
+        ;; org-capture-templates nil
+        org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "|" "DONE(d!/!)")
+                            (sequence "BUG(b!)" "KNOWNCAUSE" "|" "FIXED")
+                            (type "SOMEDAY(s)" "REMIND(r)" "|" "DONE"))
         org-use-fast-todo-selection 'export
         org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate)
 

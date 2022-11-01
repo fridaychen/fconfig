@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: deadline
+# key: dl
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+DEADLINE: `(progn (fc-funcall #'org-time-stamp) "")`
+$0

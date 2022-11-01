@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: scheduled
+# key: sched
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+SCHEDULED: `(progn (fc-funcall #'org-time-stamp) "")`
+$0

@@ -43,6 +43,7 @@
 (defvar *fc-org-pop-footnote* nil)
 
 (defvar *fc--org-get-elt* nil)
+(defvar *fc-agenda-list* nil)
 
 (fc-install 'blockdiag-mode
             'gnuplot
@@ -956,18 +957,46 @@ TEMPLATES: fconfig templates."
   (fc--org-init-dir)
 
   (setf org-agenda-files `(,*fc-org-dir*)
-        ;; org-capture-templates nil
         org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "|" "DONE(d!/!)")
                             (sequence "BUG(b!)" "KNOWNCAUSE" "|" "FIXED")
                             (type "SOMEDAY(s)" "REMIND(r)" "|" "DONE"))
         org-use-fast-todo-selection 'export
-        org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate)
+        org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate
+        org-agenda-block-separator "️️───────────────────────────────────────────")
+
+  (fc-org-agenda-customize)
+
+  (setf org-capture-templates nil)
 
   (fc-org-add-capture-template *fc-org-captrue-template*)
   (fc-org-add-capture-template *fc-org-user-capture-templates*)
 
   (--each *fc-org-captrue-raw-templates*
     (add-to-list 'org-capture-templates it)))
+
+(cl-defun fc-org-agenda-customize (&key project)
+  (setf *fc-agenda-list*
+        (cl-loop
+         for x in project
+         append
+         `((tags-todo ,x
+                      ((org-agenda-overriding-header ,(format "Project <<%s>>:" x)))))))
+
+  (setf org-agenda-custom-commands
+        `(("x" "Agenda and Home-related tasks"
+           ((agenda "")
+            (tags-todo "home")
+            (tags "garden")))
+          ("X" "Agenda and Office-related tasks"
+           ((agenda "")
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Actions:")))
+            ,@*fc-agenda-list*)))))
+
+(cl-defun fc-org-agenda ()
+  (interactive)
+
+  (org-agenda nil "X"))
 
 (cl-defun fc--org-toggle-special-edit ()
   "Toggle block editor mode."

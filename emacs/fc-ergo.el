@@ -1049,7 +1049,7 @@ KEYMAP: keymap to run."
   (fc-make-keymap
    `(
      ("SPC" fc-gtd-portal)
-     ("3" org-agenda-list)
+     ("3" fc-org-agenda)
      ("a" org-agenda)
      ("c" org-capture)
      ("f" org-roam-node-find)
@@ -1093,10 +1093,16 @@ KEYMAP: keymap to run."
               ((latex-mode markdown-mode org-mode) . fc-ergo-which-function)
               (_ . fc-describe-function))))
      ("h" fc-modal-input)
-     ("i" info)
+     ("i" ,(fc-manual
+            (if-let ((buf (get-buffer "*info*")))
+                (fc-pop-buf buf :select t)
+              (info))))
      ("k" describe-key)
      ("m" man)
-     ("o" org-info)
+     ("o" ,(fc-manual
+            (if-let ((buf (get-buffer "*info*")))
+                (fc-pop-buf buf :select t)
+              (org-info))))
      ("r" ,(fc-manual (fc-pop-buf "*Help*")))
      ("s" ,(fc-manual (fc-show-info (fc-sys-info)
                                     (fc-process-info))))

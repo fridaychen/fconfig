@@ -22,6 +22,9 @@
     '((work . "mac-addr")
       (home . "mac-addr"))))
 
+(defun fc-user-org-config ()
+  (fc-org-agenda-customize :project '("fconfig")))
+
 (setenv "FCHOME" "${FCHOME}")
 
 (add-to-list 'load-path "~/.emacs.d/fconfig")

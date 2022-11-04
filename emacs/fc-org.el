@@ -11,7 +11,7 @@
 (defconst *fc-org-captrue-template*
   `(
     ("b" "Book" "book.org" "Inbox"
-     "* Book <<%^{Title of book}>>\n  %T")
+     "* TODO Book <<%?>> %(org-set-tags \"book\")\n ")
     ("j" "Journal" "journal.org" "Inbox"
      "* %^{Journal}\n  %T" :immediate-finish t)
     ("k" "Knowledge" "knowledge.org" "Inbox"
@@ -44,6 +44,7 @@
 
 (defvar *fc--org-get-elt* nil)
 (defvar *fc-agenda-list* nil)
+(defvar *fc-org-no-tag-captures* '("Book"))
 
 (fc-install 'blockdiag-mode
             'gnuplot
@@ -204,13 +205,15 @@
             (insert data)))))
 
     (cl-defun fc--capture-tag ()
-      (when (org-roam-capture-p)
+      (when (or (org-roam-capture-p)
+                (member (plist-get org-capture-plist :description)
+                        *fc-org-no-tag-captures*))
         (cl-return-from fc--capture-tag))
 
-      (let ((tags
-             (with-current-buffer (plist-get org-capture-plist :original-buffer)
-               (when (boundp 'fc-capture-tags)
-                 fc-capture-tags))))
+      (when-let ((tags
+                  (with-current-buffer (plist-get org-capture-plist :original-buffer)
+                    (when (boundp 'fc-capture-tags)
+                      fc-capture-tags))))
         (org-set-tags (fc-string tags))))
 
     (cl-defun fc--capture-edit ()
@@ -673,19 +676,14 @@ BODY: usually a pcase block."
       (:src-block (org-ctrl-c-ctrl-c))
       (:tags (org-set-tags-command))
       (:timestamp (fc-funcall #'org-time-stamp))
-      (:todo-keyword (let ((org-use-fast-todo-selection (when *fc-ergo-prefix*
-                                                          'export)))
-                       (org-todo)))
+      (:todo-keyword (fc--org-todo))
       (_ (message "context: %s elt: %s" context elt)))))
 
 (cl-defun fc--org-todo ()
+  "Change todo state."
   (let ((org-use-fast-todo-selection (when *fc-ergo-prefix*
                                        'export)))
     (org-todo)))
-
-(cl-defun fc--org-todo ()
-  (setq org-use-fast-todo-selection 'export)
-  (org-todo))
 
 (defun fc--org-beginning ()
   "Goto the beginning of the current block."
@@ -958,13 +956,13 @@ TEMPLATES: fconfig templates."
 
   (setf org-agenda-files `(,*fc-org-dir*)
         org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "|" "DONE(d!/!)")
-                            (sequence "BUG(b!)" "KNOWNCAUSE" "|" "FIXED")
-                            (type "SOMEDAY(s)" "REMIND(r)" "|" "DONE"))
+                            (type "DELEGATED(D!/!)" "SOMEDAY(s)" "REMIND(r)"))
         org-use-fast-todo-selection 'export
         org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate
-        org-agenda-block-separator "️️───────────────────────────────────────────")
+        org-agenda-block-separator "───────────────────────────────────────────")
 
-  (fc-org-agenda-customize)
+  (when (fboundp #'fc-user-org-config)
+    (fc-user-org-config))
 
   (setf org-capture-templates nil)
 
@@ -983,11 +981,13 @@ TEMPLATES: fconfig templates."
                       ((org-agenda-overriding-header ,(format "Project <<%s>>:" x)))))))
 
   (setf org-agenda-custom-commands
-        `(("x" "Agenda and Home-related tasks"
+        `(("x" "Study and Book-reading"
            ((agenda "")
-            (tags-todo "home")
-            (tags "garden")))
-          ("X" "Agenda and Office-related tasks"
+            (tags-todo "study"
+                       ((org-agenda-overriding-header "Study:")))
+            (tags-todo "book"
+                       ((org-agenda-overriding-header "Book-reading:")))))
+          ("X" "My Agenda"
            ((agenda "")
             (todo "NEXT"
                   ((org-agenda-overriding-header "Next Actions:")))

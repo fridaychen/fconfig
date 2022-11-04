@@ -222,6 +222,14 @@ COLOR: background color."
 
       ('leuven
        (setf soothe-percent 6)
+       (fc-set-face-attribute 'org-agenda-structure nil
+                              :height 1.1)
+       (fc-set-face-attribute 'org-agenda-date nil
+                              :height 1.1)
+       (fc-set-face-attribute 'org-agenda-date-today nil
+                              :height 1.2)
+       (fc-set-face-attribute 'org-agenda-date-weekend nil
+                              :height 1.1)
        (fc-set-face-attribute 'default nil
                               :foreground "#444444"
                               :background *fc-common-light-theme-bg*))

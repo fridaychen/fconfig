@@ -1066,7 +1066,9 @@ KEYMAP: keymap to run."
      ("j" org-roam-capture)
      ("l" org-store-link)
      ("m" org-tags-view)
-     ("t" org-todo-list))
+     ("t" org-todo-list)
+     ("x" fc-org-study-agenda)
+     )
    "ergo-gtd-map")
   "KEYS SPC: portal  a: agenda  c: capture  f: find node  j: capture node  l: store link  m: view tag  t: todo list.")
 

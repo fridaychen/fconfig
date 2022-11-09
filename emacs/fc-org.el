@@ -963,7 +963,8 @@ TEMPLATES: fconfig templates."
   (setf org-agenda-files `(,*fc-org-dir*)
         org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "|" "DONE(d!/!)" "CANCELLED(c!/!)" "DELEGATED(D!/!)" )
                             (sequence "REMIND(r)" "|" "DONE")
-                            (sequence "SOMEDAY(s)" "TODO" "|"))
+                            (sequence "SOMEDAY(s)" "TODO" "|")
+                            (type "WAITING" "|"))
         org-use-fast-todo-selection 'export
         org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate
         org-agenda-block-separator "───────────────────────────────────────────")
@@ -1004,6 +1005,11 @@ TEMPLATES: fconfig templates."
   (interactive)
 
   (org-agenda nil "X"))
+
+(cl-defun fc-org-study-agenda ()
+  (interactive)
+
+  (org-agenda nil "x"))
 
 (cl-defun fc--org-toggle-special-edit ()
   "Toggle block editor mode."

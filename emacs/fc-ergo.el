@@ -952,9 +952,22 @@ KEYMAP: keymap to run."
    "ergo-delete-map")
   *fc-common-key-doc*)
 
+(defun fc-basic-portal ()
+  "Run basic portal."
+  (interactive)
+
+  (fc-user-select-func
+   "Basic"
+   `(
+     ("Dos2unix" dos2unix)
+     ("Merge all lines" fc-merge-all-line)
+     ("Unix2dos" unix2dos)
+     )))
+
 (defconst *ergo-basic-map*
   (fc-make-keymap
-   `(("c" ,(fc-cond-key :normal 'capitalize-word
+   `(("SPC" fc-basic-portal)
+     ("c" ,(fc-cond-key :normal 'capitalize-word
                         :region 'capitalize-region))
      ("l" ,(fc-cond-key :normal 'downcase-word
                         :region 'downcase-region))
@@ -969,12 +982,9 @@ KEYMAP: keymap to run."
      ("t" text-mode)
      ("u" ,(fc-cond-key :normal 'upcase-word
                         :region 'upcase-region))
-     ("D" unix2dos)
-     ("M" fc-merge-all-line)
-     ("U" dos2unix)
      )
    "ergo-basic-map")
-  "KEYS c: capitalize  l: downcase  m: merge  p: copy path  t: text mode  u: upcase  D: to-dos  M: merge all  U: to-unix.")
+  "KEYS c: capitalize  l: downcase  m: merge  p: copy path  t: text mode  u: upcase.")
 
 (defconst *ergo-goto-map*
   (fc-make-keymap
@@ -1076,6 +1086,10 @@ KEYMAP: keymap to run."
    (t
     (describe-function))))
 
+(cl-defun fc-quick-attention ()
+  (interactive)
+  (fc-player--play-pause *fc-player*))
+
 (defconst *ergo-help-map*
   (fc-make-keymap
    `(("SPC" fc-help-portal)
@@ -1162,7 +1176,7 @@ KEYMAP: keymap to run."
   (fc-make-keymap
    `(("SPC" fc-app-portal)
      ("a" align)
-     ("b" ,*fc--undef-key*)
+     ("b" fc-quick-attention)
      ("c" ,(fc-cond-key :normal 'quick-calc
                         :region (fc-manual (calc-eval (fc-current-thing)))))
      ("d" fc-dev-mode-toggle)

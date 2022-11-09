@@ -14,6 +14,11 @@
            (global-lsp-bridge-mode)
            (setf *fc-lsp-mode* nil)))
 
+;; (fc-load 'eglot
+;;   :local t
+;;   :after (progn
+;;            (setf *fc-lsp-mode* nil)))
+
 (fc-load 'lsp-mode
   :enable *fc-lsp-mode*
   :after (progn

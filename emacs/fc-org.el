@@ -17,7 +17,7 @@
     ("k" "Knowledge" "knowledge.org" "Inbox"
      "* %?\n  # Wrote on %U")
     ("t" "Todo" "remind.org" "Inbox"
-     "* TODO %?\n  %a\n  %T")
+     "* TODO %?\n  %a\n")
     ))
 
 (defconst *fc-org-captrue-raw-templates*
@@ -56,33 +56,39 @@
 
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
-  (when (not (fc-get-face-attribute 'org-level-1 :overline))
-    (cond
-     ((fc-dark-theme-p)
-      (fc-set-face-attribute 'org-level-1 nil
-                             :overline "#efcab2"
-                             :foreground "#c7c3cb"
-                             :background "#3d2a2d"
-                             :height 1.2)
-      (fc-set-face-attribute 'org-level-2 nil
-                             :overline "#efcab2"
-                             :foreground "#efcab2"
-                             :background "#3d2a2d"
-                             :height 1.1)
-      (fc-set-face-attribute 'org-level-3 nil :height 1.05))
+  (if (not (fc-get-face-attribute 'org-level-1 :overline))
+      (cond
+       ((fc-dark-theme-p)
+        (fc-set-face-attribute 'org-level-1 nil
+                               :overline "#efcab2"
+                               :foreground "#c7c3cb"
+                               :background "#3d2a2d"
+                               :height 1.1)
+        (fc-set-face-attribute 'org-level-2 nil
+                               :overline "#efcab2"
+                               :foreground "#efcab2"
+                               :background "#3d2a2d"
+                               :height 1.05)
+        (fc-set-face-attribute 'org-level-3 nil :height 1))
 
-     (t
-      (fc-set-face-attribute 'org-level-1 nil
-                             :overline "#A7A7A7"
-                             :foreground "#3C3C3C"
-                             :background "#F0F0F0"
-                             :height 1.2)
-      (fc-set-face-attribute 'org-level-2 nil
-                             :overline "#123555"
-                             :foreground "#123555"
-                             :background "#E5F4FB"
-                             :height 1.1)
-      (fc-set-face-attribute 'org-level-3 nil :height 1.05))))
+       (t
+        (fc-set-face-attribute 'org-level-1 nil
+                               :overline "#A7A7A7"
+                               :foreground "#3C3C3C"
+                               :background "#F0F0F0"
+                               :height 1.1)
+        (fc-set-face-attribute 'org-level-2 nil
+                               :overline "#123555"
+                               :foreground "#123555"
+                               :background "#E5F4FB"
+                               :height 1.05)
+        (fc-set-face-attribute 'org-level-3 nil :height 1)))
+
+    (fc-set-face-attribute 'org-level-1 nil
+                           :height 1.1)
+    (fc-set-face-attribute 'org-level-2 nil
+                           :height 1.05)
+    (fc-set-face-attribute 'org-level-3 nil :height 1))
 
   (--each '(org-quote org-block)
     (let ((default-bg (fc-get-face-attribute 'default :background))
@@ -955,8 +961,9 @@ TEMPLATES: fconfig templates."
   (fc--org-init-dir)
 
   (setf org-agenda-files `(,*fc-org-dir*)
-        org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "|" "DONE(d!/!)")
-                            (type "DELEGATED(D!/!)" "SOMEDAY(s)" "REMIND(r)"))
+        org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "|" "DONE(d!/!)" "CANCELLED(c!/!)" "DELEGATED(D!/!)" )
+                            (sequence "REMIND(r)" "|" "DONE")
+                            (sequence "SOMEDAY(s)" "TODO" "|"))
         org-use-fast-todo-selection 'export
         org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate
         org-agenda-block-separator "───────────────────────────────────────────")

@@ -1088,9 +1088,17 @@ KEYMAP: keymap to run."
    (t
     (describe-function))))
 
+(defvar *fc-quick-attention* nil)
+
 (cl-defun fc-quick-attention ()
   (interactive)
-  (fc-player--play-pause *fc-player*))
+
+  (fc-assist-cmd
+   (if *fc-quick-attention*
+       "--unmute"
+     "--mute"))
+
+  (fc-toggle-var '*fc-quick-attention*))
 
 (defconst *ergo-help-map*
   (fc-make-keymap

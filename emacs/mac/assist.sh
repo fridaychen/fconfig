@@ -46,7 +46,7 @@ function volume_down {
     modify_volume -10
 }
 
-function mute {
+function oldmute {
     current=$(osascript -e "output muted of (get volume settings)")
 
     case $current in
@@ -58,6 +58,14 @@ function mute {
             osascript -e 'set volume output muted true'
             ;;
     esac
+}
+
+function mute {
+    osascript -e 'set volume output muted true'
+}
+
+function unmute {
+    osascript -e 'set volume output muted false'
 }
 
 function gateway {
@@ -97,5 +105,9 @@ case $1 in
 
     --upgrade)
         upgrade
+        ;;
+
+    --ummute)
+        unmute
         ;;
 esac

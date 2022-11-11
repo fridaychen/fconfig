@@ -34,7 +34,11 @@ function volume_down {
 }
 
 function mute {
-    pactl set-sink-mute 0
+    pamixer -m
+}
+
+function unmute {
+    pamixer -u
 }
 
 function gateway {
@@ -73,5 +77,9 @@ case $1 in
 
     --upgrade)
         upgrade
+        ;;
+
+    --unmute)
+        unmute
         ;;
 esac

@@ -107,7 +107,7 @@ case $1 in
         upgrade
         ;;
 
-    --ummute)
+    --unmute)
         unmute
         ;;
 esac

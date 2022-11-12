@@ -24,7 +24,7 @@
                               '(dark light)
                               :mouse t)))
     (when mode
-      (setf *fc-theme-mode* (intern mode)))))
+      (setf *fc-theme-mode* mode))))
 
 (defconst *fc-menu*
   (fc-create-pop-menu

@@ -313,12 +313,11 @@ BUILD-DIR: compilation dir."
 (cl-defun fc-proj-name (&optional dir)
   "Find the project name under root.
 ROOT: project path."
-  (let ((root (fc-proj-root dir)))
-    (if root
-        (if (boundp 'fc-proj-name)
-            fc-proj-name
-          (file-name-nondirectory (directory-file-name root)))
-      "")))
+  (if-let ((root (fc-proj-root dir)))
+      (if (boundp 'fc-proj-name)
+          fc-proj-name
+        (file-name-nondirectory (directory-file-name root)))
+    ""))
 
 (cl-defun fc-proj-find-file (&optional dir)
   (let* ((root (if dir

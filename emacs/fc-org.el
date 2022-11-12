@@ -11,11 +11,11 @@
 (defconst *fc-org-captrue-template*
   `(
     ("b" "Book" "book.org" "Inbox"
-     "* TODO Book <<%?>> %(org-set-tags \"book\")\n ")
+     "* TODO Book <<%?>> :book:\n")
     ("j" "Journal" "journal.org" "Inbox"
      "* %^{Journal}\n  %T" :immediate-finish t)
-    ("k" "Knowledge" "knowledge.org" "Inbox"
-     "* %?\n  # Wrote on %U")
+    ("s" "Study" "study.org" "Inbox"
+     "* TODO Study %? :study:\n")
     ("t" "Todo" "remind.org" "Inbox"
      "* TODO %?\n  %a\n")
     ))
@@ -44,7 +44,7 @@
 
 (defvar *fc--org-get-elt* nil)
 (defvar *fc-agenda-list* nil)
-(defvar *fc-org-no-tag-captures* '("Book"))
+(defvar *fc-org-no-tag-captures* '("Book" "Study"))
 
 (fc-install 'blockdiag-mode
             'gnuplot
@@ -68,8 +68,7 @@
                                :overline "#efcab2"
                                :foreground "#efcab2"
                                :background "#3d2a2d"
-                               :height 1.05)
-        (fc-set-face-attribute 'org-level-3 nil :height 1))
+                               :height 1.05))
 
        (t
         (fc-set-face-attribute 'org-level-1 nil
@@ -81,14 +80,11 @@
                                :overline "#123555"
                                :foreground "#123555"
                                :background "#E5F4FB"
-                               :height 1.05)
-        (fc-set-face-attribute 'org-level-3 nil :height 1)))
+                               :height 1.05))))
 
-    (fc-set-face-attribute 'org-level-1 nil
-                           :height 1.1)
-    (fc-set-face-attribute 'org-level-2 nil
-                           :height 1.05)
-    (fc-set-face-attribute 'org-level-3 nil :height 1))
+  (fc-set-face-attribute 'org-level-1 nil :height 1.1)
+  (fc-set-face-attribute 'org-level-2 nil :height 1.05)
+  (fc-set-face-attribute 'org-level-3 nil :height 1.01)
 
   (--each '(org-quote org-block)
     (let ((default-bg (fc-get-face-attribute 'default :background))
@@ -242,10 +238,11 @@
 
     (add-hook 'org-capture-mode-hook #'fc--capture-edit)
     (add-hook 'org-capture-mode-hook #'fc--capture-copy-region)
-    (add-hook 'org-capture-mode-hook #'org-align-all-tags)
     (add-hook 'org-capture-mode-hook #'fc--capture-tag)
 
-    (add-hook 'org-capture-after-finalize-hook #'fc-modal-disable)
+    (add-hook 'org-capture-after-finalize-hook #'org-align-tags)
+    (add-hook 'org-capture-after-finalize-hook #'fc-modal-enable)
+
     (add-hook 'org-babel-after-execute-hook #'org-redisplay-inline-images)
     (add-hook 'org-mode-hook #'fc--setup-org-mode)
     (add-hook 'org-mode-hook #'valign-mode)

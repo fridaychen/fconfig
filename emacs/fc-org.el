@@ -8,7 +8,7 @@
 
 (defvar *fc-org-latex-preview-scale* 2.2)
 (defvar *fc-org-dir* "~/org/")
-(defconst *fc-org-captrue-template*
+(defconst *fc-org-capture-template*
   `(
     ("b" "Book" "book.org" "Inbox"
      "* TODO Book <<%?>> :book:\n")
@@ -20,7 +20,7 @@
      "* TODO %?\n  %a\n")
     ))
 
-(defconst *fc-org-captrue-raw-templates*
+(defconst *fc-org-capture-raw-templates*
   `(
     ("B" "Bookmark" plain (file+headline "bookmarks.org" "Inbox") "[[%(org-cliplink-clipboard-content)][%^{Title}]]\n")
     ))
@@ -183,8 +183,9 @@
       (org-superstar-mode 1)
       (org-link-beautify-mode -1)
 
-      (fc--org-hide-all)
-      (fc-idle-delay-task #'fc-hs-toggle 0.1)
+      (unless (fc--org-capture-p)
+        (fc--org-hide-all)
+        (fc-idle-delay-task #'fc-hs-toggle 0.1))
 
       (fc-dwell-enable #'fc--org-dwell)
       (add-hook 'pre-command-hook #'fc--org-hide-footnote)
@@ -212,10 +213,9 @@
                         *fc-org-no-tag-captures*))
         (cl-return-from fc--capture-tag))
 
-      (when-let ((tags
-                  (with-current-buffer (plist-get org-capture-plist :original-buffer)
-                    (when (boundp 'fc-capture-tags)
-                      fc-capture-tags))))
+      (when-let* ((buf (plist-get org-capture-plist :original-buffer))
+                  (tags (with-current-buffer buf
+                          (bound-and-true-p fc-capture-tags))))
         (org-set-tags (fc-string tags))))
 
     (cl-defun fc--capture-edit ()
@@ -971,11 +971,16 @@ TEMPLATES: fconfig templates."
 
   (setf org-capture-templates nil)
 
-  (fc-org-add-capture-template *fc-org-captrue-template*)
+  (fc-org-add-capture-template *fc-org-capture-template*)
   (fc-org-add-capture-template *fc-org-user-capture-templates*)
 
-  (--each *fc-org-captrue-raw-templates*
+  (--each *fc-org-capture-raw-templates*
     (add-to-list 'org-capture-templates it)))
+
+(cl-defun fc--org-capture-p ()
+  (when-let* ((plist org-capture-plist)
+              (marker (plist-get plist :begin-marker)))
+    (eq (current-buffer) (marker-buffer marker))))
 
 (cl-defun fc-org-agenda-customize (&key project)
   (setf *fc-agenda-list*

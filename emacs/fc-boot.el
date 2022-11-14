@@ -26,6 +26,15 @@
 
 (apply #'fc-install *fc-extra-packages*)
 
+(fc-load 'fc-org
+  :local t
+  :after
+  (progn
+    (add-hook '*fc-after-theme-hook* #'fc--org-theme-changed)
+    (fc-org-autoconfig)
+    (add-hook '*fc-common-fast-act-hook* #'fc--org-toggle-special-edit)
+    (fc-require 'fc-plantuml)))
+
 (cl-defun fc-load-mode-config ()
   "Load config for current mode."
   (pcase major-mode
@@ -37,15 +46,6 @@
     ('lisp-mode (fc-require 'fc-lisp))
     ('markdown-mode (fc-require 'fc-markdown))
     ('ocaml-mode (fc-require 'fc-ocaml))
-    ('org-mode (unless (featurep 'fc-org)
-                 (fc-load 'fc-org
-                   :local t
-                   :after
-                   (progn
-                     (add-hook '*fc-after-theme-hook* #'fc--org-theme-changed)
-                     (fc-org-autoconfig)
-                     (fc-common-add-fast-act #'fc--org-toggle-special-edit)
-                     (fc-require 'fc-plantuml)))))
     ('plantuml-mode (fc-require 'fc-plantuml))
     ('python-mode (fc-require 'fc-python))))
 

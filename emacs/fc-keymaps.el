@@ -138,11 +138,6 @@ MODE-FUNC: mode and function definitions."
 (cl-defun fc-common-mode-func ()
   (fc-modal-head-key "Common" '*fc-func-mode-map*))
 
-(defvar *fc-common-fast-act-hook* nil "Common fast action hook.")
-
-(cl-defmacro fc-common-add-fast-act (func)
-  `(add-hook '*fc-common-fast-act-hook* ,func))
-
 (provide 'fc-keymaps)
 
 ;; Local Variables:

@@ -41,6 +41,8 @@
 (defvar *fc-enable-dev-hook* nil)
 (defvar *fc-disable-dev-hook* nil)
 
+(load-theme 'leuven t)
+
 (require 'fc-facility)
 (require 'fc-package)
 (fc-require 'fc-autoloads)

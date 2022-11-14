@@ -30,6 +30,8 @@
 ;; keymaps
 (autoload #'fc-make-keymap "fc-keymaps")
 
+(defvar *fc-common-fast-act-hook* nil "Common fast action hook.")
+
 ;; font
 (autoload #'fc-setup-font "fc-font")
 
@@ -59,6 +61,7 @@
 
 (autoload #'fc-load-theme "fc-theme-config")
 (autoload #'fc-theme-auto-select "fc-theme-config")
+(autoload #'fc-dark-theme-p "fc-theme-config")
 
 ;; util
 (autoload #'fc-has-battery "fc-util")

@@ -619,11 +619,12 @@ DEFAULT: defaul function.
 BODY: usually a pcase block."
   (declare (indent 1))
 
-  `(let ((elt (fc--org-current-elt)))
-     (if (null elt)
-         (when ,default
-           (fc-funcall ,default))
-       ,@body)))
+  `(when (eq major-mode 'org-mode)
+     (let ((elt (fc--org-current-elt)))
+       (if (null elt)
+           (when ,default
+             (fc-funcall ,default))
+         ,@body))))
 
 (cl-defun fc--org-looking-over-footnote ()
   "Test if current point is over a footnote."
@@ -872,6 +873,7 @@ CONTENT: content of new footnote."
      ("i i" fc--org-convert)
      ("i n" ,(fc-cond-key :normal 'org-roam-node-insert
                           :region (fc-manual (fc-org-add-block "NOTE"))))
+     ("i p" org-priority)
      ("i q" ,(fc-manual (fc-org-add-block "QUOTE")))
      ("i t" org-time-stamp)
      ("i u" ,(fc-manual (fc-org-add-block "SRC" :ask '("Output file" "plantuml :file output/"))))

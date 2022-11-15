@@ -181,7 +181,6 @@ S: note string."
   p: paragraph
   q: quotation
   w: current word
-  p: paragraph
   f: semantic function
 
   ^: to beginning of buffer

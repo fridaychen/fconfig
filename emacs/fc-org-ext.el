@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(defvar *fc-mybook-home* (expand-file-name "~/Documents/mybook"))
+(defvar *fc-mybook-home* (expand-file-name "~/Documents/"))
 
 (org-link-set-parameters "music"
                          :follow #'fc--music-open)

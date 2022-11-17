@@ -9,7 +9,9 @@
 (defun fc-user-config ()
   (setf *fc-font-mode-line-delta* 0
         *fc-extra-packages* '()
-        *fc-basic-line-spacing* 4
+        *fc-prog-line-spacing* 1
+        *fc-text-line-spacing* 4
+        *fc-basic-line-spacing* 0
         *fc-reading-fill* 50
         *fc-reading-scale* 1.2)
 
@@ -23,7 +25,9 @@
       (home . "mac-addr"))))
 
 (defun fc-user-org-config ()
-  (fc-org-agenda-customize :project '("fconfig")))
+  (setq org-tags-column -66
+        org-agenda-tags-column -66)
+  (fc-org-agenda-customize :project '("fconfig" "study" "book")))
 
 (setenv "FCHOME" "${FCHOME}")
 

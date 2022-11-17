@@ -832,6 +832,16 @@ CONTENT: content of new footnote."
     (goto-char (point-max))
     (insert (format "\n[fn:%s] %s\n" label content))))
 
+(defun fc--org-insert-portal ()
+  (fc-user-select-func
+   "Org insert"
+   `(
+     ("clock in" . org-clock-in)
+     ("clock out" . org-clock-out)
+     ("deadline"  . org-deadline)
+     ("schedule" . org-schedule)
+     )))
+
 (defconst *fc-org-map*
   (fc-make-keymap
    `(
@@ -883,6 +893,7 @@ CONTENT: content of new footnote."
      ("i G" ,(fc-manual (fc-funcall #'org-footnote-new) (insert " ")))
      ("i N" ,(fc-manual (fc-org-add-block "NOTE")))
      ("i T" fc--org-insert-title)
+     ("i SPC" fc--org-insert-portal)
 
      ("l" org-insert-link)
      ("m" ,(fc-cond-key :normal #'org-mark-element

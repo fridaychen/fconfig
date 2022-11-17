@@ -13,6 +13,8 @@
 
 (defvar *fc-column-limit* 80)
 (defvar *fc-basic-line-spacing* 0)
+(defvar *fc-prog-line-spacing* 1)
+(defvar *fc-text-line-spacing* 4)
 
 (setf mouse-autoselect-window nil
       make-pointer-invisible t)
@@ -38,12 +40,23 @@
 (defun fc--set-visual-line-mode ()
   (visual-line-mode (if (fc-detect-buf-has-wide-char) -1 1)))
 
+(defun fc--setup-line-spacing ()
+  (setf line-spacing
+        (cond
+         ((derived-mode-p 'prog-mode)
+          *fc-prog-line-spacing*)
+
+         ((derived-mode-p 'text-mode)
+          *fc-text-line-spacing*)
+
+         (t
+          *fc-basic-line-spacing*))))
+
 (fc-add-hook 'find-file-hook
   (when (member major-mode *fc-doc-modes*)
     (fc--set-visual-line-mode))
 
-  ;; setup default line-space
-  (setf line-spacing *fc-basic-line-spacing*)
+  (fc--setup-line-spacing)
   ;; hightlight ending whitespace
   (highlight-regexp "[ \t]+$" 'whitespace-trailing))
 

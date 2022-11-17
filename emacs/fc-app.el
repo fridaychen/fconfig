@@ -1063,12 +1063,16 @@ REST: commands."
 
 (defun fc-config-line-space ()
   "Setup line space for all file buffers."
-  (setf *fc-basic-line-spacing* (read-number
-                                 "New line space"
-                                 *fc-basic-line-spacing*))
-  (fc-with-each-buffer
-   (unless fc-viewer-minor-mode
-     (setf line-spacing *fc-basic-line-spacing*))))
+  (let* ((text-line-spacing (read-number "New text line space" *fc-text-line-spacing*))
+         (prog-line-spacing (read-number "New prog line space" *fc-prog-line-spacing*))
+         (basic-line-spacing (read-number "New basic line space" *fc-basic-line-spacing*)))
+    (setf *fc-basic-line-spacing* basic-line-spacing
+          *fc-prog-line-spacing* prog-line-spacing
+          *fc-text-line-spacing* text-line-spacing)
+
+    (fc-with-each-buffer
+     (unless fc-viewer-minor-mode
+       (fc--setup-line-spacing)))))
 
 (defconst *fc-app-font-size-map*
   (fc-make-keymap

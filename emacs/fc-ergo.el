@@ -602,6 +602,9 @@ ARG: paragraphs"
    ((eq major-mode 'diff-mode)
     (diff-restrict-view t))
 
+   ((eq major-mode 'org-mode)
+    (org-narrow-to-subtree))
+
    (t
     (mark-paragraph arg)
     (narrow-to-region (region-beginning) (region-end))

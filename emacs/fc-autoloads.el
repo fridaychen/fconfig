@@ -90,6 +90,7 @@
 
 ;; extra
 (autoload #'2048-game "fc-extra")
+(autoload #'speed-type-text "fc-extra")
 
 ;; yas
 (autoload #'yas-expand "yasnippet")

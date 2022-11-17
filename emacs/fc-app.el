@@ -835,8 +835,8 @@ ARGS: the message of git commit."
 ;; multiple buffers functions
 (cl-defun fc--run-multi-buffer (dir func)
   "Do run func on multi buffers which under dir.
-  DIR: root dir.
-  FUNC: function to be run."
+DIR: root dir.
+FUNC: function to be run."
   (setf dir (concat (expand-file-name dir)
                     (if (string-suffix-p "/" dir) "" "/")))
 
@@ -846,8 +846,8 @@ ARGS: the message of git commit."
 
 (cl-defmacro fc-run-multi-buffer (operation &rest rest)
   "Exec operation over multi buffers.
-  OPERATION: target operation.
-  REST: commands."
+OPERATION: target operation.
+REST: commands."
   (declare (indent 1))
   `(lambda ()
      (interactive)
@@ -1112,6 +1112,7 @@ ARGS: the message of git commit."
      ("insert signature"        . fc-insert-signature)
      ("load latest desktop"	. ,(fc-manual (fc-load-desktop)))
      ("new snippet"             . fc-app-create-snippet)
+     ("practice typing"         . speed-type-text)
      ("string2hex"              . fc-c-string2hex)
      ("tabify"                  . ,(fc-manual (tabify (point-min)
                                                       (point-max))))

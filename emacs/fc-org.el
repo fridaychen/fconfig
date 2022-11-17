@@ -896,6 +896,9 @@ CONTENT: content of new footnote."
      ("v T" org-tags-view)
      ("y" ,(fc-cond-key :normal 'fc--org-sparse-tree
                         :region 'fc--org-occur))
+     ("x c" org-cut-subtree)
+     ("x o" org-copy-subtree)
+     ("x p" org-paste-subtree)
      ("A" org-archive-subtree)
      ("B" org-roam-buffer-toggle)
      ("C i" org-clock-in)

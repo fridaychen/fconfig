@@ -9,8 +9,7 @@
   :after
   (progn
     (advice-add #'2048-init :after #'(lambda () (text-scale-set 3)))
-    (add-to-list '*fc-modal-exclude-modes*
-                 '2048-mode))
+    (fc-modal-exclude-mode '2048-mode))
   :bind '((2048-mode-map
            ("i" 2048-up)
            ("j" 2048-left)
@@ -19,16 +18,15 @@
 
 (fc-load 'tetris
   :local t
-  (progn
-    (add-to-list '*fc-modal-exclude-modes*
-                 'tetris-mode))
+  :after (fc-modal-exclude-mode 'tetris-mode)
   :bind '((tetris-mode-map
            ("i" tetris-rotate-prev)
            ("j" tetris-move-left)
            ("k" tetris-move-down)
            ("l" tetris-move-right))))
 
-(fc-load 'speed-type)
+(fc-load 'speed-type
+  :after (fc-modal-exclude-mode 'speed-type-mode))
 
 (defvar *fc-enable-snails* nil)
 

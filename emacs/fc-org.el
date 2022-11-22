@@ -56,6 +56,10 @@
 
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
+  (fc-set-face-attribute 'org-block nil
+                         :family
+                         (fc-get-face-attribute 'default :family))
+
   (if (not (fc-get-face-attribute 'org-level-1 :overline))
       (cond
        ((fc-dark-theme-p)
@@ -182,6 +186,10 @@
 
       (org-superstar-mode 1)
       (org-link-beautify-mode -1)
+
+      (when *fc-reading-face*
+        (setf buffer-face-mode-face *fc-reading-face*)
+        (buffer-face-mode 1))
 
       (unless (fc--org-capture-p)
         (fc--org-hide-all)

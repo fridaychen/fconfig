@@ -93,6 +93,7 @@
 
   :after (progn
            (fc-add-to-hook '*fc-tomato-rest-hook*
+                           #'fc--org-clock-out
                            (lambda ()
                              (fc-speak "take a break")
                              (fc-popup-info "Take a break !"
@@ -104,6 +105,7 @@
                                (fc-speak "tomato started")))
 
            (fc-add-to-hook '*fc-tomato-done-hook*
+                           #'fc--org-clock-out
                            #'fc-job-done
                            (lambda ()
                              (fc-speak "tomato done")

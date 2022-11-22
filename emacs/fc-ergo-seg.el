@@ -50,7 +50,7 @@
 
 (defun fc--tomato-modeline ()
   "Returns the tomate status."
-  (when (fc--wide-window-p)
+  (when (and (fc--wide-window-p) (fc--right-bottom-window-p))
     *fc-tomato-bar*))
 
 (add-to-list 'global-mode-string '(t (:eval (fc--tomato-modeline))))

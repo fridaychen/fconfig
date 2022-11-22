@@ -54,6 +54,11 @@
             'org-superstar
             'valign)
 
+(cl-defun fc--org-clock-out ()
+  "Clock out current task."
+  (when org-clock-current-task
+    (org-clock-out)))
+
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
   (fc-set-face-attribute 'org-block nil
@@ -164,6 +169,10 @@
     (require 'ox-publish)
 
     (require 'fc-org-ext)
+
+    (require 'org-clock)
+
+    (setf org-clock-clocked-in-display 'frame-title)
 
     (add-to-list 'org-babel-default-header-args:plantuml
                  (cons :java "-Djava.awt.headless=true"))
@@ -702,20 +711,20 @@ BODY: usually a pcase block."
   (fc--org-smart-action nil
     (pcase elt
       (:src-block (re-search-backward "^ *#\\+BEGIN"))
-      (_ (message "context: %s" context)))))
+      (_ (message "elt: %s" elt)))))
 
 (defun fc--org-end ()
   "Goto the end of the current block."
   (fc--org-smart-action nil
     (pcase elt
       (:src-block (re-search-forward "^ *#\\+END"))
-      (_ (message "context: %s" context)))))
+      (_ (message "elt: %s" elt)))))
 
 (defun fc--org-toggle-hideshow ()
   "Toggle hideshow by org context."
   (fc--org-smart-action nil
     (pcase elt
-      (:src-block
+      ((or :src-block :quote-block)
        (save-excursion
          (unless (org-at-block-p)
            (re-search-backward "^ *#\\+BEGIN"))
@@ -734,7 +743,7 @@ BODY: usually a pcase block."
   (fc--org-smart-action nil
     (pcase elt
       (:table (kill-new (fc--org-current-cell)))
-      (_ (message "context: %s" context)))))
+      (_ (message "elt: %s" elt)))))
 
 (defun fc-org-mode-mouse-func (_event)
   "Handle mouse event."
@@ -913,11 +922,12 @@ CONTENT: content of new footnote."
      ("u" fc--org-do)
      ("v t" ,(fc-manual (org-tags-view t)))
      ("v T" org-tags-view)
-     ("y" ,(fc-cond-key :normal 'fc--org-sparse-tree
-                        :region 'fc--org-occur))
      ("x c" org-cut-subtree)
      ("x o" org-copy-subtree)
      ("x p" org-paste-subtree)
+     ("y" ,(fc-cond-key :normal 'fc--org-sparse-tree
+                        :region 'fc--org-occur))
+     ("z" org-pomodoro)
      ("A" org-archive-subtree)
      ("B" org-roam-buffer-toggle)
      ("C i" org-clock-in)
@@ -941,13 +951,17 @@ CONTENT: content of new footnote."
   (fc-make-keymap
    `(
      ("c" org-agenda-columns)
+     ("j" org-agenda-clock-goto)
      ("m" org-agenda-month-view)
-     ("t" org-agenda-todo)
+     ("t" org-agenda-goto-today)
+     ("v" ,(fc-manual (org-agenda-clock-in)
+                      (fc-tomato-start)))
      ("w" org-agenda-week-view)
+     ("T" org-agenda-todo)
      )
    "fc-org-agenda-map"
    *fc-org-map*)
-  "KEYS c: columns  m: month  t: todo  w: week.")
+  "KEYS c: columns  m: month  t: today  v: tomato  w: week  T: todo.")
 
 (cl-defun fc-org-agenda-mode-func ()
   "FC org-agenda-mode func."
@@ -985,7 +999,7 @@ TEMPLATES: fconfig templates."
         org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "|" "DONE(d!/!)" "CANCELLED(c!/!)" "DELEGATED(D!/!)" )
                             (sequence "REMIND(r)" "|" "DONE")
                             (sequence "SOMEDAY(s)" "TODO" "|")
-                            (type "WAITING" "|"))
+                            (type "WAITING" "|" "DONE"))
         org-use-fast-todo-selection 'export
         org-confirm-babel-evaluate #'fc--org-confirm-babel-evaluate
         org-agenda-block-separator "───────────────────────────────────────────")
@@ -1073,6 +1087,13 @@ LANG: language of babel."
 (cl-defun fc--org-publish (&optional (output-dir (fc--org-get-property "publish"))
                                      (base-dir default-directory))
   (unless output-dir
+    (when-let  ((not-index (not
+                            (s-suffix-p "/index.org" buffer-file-name)))
+                (index-buf (get-file-buffer (format "%s/index.org"
+                                                    default-directory))))
+      (with-current-buffer index-buf
+        (fc--org-publish)))
+
     (message "Cannot find publish directory")
     (cl-return-from fc--org-publish))
 

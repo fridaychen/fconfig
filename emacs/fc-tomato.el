@@ -44,12 +44,10 @@
 
   (setq  *fc-tomato-cycle* (cons (* 60 work-time) (* 60 rest-time))))
 
-(cl-defun fc-tomato ()
+(cl-defun fc-tomato-start ()
+  "Start tomato timer."
   (when *fc--tomato-timer*
-    (cancel-timer *fc--tomato-timer*)
-    (setf *fc--tomato-timer* nil
-          *fc-tomato-bar* nil)
-    (cl-return-from fc-tomato))
+    (cl-return-from fc-tomato-start))
 
   (setf *fc--tomato-phases*
         (list (cons (/ (car *fc-tomato-cycle*) (length *fc--tomato-work-steps*))
@@ -61,11 +59,28 @@
 
   (fc--tomato-next-phase))
 
-(cl-defun fc--tomato-next-phase ()
+(cl-defun fc-tomato ()
+  "Toggle tomato timer."
+  (when *fc--tomato-timer*
+    (run-hooks '*fc-tomato-done-hook*)
+
+    (cancel-timer *fc--tomato-timer*)
+    (setf *fc--tomato-timer* nil
+          *fc-tomato-bar* nil)
+    (cl-return-from fc-tomato))
+
+  (fc-tomato-start))
+
+(cl-defun fc--tomato-run-hook ()
+  "Run tomato hook."
   (run-hooks (pcase (length *fc--tomato-phases*)
                (2 '*fc-tomato-start-hook*)
                (1 '*fc-tomato-rest-hook*)
-               (0 '*fc-tomato-done-hook*)))
+               (0 '*fc-tomato-done-hook*))))
+
+(cl-defun fc--tomato-next-phase ()
+  "Goto next phase."
+  (fc--tomato-run-hook)
 
   (when *fc--tomato-timer*
     (cancel-timer *fc--tomato-timer*)
@@ -84,7 +99,8 @@
   (when *fc--tomato-steps*
     (setq *fc-tomato-bar* (fc-text
                            (concat " " (caar *fc--tomato-steps*) " ")
-                           :face `(:foreground ,(cdar *fc--tomato-steps*)))
+                           :face `(:foreground ,(cdar *fc--tomato-steps*))
+                           :tip '(fc-string org-clock-current-task))
           *fc--tomato-steps* (cdr *fc--tomato-steps*))
     (force-mode-line-update)))
 

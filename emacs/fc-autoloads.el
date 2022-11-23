@@ -67,6 +67,7 @@
 (autoload #'fc-has-battery "fc-util")
 
 ;; viewer
+(defvar *fc-reading-face* nil)
 (defvar-local fc-viewer-minor-mode nil)
 (autoload #'fc-viewer-toggle "fc-viewer")
 (autoload #'fc-viewer-list-buffer "fc-viewer")
@@ -116,6 +117,10 @@
 
 ;; modeline
 (autoload #'fc-modeline-mode "fc-modeline")
+
+;; book
+(autoload #'fc--book-p "fc-book")
+(autoload #'fc--book-setup "fc-book")
 
 (provide 'fc-autoload)
 

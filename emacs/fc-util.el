@@ -331,14 +331,18 @@ VOLUME: volume."
                             (seq-random-elt (alist-get sound *fc-sounds*)))))
       (fc-play-sound-file filename volume))))
 
-(defun fc-job-done (&rest rest)
+(cl-defun fc-job-done (&key (voice "job done") msg)
   "Notify user the job is done.
-REST: message."
+VOICE: voice message
+MSG: text message."
   (cond
    ((or *is-linux* *is-mac*)
-    (apply #'fc-speak rest))
+    (fc-speak voice))
    (t
-    (fc-play-sound 'sweep 50))))
+    (fc-play-sound 'sweep 50)))
+
+  (when msg
+    (fc-popup-info msg :title "Job")))
 
 ;; assocate list tree
 (cl-defun atree-get (alist &rest keys)
@@ -659,7 +663,7 @@ REST: text to be speak."
       (process-send-eof proc)))
 
    (*is-mac*
-    (osx-lib-say rest))))
+    (apply #'osx-lib-say rest))))
 
 ;; face
 (defun fc-get-face-attribute (face attr)
@@ -740,6 +744,15 @@ FORM: test form."
        (unless (char-displayable-p (aref o i))
          (cl-return-from fc-visible default)))
      o)))
+
+(cl-defun fc-call-mode-func (suffix default &rest args)
+  (let* ((fsym (intern (format "fc--%s-%s"
+                               (s-chop-suffix "-mode"
+                                              (fc-string major-mode))
+                               suffix)))
+         (f (if (fboundp fsym) fsym default)))
+    (when f
+      (apply f args))))
 
 (provide 'fc-util)
 

@@ -21,7 +21,7 @@
    *fc-func-mode-map*)
   "KEYS E: org edit exit  F: format.")
 
-(cl-defun fc-python-mode-func ()
+(cl-defun fc--python-mode-func ()
   (fc-modal-head-key "Python" '*fc-python-map*))
 
 (provide 'fc-python)

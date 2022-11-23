@@ -38,6 +38,8 @@
     "“[^”]*\n+[^”]*”"
     "^[^\\#*\n].*[^”。！？：…}）〗】※*—～]\n$"))
 
+(defvar *fc-book-scale* 2)
+
 (defun fc--book-replace (pairs)
   "Batch strings replacing.
 PAIRS: replacement list."
@@ -58,6 +60,20 @@ PAIRS: replacement list."
     (save-excursion (fc--book-replace *fc-book-chinese-table*))
     (save-excursion (fc--remove-empty-line))
     (save-excursion (whitespace-cleanup))))
+
+(defun fc--book-p ()
+  "Return t if this file is book."
+  (and
+   (> (buffer-size) 32768)
+   (when-let ((meta (fc-call-mode-func "book-info" nil)))
+     (and
+      (plist-get meta :title)
+      (plist-get meta :author)
+      (plist-get meta :date)))))
+
+(defun fc--book-setup ()
+  (when (fc--book-p)
+    (text-scale-set *fc-book-scale*)))
 
 (defun fc--toc-replace-regexp (regex to-string)
   "Rexexp replacing in TOC.
@@ -299,7 +315,7 @@ LEVEL: chapter level."
     (fc--toc-replace-regexp
      "^ *\\([第章]\\) *\\([0-9零一二三四五六七八九十两百千]\\{1,8\\}\\) *\\([章节回幕]\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
      (concat "\n"
-             (apply (intern (format "fc--%s-chapter-mark" major-mode)) (list level))
+             (fc-call-mode-func "chapter-mark" nil level)
              " \\1\\2\\3 \\4"))))
 
 (cl-defun fc-book-mark-section (level)
@@ -311,7 +327,7 @@ LEVEL: chapter level."
     (fc--toc-replace-regexp
      "^\\(第\\{0,1\\}\\)\\([0-9零一二三四五六七八九十]\\{1,4\\}\\)\\(节\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
      (concat "\n"
-             (apply (intern (format "fc--%s-chapter-mark" major-mode)) (list level))
+             (fc-call-mode-func "chapter-mark" nil level)
              " \\1\\2\\3 \\4"))))
 
 (defconst *fc-book-func-list*

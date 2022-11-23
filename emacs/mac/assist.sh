@@ -78,6 +78,10 @@ function upgrade {
     brew cleanup
 }
 
+function pmsleep {
+    pmset sleepnow
+}
+
 case $1 in
     --dim)
         dim
@@ -101,6 +105,10 @@ case $1 in
 
     --gateway)
         gateway
+        ;;
+
+    --pmsleep)
+        pmsleep
         ;;
 
     --upgrade)

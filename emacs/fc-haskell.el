@@ -14,7 +14,7 @@
    *fc-func-mode-map*)
   "E: org edit exit.")
 
-(defun fc-haskell-mode-func ()
+(defun fc--haskell-mode-func ()
   (fc-modal-head-key "Haskell" '*fc-haskell-map*))
 
 (fc-load 'haskell-mode

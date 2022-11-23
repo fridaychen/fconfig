@@ -94,11 +94,11 @@
   :after (progn
            (fc-add-to-hook '*fc-tomato-rest-hook*
                            #'fc--org-clock-out
-                           (lambda ()
-                             (fc-speak "take a break")
-                             (fc-popup-info "Take a break !"
-                                            :title "Tomato"
-                                            :timeout 3)))
+                           #'(lambda ()
+                               (fc-speak "take a break")
+                               (fc-popup-info "Take a break !"
+                                              :title "Tomato"
+                                              :timeout 3)))
 
            (fc-add-to-hook '*fc-tomato-start-hook*
                            #'(lambda ()
@@ -106,11 +106,9 @@
 
            (fc-add-to-hook '*fc-tomato-done-hook*
                            #'fc--org-clock-out
-                           #'fc-job-done
-                           (lambda ()
-                             (fc-speak "tomato done")
-                             (fc-popup-info "Circle done !"
-                                            :title "Tomato")))
+                           #'(lambda ()
+                               (fc-job-done :voice "tomato done"
+                                            :msg "Tomato circle done!")))
 
            (when *fc-enable-screen-saver*
              (add-hook '*fc-tomato-start-hook*

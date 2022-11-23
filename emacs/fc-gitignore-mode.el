@@ -42,7 +42,7 @@
    *fc-func-mode-map*)
   "KEYS e: exclude subdir.")
 
-(defun fc-fgitignore-mode-func ()
+(defun fc--fgitignore-mode-func ()
   "Mode func."
   (fc-modal-head-key "Fgitignore" '*fc-gitignore-map*))
 

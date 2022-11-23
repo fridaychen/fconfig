@@ -159,7 +159,7 @@ END: end point."
    *fc-punctuation-map*)
   "KEYS c: chapter  e: emphasize  s: section  x: reading  v: zh verse  SPC: portal.")
 
-(defun fc-latex-mode-func ()
+(defun fc--latex-mode-func ()
   "Run latex mode func."
   (fc-modal-head-key "Latex" '*fc-latex-map*))
 

@@ -183,7 +183,7 @@
        *fc-func-mode-map*)
       "KEYS d: delete file  h: refine  o: open source.")
 
-    (defun fc-diff-mode-func ()
+    (defun fc--diff-mode-func ()
       "Mode func."
       (fc-modal-head-key "Diff" '*fc-diff-map*))))
 

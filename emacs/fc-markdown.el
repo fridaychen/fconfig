@@ -8,11 +8,16 @@
 
 (defvar-local *fc-md-scale* 1.2)
 
+(defun fc--markdown-book-info ()
+  (list :title (fc-search "title: \\(.+\\)" :begin t :sub 1 :bound 128)
+        :author (fc-search "author: \\(.+\\)" :begin t :sub 1 :bound 128)
+        :date (fc-search "date: \\(.+\\)" :begin t :sub 1 :bound 128)))
+
 (fc-load 'markdown-mode
   :after
   (progn
     (setf markdown-hr-strings
-          '("---"))
+          '("-----"))
 
     (defun fc--setup-markdown-mode ()
       (when *is-gui*
@@ -41,6 +46,7 @@
         (fc-modal-visual-feedback)))
 
     (add-hook '*fc-viewer-hook* #'fc--md-toggle-viewer)
+    (add-hook 'markdown-mode-hook #'fc--book-setup)
     (add-hook 'markdown-mode-hook #'fc--setup-markdown-mode)))
 
 (fc-load 'markdown-changelog)
@@ -75,7 +81,7 @@ LANG: language."
           "\n"
           "---\n"))
 
-(defun fc--markdown-mode-chapter-mark (level)
+(defun fc--markdown-chapter-mark (level)
   (s-repeat level "#"))
 
 (defun fc-md-chapter-zh-to-number ()
@@ -171,7 +177,7 @@ REGEX: regex."
     (fc-replace-regexp "^#\\([^\n]+\\)\n+\\([^#\n]\\)"
                        "#\\1\n\n\\2" :from-start t)))
 
-(cl-defun fc-markdown-mode-whitespace-cleanup ()
+(cl-defun fc--markdown-whitespace-cleanup ()
   "Clean whitespace."
   (save-excursion
     (fc-replace-regexp "\\([^ ]\\) $" "\\1" :from-start t)))
@@ -330,7 +336,7 @@ END: end point."
    *fc-func-mode-map*)
   "KEYS  a: apply style  b: footnote  l: make list  q: quote  t: search verse  v: add verse  u: do  SPC: portal.")
 
-(defun fc-markdown-mode-func ()
+(defun fc--markdown-mode-func ()
   "Run markdown mode func."
   (fc-modal-head-key "Markdown" '*fc-md-map*))
 

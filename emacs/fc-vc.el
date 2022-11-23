@@ -27,7 +27,7 @@
                  ;; disable vc backends, because of performance problem
                  vc-handled-backends '(Git))
 
-           (defun fc-vc-git-log-view-mode-func ()
+           (defun fc--vc-git-log-view-mode-func ()
              "Mode func."
              (fc-modal-head-key "Git Log" 'vc-git-log-view-mode-map))))
 

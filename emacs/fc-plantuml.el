@@ -19,7 +19,7 @@
    *fc-func-mode-map*)
   "KEYS c: preview  D: update jar  E: org edit exit.")
 
-(cl-defun fc-plantuml-mode-func ()
+(cl-defun fc--plantuml-mode-func ()
   (fc-modal-head-key "Plant-uml" '*fc-plant-uml-map*))
 
 (fc-load 'plantuml-mode

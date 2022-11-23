@@ -33,11 +33,11 @@
    *fc-func-mode-map*)
   "KEYS h c: insert c headers  h u: insert unix headers  i d: insert do  i f: insert func  i i: insert if  i w: insert switch  i w: insert while  C: clang-format off  E: org exit edit.")
 
-(defun fc-c-mode-func ()
+(defun fc--c-mode-func ()
   "Mode func."
   (fc-modal-head-key "C" '*fc-c-map*))
 
-(defun fc-c++-mode-func ()
+(defun fc--c++-mode-func ()
   "Mode func."
   (fc-modal-head-key "CC" '*fc-c-map*))
 

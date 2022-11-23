@@ -44,7 +44,7 @@
               ";; End:\n\n"
               ";;; " fname " ends here\n"))))
 
-(defun fc-emacs-lisp-mode-func ()
+(defun fc--emacs-lisp-mode-func ()
   "Mode func."
   (fc-modal-head-key "Elisp" '*fc-emacs-lisp-map*))
 

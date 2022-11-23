@@ -8,7 +8,6 @@
 (defvar-local *fc-reading-line-spacing* 10)
 (defconst *fc-reading-title-limit* 22)
 (defvar-local *fc-bak-line-spacing* nil)
-(defvar *fc-reading-face* nil)
 (defvar *fc-viewer-hook* nil "After viewer mode toggled hook.")
 
 (defvar *fc-viewer-keymap*

@@ -1296,6 +1296,7 @@ STEP: pixels."
      ("r" ,(fc-manual (when (fc-user-confirm "Restart Emacs")
                         (fc-save-desktop)
                         (restart-emacs))))
+     ("s" ,(fc-manual (fc-assist-cmd "--pmsleep")))
      ("t" ,(fc-manual (fc-user-select-func
                        "Select theme style"
                        `(("dark"  . (lambda () (fc-theme-auto-select *fc-dark-theme*)))
@@ -1324,7 +1325,7 @@ STEP: pixels."
                        (alist-get *fc-theme-mode* *fc--work-deep-themes*))))
      )
    "ergo-prefix-quick-map")
-  "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: select theme  w: work theme  z: suspend  T: deep work theme.")
+  "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  s: sleep  t: select theme  w: work theme  z: suspend  T: deep work theme.")
 
 (defun fc-vc-portal ()
   "Run vc portal."
@@ -1377,9 +1378,7 @@ STEP: pixels."
 (defun fc-mode-func-key ()
   "Run function base on mode."
   (interactive)
-  (let ((f (intern (format "fc-%s-func"
-                           (symbol-name major-mode)))))
-    (fc-funcall f :default 'fc-common-mode-func)))
+  (fc-call-mode-func "mode-func" #'fc-common-mode-func))
 
 (defun fc-jump-word-in-line ()
   "Jump to a word in current line."

@@ -59,6 +59,13 @@
   (when org-clock-current-task
     (org-clock-out)))
 
+(defun fc--org-book-info()
+  "Return org book meta info."
+  (list
+   :title (plist-get (org-export-get-environment) :title)
+   :author (plist-get (org-export-get-environment) :author)
+   :date (plist-get (org-export-get-environment) :date)))
+
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
   (fc-set-face-attribute 'org-block nil
@@ -261,6 +268,8 @@
     (add-hook 'org-capture-after-finalize-hook #'fc-modal-enable)
 
     (add-hook 'org-babel-after-execute-hook #'org-redisplay-inline-images)
+
+    (add-hook 'org-mode-hook #'fc--book-setup)
     (add-hook 'org-mode-hook #'fc--setup-org-mode)
     (add-hook 'org-mode-hook #'valign-mode)
 
@@ -853,8 +862,6 @@ CONTENT: content of new footnote."
   (fc-user-select-func
    "Org insert"
    `(
-     ("clock in" . org-clock-in)
-     ("clock out" . org-clock-out)
      ("deadline"  . org-deadline)
      ("schedule" . org-schedule)
      )))
@@ -927,11 +934,8 @@ CONTENT: content of new footnote."
      ("x p" org-paste-subtree)
      ("y" ,(fc-cond-key :normal 'fc--org-sparse-tree
                         :region 'fc--org-occur))
-     ("z" org-pomodoro)
      ("A" org-archive-subtree)
      ("B" org-roam-buffer-toggle)
-     ("C i" org-clock-in)
-     ("C o" org-clock-out)
      ("D" org-deadline)
      ("L" org-todo-list)
      ("S" org-schedule)
@@ -943,7 +947,7 @@ CONTENT: content of new footnote."
    *fc-func-mode-map*)
   "KEYS b: emphasize  c: C-c C-c  d: de/en-crypt  i c: clip link  i d: drawer  i f: formula  i n: roam node  i q: quote  i t: timestamp  i u: uml  i N: note  i T: insert title  l: link  m: mark element  o: open  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  B: backlink  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
-(cl-defun fc-org-mode-func ()
+(cl-defun fc--org-mode-func ()
   "Mode func."
   (fc-modal-head-key "Org" '*fc-org-map*))
 
@@ -954,7 +958,7 @@ CONTENT: content of new footnote."
      ("j" org-agenda-clock-goto)
      ("m" org-agenda-month-view)
      ("t" org-agenda-goto-today)
-     ("v" ,(fc-manual (org-agenda-clock-in)
+     ("v" ,(fc-manual (fc-funcall #'org-agenda-clock-in)
                       (fc-tomato-start)))
      ("w" org-agenda-week-view)
      ("T" org-agenda-todo)
@@ -963,7 +967,7 @@ CONTENT: content of new footnote."
    *fc-org-map*)
   "KEYS c: columns  m: month  t: today  v: tomato  w: week  T: todo.")
 
-(cl-defun fc-org-agenda-mode-func ()
+(cl-defun fc--org-agenda-mode-func ()
   "FC org-agenda-mode func."
   (fc-modal-head-key "Org Agenda" '*fc-org-agenda-map*))
 
@@ -1075,7 +1079,7 @@ LANG: language of babel."
 
     (org-roam-db-autosync-mode)))
 
-(defun fc--org-mode-chapter-mark (level)
+(defun fc--org-chapter-mark (level)
   (s-repeat level "*"))
 
 (defun fc--org-run-src-block (name)

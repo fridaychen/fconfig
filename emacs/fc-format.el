@@ -22,12 +22,8 @@
 
 (cl-defun fc--default-fmt ()
   "Default file formatter, clean extra space and emtry line."
-  (let ((f (intern (format "fc-%s-whitespace-cleanup"
-                           (symbol-name major-mode))))
-        (g (intern (format "fc-%s-remove-empty-line"
-                           (symbol-name major-mode)))))
-    (fc-funcall f :default 'whitespace-cleanup)
-    (fc-funcall g :default 'fc--remove-empty-line)))
+  (fc-call-mode-func "whitespace-cleanup" #'whitespace-cleanup)
+  (fc-call-mode-func "remove-empty-line" #'fc--remove-empty-line))
 
 (cl-defun fc--default-fmt-with-indent ()
   (fc--default-fmt)

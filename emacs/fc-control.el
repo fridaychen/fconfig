@@ -10,6 +10,7 @@
 (cl-defun fc-mouse-turn-page (event)
   "Turning page.
 EVENT: mouse evnet."
+  (message "hello")
   (let* ((posn (elt event 1))
          (start (fc-point-to-line (window-start)))
          (end (fc-point-to-line (window-end)))
@@ -31,14 +32,9 @@ EVENT: mouse event."
 
     ('touch
      (message "touch mode")
-     (let ((f (intern (format "fc-%s-mouse-func"
-                              (symbol-name major-mode)))))
-       (when (and
-              (fboundp f)
-              (apply f (list event)))
-         (cl-return-from fc-mouse-func))
-
-       (fc-mouse-turn-page event)))))
+     (fc-call-mode-func "mouse-func"
+                        (lambda (evt) (fc-mouse-turn-page evt))
+                        event))))
 
 (defun fc-user-select-control-mode ()
   "Allow user to select control mode."
@@ -46,7 +42,7 @@ EVENT: mouse event."
                               *fc-control-modes*
                               :mouse t)))
     (when mode
-      (setf *fc-control-mode* (intern mode)))))
+      (setf *fc-control-mode* mode))))
 
 (provide 'fc-control)
 

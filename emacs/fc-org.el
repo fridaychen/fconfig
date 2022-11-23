@@ -754,7 +754,7 @@ BODY: usually a pcase block."
       (:table (kill-new (fc--org-current-cell)))
       (_ (message "elt: %s" elt)))))
 
-(defun fc-org-mode-mouse-func (_event)
+(defun fc--org-mouse-func (_event)
   "Handle mouse event."
   (fc--org-do))
 

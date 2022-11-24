@@ -5,7 +5,7 @@ function fargs {
 
     [[ ! ${cmd} == "*{}*" ]] && cmd="${cmd} {}"
 
-    xargs --no-run-if-empty \
+    $XARGS --no-run-if-empty \
         -d "\n" \
         -I {} \
         -o ${cmd}
@@ -26,7 +26,7 @@ function fzf-run {
     [[ ! ${cmd} == "*{}*" ]] && cmd="${cmd} {}"
 
     fzf --ansi |
-        xargs --no-run-if-empty \
+        $XARGS --no-run-if-empty \
             -d "\n" \
             -I {} \
             -o ${cmd}

@@ -61,3 +61,13 @@ function fc-locate-file-in-path {
         dir=$(dirname "${dir}")
     done
 }
+
+function fc-pm-sleep {
+    case $(uname) in
+        Darwin)
+            pmset sleepnow
+            ;;
+        Linux) ;;
+
+    esac
+}

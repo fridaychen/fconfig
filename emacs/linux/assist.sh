@@ -50,6 +50,10 @@ function upgrade {
     sudo apt upgrade
 }
 
+function pmsleep {
+    systemctl suspend -i
+}
+
 case $1 in
     --dim)
         dim
@@ -73,6 +77,10 @@ case $1 in
 
     --gateway)
         gateway
+        ;;
+
+    --pmsleep)
+        pmsleep
         ;;
 
     --upgrade)

@@ -265,6 +265,10 @@ FUNC: new function."
              (when r
                (cl-return r)))))
 
+(defun fc-main-thread-p ()
+  "Return t if current thread is main thread."
+  (eq (current-thread) main-thread))
+
 (provide 'fc-facility)
 
 ;; Local Variables:

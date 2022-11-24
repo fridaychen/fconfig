@@ -67,7 +67,8 @@ function fc-pm-sleep {
         Darwin)
             pmset sleepnow
             ;;
-        Linux) ;;
-
+        Linux)
+            systemctl suspend -i
+            ;;
     esac
 }

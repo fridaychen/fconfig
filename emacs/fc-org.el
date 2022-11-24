@@ -1096,7 +1096,9 @@ LANG: language of babel."
                 (index-buf (get-file-buffer (format "%s/index.org"
                                                     default-directory))))
       (with-current-buffer index-buf
-        (fc--org-publish)))
+        (fc--org-publish))
+
+      (cl-return-from fc--org-publish))
 
     (message "Cannot find publish directory")
     (cl-return-from fc--org-publish))

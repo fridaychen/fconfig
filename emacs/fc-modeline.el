@@ -151,7 +151,8 @@
 
 (defun fc--vc-seg ()
   "VC state segment."
-  (when vc-mode
+  (when (and (fc-main-thread-p)
+             vc-mode)
     (let ((color (pcase (vc-state buffer-file-name)
                    ('edited "#cf6a4c")
                    ((or 'needs-merge 'conflict) "#ff0066"))))

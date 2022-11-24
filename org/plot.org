@@ -1,4 +1,6 @@
-#+PROPERTY: AUTOINGEST TRUE
+:PROPERTIES:
+:AUTOINGEST: TRUE
+:END:
 #+startup: inlineimages
 
 * Draw functions/datafile by Gnuplot

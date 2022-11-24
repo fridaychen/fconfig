@@ -203,7 +203,8 @@
       (org-superstar-mode 1)
       (org-link-beautify-mode -1)
 
-      (when *fc-reading-face*
+      (when-let* ((face *fc-reading-face*)
+                  (force-mono (not (fc-bool (fc--org-get-file-property "MONO-FONT")))))
         (setf buffer-face-mode-face *fc-reading-face*)
         (buffer-face-mode 1))
 
@@ -254,10 +255,19 @@
                          props)))
         (string-join (cdr (split-string pair)) " ")))
 
-    (cl-defun fc--auto-ingest ()
+    (cl-defun fc--org-get-property (name)
+      (cdr (assoc name (org-entry-properties))))
+
+    (cl-defun fc--org-get-file-property (name)
+      (save-excursion
+        (save-restriction
+          (widen)
+          (goto-char (point-min))
+          (fc--org-get-property name))))
+
+    (cl-defun fc--org-auto-ingest ()
       (when-let* ((correct-mode (eq major-mode 'org-mode))
-                  (value (fc--org-get-property "AUTOINGEST"))
-                  (flag (string-equal "true" (downcase value))))
+                  (flag (fc-bool (fc--org-get-file-property "AUTOINGEST"))))
         (org-babel-lob-ingest buffer-file-name)))
 
     (add-hook 'org-capture-mode-hook #'fc--capture-edit)
@@ -273,7 +283,7 @@
     (add-hook 'org-mode-hook #'fc--setup-org-mode)
     (add-hook 'org-mode-hook #'valign-mode)
 
-    (add-hook 'after-save-hook #'fc--auto-ingest)
+    (add-hook 'after-save-hook #'fc--org-auto-ingest)
     (add-hook 'after-save-hook #'check-parens nil t)))
 
 (cl-defun fc--org-insert-title ()
@@ -923,7 +933,9 @@ CONTENT: content of new footnote."
      ("m" ,(fc-cond-key :normal #'org-mark-element
                         :region #'org-ctrl-c-minus))
      ("o" org-open-at-point)
-     ("p" org-set-property)
+     ("p" ,(fc-manual
+            (org-set-property (read-string "Property name")
+                              (read-string "Property value"))))
      ("s" ,(fc-manual (fc-org-add-block "SRC" :ask "Programming language")))
      ("t" fc--org-todo)
      ("u" fc--org-do)
@@ -1088,7 +1100,7 @@ LANG: language of babel."
     (when (looking-at-p "#\\+BEGIN_SRC")
       (org-ctrl-c-ctrl-c))))
 
-(cl-defun fc--org-publish (&optional (output-dir (fc--org-get-property "publish"))
+(cl-defun fc--org-publish (&optional (output-dir (fc--org-get-file-property "PUBLISH"))
                                      (base-dir default-directory))
   (unless output-dir
     (when-let  ((not-index (not

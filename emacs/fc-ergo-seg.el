@@ -49,7 +49,7 @@
 (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--menu-seg))))
 
 (defun fc--tomato-modeline ()
-  "Returns the tomate status."
+  "Return the tomate status."
   (when (and (fc--wide-window-p) (fc--right-bottom-window-p))
     *fc-tomato-bar*))
 
@@ -76,7 +76,7 @@
    "fc-player-keymap"))
 
 (defun fc--player-modeline ()
-  "Returns the player states."
+  "Return the player states."
   (when (and *is-gui* (fc--right-bottom-window-p) (fc--wide-window-p) *fc-player*)
     (fc-text (pcase (fc-player--get-play-status *fc-player*)
                ('Playing "⏸")

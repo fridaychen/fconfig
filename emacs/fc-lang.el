@@ -124,6 +124,14 @@ OBJ: object"
   (--each rest
     (add-hook hook it)))
 
+(cl-defun fc-bool (obj)
+  (unless obj
+    (cl-return-from fc-bool nil))
+
+  (let* ((s (fc-string obj))
+         (v (intern (downcase s))))
+    (member v '(true yes))))
+
 (provide 'fc-lang)
 
 ;; Local Variables:

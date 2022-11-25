@@ -6,8 +6,6 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defvar-local *fc-md-scale* 1.2)
-
 (defun fc--markdown-book-info ()
   (list :title (fc-search "title: \\(.+\\)" :begin t :sub 1 :bound 128)
         :author (fc-search "author: \\(.+\\)" :begin t :sub 1 :bound 128)
@@ -25,12 +23,6 @@
 
       (outline-hide-sublevels 3)
       (fc-idle-delay-task #'fc-hs-toggle 0.1)
-
-      (let ((buf (current-buffer)))
-        (fc-delay-task #'(lambda ()
-                           (with-current-buffer buf
-                             (text-scale-set *fc-md-scale*)))
-                       0.1))
 
       (eldoc-mode -1))
 

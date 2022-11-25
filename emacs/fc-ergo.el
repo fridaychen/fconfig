@@ -82,9 +82,10 @@
                         (--map
                          (s-chop-prefix "company-" (symbol-name it))
                          company-backends)))
-    ("Format" ,(format "IndentTab %S, Auto %S"
+    ("Format" ,(format "IndentTab %S, Auto %S, Spacing %d"
                        indent-tabs-mode
-                       *fc-format-at-save*))))
+                       *fc-format-at-save*
+                       line-spacing))))
 
 (defun fc-match-paren ()
   "Jump to another bracket."

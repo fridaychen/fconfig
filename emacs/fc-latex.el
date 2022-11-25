@@ -6,7 +6,6 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defvar *fc-latex-line-spacing* 6)
 (defvar *fc-ex-scale* 1)
 
 (fc-load 'latex
@@ -20,7 +19,6 @@
                        "\\\\footnote{[^{}]+}")
                (highlight-regexp it 'font-lock-comment-face))
 
-             (setf line-spacing *fc-latex-line-spacing*)
              (anzu-mode -1)
              (tex-fold-mode 1)
              (visual-line-mode)

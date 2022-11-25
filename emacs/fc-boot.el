@@ -57,7 +57,10 @@
   :after (add-hook '*fc-ergo-restore-hook* #'fc--clear-next-error-buffer))
 (fc-require 'fc-ergo)
 (fc-require 'fc-ergo-seg)
-(fc-require 'fc-edit)
+(fc-load 'fc-edit
+  :local t
+  :after
+  (fc-add-hook-func '*fc-after-theme-hook* #'fc--setup-line-spacing))
 
 (when (eq *fc-completion* 'helm)
   (fc-require 'fc-helm t))

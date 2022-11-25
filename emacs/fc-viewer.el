@@ -7,7 +7,6 @@
 
 (defvar-local *fc-reading-line-spacing* 10)
 (defconst *fc-reading-title-limit* 22)
-(defvar-local *fc-bak-line-spacing* nil)
 (defvar *fc-viewer-hook* nil "After viewer mode toggled hook.")
 
 (defvar *fc-viewer-keymap*
@@ -70,8 +69,7 @@
   (hl-line-mode -1)
   (read-only-mode 1)
 
-  (setf *fc-bak-line-spacing* line-spacing
-        line-spacing *fc-reading-line-spacing*)
+  (setf line-spacing *fc-reading-line-spacing*)
 
   (when *fc-reading-face*
     (setf buffer-face-mode-face *fc-reading-face*)
@@ -98,7 +96,7 @@
 
   (fc-modal-visual-feedback)
 
-  (setf line-spacing *fc-bak-line-spacing*)
+  (fc--setup-line-spacing)
 
   (set-display-table-slot buffer-display-table 'wrap ?\\))
 

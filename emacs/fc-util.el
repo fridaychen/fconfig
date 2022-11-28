@@ -267,7 +267,7 @@ MARK: call this func when region is not active."
          (goto-char (point-min))
          (insert (fc-funcall ,prefix))))))
 
-(defun fc-get-string-from-file (filename)
+(defun fc-file-to-string (filename)
   "Read file contents into string.
 FILENAME: file to be read."
   (with-temp-buffer

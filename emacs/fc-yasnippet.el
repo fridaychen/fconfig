@@ -25,6 +25,12 @@
   (fc-modal-disable)
   (yas-expand))
 
+(defun fc-expand-snippet-file (filename)
+  (interactive)
+
+  (let ((snippet (fc-file-to-string filename)))
+    (yas-expand-snippet snippet)))
+
 (provide 'fc-yasnippet)
 
 ;; Local Variables:

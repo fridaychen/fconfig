@@ -49,17 +49,11 @@ TEMPLATE: template file path."
                       (template (-fc-select-template name)))
                  (list name template)))
 
-  (let* ((buf (get-buffer-create bufname)))
-    (save-excursion
-      (with-current-buffer buf
-        (setf enable-local-variables :all
-              enable-dir-local-variables nil)
-        (erase-buffer)
-        (insert-file-contents template)
+  (fc-pop-buf (get-buffer-create bufname) :automode t :select t)
 
-        (goto-char (point-min)))
-
-      (fc-pop-buf buf :automode t :select t))))
+  (yas-minor-mode 1)
+  (fc-expand-snippet-file template)
+  (fc-modal-disable))
 
 (cl-defun google-speak (&rest rest)
   "Execute google-speak script.

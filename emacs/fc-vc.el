@@ -127,6 +127,11 @@
            (branch (substring-no-properties vc-mode (+ (length backend) 2))))
       branch)))
 
+(cl-defun fc-git-current-branch ()
+  "Return current git branch name."
+  (s-trim
+   (fc-exec-command-to-string "git" "rev-parse" "--abbrev-ref" "HEAD")))
+
 (cl-defun fc-vc-select-branch (&optional remote)
   "Select git branch.
 REMOTE: select from local or remote branchs."

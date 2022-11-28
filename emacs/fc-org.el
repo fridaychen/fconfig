@@ -1091,8 +1091,9 @@ LANG: language of babel."
 
     (org-roam-db-autosync-mode)))
 
-(defun fc--org-chapter-mark (level)
-  (s-repeat level "*"))
+(defun fc--org-chapter-mark (level title)
+  (concat (s-repeat level "*")
+          " " title))
 
 (defun fc--org-run-src-block (name)
   (fc-whole-buffer

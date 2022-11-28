@@ -75,19 +75,6 @@ PAIRS: replacement list."
   (when (fc--book-p)
     (text-scale-set *fc-book-scale*)))
 
-(defun fc--toc-replace-regexp (regex to-string)
-  "Rexexp replacing in TOC.
-REGEX: target regexp.
-TO-STRING: new string."
-  (fc-replace-regexp regex
-                     #'(lambda ()
-                         (when (or
-                                (and (fc-not-void-p (match-string 1))
-                                     (fc-not-void-p (match-string 3)))
-                                (and (fc-void-p (match-string 1))
-                                     (fc-void-p (match-string 3))))
-                           (replace-match to-string)))))
-
 (cl-defun fc-book-fix-zh-single-qoute ()
   (interactive)
 
@@ -118,14 +105,7 @@ TO-STRING: new string."
                        "\\1\\2"
                        :from-start t)))
 
-(defun fc-duplicate-return ()
-  "Double return."
-  (interactive)
-
-  (save-excursion
-    (fc-replace-string "\n" "\n\n" :from-start t)))
-
-(defun fc-remove-extra-whitespace ()
+(defun fc-book-remove-extra-whitespace ()
   "Remove extra whitespace."
   (interactive)
 
@@ -213,16 +193,6 @@ TO-STRING: new string."
                        "\\1\\2"
                        :from-start t)))
 
-(cl-defun fc-add-book-local-var ()
-  (save-excursion
-    (add-file-local-variable
-     'eval
-     '(visual-line-mode 1))
-
-    (add-file-local-variable
-     'eval
-     '(text-scale-set *fc-reading-scale*))))
-
 (cl-defun fc-merge-short-line ()
   (interactive)
 
@@ -306,17 +276,36 @@ TO-STRING: new string."
     (query-replace-regexp "\\([^a-zA-Z]\\)'\\([^\n]+\\)'\\([^a-zA-Z]\\)"
                           "\\1‘\\2’\\3")))
 
+(cl-defmacro fc--book-replace-chinese-toc-regexp (regex func)
+  "Rexexp replacing in TOC.
+REGEX: target regexp.
+TO-STRING: new string."
+  `(fc-replace-regexp ,regex
+                      #'(lambda ()
+                          (when (or
+                                 (and (fc-not-void-p (match-string 1))
+                                      (fc-not-void-p (match-string 3)))
+                                 (and (fc-void-p (match-string 1))
+                                      (fc-void-p (match-string 3))))
+                            (replace-match
+                             (,func
+                              (concat
+                               (match-string 1)
+                               (match-string 2)
+                               (match-string 3)
+                               " "
+                               (match-string 4))))))))
+
 (cl-defun fc-book-mark-chapter (level)
   "Find chapter and insert md commands.
 LEVEL: chapter level."
   (interactive "nLever: ")
 
   (save-excursion
-    (fc--toc-replace-regexp
+    (fc--book-replace-chinese-toc-regexp
      "^ *\\([第章]\\) *\\([0-9零一二三四五六七八九十两百千]\\{1,8\\}\\) *\\([章节回幕]\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
-     (concat "\n"
-             (fc-call-mode-func "chapter-mark" nil level)
-             " \\1\\2\\3 \\4"))))
+     (lambda (title)
+       (fc-call-mode-func "chapter-mark" nil level title)))))
 
 (cl-defun fc-book-mark-section (level)
   "Find section and insert md commands.
@@ -324,11 +313,10 @@ LEVEL: chapter level."
   (interactive "nLever: ")
 
   (save-excursion
-    (fc--toc-replace-regexp
+    (fc--book-replace-chinese-toc-regexp
      "^\\(第\\{0,1\\}\\)\\([0-9零一二三四五六七八九十]\\{1,4\\}\\)\\(节\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
-     (concat "\n"
-             (fc-call-mode-func "chapter-mark" nil level)
-             " \\1\\2\\3 \\4"))))
+     (lambda (title)
+       (fc-call-mode-func "chapter-mark" nil level title)))))
 
 (defconst *fc-book-func-list*
   `(
@@ -342,7 +330,7 @@ LEVEL: chapter level."
     ("Book: Recheck"                      . fc-recheck-book)
     ("Book: Replace with zh double quote" . fc-book-replace-zh-double-quote)
     ("Book: Replace with zh single quote" . fc-book-replace-zh-single-quote)
-    ("Book: Remove extra space"           . fc-remove-extra-whitespace)
+    ("Book: Remove extra space"           . fc-book-remove-extra-whitespace)
     ("Book: Search verse"                 . fc-book-search-verse)))
 
 (provide 'fc-book)

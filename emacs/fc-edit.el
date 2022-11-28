@@ -60,16 +60,6 @@
   ;; hightlight ending whitespace
   (highlight-regexp "[ \t]+$" 'whitespace-trailing))
 
-;; text-scale-mode
-(fc-load 'face-remap
-  :idle t
-  :local t
-  :after (progn
-           (fc-add-hook 'find-file-hook
-             (when (member major-mode *fc-text-scale-modes*)
-               (setf text-scale-mode-amount *fc-reading-scale*)
-               (text-scale-mode)))))
-
 ;; enable narrow
 (put 'narrow-to-defun  'disabled nil)
 (put 'narrow-to-page   'disabled nil)

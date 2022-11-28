@@ -73,17 +73,9 @@ LANG: language."
           "\n"
           "---\n"))
 
-(defun fc--markdown-chapter-mark (level)
-  (s-repeat level "#"))
-
-(defun fc-md-chapter-zh-to-number ()
-  "Convert Chinese chapter number to arabic number."
-  (fc-replace-regexp
-   "第\\([零一二两三四五六七八九十百千万]+\\)\\([章节回幕]\\)"
-   #'(lambda ()
-       (replace-match (concat "第"
-                              (number-to-string (fc-zh-to-number (match-string 1)))
-                              "\\2")))))
+(defun fc--markdown-chapter-mark (level title)
+  (concat (s-repeat level "#")
+          " " title))
 
 (cl-defun fc-md-convert-latex ()
   "Convert latex to markdown."
@@ -174,9 +166,6 @@ REGEX: regex."
   (save-excursion
     (fc-replace-regexp "\\([^ ]\\) $" "\\1" :from-start t)))
 
-(cl-defun fc-md-update-local-var ()
-  (add-dir-local-variable 'markdown-mode '*fc-md-scale* (read-number "Markdown scale" *fc-md-scale*)))
-
 (defun fc-md-portal ()
   "Show md portal."
   (fc-user-select-func
@@ -184,12 +173,10 @@ REGEX: regex."
    (append
     `(
       ("Add header"                      .       fc-md-add-header)
-      ("Chapter number zh to Arabic"     .       fc-md-chapter-zh-to-number)
       ("Convert footnote"                .       fc-md-convert-footnote)
       ("Convert Latex"                   .       fc-md-convert-latex)
       ("Convert Latex footnote"          .       fc-md-convert-latex-footnote)
       ("Fix headline spacing"            .       fc-md-fix-headline-spacing)
-      ("Init book var"                   .       fc-md-update-local-var)
       )
     *fc-book-func-list*)))
 

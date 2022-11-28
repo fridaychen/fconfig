@@ -70,29 +70,20 @@
   (save-excursion
     (fc-replace-regexp "{ +" "{")))
 
-(defun fc-latex-mark-chapter ()
+(defun fc--latex-chapter-mark (level title)
   "Find chapter and insert latex commands."
   (interactive)
-
-  (save-excursion
-    (fc--toc-replace-regexp "^ *\\([第章]\\) *\\([0-9零一二三四五六七八九十两百千]\\{1,8\\}\\) *\\([章节回幕]\\{0,1\\}\\) *\\([^。
-]\\{0,40\\}\\)$" "
-
-\\\\chapter{\\1\\2\\3 \\4}"))
-  (fc-latex-clean-cmd-space))
-
-(defun fc-latex-mark-section ()
-  "Find section and insert latex commands."
-  (interactive)
-
-  (save-excursion
-    (fc--toc-replace-regexp "^\\(第\\{0,1\\}\\)\\([0-9零一二三四五六七八九十]\\{1,4\\}\\)\\(节\\{0,1\\}\\) *\\([^。
-]\\{0,40\\}\\)$" "
-\\\\section{\\1\\2\\3 \\4}"))
-  (fc-latex-clean-cmd-space))
+  (format "%s{%s}"
+          (elt ["\\\\part"
+                "\\\\chapter"
+                "\\\\section"
+                "\\\\subsection"
+                "\\\\subsubsection"]
+               level)
+          title))
 
 (cl-defun fc-latex-fix-sectionname-space ()
-  "replace space in the section commands with escape-space"
+  "Replace space in the section commands with escape-space."
   (interactive)
 
   (cl-loop
@@ -129,19 +120,14 @@ END: end point."
   "Show latex portal."
   (fc-user-select-func
    "Latex"
-   `(("Chapter number zh to Arabic"     .       fc-chapter-zh-to-number)
-     ("Init"                            .       fc-book-init)
-     ("Init book var"                   .       fc-add-book-local-var)
-     ("Fix space in title"              .       fc-latex-fix-sectionname-space)
-     ("Fix single quote"                .       fc-fix-single-qoute)
-     ("Format"                          .       fc-book-format)
-     ("Generate fake part"              .       fc-latex-generate-fake-part)
-     ("Generate fake chapter"           .       fc-latex-generate-chapters)
-     ("Mark chapter"                    .       fc-latex-mark-chapter)
-     ("Mark section"                    .       fc-latex-mark-section)
-     ("Merge lines"                     .       fc-merge-short-line)
-     ("Recheck"                         .       fc-recheck-book)
-     ("Remove extra space"              .       fc-remove-extra-whitespace))))
+   (append
+    `(("Chapter number zh to Arabic"     .       fc-chapter-zh-to-number)
+      ("Fix space in title"              .       fc-latex-fix-sectionname-space)
+      ("Fix single quote"                .       fc-fix-single-qoute)
+      ("Generate fake part"              .       fc-latex-generate-fake-part)
+      ("Generate fake chapter"           .       fc-latex-generate-chapters)
+      )
+    *fc-book-func-list*)))
 
 (defconst *fc-latex-map*
   (fc-make-keymap

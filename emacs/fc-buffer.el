@@ -163,6 +163,9 @@ LOCAL-VARS: list of local-vars."
   (display-buffer buffer-or-name 'display-buffer-pop-up-window)
 
   (with-current-buffer buffer-or-name
+    (setf enable-local-variables :all
+          enable-dir-local-variables nil)
+
     (when local-vars
       (save-excursion
         (goto-char (point-min))

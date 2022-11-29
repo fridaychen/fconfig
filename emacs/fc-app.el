@@ -348,7 +348,7 @@ FILE-TYPES: fc style file types."
                            "-t" "py" "-t" "ruby" "-t" "rust" "-t" "sh"
                            "-t" "vim" "-t" "protobuf"
                            ))
-                  ('doc '("-t" "markdown" "-t" "org" "-t" "tex" "-t" "txt"))
+                  ('doc '("-t" "markdown" "-t" "org" "-t" "tex" "-t" "txt" "-t" "uml"))
                   ('conf '("-t" "cmake" "-t" "make" "-t" "config"
                            "-t" "json" "-t" "yaml"))
                   ('xml '("-t" "xml")))
@@ -363,6 +363,7 @@ FILE-TYPES: target file types to be finded."
         (arg-cpu (list "-j" (format "%d" *fc-rg-cpus*))))
     (let* ((result (apply #'fc-exec-command-to-string
                           "rg"
+                          "--type-add" "uml:*.{puml,pu}"
                           "--files"
                           "--no-ignore"
                           (seq-concatenate

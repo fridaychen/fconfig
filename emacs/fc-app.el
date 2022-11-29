@@ -14,32 +14,16 @@
 (defun -fc-select-template (name)
   "Select template.
 NAME: target buffer name."
-  (let* ((file-regex "txt$\\|md$\\|org$")
-         (template-dir (format "%s/template/" *fc-resource*))
-         (templates (when (fc-dir-exists-p template-dir)
-                      (directory-files
-                       template-dir
-                       nil
-                       file-regex)))
-         (site-template-dir (format "%s/site/template/" *fc-home*))
-         (site-templates (when (fc-dir-exists-p site-template-dir)
-                           (directory-files
-                            site-template-dir
-                            nil
-                            file-regex)))
-         (template (fc-user-select
-                    (format "Select template for %s" name)
-                    (--map
-                     (cons (capitalize
-                            (replace-regexp-in-string
-                             "_\\|-"
-                             " "
-                             (file-name-sans-extension it)))
-                           it)
-                     (cl-concatenate 'list templates site-templates)))))
-    (when template
-      (format "%s/template/%s"
-              *fc-resource* template))))
+  (when-let* ((files (fc-concat
+                      (fc--list-file (format "%s/template/" *fc-resource*)
+                                     '(doc) :fullpath t)
+                      (fc--list-file (format "%s/site/template/" *fc-home*)
+                                     '(doc) :fullpath t)))
+              (options (--map (cons (file-name-base it) it) files))
+              (template (fc-user-select
+                         (format "Select template for %s" name)
+                         options)))
+    template))
 
 (cl-defun fc-new-buffer-with-template (bufname template)
   "New buffer with template.
@@ -401,15 +385,23 @@ FILE-TYPES: target file types to be finded."
            (files (split-string (string-trim result) "\n")))
       files)))
 
-(cl-defun fc--list-file (dir file-types &key sort)
+(cl-defun fc--list-file (dir file-types &key sort fullpath)
   "List files.
 DIR: under this dir performing finding file.
 FILE-TYPES: target file types to be finded.
-SORT: sort or not."
+SORT: sort or not.
+FULLPATH: fullpath results."
+  (unless (fc-dir-exists-p dir)
+    (cl-return-from fc--list-file nil))
+
   (let ((files (fc--list-file-rg dir file-types)))
-    (if sort
-        (sort files #'string<)
-      files)))
+    (when fullpath
+      (setf files (--map (format "%s/%s" dir it) files)))
+
+    (when sort
+      (setf files (sort files #'string<)))
+
+    files))
 
 (cl-defun fc--find-file (dir prompt file-types &key sort)
   "Find file.

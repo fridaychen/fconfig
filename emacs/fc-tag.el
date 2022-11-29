@@ -199,9 +199,15 @@
   (puthash mode tag-instance *fc-tag*))
 
 (fc-add-to-hook 'after-change-major-mode-hook
-                #'fc-tag-open-file
-                #'hack-local-variables
-                )
+                #'(lambda ()
+                    (when buffer-file-name
+                      (fc-tag-open-file)))
+                #'(lambda ()
+                    (unless (or
+                             (eq major-mode 'minibuffer-mode)
+                             (eq major-mode 'minibuffer-inactive-mode))
+                      (hack-local-variables))))
+
 (puthash 'emacs-lisp-mode *fc-tag-xref* *fc-tag*)
 
 (provide 'fc-tag)

@@ -279,7 +279,7 @@ FILENAME: file to be read."
 FILENAME: file to be read.
 DEFAULT: default value."
   (if (file-exists-p filename)
-      (read-from-string (fc-get-string-from-file filename))
+      (read-from-string (fc-file-to-string filename))
     default))
 
 (defun fc-serialize (filename obj)

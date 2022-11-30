@@ -348,7 +348,7 @@ func filterType() func(os.FileInfo) bool {
 		addFileExt(extMap, []string{".cmake", ".conf", ".int", ".json", ".ld", ".mk", ".rc", ".yml"})
 	}
 	if *docArg {
-		addFileExt(extMap, []string{".md", ".org", "*.pu", "*.puml", ".tex", ".txt"})
+		addFileExt(extMap, []string{".md", ".org", ".pu", ".puml", ".tex", ".txt"})
 	}
 	if *imageArg {
 		addFileExt(extMap, []string{".bmp", ".gif", ".jpeg", ".jpg", ".tiff", ".png", ".svg"})

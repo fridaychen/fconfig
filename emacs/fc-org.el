@@ -208,6 +208,9 @@
         (setf buffer-face-mode-face *fc-reading-face*)
         (buffer-face-mode 1))
 
+      (when (fc-bool (fc--org-get-file-property "VISUAL-LINE"))
+        (visual-line-mode 1))
+
       (unless (fc--org-capture-p)
         (fc--org-hide-all)
         (fc-idle-delay-task #'fc-hs-toggle 0.1))
@@ -281,7 +284,8 @@
 
     (add-hook 'org-mode-hook #'fc--book-setup)
     (add-hook 'org-mode-hook #'fc--setup-org-mode)
-    (add-hook 'org-mode-hook #'valign-mode)
+    (when *is-gui*
+      (add-hook 'org-mode-hook #'valign-mode))
 
     (add-hook 'after-save-hook #'fc--org-auto-ingest)
     (add-hook 'after-save-hook #'check-parens nil t)))

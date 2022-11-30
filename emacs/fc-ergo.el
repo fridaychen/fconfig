@@ -21,7 +21,7 @@
 
 (defvar *fc-theme-mode* 'dark)
 (defvar *fc--work-themes* '((dark gruvbox monokai zenburn)
-                            (light leuven gruvbox-light-soft)))
+                            (light leuven gruvbox-light-soft ef-cyprus)))
 (defvar *fc--work-deep-themes* '((dark jazz sanityinc-tomorrow-night)
                                  (light acme)))
 

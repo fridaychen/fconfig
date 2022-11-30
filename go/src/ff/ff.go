@@ -360,7 +360,7 @@ func filterType() func(os.FileInfo) bool {
 		addFileExt(extMap, []string{".doc", ".docm", ".docx", ".dot", ".dotm", ".ods", ".odt", ".ppt", ".pptx", ".xls", ".xlsx", ".wps"})
 	}
 	if *pkgArg {
-		addFileExt(extMap, []string{".7z", ".deb", ".rar", ".rpm", ".tar.bz2", ".tar.gz", ".zip"})
+		addFileExt(extMap, []string{".7z", ".deb", ".rar", ".rpm", ".tar.bz2", ".tar.gz", ".zip", ".xz", ".zst"})
 	}
 	if *videoArg {
 		addFileExt(extMap, []string{".avi", ".mkv", ".mov", ".mp4", ".webm", ".wmv"})

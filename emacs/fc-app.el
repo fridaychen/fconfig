@@ -426,6 +426,7 @@ FILE-TYPES: target file types to be searched."
     (apply #'fc-exec-command-to-buffer
            (current-buffer)
            "rg"
+           "--type-add" "uml:*.{puml,pu}"
            "--vimgrep"
            "--stats"
            "--no-ignore"

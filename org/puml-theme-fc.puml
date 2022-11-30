@@ -79,7 +79,6 @@ skinparam shadowing true
 
 skinparam defaultFontName Noto Sans CJK SC
 skinparam defaultFontSize 17
-skinparam backgroundColor $BGCOLOR
 skinparam Padding         1
 skinparam BoxPadding      60
 
@@ -154,11 +153,6 @@ skinparam state {
 }
 
 skinparam title {
-    BorderRoundCorner 15
-    BorderThickness   0
-    BorderColor       $LINECOLOR
-    BackgroundColor   #Azure/LightBlue
-    FontSize          20
 }
 
 skinparam actor {

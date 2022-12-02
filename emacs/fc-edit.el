@@ -31,6 +31,8 @@
 (show-paren-mode 1)
 (setf show-paren-style 'parenthesis)
 
+(setq-default line-spacing 0)
+
 (ignore-errors
   (fc-load 'xclip
     :disable (or *is-gui* *is-cygwin*)

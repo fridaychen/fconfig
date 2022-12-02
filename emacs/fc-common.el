@@ -172,8 +172,6 @@ COLOR: background color."
        (setf soothe-percent 4)
        (fc-set-face-attribute 'default nil
                               :foreground "black")
-       (fc-set-face-attribute 'default nil
-                              :background *fc-common-light-theme-bg*)
        (fc-set-face-attribute 'fringe nil
                               :background "#ee9800")
        (fc-set-face-attribute 'font-lock-constant-face nil
@@ -199,9 +197,7 @@ COLOR: background color."
                               :background "coral"))
 
       ('faff
-       (setf soothe-percent 4)
-       (fc-set-face-attribute 'default nil
-                              :background *fc-common-light-theme-bg*))
+       (setf soothe-percent 4))
 
       ('fantom
        (fc-set-face-attribute 'fringe nil
@@ -218,8 +214,7 @@ COLOR: background color."
        (fc-set-face-attribute 'org-agenda-date-weekend nil
                               :height 1.1)
        (fc-set-face-attribute 'default nil
-                              :foreground "#444444"
-                              :background *fc-common-light-theme-bg*))
+                              :foreground "#444444"))
 
       ((or 'gruvbox-light-soft 'gruvbox-light-medium 'gruvbox-light-hard)
        (setf soothe-percent 6))
@@ -246,7 +241,6 @@ COLOR: background color."
        (defvar modus-modified nil)
        (unless modus-modified
          (setf soothe-percent 6)
-         (fc-set-face-attribute 'default nil :background *fc-common-light-theme-bg*)
          (fc-set-face-attribute 'markdown-code-face nil :background "gray90")))
 
       ('monokai
@@ -316,7 +310,17 @@ COLOR: background color."
 
     (fc-soothe-theme soothe-percent
                      (gethash *fc-current-theme*
-                              *fc-soothe-color*))))
+                              *fc-soothe-color*)))
+
+  (when (member *fc-current-theme* '(adwaita
+                                     ef-cyprus
+                                     ef-deuteranopia-light
+                                     ef-tritanopia-light
+                                     faff
+                                     leuven
+                                     modus-operandi))
+    (fc-set-face-attribute 'default nil
+                           :background *fc-common-light-theme-bg*)))
 
 ;; players
 (cl-defun fc-init-user-player ()

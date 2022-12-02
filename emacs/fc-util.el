@@ -754,6 +754,15 @@ FORM: test form."
     (when f
       (apply f args))))
 
+(cl-defun fc-get-mode-var (suffix &optional default)
+  (let* ((fsym (intern (format "*fc--%s-%s"
+                               (s-chop-suffix "-mode"
+                                              (fc-string major-mode))
+                               suffix))))
+    (if (boundp fsym)
+        (symbol-value fsym)
+      default)))
+
 (provide 'fc-util)
 
 ;; Local Variables:

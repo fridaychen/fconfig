@@ -6,6 +6,8 @@
 ;;; Code:
 (require 'cl-lib)
 
+(defconst *fc--markdown-use-reading-face-for-book* 'true)
+
 (defun fc--markdown-book-info ()
   (list :title (fc-search "title: \\(.+\\)" :begin t :sub 1 :bound 128)
         :author (fc-search "author: \\(.+\\)" :begin t :sub 1 :bound 128)

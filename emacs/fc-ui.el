@@ -25,7 +25,7 @@ MOUSE: allow user to select with mouse."
     (let ((helm-full-frame t))
       (helm :sources
             (helm-build-sync-source prompt
-              :candidates collection))))
+                                    :candidates collection))))
 
    ((and (> 9 (length collection))
          (> (- (frame-width) 20 (length prompt))
@@ -81,7 +81,7 @@ MOUSE: allow user to select with mouse."
                                           :fullscreen fullscreen
                                           :mouse mouse)))))
 
-(cl-defun fc-user-select-func (prompt collection &key fullscreen default)
+(cl-defun fc-user-select-func (prompt collection &key fullscreen default mouse)
   "Select a function to run from collection.
 PROMPT: user prompt.
 COLLECTION: cadidates collection.
@@ -89,8 +89,9 @@ FULLSCREEN: fullscreen ui mode.
 DEFAULT: default function."
   (fc-funcall (fc-user-select prompt
                               collection
+                              :always t
                               :fullscreen fullscreen
-                              :always t)
+                              :mouse mouse)
               :default default))
 
 ;; UI yes-or-no

@@ -964,10 +964,19 @@ KEYMAP: keymap to run."
   (fc-user-select-func
    "Basic"
    `(
+     ("Delete matching line" ,(fc-manual
+                               (when-let* ((regex (read-string "Delete matching"))
+                                           (empty (not (zerop (length regex)))))
+                                 (flush-lines regex))))
+     ("Delete non-matching line" ,(fc-manual
+                                   (when-let* ((regex (read-string "Delete non-matching"))
+                                               (empty (not (zerop (length regex)))))
+                                     (keep-lines regex))))
      ("Dos2unix" dos2unix)
      ("Merge all lines" fc-merge-all-line)
      ("Unix2dos" unix2dos)
-     )))
+     )
+   :mouse t))
 
 (defconst *ergo-basic-map*
   (fc-make-keymap

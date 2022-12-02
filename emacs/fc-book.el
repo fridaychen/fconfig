@@ -73,6 +73,11 @@ PAIRS: replacement list."
 
 (defun fc--book-setup ()
   (when (fc--book-p)
+    (when-let* ((face *fc-reading-face*)
+                (enable (fc-bool (fc-get-mode-var "use-reading-face-for-book"))))
+      (setf buffer-face-mode-face *fc-reading-face*)
+      (buffer-face-mode 1))
+
     (text-scale-set *fc-book-scale*)))
 
 (cl-defun fc-book-fix-zh-single-qoute ()

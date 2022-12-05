@@ -715,7 +715,7 @@ FORM: test form."
             (mapcar (lambda (x) (cons x (window-buffer x)))
                     (window-list))))
 
-;; looing-at utilities
+;; looking-at utilities
 (defmacro fc-do-looking-at (regex &rest body)
   (declare (indent 1))
   `(when (looking-at ,regex)
@@ -755,7 +755,7 @@ FORM: test form."
       (apply f args))))
 
 (cl-defun fc-get-mode-var (suffix &optional default)
-  (let* ((fsym (intern (format "*fc--%s-%s"
+  (let* ((fsym (intern (format "*fc--%s-%s*"
                                (s-chop-suffix "-mode"
                                               (fc-string major-mode))
                                suffix))))

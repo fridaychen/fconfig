@@ -15,6 +15,10 @@ if [[ ! -f ~/.emacs.d/init.el ]]; then
             >~/.emacs.d/init.el
 fi
 
+if [[ ! -d ~/org/roam ]]; then
+    mkdir -p ~/org/roam
+fi
+
 touch ~/.emacs.d/abbrev_defs
 
 emacs --batch --eval "(progn (add-to-list 'load-path \"~/.emacs.d/fconfig\") (require 'fc-setup))"

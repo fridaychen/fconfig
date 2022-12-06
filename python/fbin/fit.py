@@ -257,7 +257,7 @@ def git_squash():
 def portal(once=False):
     funcs = (
         ("fit --add", "add file"),
-        (". ${FCHOME}/bin/Fgit.sh; fit-switch-branch", "switch branch"),
+        (". ${FCHOME}/bash/lib.sh; fit-switch-branch", "switch branch"),
         ("fit --track", "track remote branch"),
         ("fit -l", "log viewer"),
         ("fit --reset", "unstage/reset file"),

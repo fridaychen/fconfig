@@ -1349,7 +1349,10 @@ STEP: pixels."
      ("Diff current file with other branch"  . fc-vc-diff-file-with-other-branch)
      ("Gitk with current file" ,(fc-manual (start-process "gitk" nil "gitk" buffer-file-name)))
      ("Gitk" ,(fc-manual (start-process "gitk" nil "gitk")))
-     )))
+     ("Switch branch" . ,(fc-manual (fc-vc-switch-branch)
+                                    (fc-vc-revert-repo)))
+     )
+   :mouse t))
 
 (defconst *ergo-vc-map*
   (fc-make-keymap

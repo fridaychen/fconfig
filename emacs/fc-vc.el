@@ -113,6 +113,11 @@
    :buffers (fc-list-buffer :dir (fc-vc-root))
    (vc-refresh-state)))
 
+(cl-defun fc-vc-revert-repo ()
+  (fc-with-each-buffer
+   :buffers (fc-list-buffer :dir (fc-vc-root))
+   (revert-buffer t t)))
+
 (cl-defun fc-vc-root (&optional (dir (expand-file-name default-directory)))
   "Find repo directory of current buffer."
   (unless dir
@@ -135,7 +140,9 @@
 (cl-defun fc-vc-select-branch (&optional remote)
   "Select git branch.
 REMOTE: select from local or remote branchs."
-  (fc-user-select (if remote "Remote branch" "Branch")
+  (fc-user-select (format "%s (current: %s)"
+                          (if remote "Remote branch" "Branch")
+                          (fc-git-current-branch))
                   (split-string
                    (with-temp-buffer
                      (shell-command (format "git branch %s | sed -e \"/^\\*/d\" | cut -b 3-"
@@ -143,6 +150,11 @@ REMOTE: select from local or remote branchs."
                                     (current-buffer))
                      (s-trim (buffer-string)))
                    "\n")))
+
+(cl-defun fc-vc-switch-branch ()
+  "Switch to other branch."
+  (when-let ((branch (fc-vc-select-branch)))
+    (shell-command (format "git checkout %s" branch))))
 
 (cl-defun fc-vc-diff-with-other-branch ()
   "Diff work dir with other branch."

@@ -39,8 +39,8 @@ setup-nvim:
 	@bash/setup/setup-nvim.sh
 
 help:
-	@echo "setup :- setup the whole environment"
-	@echo "setup-app :- install applications"
-	@echo "setup-emacs :- setup emacs"
-	@echo "setup-nvim :- setup nvim"
+	@echo "setup        :- setup the whole environment"
+	@echo "setup-app    :- install applications"
+	@echo "setup-emacs  :- setup emacs"
+	@echo "setup-nvim   :- setup nvim"
 	@echo "setup-python :- setup python"

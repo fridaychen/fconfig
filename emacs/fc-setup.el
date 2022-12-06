@@ -35,6 +35,7 @@
          company-posframe
          company-quickhelp
          counsel
+         ef-themes
          faff-theme
          fantom-theme
          flycheck

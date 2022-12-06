@@ -442,7 +442,7 @@ FILE-TYPES: target file types to be searched."
   (setf enable-local-variables :all)
   (insert
    (format
-    "-*- mode: grep; enable-dir-local-variables: nil; enable-local-variables: \"all\"; default-directory: \"%s\"; -*-\n"
+    "-*- mode: grep; default-directory: \"%s\"; -*-\n"
     dir)))
 
 (cl-defun fc--external-ftr-rg (dir pattern _file-types)
@@ -1155,7 +1155,7 @@ REST: commands."
 
   (let ((s (fc-current-thing :regq t :confirm t))
         (target (format-mode-line "%l:")))
-    (occur s)
+    (occur s (if (derived-mode-p 'prog-mode) 1 0))
 
     (with-selected-window (get-buffer-window "*Occur*")
       (when (search-forward target)

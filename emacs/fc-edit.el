@@ -54,13 +54,17 @@
          (t
           *fc-basic-line-spacing*))))
 
-(fc-add-hook 'find-file-hook
+(defun fc--setup-file-buffer ()
+  (setf enable-dir-local-variables t)
+
   (when (member major-mode *fc-doc-modes*)
     (fc--set-visual-line-mode))
 
   (fc--setup-line-spacing)
   ;; hightlight ending whitespace
   (highlight-regexp "[ \t]+$" 'whitespace-trailing))
+
+(add-hook 'find-file-hook #'fc--setup-file-buffer)
 
 ;; enable narrow
 (put 'narrow-to-defun  'disabled nil)

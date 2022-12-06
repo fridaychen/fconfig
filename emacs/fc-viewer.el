@@ -6,6 +6,8 @@
 ;;; Code:
 
 (defvar-local *fc-reading-line-spacing* 10)
+(defvar-local *fc-reading-changed-font* nil)
+
 (defconst *fc-reading-title-limit* 22)
 (defvar *fc-viewer-hook* nil "After viewer mode toggled hook.")
 
@@ -71,8 +73,9 @@
 
   (setf line-spacing *fc-reading-line-spacing*)
 
-  (when *fc-reading-face*
-    (setf buffer-face-mode-face *fc-reading-face*)
+  (when (and (not buffer-face-mode) *fc-reading-face*)
+    (setf buffer-face-mode-face *fc-reading-face*
+          *fc-reading-changed-font* t)
     (buffer-face-mode 1))
 
   (unless buffer-display-table
@@ -89,7 +92,9 @@
         *fc-enable-major-mode-seg* t
         *fc-buffer-title-seg* nil)
 
-  (buffer-face-mode -1)
+  (when *fc-reading-changed-font*
+    (setf *fc-reading-changed-font* nil)
+    (buffer-face-mode -1))
 
   (hl-line-mode -1)
   (read-only-mode -1)

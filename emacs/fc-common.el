@@ -78,6 +78,7 @@
 
 ;; theme
 (setf *fc-light-theme* '(
+                         (ef-cyprus . ef-themes)
                          (faff . faff-theme)
                          (gruvbox-light-hard . gruvbox-theme)
                          (plan9 . plan9-theme)

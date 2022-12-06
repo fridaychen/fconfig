@@ -151,8 +151,6 @@ REMOTE: select from local or remote branchs."
   (let* ((branch (fc-vc-select-branch))
          (buf (get-buffer-create (format "*git-diff with branch %s*" branch))))
     (with-current-buffer buf
-      (setf enable-local-variables :all
-            enable-dir-local-variables nil)
       (erase-buffer)
 
       (shell-command (format "git diff %s" branch) (current-buffer)))
@@ -168,8 +166,6 @@ REMOTE: select from local or remote branchs."
          (filename buffer-file-name)
          (buf (get-buffer-create (format "*git-diff %s with branch %s*" (buffer-name) branch))))
     (with-current-buffer buf
-      (setf enable-local-variables :all
-            enable-dir-local-variables nil)
       (erase-buffer)
       (shell-command (format "git diff %s -- %s" branch filename) (current-buffer)))
 

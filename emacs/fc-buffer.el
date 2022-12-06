@@ -164,7 +164,7 @@ LOCAL-VARS: list of local-vars."
 
   (with-current-buffer buffer-or-name
     (setf enable-local-variables :all
-          enable-dir-local-variables nil)
+          enable-dir-local-variables (if buffer-file-name t nil))
 
     (when local-vars
       (save-excursion

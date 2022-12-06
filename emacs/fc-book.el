@@ -72,6 +72,7 @@ PAIRS: replacement list."
       (plist-get meta :date)))))
 
 (defun fc--book-setup ()
+  "Setup current buffer for book."
   (when (fc--book-p)
     (when-let* ((face *fc-reading-face*)
                 (enable (fc-bool (fc-get-mode-var "use-reading-face-for-book"))))
@@ -81,6 +82,7 @@ PAIRS: replacement list."
     (text-scale-set *fc-book-scale*)))
 
 (cl-defun fc-book-fix-zh-single-qoute ()
+  "Fix chinese apostrophe punctuation."
   (interactive)
 
   (save-excursion

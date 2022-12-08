@@ -269,6 +269,17 @@ FUNC: new function."
   "Return t if current thread is main thread."
   (eq (current-thread) main-thread))
 
+(defmacro fc-safe-wrap (fn &rest clean-up)
+  `(unwind-protect
+       (let (retval)
+         (condition-case ex
+             (setq retval (progn ,fn))
+           ('error
+            (message (format "Caught exception: [%s]" ex))
+            (setq retval (cons 'exception (list ex)))))
+         retval)
+     ,@clean-up))
+
 (provide 'fc-facility)
 
 ;; Local Variables:

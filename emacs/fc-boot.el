@@ -156,7 +156,7 @@
 (fc-require 'fc-global)
 (fc-load 'fc-lsp
   :local t
-  :after (when *fc-lsp-mode*
+  :after (when *fc-lsp-mode-enable*
            (add-hook '*fc-ergo-restore-hook* #'lsp-ui-doc-hide)))
 (fc-require 'fc-tag)
 

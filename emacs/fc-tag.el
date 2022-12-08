@@ -93,15 +93,14 @@
 
 (cl-defmethod fc-tag--open-file ((x fc-tag-global))
   (let ((compile-json-file (fc-exists-file-in-path "compile_commands.json"))
-        (gtags-file (fc-exists-file-in-path "compile_commands.json")))
-    (when gtags-file
-      (ggtags-mode t))
-
+        (gtags-file (fc-exists-file-in-path "GTAGS")))
     (cond
      (compile-json-file
-      (when *fc-lsp-mode*
-        (lsp t))
+      (fc--lsp-enable)
       (add-to-list 'company-backends 'company-capf))
+
+     (gtags-file
+      (ggtags-mode t))
 
      (gtags-file
       (add-to-list 'company-backends 'company-gtags)))))
@@ -117,22 +116,32 @@
 
 (cl-defmethod fc-tag--find-definitions ((x fc-tag-lsp) id)
   (setq id (propertize id 'identifier-at-point t))
-  (xref--find-definitions id nil))
+
+  (cond
+   (*fc-lsp-bridge-enable*
+    (lsp-bridge-find-def))
+
+   (t
+    (xref--find-definitions id nil))))
 
 (cl-defmethod fc-tag--find-apropos ((x fc-tag-lsp) pattern)
   (xref-find-apropos pattern))
 
 (cl-defmethod fc-tag--find-references ((x fc-tag-lsp) id)
-  (setq id (propertize id 'identifier-at-point t))
-  (xref--find-xrefs id 'references id nil))
+  (cond
+   (*fc-lsp-bridge-enable*
+    (lsp-bridge-find-references))
+
+   (t
+    (setq id (propertize id 'identifier-at-point t))
+    (xref--find-xrefs id 'references id nil))))
 
 (cl-defmethod fc-tag--open-project ((x fc-tag-lsp) proj-dir src-dirs)
   )
 
 (cl-defmethod fc-tag--open-file ((x fc-tag-lsp))
   (if (member major-mode '(c-mode c++mode python-mode))
-      (lsp)
-
+      (fc--lsp-enable)
     (add-to-list 'company-backends 'company-capf)))
 
 (cl-defmethod fc-tag--list ((x fc-tag-lsp))

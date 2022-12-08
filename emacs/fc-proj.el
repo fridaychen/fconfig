@@ -353,9 +353,12 @@ ROOT: project path."
 (cl-defun fc-proj-query-rename ()
   (interactive)
 
+  (when (fc--lsp-active-p)
+    (fc--lsp-rename)
+    (cl-return-from fc-proj-query-rename))
+
   (fc-funcall (pcase fc-proj-tag
                 ('global #'fc-proj-query-replace-with-ggtags)
-                ((and 'lsp (guard (lsp--capability :renameProvider))) #'lsp-rename)
                 (_ #'fc-proj-query-replace-with-dired))))
 
 (defvar *fc-project-hook* nil)

@@ -6,28 +6,48 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defvar *fc-lsp-mode* t)
+(defvar *fc-lsp-enable* t)
+(defvar *fc-lsp-bridge-enable* nil)
+(defvar *fc-lsp-mode-enable* nil)
 
 (fc-load 'lsp-bridge
   :local t
+  :enable *fc-lsp-enable*
   :after (progn
-           (global-lsp-bridge-mode)
-           (setf *fc-lsp-mode* nil)))
+           (message "Enabled lsp-bridge")
+
+           (setf *fc-lsp-enable* nil
+                 *fc-lsp-bridge-enable* t
+                 lsp-headerline-breadcrumb-enable nil)
+
+           (fc-add-next-error-mode 'lsp-bridge-ref-mode
+                                   #'lsp-bridge-ref-jump-next-keyword
+                                   #'lsp-bridge-ref-jump-prev-keyword)
+
+           (defun fc--lsp-enable ()
+             (lsp-bridge-mode 1))))
 
 ;; (fc-load 'eglot
 ;;   :local t
 ;;   :after (progn
-;;            (setf *fc-lsp-mode* nil)))
+;;            (setf *fc-lsp-enable* nil)))
 
 (fc-load 'lsp-mode
-  :enable *fc-lsp-mode*
+  :enable *fc-lsp-enable*
   :after (progn
            (require 'lsp)
            (require 'lsp-mode)
 
-           (setq lsp-headerline-breadcrumb-enable nil
+           (message "Enabled lsp-mode")
+
+           (setq *fc-lsp-enable* nil
+                 *fc-lsp-mode-enable* t
+                 lsp-headerline-breadcrumb-enable nil
                  lsp-progress-via-spinner nil
-                 lsp-enable-on-type-formatting nil)))
+                 lsp-enable-on-type-formatting nil)
+
+           (defun fc--lsp-enable ()
+             (lsp-mode 1))))
 
 (fc-load 'lsp-ui
   :after (progn
@@ -38,6 +58,36 @@
                  lsp-ui-doc-show-with-mouse t
                  lsp-ui-doc-alignment 'window
                  lsp-ui-doc-delay 0.1)))
+
+(cl-defun fc--lsp-descripbe-function ()
+  "Describe function."
+  (cond
+   ((lsp-bridge-mode)
+    (lsp-bridge-popup-documentation)
+    t)
+
+   (lsp-mode
+    (lsp-ui-doc-show)
+    t)
+
+   (t)))
+
+(cl-defun fc--lsp-active-p ()
+  (or lsp-bridge-mode lsp-mode))
+
+(cl-defun fc--lsp-rename ()
+  (cond
+   ((lsp-bridge-mode)
+    (lsp-bridge-rename)
+    t)
+
+   (lsp-mode
+    (when (lsp--capability :renameProvider)
+      (progn
+        (lsp-rename)
+        t)))
+
+   (t)))
 
 (provide 'fc-lsp)
 

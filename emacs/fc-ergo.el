@@ -392,8 +392,7 @@ INDENT-FUNC: function for indent."
     (with-selected-window (fc-find-viewer-window)
       (scroll-down)))
 
-   ((fc--next-error-find-buffer)
-    (call-interactively 'previous-error))
+   ((fc-prev-error))
 
    ((one-window-p)
     (scroll-down-command))
@@ -413,8 +412,7 @@ INDENT-FUNC: function for indent."
     (with-selected-window (fc-find-viewer-window)
       (scroll-up)))
 
-   ((fc--next-error-find-buffer)
-    (call-interactively 'next-error))
+   ((fc-next-error))
 
    ((one-window-p)
     (scroll-up-command))
@@ -1096,8 +1094,7 @@ KEYMAP: keymap to run."
 (cl-defun fc-describe-function ()
   "Describe function."
   (cond
-   (lsp-mode
-    (lsp-ui-doc-show))
+   ((fc--lsp-descripbe-function))
 
    (t
     (describe-function))))

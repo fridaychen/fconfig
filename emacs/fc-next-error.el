@@ -4,11 +4,9 @@
 ;;
 
 ;;; Code:
-(defconst *fc-navi-buffer-modes* '(compilation-mode
-                                   flycheck-error-list-mode
-                                   ggtags-navigation-mode
-                                   grep-mode
-                                   xref--xref-buffer-mode))
+(defvar *fc-navi-buffer-modes* nil)
+(defvar *fc-navi-buffer-map* (make-hash-table))
+
 (fc-load 'simple
   :local t
   :after (progn
@@ -48,6 +46,41 @@
               :pop (not (fc--next-error-buffer-p (current-buffer)))))
 
            (setf next-error-find-buffer-function #'fc--next-error-find-buffer)))
+
+(cl-defun fc-add-next-error-mode (mode next prev)
+  "Add mode support next-prev.
+MODE: major mode.
+NEXT: next function.
+PREV: previous function."
+  (add-to-list '*fc-navi-buffer-modes* mode)
+  (puthash mode (list next prev) *fc-navi-buffer-map*))
+
+(cl-defun fc-next-error ()
+  "Goto next error."
+  (when-let* ((buf (fc--next-error-find-buffer))
+              (ops (gethash (buffer-local-value 'major-mode buf)
+                            *fc-navi-buffer-map*))
+              (next (cl-first ops)))
+    (with-current-buffer buf
+      (call-interactively next)
+      t)))
+
+(cl-defun fc-prev-error ()
+  "Goto previous error."
+  (when-let* ((buf (fc--next-error-find-buffer))
+              (ops (gethash (buffer-local-value 'major-mode buf)
+                            *fc-navi-buffer-map*))
+              (prev (cl-second ops)))
+    (with-current-buffer buf
+      (call-interactively prev)
+      t)))
+
+(--each '(compilation-mode
+          flycheck-error-list-mode
+          ggtags-navigation-mode
+          grep-mode
+          xref--xref-buffer-mode)
+  (fc-add-next-error-mode it #'next-error #'previous-error))
 
 (provide 'fc-next-error)
 

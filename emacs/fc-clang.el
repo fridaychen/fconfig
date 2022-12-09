@@ -93,7 +93,7 @@ END: end of region."
            (require 'elide-head)
            (add-hook 'c-mode-common-hook 'elide-head)
 
-           (defun fc--setup-c-mode ()
+           (defun fc--c-setup ()
              (c-toggle-electric-state 1)
              (c-toggle-auto-newline 1)
              (c-toggle-hungry-state 1)
@@ -101,6 +101,8 @@ END: end of region."
              (--each '("FIXME:" "TODO:" "ToDo:" "MEMO:"
                        "FIXME :" "TODO :" "MEMO :")
                (highlight-phrase it)))
+
+           (defalias 'fc--c++-setup 'fc--c-setup)
 
            (cl-defun fc-tree2str (tree &optional (str "{"))
              (when (null tree)
@@ -192,12 +194,12 @@ END: end of region."
                   "file"
                 (fc--generate-clang-style))))
 
-           (fc-add-fmt 'c-mode 'fc-generate-clang-cmd nil)
-           (fc-add-fmt 'c++-mode 'fc-generate-clang-cmd nil)
-           (fc-add-fmt 'protobuf-mode 'fc-generate-clang-cmd nil)
+           (fc-add-fmt 'c-mode #'fc-generate-clang-cmd nil)
+           (fc-add-fmt 'c++-mode #'fc-generate-clang-cmd nil)
+           (fc-add-fmt 'protobuf-mode #'fc-generate-clang-cmd nil)
 
-           (add-hook 'c-mode-hook 'fc--setup-c-mode)
-           (add-hook 'c++-mode-hook 'fc--setup-c-mode)))
+           (add-hook 'c-mode-hook #'fc--c-setup)
+           (add-hook 'c++-mode-hook #'fc--c-setup)))
 
 (provide 'fc-clang)
 

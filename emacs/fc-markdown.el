@@ -19,7 +19,7 @@
     (setf markdown-hr-strings
           '("-----"))
 
-    (defun fc--setup-markdown-mode ()
+    (defun fc--markdown-setup ()
       (when *is-gui*
         (markdown-display-inline-images))
 
@@ -41,7 +41,7 @@
 
     (add-hook '*fc-viewer-hook* #'fc--md-toggle-viewer)
     (add-hook 'markdown-mode-hook #'fc--book-setup)
-    (add-hook 'markdown-mode-hook #'fc--setup-markdown-mode)))
+    (add-hook 'markdown-mode-hook #'fc--markdown-setup)))
 
 (fc-load 'markdown-changelog)
 
@@ -320,9 +320,6 @@ END: end point."
 (defun fc--markdown-mode-func ()
   "Run markdown mode func."
   (fc-modal-head-key "Markdown" '*fc-md-map*))
-
-(when (eq major-mode 'markdown-mode)
-  (fc--setup-markdown-mode))
 
 (provide 'fc-markdown)
 

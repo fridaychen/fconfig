@@ -61,24 +61,21 @@
   :local t
 
   :after (progn
-           (cl-defun fc-format-emacs-lisp ()
+           (cl-defun fc--format-emacs-lisp ()
              (indent-region (point-min) (point-max))
 
              (fc--default-fmt))
 
            (fc-unbind-keys '("C-M-i") emacs-lisp-mode-map)
 
-           (fc-add-fmt 'emacs-lisp-mode nil #'fc-format-emacs-lisp)
+           (fc-add-fmt 'emacs-lisp-mode nil #'fc--format-emacs-lisp)
 
-           (defun fc--setup-elisp-mode ()
+           (defun fc--emacs-lisp-setup ()
              (setf indent-tabs-mode nil)
              (add-hook 'write-contents-functions 'check-parens nil t))
 
-           (add-hook 'emacs-lisp-mode-hook #'fc--setup-elisp-mode)
+           (add-hook 'emacs-lisp-mode-hook #'fc--emacs-lisp-setup)
            (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)))
-
-(when (eq major-mode 'emacs-lisp-mode)
-  (fc--setup-elisp-mode))
 
 (provide 'fc-elisp)
 

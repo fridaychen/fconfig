@@ -13,19 +13,16 @@
   :package 'auctex
 
   :after (progn
-           (defun fc-setup-latex-buf ()
+           (defun fc--latex-setup ()
              (--each '("\\\\postil{[^{}]+}"
                        "\\\\postil_[^{}]+{[^{}]+}"
                        "\\\\footnote{[^{}]+}")
                (highlight-regexp it 'font-lock-comment-face))
 
-             (anzu-mode -1)
              (tex-fold-mode 1)
-             (visual-line-mode)
              (TeX-fold-buffer))
 
-           (add-hook 'LaTeX-mode-hook
-                     #'fc-setup-latex-buf))
+           (add-hook 'LaTeX-mode-hook #'fc--latex-setup))
 
   :bind '((LaTeX-mode-map
            ("C-M-j" backward-word)

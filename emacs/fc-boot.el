@@ -35,21 +35,32 @@
     (add-hook '*fc-common-fast-act-hook* #'fc--org-toggle-special-edit)
     (fc-require 'fc-plantuml)))
 
-(cl-defun fc-load-mode-config ()
-  "Load config for current mode."
-  (pcase major-mode
-    ((or 'c-mode 'c++-mode) (fc-require 'fc-clang))
-    ('emacs-lisp-mode (fc-require 'fc-elisp))
-    ('go-mode (fc-require 'fc-golang))
-    ('haskell-mode (fc-require 'fc-haskell))
-    ('latex-mode (fc-require 'fc-latex t))
-    ('lisp-mode (fc-require 'fc-lisp))
-    ('markdown-mode (fc-require 'fc-markdown))
-    ('ocaml-mode (fc-require 'fc-ocaml))
-    ('plantuml-mode (fc-require 'fc-plantuml))
-    ('python-mode (fc-require 'fc-python))))
+(defvar *fc--mode-config-map* (make-hash-table))
 
-(add-hook 'find-file-hook #'fc-load-mode-config)
+(mapc (lambda (data) (puthash (car data) (cdr data) *fc--mode-config-map*))
+      '(
+        (c-mode . fc-clang)
+        (c++-mode . fc-clang)
+        (emacs-lisp-mode . fc-elisp)
+        (go-mode . fc-golang)
+        (haskell-mode . fc-haskell)
+        (latex-mode . fc-latex)
+        (lisp-mode . fc-lisp)
+        (markdown-mode . fc-markdown)
+        (ocaml-mode . fc-ocaml)
+        (plantuml-mode . fc-plantuml)
+        (python-mode . fc-python)))
+
+(cl-defun fc--load-mode-config ()
+  "Load config for current mode."
+  (when-let ((name (gethash major-mode *fc--mode-config-map*)))
+    (unless (featurep name)
+      (fc-load name
+        :local t
+        :after (progn
+                 (fc-call-mode-func "setup" nil))))))
+
+(add-hook 'find-file-hook #'fc--load-mode-config)
 
 (fc-require 'fc-control)
 (fc-load 'fc-next-error

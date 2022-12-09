@@ -28,7 +28,10 @@
 
 (fc-load 'go-mode
   :after (progn
-           (add-hook 'go-mode-hook #'lsp)
+           (cl-defun fc--go-setup ()
+             (fc--lsp-enable))
+
+           (add-hook 'go-mode-hook #'fc--go-setup)
 
            (fc-add-fmt 'go-mode nil #'gofmt)))
 

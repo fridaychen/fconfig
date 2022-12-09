@@ -193,7 +193,7 @@
                          (forward-char 1)
                          (org-cycle)))))
 
-    (cl-defun fc--setup-org-mode ()
+    (cl-defun fc--org-setup ()
       (when (and *is-gui*
                  (fboundp #'pixel-scroll-precision-mode))
         (pixel-scroll-precision-mode 1))
@@ -283,7 +283,7 @@
     (add-hook 'org-babel-after-execute-hook #'org-redisplay-inline-images)
 
     (add-hook 'org-mode-hook #'fc--book-setup)
-    (add-hook 'org-mode-hook #'fc--setup-org-mode)
+    (add-hook 'org-mode-hook #'fc--org-setup)
     (when *is-gui*
       (add-hook 'org-mode-hook #'valign-mode))
 
@@ -1144,9 +1144,6 @@ LANG: language of babel."
             ("org" :components ("org-notes" "org-static"))))
 
     (org-publish-current-project)))
-
-(when (eq major-mode 'org-mode)
-  (fc--setup-org-mode))
 
 (provide 'fc-org)
 

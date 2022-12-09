@@ -35,11 +35,11 @@
            (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
            (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
 
-           (cl-defun fc--setup-plantuml-mode ()
+           (cl-defun fc--plantuml-setup ()
              (setq indent-tabs-mode nil
                    plantuml-indent-level 4))
 
-           (add-hook 'plantuml-mode-hook #'fc--setup-plantuml-mode)
+           (add-hook 'plantuml-mode-hook #'fc--plantuml-setup)
            (fc-add-fmt 'plantuml-mode nil #'fc--default-fmt-with-indent)
 
            (with-eval-after-load 'org

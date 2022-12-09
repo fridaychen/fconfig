@@ -13,6 +13,7 @@ setup(
         "mutagen",
         "nwdiag",
         "pretty-errors",
+        "pyright",
         "python-Levenshtein",
         "python-lsp-server",
         "wikipedia",

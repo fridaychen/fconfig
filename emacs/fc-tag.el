@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(defvar *fc-tag* (make-hash-table))
+(defvar *fc--tag-map* (make-hash-table))
 
 (cl-defun fc-find-definitions (&key apropos)
   (interactive)
@@ -165,7 +165,7 @@
       *fc-tag-global*))))
 
 (cl-defun fc-find-tag ()
-  (let ((instance (gethash major-mode *fc-tag*)))
+  (let ((instance (gethash major-mode *fc--tag-map*)))
     (when instance
       (cl-return-from fc-find-tag instance)))
 
@@ -205,7 +205,7 @@
   (fc-tag--list (fc-find-tag)))
 
 (cl-defun fc-add-tag (mode tag-instance)
-  (puthash mode tag-instance *fc-tag*))
+  (puthash mode tag-instance *fc--tag-map*))
 
 (fc-add-to-hook 'after-change-major-mode-hook
                 #'(lambda ()
@@ -217,7 +217,7 @@
                              (eq major-mode 'minibuffer-inactive-mode))
                       (hack-local-variables))))
 
-(puthash 'emacs-lisp-mode *fc-tag-xref* *fc-tag*)
+(puthash 'emacs-lisp-mode *fc-tag-xref* *fc--tag-map*)
 
 (provide 'fc-tag)
 

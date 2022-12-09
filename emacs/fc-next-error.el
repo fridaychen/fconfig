@@ -4,15 +4,15 @@
 ;;
 
 ;;; Code:
-(defvar *fc-navi-buffer-modes* nil)
-(defvar *fc-navi-buffer-map* (make-hash-table))
+(defvar *fc--next-error-modes* nil)
+(defvar *fc--next-error-map* (make-hash-table))
 
 (fc-load 'simple
   :local t
   :after (progn
            (defun fc--next-error-buffer-p (buf)
              (member (buffer-local-value 'major-mode buf)
-                     *fc-navi-buffer-modes*))
+                     *fc--next-error-modes*))
 
            (defun fc--find-visible-next-error-buffer ()
              "Find visible next-error buffer by major-mode."
@@ -41,7 +41,7 @@
               (fc-list-buffer :not-file t
                               :filter
                               (lambda ()
-                                (member major-mode *fc-navi-buffer-modes*)))
+                                (member major-mode *fc--next-error-modes*)))
               :error-msg "No navigatable buffer found."
               :pop (not (fc--next-error-buffer-p (current-buffer)))))
 
@@ -52,14 +52,14 @@
 MODE: major mode.
 NEXT: next function.
 PREV: previous function."
-  (add-to-list '*fc-navi-buffer-modes* mode)
-  (puthash mode (list next prev) *fc-navi-buffer-map*))
+  (add-to-list '*fc--next-error-modes* mode)
+  (puthash mode (list next prev) *fc--next-error-map*))
 
 (cl-defun fc-next-error ()
   "Goto next error."
   (when-let* ((buf (fc--next-error-find-buffer))
               (ops (gethash (buffer-local-value 'major-mode buf)
-                            *fc-navi-buffer-map*))
+                            *fc--next-error-map*))
               (next (cl-first ops)))
     (with-current-buffer buf
       (call-interactively next)
@@ -69,7 +69,7 @@ PREV: previous function."
   "Goto previous error."
   (when-let* ((buf (fc--next-error-find-buffer))
               (ops (gethash (buffer-local-value 'major-mode buf)
-                            *fc-navi-buffer-map*))
+                            *fc--next-error-map*))
               (prev (cl-second ops)))
     (with-current-buffer buf
       (call-interactively prev)

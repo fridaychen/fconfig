@@ -35,21 +35,19 @@
     (add-hook '*fc-common-fast-act-hook* #'fc--org-toggle-special-edit)
     (fc-require 'fc-plantuml)))
 
-(defvar *fc--mode-config-map* (make-hash-table))
-
-(mapc (lambda (data) (puthash (car data) (cdr data) *fc--mode-config-map*))
-      '(
-        (c-mode . fc-clang)
-        (c++-mode . fc-clang)
-        (emacs-lisp-mode . fc-elisp)
-        (go-mode . fc-golang)
-        (haskell-mode . fc-haskell)
-        (latex-mode . fc-latex)
-        (lisp-mode . fc-lisp)
-        (markdown-mode . fc-markdown)
-        (ocaml-mode . fc-ocaml)
-        (plantuml-mode . fc-plantuml)
-        (python-mode . fc-python)))
+(defvar *fc--mode-config-map* (fc-make-hash-table
+                               '(
+                                 (c-mode . fc-clang)
+                                 (c++-mode . fc-clang)
+                                 (emacs-lisp-mode . fc-elisp)
+                                 (go-mode . fc-golang)
+                                 (haskell-mode . fc-haskell)
+                                 (latex-mode . fc-latex)
+                                 (lisp-mode . fc-lisp)
+                                 (markdown-mode . fc-markdown)
+                                 (ocaml-mode . fc-ocaml)
+                                 (plantuml-mode . fc-plantuml)
+                                 (python-mode . fc-python))))
 
 (cl-defun fc--load-mode-config ()
   "Load config for current mode."

@@ -132,6 +132,12 @@ OBJ: object"
          (v (intern (downcase s))))
     (member v '(true yes))))
 
+(cl-defun fc-make-hash-table (data)
+  (let ((table (make-hash-table)))
+    (--map (puthash (car it) (cdr it) table)
+           data)
+    table))
+
 (provide 'fc-lang)
 
 ;; Local Variables:

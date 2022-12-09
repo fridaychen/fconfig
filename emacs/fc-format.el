@@ -5,7 +5,12 @@
 
 ;;; Code:
 
-(defconst *fc-fmt* (make-hash-table))
+(defconst *fc-fmt* (fc-make-hash-table
+                    '(
+                      (mhtml-mode ("tidy" "-utf8" "-upper" "-indent" "-quiet") nil)
+                      (nxml-mode ("tidy" "-xml" "-utf8" "-indent" "-quiet") nil)
+                      (sh-mode ("shfmt" "-ci" "-i" "4") nil))))
+
 (defconst *fc-fmt-verbose* nil)
 
 (defun fc-indent-all ()
@@ -110,13 +115,6 @@ MODE: 'major-mode.
 EXTERNAL: external command.
 INTERNAL: internal command."
   (puthash mode (list external internal) *fc-fmt*))
-
-(--each '(
-          (mhtml-mode ("tidy" "-utf8" "-upper" "-indent" "-quiet") nil)
-          (nxml-mode ("tidy" "-xml" "-utf8" "-indent" "-quiet") nil)
-          (sh-mode ("shfmt" "-ci" "-i" "4") nil)
-          )
-  (puthash (car it) (cdr it) *fc-fmt*))
 
 (add-hook 'before-save-hook #'fc--fmt-hook-func)
 

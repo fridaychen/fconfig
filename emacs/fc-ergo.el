@@ -435,7 +435,9 @@ INDENT-FUNC: function for indent."
      (eww-back-url))
 
     ((guard (derived-mode-p 'prog-mode))
-     (pop-tag-mark))
+     (if (and (boundp 'lsp-bridge-mode) lsp-bridge-mode)
+         (lsp-bridge-find-def-return)
+       (pop-tag-mark)))
 
     (_
      (scroll-down-command))))

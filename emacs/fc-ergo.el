@@ -1125,7 +1125,6 @@ KEYMAP: keymap to run."
      ("f" ,(fc-mode-key
             `(
               (emacs-lisp-mode . describe-function)
-              (go-mode . godef-describe)
               (python-mode . python-eldoc-function)
               ((latex-mode markdown-mode org-mode) . fc-ergo-which-function)
               (_ . fc-describe-function))))

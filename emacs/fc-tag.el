@@ -116,25 +116,26 @@
 
 (cl-defmethod fc-tag--find-definitions ((x fc-tag-lsp) id)
   (setq id (propertize id 'identifier-at-point t))
+  (fc--lsp-find-definitions))
 
-  (cl-defmethod fc-tag--find-apropos ((x fc-tag-lsp) pattern)
-    (fc--lsp-find-apropos pattern))
+(cl-defmethod fc-tag--find-apropos ((x fc-tag-lsp) pattern)
+  (fc--lsp-find-apropos pattern))
 
-  (cl-defmethod fc-tag--find-references ((x fc-tag-lsp) id)
-    (setq id (propertize id 'identifier-at-point t))
+(cl-defmethod fc-tag--find-references ((x fc-tag-lsp) id)
+  (setq id (propertize id 'identifier-at-point t))
 
-    (fc--lsp-find-references))
+  (fc--lsp-find-references))
 
-  (cl-defmethod fc-tag--open-project ((x fc-tag-lsp) proj-dir src-dirs)
-    )
+(cl-defmethod fc-tag--open-project ((x fc-tag-lsp) proj-dir src-dirs)
+  )
 
-  (cl-defmethod fc-tag--open-file ((x fc-tag-lsp))
-    (if (member major-mode '(c-mode c++mode python-mode))
-        (fc--lsp-enable)
-      (add-to-list 'company-backends 'company-capf)))
+(cl-defmethod fc-tag--open-file ((x fc-tag-lsp))
+  (if (member major-mode '(c-mode c++mode python-mode))
+      (fc--lsp-enable)
+    (add-to-list 'company-backends 'company-capf)))
 
-  (cl-defmethod fc-tag--list ((x fc-tag-lsp))
-    (fc--lsp-list-tag)))
+(cl-defmethod fc-tag--list ((x fc-tag-lsp))
+  (fc--lsp-list-tag))
 
 (defvar *fc-tag-lsp* (make-instance 'fc-tag-lsp))
 

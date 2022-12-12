@@ -62,7 +62,7 @@
 (cl-defun fc--lsp-descripbe-function ()
   "Describe function."
   (cond
-   ((lsp-bridge-mode)
+   (lsp-bridge-mode
     (lsp-bridge-popup-documentation)
     t)
 
@@ -72,12 +72,44 @@
 
    (t)))
 
+(cl-defun fc--lsp-find-definitions ()
+  (cond
+   (lsp-bridge-mode
+    (lsp-bridge-find-def))
+
+   (t
+    (xref--find-definitions id nil))))
+
+(cl-defun fc--lsp-find-references ()
+  (cond
+   (lsp-bridge-mode
+    (lsp-bridge-find-references))
+
+   (t
+    (xref--find-xrefs id 'references id nil))))
+
+(cl-defun fc--lsp-find-apropos (pattern)
+  (cond
+   (lsp-bridge-mode
+    (lsp-bridge-workspace-list-symbols pattern))
+
+   (t
+    (xref-find-apropos pattern))))
+
+(cl-defun fc--lsp-list-tag ()
+  (cond
+   (lsp-bridge-mode
+    (fc-funcall #'lsp-bridge-workspace-list-symbols))
+
+   (t
+    (fc-funcall #'lsp-ivy-workspace-symbol))))
+
 (cl-defun fc--lsp-active-p ()
   (or lsp-bridge-mode lsp-mode))
 
 (cl-defun fc--lsp-rename ()
   (cond
-   ((lsp-bridge-mode)
+   (lsp-bridge-mode
     (lsp-bridge-rename)
     t)
 

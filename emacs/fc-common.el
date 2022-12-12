@@ -236,7 +236,7 @@ COLOR: background color."
       ('material-light
        (setf soothe-percent 2)
        (fc-set-face-attribute 'default nil
-                              :background "honeydew"))
+                              :background (color-darken-name "honeydew" 2)))
 
       ('modus-operandi
        (defvar modus-modified nil)

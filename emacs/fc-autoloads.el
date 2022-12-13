@@ -118,6 +118,8 @@
 ;; modeline
 (autoload #'fc-modeline-mode "fc-modeline")
 
+(autoload #'fc-modeline-proj-name "fc-ergo-seg")
+
 ;; book
 (autoload #'fc--book-p "fc-book")
 (autoload #'fc--book-setup "fc-book")

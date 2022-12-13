@@ -31,9 +31,9 @@
              (fc-switch-to-buffer
               "Next-error buffer"
               (fc-list-buffer :not-file t
-                              :mode *fc--next-error-map*))
-             :error-msg "No navigatable buffer found."
-             :pop (not (fc--next-error-buffer-p (current-buffer))))
+                              :mode *fc--next-error-map*)
+              :error-msg "No navigatable buffer found."
+              :pop (not (fc--next-error-buffer-p (current-buffer)))))
 
            (setf next-error-find-buffer-function #'fc--next-error-find-buffer)))
 

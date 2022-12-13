@@ -48,7 +48,7 @@ FILTER: func for filter."
                    (or (not modified)
                        (buffer-modified-p buf))
                    (or (not mode)
-                       (member (buffer-local-value 'major-mode buf) mode))
+                       (fc-member (buffer-local-value 'major-mode buf) mode))
                    (or (not filter)
                        (with-current-buffer buf
                          (fc-funcall filter))))

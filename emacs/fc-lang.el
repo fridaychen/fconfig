@@ -138,6 +138,20 @@ OBJ: object"
            data)
     table))
 
+(cl-defun fc-member (var set)
+  (cond
+   ((or (numberp set) (symbolp set))
+    (eq var set))
+
+   ((stringp set)
+    (string-equal var set))
+
+   ((sequencep set)
+    (cl-position var set))
+
+   ((hash-table-p set)
+    (gethash var set))))
+
 (provide 'fc-lang)
 
 ;; Local Variables:

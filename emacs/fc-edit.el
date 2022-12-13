@@ -57,7 +57,7 @@
 (defun fc--setup-file-buffer ()
   (setf enable-dir-local-variables t)
 
-  (when (member major-mode *fc-doc-modes*)
+  (when (fc-member major-mode *fc-doc-modes*)
     (fc--set-visual-line-mode))
 
   (fc--setup-line-spacing)

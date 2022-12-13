@@ -257,21 +257,15 @@ DIR: project path."
       (oset *fc-project* last-target target)
       (fc-proj--build *fc-project* target))))
 
-(defun fc--load-compilation-error (error-file build-dir)
-  "Load compileation error file.
-ERROR-FILE: error file path.
-BUILD-DIR: compilation dir."
-  (fc-with-buffer (find-file error-file)
-    (fc-with-dir build-dir
-      (compilation-mode))))
-
 (cl-defun fc-proj-load-compilation-error ()
-  (fc--load-compilation-error (format "%s/%s"
-                                      (fc-proj--dir *fc-project*)
-                                      (fc-proj--get *fc-project* :error-file))
-                              (format "%s/%s"
-                                      (fc-proj--dir *fc-project*)
-                                      (fc-proj--get *fc-project* :build-dir))))
+  (when-let* ((proj-dir (and *fc-project* (fc-proj--dir *fc-project*)))
+              (error-file (fc-proj--get *fc-project* :error-file))
+              (build-dir (or (fc-proj--get *fc-project* :build-dir)
+                             "")))
+    (fc-with-buffer (find-file (format "%s/%s" proj-dir error-file))
+      (setq default-directory (format "%s/%s" proj-dir build-dir))
+      (compilation-mode)
+      (goto-char (point-max)))))
 
 (defun fc-user-select-project ()
   "Allow user to select project."
@@ -367,6 +361,11 @@ ROOT: project path."
 (defvar *fc-projects* nil)
 
 (run-hooks '*fc-project-hook*)
+
+(defun fc-proj--compilation-done (buf msg)
+  (fc-proj-load-compilation-error))
+
+(add-to-list 'compilation-finish-functions #'fc-proj--compilation-done)
 
 (provide 'fc-proj)
 

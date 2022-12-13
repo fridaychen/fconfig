@@ -1305,7 +1305,6 @@ STEP: pixels."
      ("r" ,(fc-manual (when (fc-user-confirm "Restart Emacs")
                         (fc-save-desktop)
                         (restart-emacs))))
-     ("s" ,(fc-manual (fc-assist-cmd "--pmsleep")))
      ("t" ,(fc-manual (fc-user-select-func
                        "Select theme style"
                        `(("dark"  . (lambda () (fc-theme-auto-select *fc-dark-theme*)))
@@ -1330,11 +1329,13 @@ STEP: pixels."
      ("K" fc--reduce-v)
      ("L" fc--enlarge-h)
 
+     ("S" ,(fc-manual (fc-assist-cmd "--pmsleep")))
+
      ("W" ,(fc-manual (fc-theme-auto-select
                        (alist-get *fc-theme-mode* *fc--work-deep-themes*))))
      )
    "ergo-prefix-quick-map")
-  "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  s: sleep  t: select theme  w: work theme  z: suspend  T: deep work theme.")
+  "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: select theme  w: work theme  z: suspend  S: sleep  W: deep work theme.")
 
 (defun fc-vc-portal ()
   "Run vc portal."

@@ -50,13 +50,9 @@ REST: words."
 (fc-add-network-advice 'google-speak)
 
 ;; open in OS
-(cl-defun fc-open-in-system (&optional (path nil))
+(cl-defun fc-open-in-system (&optional (path buffer-file-name))
   "Open path in desktop system.
 PATH: target path."
-  (when (and (not path)
-             buffer-file-name)
-    (setf path buffer-file-name))
-
   (let* ((dir (shell-quote-argument
                (file-name-directory path))))
     (cond
@@ -969,23 +965,21 @@ REST: commands."
   "Select background color."
   (let ((bg (fc-user-select "Background color"
                             '(
-                              "NIL"
-                              "beige"
-                              "bisque"
-                              "blanched almond"
-                              "cornsilk1"
-                              "cornsilk2"
-                              "cornsilk3"
-                              "linen"))))
-    (cond
-     ((string= bg "NIL")
-      (setf *fc-common-light-theme-bg* nil)
-      )
+                              ("NIL" . nil)
+                              ("beige" . "beige")
+                              ("bisque" .  "bisque")
+                              ("blanched almond" . "blanched almond")
+                              ("cornsilk1" . "cornsilk1")
+                              ("cornsilk2" . "cornsilk2")
+                              ("cornsilk3" . "cornsilk3")
+                              ("darkslategrey" . "darkslategrey")
+                              ("linen" . "linen")
+                              ("light lime green" . "#C1E6C6")))))
+    (when (or (not bg)
+              (color-defined-p bg))
+      (setf *fc-common-light-theme-bg* bg)))
 
-     ((when (and bg (color-defined-p bg))
-        (setq *fc-common-light-theme-bg* bg))))
-
-    (fc-reset-theme)))
+  (fc-reset-theme))
 
 ;; theme
 (cl-defun fc-select-theme ()

@@ -146,7 +146,7 @@
 
     (fc--org-theme-changed)
 
-    (fc-add-fmt 'org-mode nil 'fc-format-org)
+    (fc-add-fmt 'org-mode nil 'fc--format-org)
 
     (defun create-image-with-background-color (args)
       "Specify background color of Org-mode inline image through modify `ARGS'."
@@ -392,8 +392,9 @@ PRE-FORMAT: format the block content."
                        (fc-region start end
                          (fc--org-format-verse)))))))
 
-(cl-defun fc-format-org ()
-  (fc--org-fix-headline-spacing)
+(cl-defun fc--format-org ()
+  "Format org buffer."
+  ;; (fc--org-fix-headline-spacing)
   (fc--org-fmt-verse)
 
   (fc--default-fmt))

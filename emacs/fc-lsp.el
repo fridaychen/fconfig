@@ -78,7 +78,7 @@
     (lsp-bridge-find-def))
 
    (t
-    (xref--find-definitions id nil))))
+    (xref--find-definitions (fc-current-thing) nil))))
 
 (cl-defun fc--lsp-find-references ()
   (cond

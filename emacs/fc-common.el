@@ -162,6 +162,16 @@ COLOR: background color."
 
 (defun fc-patch-theme ()
   "Patch theme."
+  (when (member *fc-current-theme* '(adwaita
+                                     ef-cyprus
+                                     ef-deuteranopia-light
+                                     ef-tritanopia-light
+                                     faff
+                                     leuven
+                                     modus-operandi))
+    (fc-set-face-attribute 'default nil
+                           :background *fc-common-light-theme-bg*))
+
   (let ((soothe-percent (if (fc-dark-theme-p)
                             *fc-soothe-dark-percent*
                           *fc-soothe-light-percent*)))
@@ -311,17 +321,7 @@ COLOR: background color."
 
     (fc-soothe-theme soothe-percent
                      (gethash *fc-current-theme*
-                              *fc-soothe-color*)))
-
-  (when (member *fc-current-theme* '(adwaita
-                                     ef-cyprus
-                                     ef-deuteranopia-light
-                                     ef-tritanopia-light
-                                     faff
-                                     leuven
-                                     modus-operandi))
-    (fc-set-face-attribute 'default nil
-                           :background *fc-common-light-theme-bg*)))
+                              *fc-soothe-color*))))
 
 ;; players
 (cl-defun fc-init-user-player ()

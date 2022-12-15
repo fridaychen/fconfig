@@ -60,6 +60,10 @@
   (when (fc-member major-mode *fc-doc-modes*)
     (fc--set-visual-line-mode))
 
+  (when (derived-mode-p 'prog-mode)
+    (fc-delay
+      (color-identifiers-mode)))
+
   (fc--setup-line-spacing)
   ;; hightlight ending whitespace
   (highlight-regexp "[ \t]+$" 'whitespace-trailing))
@@ -154,8 +158,7 @@
            (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)))
 
 (fc-load 'color-identifiers-mode
-  :autoload t
-  :after (global-color-identifiers-mode))
+  :autoload t)
 
 (fc-load 'which-func
   :local t

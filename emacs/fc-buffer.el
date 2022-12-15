@@ -21,7 +21,7 @@ BUFFERS: list of buffer."
   (let ((current (current-buffer)))
     (--remove (eq current it) buffers)))
 
-(cl-defun fc-list-buffer (&key not-file dir regex file-regex sort modified filter mode)
+(cl-defun fc-list-buffer (&key not-file dir regex file-regex sort modified filter mode count)
   "List buffer accroding the arguments.
 NOT-FILE: buf is not normal file.
 DIR: buf is under this dir.
@@ -29,9 +29,12 @@ REGEX: regex for match name of buffer.
 FILE-REGEX: regex for match file name of buffer.
 SORT: sort the result.
 MODIFIED: test buf modified state.
-FILTER: func for filter."
+FILTER: func for filter.
+MODE: specify target major-mode.
+COUNT: max limit of result."
   (cl-loop with t-dir = (if dir (expand-file-name dir) nil)
            for buf in (buffer-list)
+           while (or (not count) (< cnt count))
            if (and (or (and not-file
                             (not dir)
                             (not file-regex)
@@ -53,17 +56,16 @@ FILTER: func for filter."
                        (with-current-buffer buf
                          (fc-funcall filter))))
            collect buf into result
+           count 1 into cnt
            finally return (if sort
                               (--sort (string< (buffer-name it) (buffer-name other)) result)
                             result)))
 
-(cl-defun fc-switch-to-buffer-re (regex &optional (n 0))
+(cl-defun fc-switch-to-buffer-re (regex)
   "Switch to recent buffer which name match regex.
-REGEX: regex.
-N: nth."
+REGEX: regex."
   (switch-to-buffer
-   (cl-nth-value n
-                 (fc-list-buffer :file-regex regex))))
+   (car (fc-list-buffer :file-regex regex :count 1))))
 
 (cl-defun fc-switch-to-recent-buffer ()
   "Create a window and show a recent buf which is not showed."
@@ -99,7 +101,7 @@ ERROR-MSG: error message."
 ;; select buffers to show
 (defun -show-buffers (bufs)
   "Show buffers.
-BUFS: buffer list."
+  BUFS: buffer list."
   (let* ((count (length bufs))
          (first-buf (cl-first bufs))
          (size (/ (frame-height) count)))
@@ -119,7 +121,7 @@ BUFS: buffer list."
 
 (defun fc-select-files-to-show (pattern)
   "Select buffers to show.
-PATTERN: buffer name pattern."
+  PATTERN: buffer name pattern."
   (interactive "MFilename pattern : ")
 
   (let* ((bufs (fc-list-buffer :file-regex pattern))
@@ -130,9 +132,9 @@ PATTERN: buffer name pattern."
 
 (cl-defun fc-refresh-buffer-content (buffer-or-name del-win &rest rest)
   "Refresh buffer content.
-BUFFER-OR-NAME: buffer or name.
-DEL-WIN: if delete the window of buffer.
-REST: new content."
+  BUFFER-OR-NAME: buffer or name.
+  DEL-WIN: if delete the window of buffer.
+  REST: new content."
   (let* ((buf (if buffer-or-name
                   (get-buffer-create buffer-or-name)
                 (current-buffer)))
@@ -153,13 +155,13 @@ REST: new content."
 
 (cl-defun fc-pop-buf (buffer-or-name &key automode read-only highlight select escape local-vars)
   "Popup buf.
-BUFFER-OR-NAME: buffer or name.
-AUTOMODE: if run `normal-mode'.
-READ-ONLY: set buffer to read-only mode.
-HIGHLIGHT: highlight regex.
-SELECT: focus in new window.
-ESCAPE: decode ansi escape sequence.
-LOCAL-VARS: list of local-vars."
+  BUFFER-OR-NAME: buffer or name.
+  AUTOMODE: if run `normal-mode'.
+  READ-ONLY: set buffer to read-only mode.
+  HIGHLIGHT: highlight regex.
+  SELECT: focus in new window.
+  ESCAPE: decode ansi escape sequence.
+  LOCAL-VARS: list of local-vars."
   (display-buffer buffer-or-name 'display-buffer-pop-up-window)
 
   (with-current-buffer buffer-or-name

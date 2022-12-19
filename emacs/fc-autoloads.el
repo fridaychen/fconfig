@@ -70,7 +70,6 @@
 (defvar *fc-reading-face* nil)
 (defvar-local fc-viewer-minor-mode nil)
 (autoload #'fc-viewer-toggle "fc-viewer")
-(autoload #'fc-viewer-list-buffer "fc-viewer")
 
 ;; git
 (autoload #'magit-get-current-branch "magit")

@@ -28,10 +28,11 @@
 
            (defun fc-switch-next-error-buffer ()
              "Switch a next-error buffer."
-             (fc-switch-to-buffer
+             (fc-select-buffer
               "Next-error buffer"
               (fc-list-buffer :not-file t
-                              :mode *fc--next-error-map*)
+                              :mode *fc--next-error-map*
+                              :no-own t)
               :error-msg "No navigatable buffer found."
               :pop (not (fc--next-error-buffer-p (current-buffer)))))
 

@@ -18,11 +18,19 @@
 
            (setf *fc-lsp-enable* nil
                  *fc-lsp-bridge-enable* t
+                 lsp-idle-delay 1
                  lsp-headerline-breadcrumb-enable nil)
 
            (fc-add-next-error-mode 'lsp-bridge-ref-mode
                                    #'lsp-bridge-ref-jump-next-keyword
                                    #'lsp-bridge-ref-jump-prev-keyword)
+
+           (defun fc--lsp-hide ()
+             (lsp-bridge-hide-signature-tooltip)
+             (lsp-bridge-hide-doc-tooltip)
+             (lsp-bridge-hide-diagnostic-tooltip))
+
+           (add-hook '*fc-ergo-restore-hook* #'fc--lsp-hide)
 
            (defun fc--lsp-enable ()
              (lsp-bridge-mode 1))))

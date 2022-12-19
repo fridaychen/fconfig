@@ -1017,7 +1017,7 @@ KEYMAP: keymap to run."
               (_ . end-of-buffer))))
      ("g" ,(fc-manual
             (bury-buffer)
-            (fc-switch-to-buffer-re "\\.c$\\|\\.el$\\|\\.go$\\|\\.py$")))
+            (fc-switch-buf :mode '(c-mode python-mode go-mode emacs-lisp-mode))))
 
      ("h" fc-goto-last-change)
 
@@ -1031,15 +1031,16 @@ KEYMAP: keymap to run."
 
      ("o" next-buffer)
      ("p" ,(fc-manual (goto-char (read-number "Point : "))))
-     ("q" ,(fc-manual (fc-switch-to-buffer
+     ("q" ,(fc-manual (fc-select-buffer
                        "Modified buffers"
                        (fc-list-buffer :modified t))))
      ("r" fc-recentf)
      ("s" ace-swap-window)
      ("t" ,(fc-manual (fc-tag-list)))
      ("u" previous-buffer)
-     ("x" ,(fc-manual (fc-switch-to-buffer "Select view"
-                                           (fc-rm-current-buf (fc-viewer-list-buffer)))))
+     ("x" ,(fc-manual (fc-select-buffer
+                       "Select view"
+                       (fc-list-buffer :no-own t :var 'fc-viewer-minor-mode))))
      ("w" fc-buffers-list)
 
      ("[" ,(fc-manual (recenter 1)))

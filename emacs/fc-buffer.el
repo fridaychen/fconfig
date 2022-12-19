@@ -21,7 +21,7 @@ BUFFERS: list of buffer."
   (let ((current (current-buffer)))
     (--remove (eq current it) buffers)))
 
-(cl-defun fc-list-buffer (&key not-file dir regex file-regex sort modified filter mode count)
+(cl-defun fc-list-buffer (&key not-file dir regex file-regex sort modified filter mode var count no-own)
   "List buffer accroding the arguments.
 NOT-FILE: buf is not normal file.
 DIR: buf is under this dir.
@@ -31,7 +31,9 @@ SORT: sort the result.
 MODIFIED: test buf modified state.
 FILTER: func for filter.
 MODE: specify target major-mode.
-COUNT: max limit of result."
+VAR: test buffer local var.
+COUNT: max limit of result.
+NO-NOW: not include current buffer in result."
   (cl-loop with t-dir = (if dir (expand-file-name dir) nil)
            for buf in (buffer-list)
            while (or (not count) (< cnt count))
@@ -52,6 +54,10 @@ COUNT: max limit of result."
                        (buffer-modified-p buf))
                    (or (not mode)
                        (fc-member (buffer-local-value 'major-mode buf) mode))
+                   (or (not var)
+                       (buffer-local-value var buf))
+                   (or (not no-own)
+                       (not (eq buf (current-buffer))))
                    (or (not filter)
                        (with-current-buffer buf
                          (fc-funcall filter))))
@@ -61,11 +67,11 @@ COUNT: max limit of result."
                               (--sort (string< (buffer-name it) (buffer-name other)) result)
                             result)))
 
-(cl-defun fc-switch-to-buffer-re (regex)
+(cl-defun fc-switch-buf (&rest rest)
   "Switch to recent buffer which name match regex.
 REGEX: regex."
-  (switch-to-buffer
-   (car (fc-list-buffer :file-regex regex :count 1))))
+  (when-let ((buf (apply #'fc-list-buffer :count 1 rest)))
+    (switch-to-buffer buf)))
 
 (cl-defun fc-switch-to-recent-buffer ()
   "Create a window and show a recent buf which is not showed."
@@ -74,7 +80,7 @@ REGEX: regex."
                            (cdr (buffer-list)))))
     (switch-to-buffer buf)))
 
-(cl-defun fc-switch-to-buffer (prompt buffers &key root pop error-msg)
+(cl-defun fc-select-buffer (prompt buffers &key root pop error-msg)
   "Select buffer to switch.
 PROMPT: prompt string.
 BUFFERS: buffer list for selection.
@@ -84,7 +90,7 @@ ERROR-MSG: error message."
   (unless buffers
     (let ((msg (or error-msg "Buffer list is empty !!!")))
       (message msg)
-      (cl-return-from fc-switch-to-buffer msg)))
+      (cl-return-from fc-select-buffer msg)))
 
   (let ((buf (fc-user-select prompt
                              (--map (cons (if root
@@ -214,9 +220,9 @@ BUFFER: buuffer to add."
     (setf favorite-buffers
           (-filter #'buffer-live-p
                    favorite-buffers))
-    (fc-switch-to-buffer "Favorite buffer"
-                         (-remove #'get-buffer-window-list
-                                  favorite-buffers))))
+    (fc-select-buffer "Favorite buffer"
+                      (-remove #'get-buffer-window-list
+                               favorite-buffers))))
 
 ;; project buffer
 (defun fc-switch-within-project ()
@@ -224,10 +230,10 @@ BUFFER: buuffer to add."
   (interactive)
 
   (let ((root (fc-proj-root)))
-    (fc-switch-to-buffer "Switch within project"
-                         (fc-rm-current-buf
-                          (fc-list-buffer :dir root :sort t))
-                         :root root)))
+    (fc-select-buffer "Switch within project"
+                      (fc-rm-current-buf
+                       (fc-list-buffer :dir root :sort t))
+                      :root root)))
 
 ;; special buffer
 (cl-defun fc-create-side-window (buffer-or-name pos size)

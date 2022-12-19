@@ -28,12 +28,6 @@
     (hl-line-mode 1)
     (-fc-viewer-adjust-width)))
 
-(cl-defun fc-viewer-list-buffer ()
-  "List viewer buffer."
-  (fc-list-buffer :filter
-                  (lambda ()
-                    fc-viewer-minor-mode)))
-
 (defun fc-viewer-toggle ()
   "Toggle viewer mode."
   (interactive)

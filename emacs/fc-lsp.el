@@ -54,6 +54,10 @@
                  lsp-progress-via-spinner nil
                  lsp-enable-on-type-formatting nil)
 
+           (defun fc-lsp-bridge-check ()
+             (unless (lsp-bridge-epc-live-p lsp-bridge-epc-process)
+               (lsp-bridge-restart-process)))
+
            (defun fc--lsp-enable ()
              (lsp-mode 1))))
 
@@ -71,6 +75,7 @@
   "Describe function."
   (cond
    (lsp-bridge-mode
+    (fc-lsp-bridge-check)
     (lsp-bridge-popup-documentation)
     t)
 
@@ -83,6 +88,7 @@
 (cl-defun fc--lsp-find-definitions ()
   (cond
    (lsp-bridge-mode
+    (fc-lsp-bridge-check)
     (lsp-bridge-find-def))
 
    (t
@@ -91,6 +97,7 @@
 (cl-defun fc--lsp-find-references ()
   (cond
    (lsp-bridge-mode
+    (fc-lsp-bridge-check)
     (lsp-bridge-find-references))
 
    (t
@@ -99,6 +106,7 @@
 (cl-defun fc--lsp-find-apropos (pattern)
   (cond
    (lsp-bridge-mode
+    (fc-lsp-bridge-check)
     (lsp-bridge-workspace-list-symbols pattern))
 
    (t
@@ -107,6 +115,7 @@
 (cl-defun fc--lsp-list-tag ()
   (cond
    (lsp-bridge-mode
+    (fc-lsp-bridge-check)
     (fc-funcall #'lsp-bridge-workspace-list-symbols))
 
    (t
@@ -118,6 +127,7 @@
 (cl-defun fc--lsp-rename ()
   (cond
    (lsp-bridge-mode
+    (fc-lsp-bridge-check)
     (lsp-bridge-rename)
     t)
 

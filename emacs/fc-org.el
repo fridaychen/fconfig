@@ -198,6 +198,9 @@
                  (fboundp #'pixel-scroll-precision-mode))
         (pixel-scroll-precision-mode 1))
 
+      (setf indent-tabs-mode nil
+            tab-width 4)
+
       (electric-indent-local-mode -1)
 
       (org-superstar-mode 1)

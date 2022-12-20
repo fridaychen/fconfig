@@ -19,6 +19,7 @@
            (setf *fc-lsp-enable* nil
                  *fc-lsp-bridge-enable* t
                  lsp-idle-delay 1
+                 lsp-bridge-enable-signature-help nil
                  lsp-headerline-breadcrumb-enable nil)
 
            (fc-add-next-error-mode 'lsp-bridge-ref-mode
@@ -56,6 +57,7 @@
 
            (defun fc-lsp-bridge-check ()
              (unless (lsp-bridge-epc-live-p lsp-bridge-epc-process)
+               (message "restart lsp bridge")
                (lsp-bridge-restart-process)))
 
            (defun fc--lsp-enable ()

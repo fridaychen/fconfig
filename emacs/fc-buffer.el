@@ -127,7 +127,7 @@ ERROR-MSG: error message."
 
 (defun fc-select-files-to-show (pattern)
   "Select buffers to show.
-  PATTERN: buffer name pattern."
+PATTERN: buffer name pattern."
   (interactive "MFilename pattern : ")
 
   (let* ((bufs (fc-list-buffer :file-regex pattern))
@@ -138,9 +138,9 @@ ERROR-MSG: error message."
 
 (cl-defun fc-refresh-buffer-content (buffer-or-name del-win &rest rest)
   "Refresh buffer content.
-  BUFFER-OR-NAME: buffer or name.
-  DEL-WIN: if delete the window of buffer.
-  REST: new content."
+BUFFER-OR-NAME: buffer or name.
+DEL-WIN: if delete the window of buffer.
+REST: new content."
   (let* ((buf (if buffer-or-name
                   (get-buffer-create buffer-or-name)
                 (current-buffer)))
@@ -161,13 +161,13 @@ ERROR-MSG: error message."
 
 (cl-defun fc-pop-buf (buffer-or-name &key automode read-only highlight select escape local-vars)
   "Popup buf.
-  BUFFER-OR-NAME: buffer or name.
-  AUTOMODE: if run `normal-mode'.
-  READ-ONLY: set buffer to read-only mode.
-  HIGHLIGHT: highlight regex.
-  SELECT: focus in new window.
-  ESCAPE: decode ansi escape sequence.
-  LOCAL-VARS: list of local-vars."
+BUFFER-OR-NAME: buffer or name.
+AUTOMODE: if run `normal-mode'.
+READ-ONLY: set buffer to read-only mode.
+HIGHLIGHT: highlight regex.
+SELECT: focus in new window.
+ESCAPE: decode ansi escape sequence.
+LOCAL-VARS: list of local-vars."
   (display-buffer buffer-or-name 'display-buffer-pop-up-window)
 
   (with-current-buffer buffer-or-name

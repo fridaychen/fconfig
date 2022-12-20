@@ -984,10 +984,9 @@ REST: commands."
 ;; theme
 (cl-defun fc-select-theme ()
   "Allow user to select theme."
-  (when-let* ((theme (fc-user-select "Themes"
-                                     (custom-available-themes)))
-              (_ (not (eql theme *fc-current-theme*))))
-    (fc-load-theme theme)))
+  (fc-load-theme (fc-user-select "Themes"
+                                 (remove *fc-current-theme*
+                                         (custom-available-themes)))))
 
 (defun fc-init-dir-locals ()
   "Copy default .dir-locals.el."

@@ -11,9 +11,7 @@
         (*is-mac* "/Applications/QuodLibet.app/Contents/MacOS/quodlibet")
         (t nil)))
 
-(defvar *fc-quodlibet-control*
-  (fc-file-first-exists '("~/.config/quodlibet/control"
-                          "~/.quodlibet/control")))
+(defvar *fc--quodlibet-control* nil)
 
 (defclass fc-player-quodlibet (fc-player)
   ((play-state :initform 'Paused
@@ -67,10 +65,20 @@
      (split-string data " | "))))
 
 (defun fc-quodlibet-cmd (cmds)
+  "Run quodlibet commands.
+CMDS: list of command."
+  (unless *fc--quodlibet-control*
+    (setf *fc--quodlibet-control*
+          (fc-file-first-exists '("~/.config/quodlibet/control"
+                                  "~/.quodlibet/control"))))
+
+  (unless *fc--quodlibet-control*
+    (user-error "Not found quodlibet control file!"))
+
   (f-write-text
    (fc-text cmds :separator "\n")
    'utf-8
-   *fc-quodlibet-control*))
+   *fc--quodlibet-control*))
 
 (provide 'fc-player-quodlibet)
 

@@ -33,8 +33,7 @@
 
            (defun fc--lsp-hide ()
              (lsp-bridge-hide-signature-tooltip)
-             (lsp-bridge-hide-doc-tooltip)
-             (lsp-bridge-hide-diagnostic-tooltip))
+             (lsp-bridge-hide-doc-tooltip))
 
            (add-hook '*fc-ergo-restore-hook* #'fc--lsp-hide)
 

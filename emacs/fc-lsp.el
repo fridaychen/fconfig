@@ -26,6 +26,11 @@
                                    #'lsp-bridge-ref-jump-next-keyword
                                    #'lsp-bridge-ref-jump-prev-keyword)
 
+           (defun fc-lsp-bridge-check ()
+             (unless (lsp-bridge-epc-live-p lsp-bridge-epc-process)
+               (message "restart lsp bridge")
+               (lsp-bridge-restart-process)))
+
            (defun fc--lsp-hide ()
              (lsp-bridge-hide-signature-tooltip)
              (lsp-bridge-hide-doc-tooltip)
@@ -54,11 +59,6 @@
                  lsp-headerline-breadcrumb-enable nil
                  lsp-progress-via-spinner nil
                  lsp-enable-on-type-formatting nil)
-
-           (defun fc-lsp-bridge-check ()
-             (unless (lsp-bridge-epc-live-p lsp-bridge-epc-process)
-               (message "restart lsp bridge")
-               (lsp-bridge-restart-process)))
 
            (defun fc--lsp-enable ()
              (lsp-mode 1))))

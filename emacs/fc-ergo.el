@@ -164,29 +164,6 @@ FROM-BEGINNING: start from beginnning."
   :after (progn
            (setf avy-background t)))
 
-(fc-load 'deft
-  :autoload t
-  :after
-  (progn
-    (add-to-list '*fc-modal-exclude-modes*
-                 'deft-mode)
-
-    (setq deft-default-extension "org"
-          deft-extensions '("org")
-          deft-directory "~/org"
-          deft-recursive t
-          deft-use-filename-as-title nil
-          deft-use-filter-string-for-filename t
-          deft-file-naming-rules '((noslash . "-")
-                                   (nospace . "-")
-                                   (case-fn . downcase))
-          deft-text-mode 'org-mode))
-  :bind '((deft-mode-map
-           ("<escape>" quit-window)
-           ("C-j" next-line)
-           ("C-k" previous-line)
-           )))
-
 (defun fc-switch-layout ()
   "Switch layout."
   (let ((key (read-char "Layout: ")))
@@ -1208,7 +1185,7 @@ KEYMAP: keymap to run."
      ("h" fc-toggle-hex-mode)
 
      ("i" insert-file)
-     ("j" deft)
+     ("j" )
      ("k" fc-flycheck)
      ("l" imenu-list-smart-toggle)
 
@@ -1238,7 +1215,7 @@ KEYMAP: keymap to run."
      ("D" dired-jump)
      ("F" fc-fmt-buffer)
      ("I" fc-insert-signature)
-     ("J" deft-find-file)
+     ("J" )
      ("L" fc-screen-saver)
      ("M" fc-rename-buffer-and-file)
      ("R" read-only-mode)
@@ -1255,7 +1232,7 @@ KEYMAP: keymap to run."
                                   (fc-current-thing)))))
      )
    "ergo-quick-map")
-  "KEYS a: align  c: calc  d: dev mode  f: find file  h: hex mode  i: insert file  j: deft  k: flycheck  l: imenu list  m: multiple  n: new buffer  o: occur  r: recover buffer  s: save  t: time  u: (un)maximize  v: tomato  w: save as  x: reading  z: flush lines  B: none  C: copy  D: open dir  F: format  I: insert signature  L: screen saver  M: rename file  R: readonly  S: save buffers  W: forecast  X: reading.")
+  "KEYS a: align  c: calc  d: dev mode  f: find file  h: hex mode  i: insert file  k: flycheck  l: imenu list  m: multiple  n: new buffer  o: occur  r: recover buffer  s: save  t: time  u: (un)maximize  v: tomato  w: save as  x: reading  z: flush lines  B: none  C: copy  D: open dir  F: format  I: insert signature  L: screen saver  M: rename file  R: readonly  S: save buffers  W: forecast  X: reading.")
 
 (cl-defmacro fc--adjust-window-size (horizontally step)
   "Adjust window size.

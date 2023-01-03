@@ -84,14 +84,15 @@ ARGS: arguments for command."
 
       buf)))
 
-(defun fc-toggle-var (symbol)
+(cl-defmacro fc-toggle-var (symbol &key entry quit)
   "Toggle symbol.
-SYMBOL: symbol name to be togllged."
-  (interactive)
-
-  (if (symbol-value symbol)
-      (set symbol nil)
-    (set symbol t)))
+SYMBOL: symbol name to be toggled."
+  `(if (symbol-value ,symbol)
+       (progn
+         (setq ,symbol nil)
+         ,quit)
+     (setq ,symbol t)
+     ,entry))
 
 (cl-defun fc-current-thing (&key (ask t) (ext t) regq confirm (prompt "Thing") (deactivate t))
   "Fetch current thing at the point.
@@ -200,7 +201,7 @@ CREATE-FUNC: function to create buffer when it not exists."
         (when create-func
           (funcall create-func))))))
 
-(defmacro fc-manual (&rest body)
+(cl-defmacro fc-manual (&rest body)
   "Create a command.
 BODY: body."
   `(lambda ()
@@ -210,7 +211,7 @@ BODY: body."
                     (string-trim _ret)
                   "")))))
 
-(defmacro fc-manuals (&rest rest)
+(cl-defmacro fc-manuals (&rest rest)
   "Create a command.
 REST: list of commands."
   `(lambda ()
@@ -219,7 +220,7 @@ REST: list of commands."
               do
               (fc-funcall x))))
 
-(defmacro fc-region (start end &rest body)
+(cl-defmacro fc-region (start end &rest body)
   "Region wrapper.
 START: region start pos.
 END: region end pos.
@@ -230,7 +231,7 @@ BODY: form body."
        (narrow-to-region ,start ,end)
        ,@body)))
 
-(defmacro fc-whole-buffer (&rest body)
+(cl-defmacro fc-whole-buffer (&rest body)
   "Buffer wrapper.
 BODY: form body."
   (declare (indent defun))
@@ -708,7 +709,7 @@ POINT: target point."
     (goto-char point)
     (fc-line-num)))
 
-(defmacro fc-first-window (form)
+(cl-defmacro fc-first-window (form)
   "Find first window which form return non-nil.
 FORM: test form."
   `(--first ,form
@@ -716,14 +717,18 @@ FORM: test form."
                     (window-list))))
 
 ;; looking-at utilities
-(defmacro fc-do-looking-at (regex &rest body)
+(cl-defmacro fc-do-looking-at (regex &rest body &key line &allow-other-keys)
   (declare (indent 1))
-  `(when (looking-at ,regex)
-     (let* ((start (match-beginning 0))
-            (end (match-end 0)))
-       ,@body)))
+  `(save-excursion
+     (when ,line
+       (forward-line 0))
 
-(defmacro fc-replace-looking-text (regex &rest body)
+     (when (looking-at ,regex)
+       (let* ((start (match-beginning 0))
+              (end (match-end 0)))
+         ,@body))))
+
+(cl-defmacro fc-replace-looking-text (regex &rest body)
   (declare (indent 1))
   `(fc-do-looking-at ,regex
      (let ((new-text (progn ,@body)))

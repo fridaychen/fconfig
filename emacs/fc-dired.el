@@ -34,6 +34,17 @@
 
              (apply #'fc-exec-command "fj" "--preview" (dired-get-marked-files)))
 
+           (defun fc-dired--marked-p ()
+             (fc-do-looking-at "\\*" :line t
+                               t))
+
+           (defun fc-dired-toggle-mark ()
+             (interactive)
+
+             (if (fc-dired--marked-p)
+                 (fc-funcall #'dired-unmark)
+               (fc-funcall #'dired-mark)))
+
            (defun fc-dired-sort ()
              (interactive)
 
@@ -47,13 +58,16 @@
   :bind `((dired-mode-map
            ("4" ,(fc-cond-key :normal 'ivy-switch-buffer))
            ("9" ,(fc-manual (kill-new (dired-get-filename))))
+           ("d" dired-do-delete)
            ("i" previous-line)
            ("k" next-line)
+           ("m" fc-dired-toggle-mark)
            ("o" fc-dired-sys-open)
            ("r" dired-do-find-regexp-and-replace)
            ("s" fc-dired-sort)
            ("p" fc-dired-preview-file)
            ("w" wdired-change-to-wdired-mode)
+           ("D" fc-kill-current-buffer)
            ("N" make-directory)
            (";" fc-fast-switch-window)
            ("C-o" fc-modal-run)

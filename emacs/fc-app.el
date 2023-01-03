@@ -804,7 +804,7 @@ ARGS: the message of git commit."
   "Toggle dev mode."
   (interactive)
 
-  (fc-toggle-var '*fc-dev-mode*)
+  (fc-toggle-var *fc-dev-mode*)
 
   (if *fc-dev-mode*
       (progn
@@ -1101,7 +1101,7 @@ REST: commands."
      ("string2hex"              . fc-c-string2hex)
      ("tabify"                  . ,(fc-manual (tabify (point-min)
                                                       (point-max))))
-     ("toggle visual line move" . ,(fc-manual (fc-toggle-var 'line-move-visual)))
+     ("toggle visual line move" . ,(fc-manual (fc-toggle-var line-move-visual)))
      ("unix2dos"		. unix2dos)
      ("untabify"                . ,(fc-manual (untabify (point-min)
                                                         (point-max))))

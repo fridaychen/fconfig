@@ -98,20 +98,20 @@ TIMEOUT: do it later."
 (cl-defun fc-delay-task (func &optional (timeout 1))
   (run-with-timer timeout nil func))
 
-(defmacro fc-idle-delay (&rest rest)
+(cl-defmacro fc-idle-delay (&rest rest)
   "Run at idle.
 REST: operations."
   (declare (indent defun))
   `(fc-idle-delay-task (lambda () ,@rest)))
 
-(defmacro fc-delay (&rest rest)
+(cl-defmacro fc-delay (&rest rest)
   (declare (indent defun))
   "Run later.
 REST: operations."
   `(fc-delay-task (lambda () ,@rest)))
 
 (if (<= 26 emacs-major-version)
-    (defmacro fc-run (&rest rest)
+    (cl-defmacro fc-run (&rest rest)
       (declare (indent defun))
       `(make-thread (lambda () ,@rest)))
   (defalias 'fc-run 'progn))
@@ -269,7 +269,7 @@ FUNC: new function."
   "Return t if current thread is main thread."
   (eq (current-thread) main-thread))
 
-(defmacro fc-safe-wrap (fn &rest clean-up)
+(cl-defmacro fc-safe-wrap (fn &rest clean-up)
   `(unwind-protect
        (let (retval)
          (condition-case ex

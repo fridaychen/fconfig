@@ -27,6 +27,8 @@
 
 (defvar *fc--ignore-files* '("compile_commands.json"))
 
+(defvar-local *fc-favorite-buffer* nil)
+
 (fc-load 'compile
   :local t
   :after (progn
@@ -181,7 +183,7 @@ FROM-BEGINNING: start from beginnning."
   "Ergo prefix mode on."
   (interactive)
 
-  (fc-toggle-var '*fc-ergo-prefix*)
+  (fc-toggle-var *fc-ergo-prefix*)
   (fc-ergo-prefix-visual-feedback)
   (force-mode-line-update)
 
@@ -266,20 +268,14 @@ INDENT-FUNC: function for indent."
   "Basic key function."
   (interactive)
 
-  (cond
-   (*fc-ergo-prefix*
-    (fc-modal-head-key "Basic" '*ergo-basic-map*))
-
-   ((region-active-p)
-    (fc-region (region-beginning) (region-end)
-      (goto-char (point-min))
-      (fc-modal-head-key
-       "Basic"
-       '*ergo-basic-map*
-       *ergo--head-key-timeout*)))
-
-   (t
-    (scroll-down-command))))
+  (fc-modal-head-key
+   "Basic" '*ergo-basic-map*
+   :around
+   (lambda (func)
+     (fc-region (region-beginning) (region-end)
+       (when (> (point) (mark))
+         (exchange-point-and-mark))
+       (fc-funcall func)))))
 
 (cl-defun fc-ctrl-enter-key ()
   "Ctrl-Enter key function."
@@ -535,7 +531,7 @@ ARG: words."
 
   (fc-popup-info (current-time-string) :title "Time" :timeout 3))
 
-(defmacro fc-delete-key (&optional mark-func not-save)
+(cl-defmacro fc-delete-key (&optional mark-func not-save)
   "Delete region.
 MARK-FUNC: mark the region to be deleted.
 NOT-SAVE: save to KILL-RING or not."
@@ -547,7 +543,7 @@ NOT-SAVE: save to KILL-RING or not."
                      'delete-region
                    'kill-region))))
 
-(defmacro fc-change-key (&optional mark-func not-save)
+(cl-defmacro fc-change-key (&optional mark-func not-save)
   "Change region.
 MARK-FUNC: mark the region to be changed.
 NOT-SAVE: save to KILL-RING or nor."
@@ -662,6 +658,16 @@ ARGS: list of infos."
       (recover-file buffer-file-name)
     (revert-buffer t t)))
 
+(cl-defun fc-switch-to-recent-buffer ()
+  (fc-select-buffer
+   ""
+   (list :one t
+         :no-curr t
+         :filter
+         #'(lambda ()
+             (and (buffer-file-name)
+                  (null (get-buffer-window)))))))
+
 (cl-defun fc-fast-switch-window ()
   "Fast switch window."
   (interactive)
@@ -729,23 +735,8 @@ ARGS: list of infos."
    buffer-undo-list)
   "")
 
-;; global mode
-(fc-unbind-keys '("C-x C-c"
-                  "C-M-i"))
-
-(fc-bind-keys `(("RET" newline-and-indent)
-                ("<escape>" fc-escape-key)
-                ("TAB" fc-tab-key)
-                ("M-x" fc-M-x)
-                ("C-<return>" fc-ctrl-enter-key)
-                ("C-x b" ivy-switch-buffer)
-                ("C-@" fc-escape-key)
-                ("C-<SPC>" fc-escape-key)
-                ("C-." ,(fc-manual (fc-find-definitions :apropos t)))
-                ("C-_" fc-fast-switch-window) ;; it is C-/ in the console
-                ("C-;" fc-fast-switch-window)))
-
-(defmacro fc-head-key (prompt keymap)
+;; head key
+(cl-defmacro fc-head-key (prompt keymap)
   "Run head key.
 PROMPT: user prompt.
 KEYMAP: keymap to run."
@@ -754,7 +745,7 @@ KEYMAP: keymap to run."
 
      (fc-modal-head-key ,prompt ,keymap :timeout *ergo--head-key-timeout*)))
 
-(defmacro fc-head-key-repeat (prompt keymap)
+(cl-defmacro fc-head-key-repeat (prompt keymap)
   "Run head key.
 PROMPT: user prompt.
 KEYMAP: keymap to run."
@@ -762,6 +753,26 @@ KEYMAP: keymap to run."
      (interactive)
 
      (fc-modal-head-key ,prompt ,keymap :timeout *ergo--head-key-timeout* :repeat t)))
+
+;; global mode
+(fc-unbind-keys '("C-x C-c"
+                  "C-M-i"))
+
+(fc-bind-keys `(("RET" newline-and-indent)
+                ("<escape>" fc-escape-key)
+                ("TAB" fc-tab-key)
+                ("M-c" ,(fc-head-key "VC" '*ergo-vc-map*))
+                ("M-f" fc-basic-key)
+                ("M-p" ,(fc-manual (fc-player-func)))
+                ("M-q" ,(fc-head-key "Prefix Quick" '*ergo-prefix-quick-map*))
+                ("M-x" fc-M-x)
+                ("C-<return>" fc-ctrl-enter-key)
+                ("C-x b" ivy-switch-buffer)
+                ("C-@" fc-escape-key)
+                ("C-<SPC>" fc-escape-key)
+                ("C-." ,(fc-manual (fc-find-definitions :apropos t)))
+                ("C-_" fc-fast-switch-window) ;; it is C-/ in the console
+                ("C-;" fc-fast-switch-window)))
 
 (defconst *fc-common-function-keys*
   `(("<f1>"  neotree-toggle)
@@ -836,8 +847,7 @@ KEYMAP: keymap to run."
                 ("<end>" end-of-line)
                 ("C-e" end-of-line)
 
-                ("M-g" goto-line)
-                ("M-p" fc-match-paren)))
+                ("M-g" goto-line)))
 
 ;; misc
 (fc-bind-keys `(("C-M-s" fc-toggle-hide-show-all)
@@ -986,15 +996,23 @@ KEYMAP: keymap to run."
      ("a" ,(fc-mode-key
             `((image-mode . image-bob)
               (_ . beginning-of-buffer))))
-     ("b" ,(fc-cond-key :normal 'fc-goto-favorite-buffer
-                        :prefix 'fc-add-remove-favorite-buffer))
+     ("b" ,(fc-cond-key :normal (fc-manual (fc-select-buffer
+                                            "Favorite buffer"
+                                            '(:no-curr t :var *fc-favorite-buffer*)))
+                        :prefix (fc-manual
+                                 (fc-toggle-var
+                                  *fc-favorite-buffer*
+                                  :entry (message "Add to favorite buffer list")
+                                  :quit (message "Remove from favorite buffer list")))))
      ("c" ,(fc-manual (recenter (/ (window-height) 2))))
      ("e" ,(fc-mode-key
             `((image-mode . image-eob)
               (_ . end-of-buffer))))
      ("g" ,(fc-manual
             (bury-buffer)
-            (fc-switch-buf :mode '(c-mode python-mode go-mode emacs-lisp-mode))))
+            (fc-select-buffer ""
+                              (list :mode (c-mode python-mode go-mode emacs-lisp-mode)
+                                    :one t))))
 
      ("h" fc-goto-last-change)
 
@@ -1010,14 +1028,15 @@ KEYMAP: keymap to run."
      ("p" ,(fc-manual (goto-char (read-number "Point : "))))
      ("q" ,(fc-manual (fc-select-buffer
                        "Modified buffers"
-                       (fc-list-buffer :modified t))))
+                       '(:modified t :no-curr t))))
      ("r" fc-recentf)
      ("s" ace-swap-window)
      ("t" ,(fc-manual (fc-tag-list)))
      ("u" previous-buffer)
      ("x" ,(fc-manual (fc-select-buffer
                        "Select view"
-                       (fc-list-buffer :no-own t :var 'fc-viewer-minor-mode))))
+                       '(:no-curr t :var fc-viewer-minor-mode)
+                       :error-msg "No viewer buffer found.")))
      ("w" fc-buffers-list)
 
      ("[" ,(fc-manual (recenter 1)))
@@ -1084,12 +1103,9 @@ KEYMAP: keymap to run."
 (cl-defun fc-quick-attention ()
   (interactive)
 
-  (fc-assist-cmd
-   (if *fc-quick-attention*
-       "--unmute"
-     "--mute"))
-
-  (fc-toggle-var '*fc-quick-attention*))
+  (fc-toggle-var *fc-quick-attention*
+                 :entry (fc-assist-cmd "--mute")
+                 :quit (fc-assist-cmd "--unmute")))
 
 (defconst *ergo-help-map*
   (fc-make-keymap
@@ -1162,7 +1178,7 @@ KEYMAP: keymap to run."
      ("A" global-anzu-mode)
      ("H" global-highlight-changes-mode)
      ("L" global-display-line-numbers-mode)
-     ("S" ,(fc-manual (fc-toggle-var '*fc-enable-sound*)
+     ("S" ,(fc-manual (fc-toggle-var *fc-enable-sound*)
                       (message (if *fc-enable-sound*
                                    "Sound enabled"
                                  "Sound disabled"))))
@@ -1518,7 +1534,11 @@ AUTO: auto select face."
                         :region (fc-manual (er/expand-region -1))))
    ("w" ,(fc-cond-key :normal 'fc-buffers-list
                       :region 'delete-region
-                      :proj 'fc-switch-within-project))
+                      :proj (fc-manual
+                             (when-let ((root (fc-proj-root)))
+                               (fc-select-buffer "Switch within project"
+                                                 (list :dir root :sort t :no-curr t)
+                                                 :root root)))))
    ("x" ,(fc-cond-key :normal 'fc-delete-char
                       :region 'exchange-point-and-mark))
    ("y" ,(fc-cond-key :normal 'yank
@@ -1547,7 +1567,7 @@ AUTO: auto select face."
    ;; C := VC
    ("C" ,(fc-head-key "VC" '*ergo-vc-map*))
 
-   ("D" ,(fc-cond-key :normal (fc-manual (kill-buffer (current-buffer)))
+   ("D" ,(fc-cond-key :normal 'fc-kill-current-buffer
                       :region 'delete-region
                       :preregion 'delete-rectangle))
    ("E" fc-end-of-semantic)
@@ -1704,6 +1724,11 @@ FUNC: new repeat func."
 (cl-defun fc-modal-global-mode-off (&rest _rest)
   "Turn off global model."
   (fc-modal-disable))
+
+(defun fc-kill-current-buffer ()
+  (interactive)
+
+  (kill-buffer (current-buffer)))
 
 (--each '(rpn-calc)
   (advice-add it :before #'fc-modal-global-mode-off))

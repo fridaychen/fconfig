@@ -155,7 +155,7 @@
 (fc-layout-save "f")
 (fc-layout-switch "a")
 
-(fc-require 'fc-vc t)
+(fc-require 'fc-vc)
 (fc-require 'fc-buffer t)
 
 (fc-require 'fc-proj t)

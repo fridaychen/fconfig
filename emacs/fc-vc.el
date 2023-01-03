@@ -99,6 +99,20 @@
 
     (fc-pop-buf buf :read-only t :escape t)))
 
+(fc-load 'diff-hl
+  :after (progn
+           (global-diff-hl-mode 1)
+           (diff-hl-flydiff-mode 1)
+
+           (unless *is-gui*
+             (setq diff-hl-side 'left)
+             (diff-hl-margin-mode 1))
+
+           (fc-bind-keys
+            '(("n" diff-hl-next-hunk)
+              ("m" diff-hl-previous-hunk))
+            *ergo-vc-map*)))
+
 (cl-defun fc-vc-rename-file ()
   (interactive)
 

@@ -23,7 +23,7 @@
           (package-install it)))
    rest))
 
-(defmacro fc-load (name &rest rest)
+(cl-defmacro fc-load (name &rest rest)
   (declare (indent 1))
   "Load package and run setup.
 NAME: package name.

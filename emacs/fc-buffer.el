@@ -9,20 +9,14 @@
 (defvar *fc-buffer-count-threshold* 4)
 
 ;; buffer extension
-(defun fc-buffer-visible-p (bufname)
+(cl-defun fc-buffer-visible-p (&optional (bufname (current-buffer)))
   "Test if a buffer is visible.
 BUFNAME: to be tested."
   (when-let ((buf (get-buffer bufname)))
     (get-buffer-window buf)))
 
-(cl-defun fc-rm-current-buf (buffers)
-  "Remove current buffer from list buffers.
-BUFFERS: list of buffer."
-  (let ((current (current-buffer)))
-    (--remove (eq current it) buffers)))
-
-(cl-defun fc-list-buffer (&key not-file dir regex file-regex sort modified filter mode var count no-own)
-  "List buffer accroding the arguments.
+(cl-defun fc-list-buffer (&key (buffers (buffer-list)) not-file dir regex file-regex sort modified filter mode var one no-curr)
+  "List BUFFERS accroding the arguments.
 NOT-FILE: buf is not normal file.
 DIR: buf is under this dir.
 REGEX: regex for match name of buffer.
@@ -32,11 +26,11 @@ MODIFIED: test buf modified state.
 FILTER: func for filter.
 MODE: specify target major-mode.
 VAR: test buffer local var.
-COUNT: max limit of result.
-NO-NOW: not include current buffer in result."
+ONE: only need one.
+NO-CURR: not include current buffer in result."
   (cl-loop with t-dir = (if dir (expand-file-name dir) nil)
-           for buf in (buffer-list)
-           while (or (not count) (< cnt count))
+           for buf in buffers
+           while (or (not one) (not result))
            if (and (or (and not-file
                             (not dir)
                             (not file-regex)
@@ -56,58 +50,48 @@ NO-NOW: not include current buffer in result."
                        (fc-member (buffer-local-value 'major-mode buf) mode))
                    (or (not var)
                        (buffer-local-value var buf))
-                   (or (not no-own)
+                   (or (not no-curr)
                        (not (eq buf (current-buffer))))
                    (or (not filter)
                        (with-current-buffer buf
                          (fc-funcall filter))))
            collect buf into result
-           count 1 into cnt
-           finally return (if sort
-                              (--sort (string< (buffer-name it) (buffer-name other)) result)
+           finally return (progn
+                            (when sort
+                              (setq result
+                                    (--sort (string< (buffer-name it) (buffer-name other))
+                                            result)))
                             result)))
 
-(cl-defun fc-switch-buf (&rest rest)
-  "Switch to recent buffer which name match regex.
-REGEX: regex."
-  (when-let ((buf (apply #'fc-list-buffer :count 1 rest)))
-    (switch-to-buffer buf)))
-
-(cl-defun fc-switch-to-recent-buffer ()
-  "Create a window and show a recent buf which is not showed."
-  (when-let ((buf (--first (and (buffer-file-name it)
-                                (null (get-buffer-window it)))
-                           (cdr (buffer-list)))))
-    (switch-to-buffer buf)))
-
-(cl-defun fc-select-buffer (prompt buffers &key root pop error-msg)
-  "Select buffer to switch.
+(cl-defun fc-select-buffer (prompt
+                            args
+                            &key relative pop (error-msg "Buffer list is empty !!!")
+                            &allow-other-keys)
+  "Select a BUFFER to switch.
 PROMPT: prompt string.
-BUFFERS: buffer list for selection.
-ROOT: root directory for showing file path.
+ARGS: arguments for list-buffer.
+RELATIVE: root directory for showing file path.
 POP: show the selected buffer side-by-side.
 ERROR-MSG: error message."
-  (unless buffers
-    (let ((msg (or error-msg "Buffer list is empty !!!")))
-      (message msg)
-      (cl-return-from fc-select-buffer msg)))
+  (let* ((bufs (apply #'fc-list-buffer args))
+         (candidates (--map (cons (if relative
+                                      (file-relative-name (buffer-file-name it)
+                                                          relative)
+                                    (buffer-name it))
+                                  it)
+                            bufs))
+         (buf (fc-user-select prompt candidates :mouse t)))
+    (unless candidates
+      (cl-return-from fc-select-buffer error-msg))
 
-  (let ((buf (fc-user-select prompt
-                             (--map (cons (if root
-                                              (file-relative-name (buffer-file-name it)
-                                                                  root)
-                                            (buffer-name it))
-                                          it)
-                                    buffers)
-                             :mouse t)))
     (if pop
         (fc-pop-buf buf)
       (switch-to-buffer buf))))
 
 ;; select buffers to show
 (defun -show-buffers (bufs)
-  "Show buffers.
-  BUFS: buffer list."
+  "Show BUFFERS.
+BUFS: buffer list."
   (let* ((count (length bufs))
          (first-buf (cl-first bufs))
          (size (/ (frame-height) count)))
@@ -126,7 +110,7 @@ ERROR-MSG: error message."
         (switch-to-buffer it)))))
 
 (defun fc-select-files-to-show (pattern)
-  "Select buffers to show.
+  "Select BUFFERS to show.
 PATTERN: buffer name pattern."
   (interactive "MFilename pattern : ")
 
@@ -139,7 +123,7 @@ PATTERN: buffer name pattern."
 (cl-defun fc-refresh-buffer-content (buffer-or-name del-win &rest rest)
   "Refresh buffer content.
 BUFFER-OR-NAME: buffer or name.
-DEL-WIN: if delete the window of buffer.
+DEL-WIN: delete the window of buffer.
 REST: new content."
   (let* ((buf (if buffer-or-name
                   (get-buffer-create buffer-or-name)
@@ -200,40 +184,6 @@ LOCAL-VARS: list of local-vars."
 
   (when select
     (select-window (get-buffer-window buffer-or-name))))
-
-;; favorite buffers
-(let ((favorite-buffers nil))
-  (cl-defun fc-add-remove-favorite-buffer (&optional (buffer (current-buffer)))
-    "Add or remove current buffer to/from favoriate buffer list.
-BUFFER: buuffer to add."
-    (if (member buffer favorite-buffers)
-        (progn
-          (setf favorite-buffers
-                (remove buffer favorite-buffers))
-          (message "Remove from favorite buffer list"))
-      (progn
-        (add-to-list 'favorite-buffers buffer)
-        (message "Add to favorite buffer list"))))
-
-  (cl-defun fc-goto-favorite-buffer ()
-    "Show favorite buffer."
-    (setf favorite-buffers
-          (-filter #'buffer-live-p
-                   favorite-buffers))
-    (fc-select-buffer "Favorite buffer"
-                      (-remove #'get-buffer-window-list
-                               favorite-buffers))))
-
-;; project buffer
-(defun fc-switch-within-project ()
-  "Switch buffers within same project."
-  (interactive)
-
-  (let ((root (fc-proj-root)))
-    (fc-select-buffer "Switch within project"
-                      (fc-rm-current-buf
-                       (fc-list-buffer :dir root :sort t))
-                      :root root)))
 
 ;; special buffer
 (cl-defun fc-create-side-window (buffer-or-name pos size)

@@ -79,7 +79,7 @@ PREREGION: prefix and region mode"
       (,normal
        (fc-funcall ,normal)))))
 
-(defmacro fc-mode-key (mode-func)
+(cl-defmacro fc-mode-key (mode-func)
   "Run operation according to the major mode.
 MODE-FUNC: mode and function definitions."
   `(lambda ()

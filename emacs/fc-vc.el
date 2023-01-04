@@ -41,8 +41,13 @@
     (save-buffer)
     (fc--run-git-command "add" buffer-file-name)))
 
-(cl-defun fc-git-amend (mesg)
-  (interactive "MNew message : ")
+(cl-defun fc-git-amend (auto-add mesg)
+  (interactive (let* ((y (fc-user-confirm "Auto-add"))
+                      (m (read-string "New message")))
+                 (list y m)))
+
+  (when auto-add
+    (fc--run-git-command "add" "-u"))
 
   (if (string-empty-p mesg)
       (fc--run-git-command "commit" "--amend" "--no-edit")

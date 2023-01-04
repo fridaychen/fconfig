@@ -2,9 +2,44 @@
 
 case $(uname) in
     Darwin)
-        brew install bc bear cmake htop iterm2 make most mpg123 pandoc sqlite tmux the_silver_searcher tidy-html5
+        pkgs=(
+            autoconf
+            automake
+            bc
+            bear
+            cmake
+            gcc
+            git
+            giflib
+            gnutls
+            htop
+            jansson
+            jpeg
+            libgccjit
+            libreoffice
+            libtiff
+            libxml2
+            make
+            mpg123
+            most
+            mpv
+            openemu
+            pandoc
+            pkg-config
+            quodlibet
+            sqlite
+            texinfo
+            the_silver_searcher
+            tidy-html5
+        )
 
-        brew install --cask adobe-acrobat-reader amazon-music calibre goldendict kitty libreoffice microsoft-excel microsoft-powerpoint microsoft-word mpv openemu quodlibet
+        cask_pkg=(
+            goldendict
+            kitty
+        )
+
+        brew install ${pkgs[@]}
+        brew install --cask ${cask_pkgs[@]}
         ;;
 
     Linux)

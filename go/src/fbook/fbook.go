@@ -69,6 +69,12 @@ func _decodeMosaic(content string) string {
 	return content
 }
 
+func _changeScene(content string) string {
+	re := regexp.MustCompile("(?m)^---+$")
+
+	return re.ReplaceAllString(content, "-----")
+}
+
 func _MdMarkChineseChapter(content string) string {
 	ch_level := 1
 
@@ -194,6 +200,7 @@ func _bookInit(in_filename string, out_filename string) {
 	content = _convertLeadingSpaceToNewLine(content)
 
 	content = _decodeMosaic(content)
+	content = _changeScene(content)
 
 	if strings.HasSuffix(out_filename, ".md") {
 		if *chinese_mode {

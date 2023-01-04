@@ -6,7 +6,9 @@ fc-add-path ~/.local/bin/ \
     ${HOME}/go/bin
 
 case $(uname) in
-    Darwin) ;;
+    Darwin)
+        fc-add-path /Applications/Emacs.app/Contents/MacOS/bin /Applications/Emacs.app/Contents/MacOS
+        ;;
 
     Linux)
         export FC_DISTRO=$(

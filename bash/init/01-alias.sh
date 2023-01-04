@@ -11,6 +11,8 @@ case $(uname) in
         alias df='gdf -BM'
         alias date=gdate
 
+        alias emacs=/Applications/Emacs.app/Contents/MacOS/Emacs
+
         export GREP=ggrep
         export FIND=gfind
         export XARGS=gxargs

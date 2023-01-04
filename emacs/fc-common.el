@@ -216,6 +216,8 @@ COLOR: background color."
 
       ('leuven
        (setf soothe-percent 6)
+       (fc-set-face-attribute 'show-paren-match nil
+                              :background "pink")
        (fc-set-face-attribute 'org-agenda-structure nil
                               :height 1.1)
        (fc-set-face-attribute 'org-agenda-date nil

@@ -126,6 +126,17 @@
              :foreground
              (fc-get-face-attribute 'font-lock-keyword-face :foreground)))
 
+(defun fc--org-set-visual-line-mode ()
+  (cond
+   ((fc-bool (fc--org-get-file-property "VISUAL-LINE"))
+    (visual-line-mode 1))
+
+   ((not (fc-detect-buf-has-wide-char))
+    (visual-line-mode 1))
+
+   (t
+    (visual-line-mode -1))))
+
 (fc-load 'org
   :after
   (progn
@@ -210,9 +221,6 @@
                   (force-mono (not (fc-bool (fc--org-get-file-property "MONO-FONT")))))
         (setf buffer-face-mode-face *fc-reading-face*)
         (buffer-face-mode 1))
-
-      (when (fc-bool (fc--org-get-file-property "VISUAL-LINE"))
-        (visual-line-mode 1))
 
       (unless (fc--org-capture-p)
         (fc--org-hide-all)

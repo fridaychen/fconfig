@@ -58,7 +58,8 @@
   (setf enable-dir-local-variables t)
 
   (when (fc-member major-mode *fc-doc-modes*)
-    (fc--set-visual-line-mode))
+    (fc-call-mode-func "set-visual-line-mode"
+                       #'fc--set-visual-line-mode))
 
   (when (derived-mode-p 'prog-mode)
     (fc-delay
@@ -122,7 +123,7 @@
 (defvar iedit-mode nil "Autoload workaround.")
 
 ;; alt key as meta, leave esc alone
-(setf x-alt-keysym 'meta)
+(setf x-alt-keysym (if *is-mac* 'meta 'super))
 
 ;; make super/command equal meta
 (cond

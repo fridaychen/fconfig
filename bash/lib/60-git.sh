@@ -2,6 +2,7 @@
 
 alias gp='git pull'
 alias gq='git push'
+
 function gb {
     if [[ ! $(gp | grep -i " up to date") ]]; then
         proj-build

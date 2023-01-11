@@ -13,9 +13,15 @@ function fc-user-confirm {
         return 0
     fi
 
-    local opt
     while read -e -t 0.1; do :; done
-    read -n 1 -s -r -p "$* [y/N] ? " opt
+
+    echo -n $(ansi-part $(ansi-fg $ANSI_RED))
+    echo -ne "$* [y/N] ? "
+    echo -n $(ansi-part $ANSI_NORMAL)
+
+    local opt
+
+    read -n 1 -s -r opt
     echo -e "\n"
     [[ ${opt} = "y" || ${opt} = "Y" ]]
 }

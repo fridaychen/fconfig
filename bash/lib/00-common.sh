@@ -14,3 +14,8 @@ function fc-run-drop-in {
         [[ -r $x ]] && source "$x"
     done
 }
+
+# enable interpretation alias
+function fc-enable-alias {
+    shopt -s expand_aliases
+}

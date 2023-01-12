@@ -700,6 +700,9 @@ BODY: usually a pcase block."
     (fc-popup-tip-hide)))
 
 (cl-defun fc--org-dwell ()
+  (unless (eq major-mode 'org-mode)
+    (cl-return-from fc--org-dwell))
+
   (fc--org-smart-action nil
     (pcase elt
       (:footnote (fc--org-show-footnote))

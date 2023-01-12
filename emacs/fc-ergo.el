@@ -1011,7 +1011,7 @@ KEYMAP: keymap to run."
      ("g" ,(fc-manual
             (bury-buffer)
             (fc-select-buffer ""
-                              (list :mode (c-mode python-mode go-mode emacs-lisp-mode)
+                              (list :mode '(c-mode python-mode go-mode emacs-lisp-mode)
                                     :one t))))
 
      ("h" fc-goto-last-change)

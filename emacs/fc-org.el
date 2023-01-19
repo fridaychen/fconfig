@@ -1,4 +1,4 @@
-;;; fc-org.el --- setup org -*- lexical-binding: t -*-
+﻿;;; fc-org.el --- setup org -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;
@@ -1106,9 +1106,9 @@ LANG: language of babel."
   :before (setf org-roam-v2-ack t)
   :after
   (progn
-    (setf org-roam-directory "~/org/roam")
-
-    (org-roam-db-autosync-mode)))
+    (setf org-roam-directory "~/org/roam"
+          org-roam-database-connector 'sqlite3)
+    (org-roam-db-autosync-enable)))
 
 (defun fc--org-chapter-mark (level title)
   (concat (s-repeat level "*")

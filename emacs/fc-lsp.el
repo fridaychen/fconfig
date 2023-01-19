@@ -18,9 +18,8 @@
 
            (setf *fc-lsp-enable* nil
                  *fc-lsp-bridge-enable* t
-                 lsp-idle-delay 1
-                 lsp-bridge-enable-signature-help nil
-                 lsp-headerline-breadcrumb-enable nil)
+                 lsp-bridge-complete-manually nil
+                 lsp-bridge-enable-signature-help nil)
 
            (fc-add-next-error-mode 'lsp-bridge-ref-mode
                                    #'lsp-bridge-ref-jump-next-keyword
@@ -38,6 +37,8 @@
            (add-hook '*fc-ergo-restore-hook* #'fc--lsp-hide)
 
            (defun fc--lsp-enable ()
+             (setq company-backends
+                   (remove #'company-ispell company-backends))
              (lsp-bridge-mode 1))))
 
 ;; (fc-load 'eglot
@@ -75,7 +76,7 @@
 (cl-defun fc--lsp-descripbe-function ()
   "Describe function."
   (cond
-   (lsp-bridge-mode
+   ((and *fc-lsp-bridge-enable* lsp-bridge-mode)
     (fc-lsp-bridge-check)
     (lsp-bridge-popup-documentation)
     t)
@@ -88,7 +89,7 @@
 
 (cl-defun fc--lsp-find-definitions ()
   (cond
-   (lsp-bridge-mode
+   ((and *fc-lsp-bridge-enable* lsp-bridge-mode)
     (fc-lsp-bridge-check)
     (lsp-bridge-find-def))
 
@@ -97,7 +98,7 @@
 
 (cl-defun fc--lsp-find-references ()
   (cond
-   (lsp-bridge-mode
+   ((and *fc-lsp-bridge-enable* lsp-bridge-mode)
     (fc-lsp-bridge-check)
     (lsp-bridge-find-references))
 
@@ -106,7 +107,7 @@
 
 (cl-defun fc--lsp-find-apropos (pattern)
   (cond
-   (lsp-bridge-mode
+   ((and *fc-lsp-bridge-enable* lsp-bridge-mode)
     (fc-lsp-bridge-check)
     (lsp-bridge-workspace-list-symbols pattern))
 
@@ -115,7 +116,7 @@
 
 (cl-defun fc--lsp-list-tag ()
   (cond
-   (lsp-bridge-mode
+   ((and *fc-lsp-bridge-enable* lsp-bridge-mode)
     (fc-lsp-bridge-check)
     (fc-funcall #'lsp-bridge-workspace-list-symbols))
 
@@ -123,11 +124,11 @@
     (fc-funcall #'lsp-ivy-workspace-symbol))))
 
 (cl-defun fc--lsp-active-p ()
-  (or lsp-bridge-mode lsp-mode))
+  (or (and *fc-lsp-bridge-enable* lsp-bridge-mode) lsp-mode))
 
 (cl-defun fc--lsp-rename ()
   (cond
-   (lsp-bridge-mode
+   ((and *fc-lsp-bridge-enable* lsp-bridge-mode)
     (fc-lsp-bridge-check)
     (lsp-bridge-rename)
     t)

@@ -23,6 +23,8 @@
            ("C-f" ivy-scroll-up-command)
            ("C-d" ivy-scroll-down-command)
 
+           ("C-<return> "ivy-immediate-done)
+
            ("<escape>" minibuffer-keyboard-quit))
 
           (ivy-switch-buffer-map

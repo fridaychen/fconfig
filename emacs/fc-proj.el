@@ -306,7 +306,7 @@ DIR: project path."
 
 (cl-defun fc-proj-name (&optional dir)
   "Find the project name under root.
-ROOT: project path."
+DIR: project path."
   (if-let ((root (fc-proj-root dir)))
       (if (boundp 'fc-proj-name)
           fc-proj-name

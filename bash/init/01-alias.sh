@@ -81,6 +81,13 @@ function gb {
     fi
 }
 
+function fj-xargs {
+    xargs --no-run-if-empty \
+        -d "\n" \
+        -I {} \
+        -o "$@"
+}
+
 function fj-run {
     sort -h |
         xargs --no-run-if-empty \

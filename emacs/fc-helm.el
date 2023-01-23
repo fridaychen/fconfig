@@ -26,7 +26,7 @@
 
                 (let ((helm-full-frame nil)
                       (helm-always-two-windows t))
-                  (fc-funcall 'helm-semantic-or-imenu)))))
+                  (fc-funcall #'helm-semantic-or-imenu)))))
 
   :after (progn
            (setf helm-boring-buffer-regexp-list

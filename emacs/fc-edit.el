@@ -97,8 +97,8 @@
 (fc-load 'recentf
   :local t
   :autoload t
-  :before (setf recentf-max-menu-items 200
-                recentf-max-saved-items 200)
+  :before (setf recentf-max-menu-items 1000
+                recentf-max-saved-items 1000)
 
   :after (progn
            (fc-add-to-list 'recentf-exclude

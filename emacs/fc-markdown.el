@@ -143,7 +143,7 @@ REGEX: regex."
                      #'(lambda ()
                          (set-mark (match-beginning 1))
                          (goto-char (match-end 1))
-                         (fc-funcall 'fc-md-insert-footnote)
+                         (fc-funcall #'fc-md-insert-footnote)
                          (deactivate-mark))))
 
 (cl-defun fc-md-convert-latex-footnote ()
@@ -229,18 +229,18 @@ REGEX: regular expression."
       (save-excursion
         (let ((note (buffer-substring (region-beginning)
                                       (region-end))))
-          (fc-funcall 'delete-region)
+          (fc-funcall #'delete-region)
 
-          (fc-funcall 'markdown-insert-footnote)
+          (fc-funcall #'markdown-insert-footnote)
           (insert note)))
-    (fc-funcall 'markdown-insert-footnote)))
+    (fc-funcall #'markdown-insert-footnote)))
 
 (cl-defun fc-md-make-list ()
   "Make list."
   (interactive)
 
   (unless (region-active-p)
-    (fc-funcall 'mark-paragraph))
+    (fc-funcall #'mark-paragraph))
 
   (save-excursion
     (let ((start (region-beginning))
@@ -260,8 +260,8 @@ END: end point."
   (interactive)
 
   (unless (region-active-p)
-    (fc-funcall 'mark-paragraph)
-    (fc-funcall 'next-line))
+    (fc-funcall #'mark-paragraph)
+    (fc-funcall #'next-line))
 
   (let ((start (region-beginning))
         (end (region-end)))

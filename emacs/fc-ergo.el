@@ -1428,32 +1428,32 @@ AUTO: auto select face."
 ;; normal mode
 (fc-modal-keys
  `(
-   ("1" ,(fc-cond-key :normal 'delete-other-windows
-                      :prefix 'ace-delete-other-windows
-                      :one 'fc-split-window))
+   ("1" ,(fc-cond-key :normal #'delete-other-windows
+                      :prefix #'ace-delete-other-windows
+                      :one #'fc-split-window))
    ("2" ,(fc-cond-key :normal (fc-manuals
                                #'fc-split-window
                                #'other-window
                                #'fc-switch-to-recent-buffer)
-                      :prefix 'split-window-horizontally))
+                      :prefix #'split-window-horizontally))
    ("3" ,(fc-cond-key :normal (fc-head-key "ORG" '*ergo-gtd-map*)
-                      :prefix 'split-window-vertically))
-   ("4" ,(fc-cond-key :normal 'ivy-switch-buffer))
+                      :prefix #'split-window-vertically))
+   ("4" ,(fc-cond-key :normal #'ivy-switch-buffer))
    ("5" toggle-frame-fullscreen)
    ("6" fc-toggle-window-maximize)
-   ("7" ,(fc-cond-key :normal 'compile
-                      :work 'fc-proj-build
-                      :prefix 'compile))
-   ("8" ,(fc-cond-key :normal 'fc-proj-open
-                      :work 'fc-proj-find-file))
+   ("7" ,(fc-cond-key :normal #'compile
+                      :work #'fc-proj-build
+                      :prefix #'compile))
+   ("8" ,(fc-cond-key :normal #'fc-proj-open
+                      :work #'fc-proj-find-file))
    ("9" ,(fc-manual (set-mark-command 0)))
    ("0" fc-ergo-prefix-on)
 
    ("a" ,(fc-mode-key
           `((image-mode . image-bol)
             (_ . fc-beginning-of-line))))
-   ("b" ,(fc-cond-key :normal 'fc-backward
-                      :region 'comment-dwim))
+   ("b" ,(fc-cond-key :normal #'fc-backward
+                      :region #'comment-dwim))
    ("C-b" scroll-down-command)
 
    ;; c := Change
@@ -1462,13 +1462,13 @@ AUTO: auto select face."
 
    ;; d := Delete
    ("d" ,(fc-cond-key :normal (fc-head-key "Delete" '*ergo-delete-map*)
-                      :region 'kill-region
-                      :preregion 'kill-rectangle))
+                      :region #'kill-region
+                      :preregion #'kill-rectangle))
 
    ("e" ,(fc-mode-key
           `((image-mode . image-eol)
             (_ . end-of-line))))
-   ("f" ,(fc-cond-key :normal 'scroll-down-command
+   ("f" ,(fc-cond-key :normal #'scroll-down-command
                       :region (fc-manual
                                (fc-modal-head-key
                                 "Basic" '*ergo-basic-map*
@@ -1498,19 +1498,16 @@ AUTO: auto select face."
 
    ;; m := Mark
    ("m" ,(fc-cond-key :normal (fc-head-key "Mark" '*ergo-mark-map*)
-                      :region 'deactivate-mark
+                      :region #'deactivate-mark
                       :prefix (fc-head-key "Mode" '*ergo-mode-map*)))
 
    ("n" fc-escape-key)
-   ("o" ,(fc-cond-key :normal (fc-manual
-                               (end-of-line)
-                               (newline-and-indent)
-                               (fc-modal-disable))
-                      :region 'fc-occur-dwim))
+   ("o" ,(fc-cond-key :normal #'fc-ctrl-enter-key
+                      :region #'fc-occur-dwim))
 
    ;; p := Player
-   ("p" ,(fc-cond-key :normal 'fc-match-paren
-                      :prefix 'fc-player-func))
+   ("p" ,(fc-cond-key :normal #'fc-match-paren
+                      :prefix #'fc-player-func))
 
    ;; q := Quick/Quest
    ("q" ,(fc-cond-key :normal (fc-head-key "Quick"
@@ -1518,31 +1515,31 @@ AUTO: auto select face."
                       :prefix (fc-head-key "Prefix Quick"
                                            '*ergo-prefix-quick-map*)))
 
-   ("r" ,(fc-cond-key :normal 'fc-proj-recentf
+   ("r" ,(fc-cond-key :normal #'fc-proj-recentf
                       :region (fc-manual (fc--query-replace))
                       :preregion (fc-manual (fc--query-replace
                                              :from-beginning t))))
 
-   ("s" ,(fc-cond-key :normal 'fc-hs-toggle
-                      :region 'fc-isearch-dwim
-                      :prefix 'fc-toggle-hide-show-all))
+   ("s" ,(fc-cond-key :normal #'fc-hs-toggle
+                      :region #'fc-isearch-dwim
+                      :prefix #'fc-toggle-hide-show-all))
    ("t" fc-translate-word)
    ("u" fc-mode-func-key)
-   ("v" ,(fc-cond-key :normal 'set-mark-command
+   ("v" ,(fc-cond-key :normal #'set-mark-command
                       :region (fc-manual (er/expand-region 1))))
-   ("C-v" ,(fc-cond-key :normal 'er/mark-symbol
+   ("C-v" ,(fc-cond-key :normal #'er/mark-symbol
                         :region (fc-manual (er/expand-region -1))))
-   ("w" ,(fc-cond-key :normal 'fc-buffers-list
-                      :region 'delete-region
+   ("w" ,(fc-cond-key :normal #'fc-buffers-list
+                      :region #'delete-region
                       :proj (fc-manual
                              (when-let ((root (fc-proj-root)))
                                (fc-select-buffer "Switch within project"
                                                  (list :dir root :sort t :no-curr t)
                                                  :root root)))))
-   ("x" ,(fc-cond-key :normal 'fc-delete-char
-                      :region 'exchange-point-and-mark))
-   ("y" ,(fc-cond-key :normal 'yank
-                      :prefix 'counsel-yank-pop
+   ("x" ,(fc-cond-key :normal #'fc-delete-char
+                      :region #'exchange-point-and-mark))
+   ("y" ,(fc-cond-key :normal #'yank
+                      :prefix #'counsel-yank-pop
                       :region (fc-manuals #'delete-region
                                           #'yank)
                       :preregion (fc-manuals #'delete-region
@@ -1551,7 +1548,7 @@ AUTO: auto select face."
                     (undo)))
 
    ("A" fc-begin-of-semantic)
-   ("B" ,(fc-cond-key :normal 'fc-bookmark
+   ("B" ,(fc-cond-key :normal #'fc-bookmark
                       :prefix (fc-manual
                                (let ((bm (fc-user-select
                                           "Select bookmark to remove"
@@ -1567,17 +1564,17 @@ AUTO: auto select face."
    ;; C := VC
    ("C" ,(fc-head-key "VC" '*ergo-vc-map*))
 
-   ("D" ,(fc-cond-key :normal 'fc-kill-current-buffer
-                      :region 'delete-region
-                      :preregion 'delete-rectangle))
+   ("D" ,(fc-cond-key :normal #'fc-kill-current-buffer
+                      :region #'delete-region
+                      :preregion #'delete-rectangle))
    ("E" fc-end-of-semantic)
-   ("F" ,(fc-cond-key :normal 'fc-find-files
-                      :region (fc-manual (call-interactively 'iedit-mode)
+   ("F" ,(fc-cond-key :normal #'fc-find-files
+                      :region (fc-manual (call-interactively #'iedit-mode)
                                          (fc-modal-disable))))
    ("G" ,(fc-cond-key :normal (fc-manual (fc-text-retrieve default-directory :ignore-files *fc--ignore-files*))
                       :proj (fc-manual (fc-text-retrieve (fc-proj-root) :ignore-files *fc--ignore-files*))
                       :prefix (fc-manual (fc-text-retrieve default-directory :ignore-files *fc--ignore-files*))))
-   ("H" ,(fc-cond-key :normal 'swiper
+   ("H" ,(fc-cond-key :normal #'swiper
                       :region (fc-manual
                                (swiper (fc-current-thing :ask nil)))))
    ("I" fc-begin-of-func)
@@ -1595,10 +1592,10 @@ AUTO: auto select face."
                     (indent-for-tab-command)
                     (fc-modal-disable)))
    ("P" ,*fc--undef-key*)
-   ("Q" ,(fc-cond-key :normal 'delete-window
-                      :prefix 'ace-delete-window
-                      :one 'bury-buffer))
-   ("R" ,(fc-cond-key :normal 'fc-recentf
+   ("Q" ,(fc-cond-key :normal #'delete-window
+                      :prefix #'ace-delete-window
+                      :one #'bury-buffer))
+   ("R" ,(fc-cond-key :normal #'fc-recentf
                       :region (fc-manual (fc--query-replace :backward t))))
    ("S" fc-hs-toggle-all)
    ("T" ,(fc-manual (fc-translate (fc-current-thing :confirm t :ask t))))
@@ -1608,10 +1605,10 @@ AUTO: auto select face."
                                (fc-search-next (read-string "Search : ")))))
 
    ("V" fc-select-files-to-show)
-   ("W" ,(fc-cond-key :normal 'fc-buffers-list
-                      :region 'delete-rectangle))
+   ("W" ,(fc-cond-key :normal #'fc-buffers-list
+                      :region #'delete-rectangle))
    ("X" zap-to-char)
-   ("Y" ,(fc-cond-key :normal 'yank-rectangle
+   ("Y" ,(fc-cond-key :normal #'yank-rectangle
                       :region (fc-manual
                                (let ((text (fc-user-select
                                             "Kill ring" kill-ring)))
@@ -1619,20 +1616,20 @@ AUTO: auto select face."
                                  (insert text)))))
    ("Z" neotree-toggle)
 
-   ("!" ,(fc-cond-key :normal 'shell-command
-                      :region 'shell-command-on-region))
+   ("!" ,(fc-cond-key :normal #'shell-command
+                      :region #'shell-command-on-region))
    ("@" ,(fc-manual (push-mark (point))))
    ("#" comment-dwim)
-   ("$" ,(fc-cond-key :normal 'fc-app-portal
+   ("$" ,(fc-cond-key :normal #'fc-app-portal
                       :region (fc-decorate-region "$" "$")))
    ("%" fc-program)
    ("^" ,(fc-manual (join-line 1)))
    ("&" ,(fc-manual (fc-set-window-width 0.66)))
    ("*" google-this-search)
-   ("(" ,(fc-cond-key :normal 'fc-previous-bookmark
+   ("(" ,(fc-cond-key :normal #'fc-previous-bookmark
                       :region (fc-decorate-region "(" ")")))
    (")" fc-next-bookmark)
-   ("`" ,(fc-cond-key :normal 'fc-ergo-restore
+   ("`" ,(fc-cond-key :normal #'fc-ergo-restore
                       :region (fc-decorate-region "`" "`")))
    ("C-`" ,(fc-manual (fc-layout-pop)))
    ("~" ,(fc-manual (fc-player--app *fc-player*)))
@@ -1649,15 +1646,15 @@ AUTO: auto select face."
                                 `((image-mode . ,(fc-manual
                                                   (image-transform-set-scale 1)))
                                   (_ . ,(fc-manual (text-scale-set 0)))))))
-   ("_" ,(fc-cond-key :normal 'fc-list-bookmark
-                      :prefix 'fc-edit-bookmark-annotation))
-   ("." ,(fc-cond-key :normal 'fc-find-definitions
-                      :region 'move-text-up))
-   ("," ,(fc-cond-key :normal 'fc-find-references
-                      :region 'move-text-down))
-   (";" ,(fc-cond-key :normal 'fc-fast-switch-window
-                      :region 'comment-dwim))
-   ("'" ,(fc-cond-key :normal 'avy-goto-char-timer
+   ("_" ,(fc-cond-key :normal #'fc-list-bookmark
+                      :prefix #'fc-edit-bookmark-annotation))
+   ("." ,(fc-cond-key :normal #'fc-find-definitions
+                      :region #'move-text-up))
+   ("," ,(fc-cond-key :normal #'fc-find-references
+                      :region #'move-text-down))
+   (";" ,(fc-cond-key :normal #'fc-fast-switch-window
+                      :region #'comment-dwim))
+   ("'" ,(fc-cond-key :normal #'avy-goto-char-timer
                       :region (fc-mode-key
                                `(((latex-mode markdown-mode org-mode) . ,*fc-book-zh-single-quote*)
                                  (_ . ,(fc-decorate-region "'" "'"))))))
@@ -1665,41 +1662,41 @@ AUTO: auto select face."
                        :region (fc-mode-key
                                 `(((latex-mode markdown-mode org-mode) . ,*fc-book-zh-quote*)
                                   (_ . ,(fc-decorate-region "\"" "\""))))))
-   ("[" ,(fc-cond-key :normal 'fc-navi-prev
+   ("[" ,(fc-cond-key :normal #'fc-navi-prev
                       :prefix *fc-decrease-display-brightness*
                       :region (fc-decorate-region "[" "]")))
-   ("]" ,(fc-cond-key :normal 'fc-navi-next
+   ("]" ,(fc-cond-key :normal #'fc-navi-next
                       :prefix *fc-increase-display-brightness*
                       :region *fc--undef-key*))
-   ("{" ,(fc-cond-key :normal 'previous-error
+   ("{" ,(fc-cond-key :normal #'previous-error
                       :region (fc-decorate-region "{" "}")))
    ("}" next-error)
-   ("<" ,(fc-cond-key :normal 'previous-buffer
-                      :region 'python-indent-shift-left))
-   (">" ,(fc-cond-key :normal 'next-buffer
-                      :region 'python-indent-shift-right))
-   ("?" ,(fc-cond-key :normal 'fc-run-key-seq
-                      :prefix 'fc-set-key-seq))
-   ("/" ,(fc-cond-key :normal 'isearch-forward-regexp
-                      :prefix 'fc-isearch-dwim))
-   ("\\" ,(fc-cond-key :normal 'query-replace-regexp
-                       :region 'fc--query-replace
+   ("<" ,(fc-cond-key :normal #'previous-buffer
+                      :region #'python-indent-shift-left))
+   (">" ,(fc-cond-key :normal #'next-buffer
+                      :region #'python-indent-shift-right))
+   ("?" ,(fc-cond-key :normal #'fc-run-key-seq
+                      :prefix #'fc-set-key-seq))
+   ("/" ,(fc-cond-key :normal #'isearch-forward-regexp
+                      :prefix #'fc-isearch-dwim))
+   ("\\" ,(fc-cond-key :normal #'query-replace-regexp
+                       :region #'fc--query-replace
                        :preregion (fc-manual (fc--query-replace
                                               :from-beginning t))
-                       :prefix 'query-replace))
-   ("|" ,(fc-cond-key :normal 'make-frame
-                      :prefix 'delete-frame))
+                       :prefix #'query-replace))
+   ("|" ,(fc-cond-key :normal #'make-frame
+                      :prefix #'delete-frame))
    ("S-<SPC>" ,(fc-cond-key :normal (fc-manual
                                      (fc-modal-head-key
                                       "Basic" '*ergo-basic-map*))
                             :prefix *fc--undef-key*
-                            :region 'copy-rectangle-as-kill))
-   ("M-<SPC>" ,(fc-cond-key :normal 'scroll-down-command
+                            :region #'copy-rectangle-as-kill))
+   ("M-<SPC>" ,(fc-cond-key :normal #'scroll-down-command
                             :prefix *fc--undef-key*
-                            :region 'copy-rectangle-as-kill))
-   ("SPC" ,(fc-cond-key :normal 'scroll-up-command
-                        :region 'kill-ring-save
-                        :prefix 'just-one-space))
+                            :region #'copy-rectangle-as-kill))
+   ("SPC" ,(fc-cond-key :normal #'scroll-up-command
+                        :region #'kill-ring-save
+                        :prefix #'just-one-space))
    ("<escape>" fc-escape-key)
    ("<mouse-1>" fc-mouse-func)))
 

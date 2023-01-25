@@ -31,8 +31,8 @@
 (defconst *fc-english-fonts*
   (cond
    (*is-linux*
-    '((:family "Iosevka Fixed SS07")
-      (:family "Iosevka Fixed")
+    '((:family "Iosevka Curly")
+      (:family "Iosevka")
       (:family "Fira Code")
       (:family "Hack")
       ))

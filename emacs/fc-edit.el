@@ -33,6 +33,31 @@
 
 (setq-default line-spacing 0)
 
+(fc-load 'ligature
+  :after
+  (progn
+    ;; Enable the "www" ligature in every possible major mode
+    (ligature-set-ligatures 't '("www"))
+    ;; Enable traditional ligature support in eww-mode, if the
+    ;; `variable-pitch' face supports it
+    (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+    ;; Enable all Cascadia Code ligatures in programming modes
+    (ligature-set-ligatures
+     'prog-mode
+     '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+       ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+       "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+       "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+       "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+       "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+       "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+       "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+       ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+       "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+       "\\\\" "://"))))
+
 (ignore-errors
   (fc-load 'xclip
     :disable (or *is-gui* *is-cygwin*)
@@ -62,6 +87,7 @@
                        #'fc--set-visual-line-mode))
 
   (when (derived-mode-p 'prog-mode)
+    (ligature-mode)
     (fc-delay
       (color-identifiers-mode)))
 

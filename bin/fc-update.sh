@@ -7,6 +7,9 @@ fc-enable-alias
 # update system packages
 fj --up
 
+# update python user packages
+fj --pyup
+
 # update emacs
 if [[ -d ~/opensource/emacs ]]; then
     cd ~/opensource/emacs/

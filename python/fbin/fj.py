@@ -78,14 +78,9 @@ def ruby_update(_):
 @action(cmd="pyup")
 def pip_update(_):
     "update python3 packages"
-    from pip._internal.utils.misc import get_installed_distributions
-
-    for x in get_installed_distributions():
-        if x.location.find("local/") < 0:
-            continue
-
-        if fc.ui.verbose_yesno_p("Update " + x.project_name):
-            os.system("pip3 install --upgrade " + x.project_name)
+    os.system(
+        "pip3 list --outdated | grep wheel$ | awk '{print $1}' | xargs --no-run-if-empty pip3 install --upgrade --user"
+    )
 
 
 @action(cmd="ex")

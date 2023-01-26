@@ -130,7 +130,7 @@
   )
 
 (cl-defmethod fc-tag--open-file ((x fc-tag-lsp))
-  (if (member major-mode '(c-mode c++mode python-mode))
+  (if (derived-mode-p 'prog-mode)
       (fc--lsp-enable)
     (add-to-list 'company-backends 'company-capf)))
 

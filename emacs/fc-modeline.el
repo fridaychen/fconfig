@@ -244,9 +244,15 @@
          (most-right (if (fc--right-bottom-window-p)
                          most-right-str
                        nil))
-         (right-len (+
-                     (string-width (format-mode-line right))
-                     (string-width (format-mode-line most-right))))
+         (right-len (if (fboundp #'string-pixel-width)
+                        (/ (+
+                            (string-pixel-width (format-mode-line right))
+                            (string-pixel-width (format-mode-line most-right)))
+                           (string-pixel-width " ")
+                           1.0)
+                      (+
+                       (string-width (format-mode-line right))
+                       (string-width (format-mode-line most-right)))))
          (padding (propertize " "
                               'display `(space :align-to (- (+ scroll-bar scroll-bar) ,right-len)))))
     (nconc left center

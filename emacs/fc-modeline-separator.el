@@ -100,7 +100,7 @@
       ("3" . ,c3)
       ("h" . ,h))))
 
-(defun fc--ml-height()
+(defun fc--ml-height ()
   (or *fc-ml-sep-height* (frame-char-height)))
 
 (defun fc--ml-create (face1 face2 pattern &optional reverse)

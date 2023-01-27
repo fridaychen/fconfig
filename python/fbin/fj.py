@@ -78,9 +78,8 @@ def ruby_update(_):
 @action(cmd="pyup")
 def pip_update(_):
     "update python3 packages"
-    os.system(
-        "pip3 list --outdated | grep wheel$ | awk '{print $1}' | xargs --no-run-if-empty pip3 install --upgrade --user"
-    )
+
+    os.system("fc-update-python.sh")
 
 
 @action(cmd="ex")

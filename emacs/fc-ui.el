@@ -219,6 +219,8 @@ OS: os level or app level."
 
 (add-hook '*fc-ergo-restore-hook* #'fc--popup-hide-info)
 
+(frame-pixel-width)
+
 (provide 'fc-ui)
 
 ;; Local Variables:

@@ -41,7 +41,7 @@
   (and (boundp '*fc-project-name*)
        (fc-text (format *fc--menu-seg-format*
                         *fc-project-name*)
-                :face fc--modeline-hi-face
+                :face 'fc-modeline-hl-face
                 :keys (fc-make-keymap
                        `(([mode-line mouse-1]
                           ,(lambda () (interactive) (fc-eval-pop-menu *fc-menu*))))))))
@@ -54,6 +54,15 @@
     *fc-tomato-bar*))
 
 (add-to-list 'global-mode-string '(t (:eval (fc--tomato-modeline))))
+
+(defun fc--battery-modeline ()
+  "Return the battery status."
+  (fc-text (format "🔋%s "
+                   (cdr (assq ?p (battery-pmset))))
+           :face 'fc-modeline-icon-hl-face))
+
+(when *is-laptop*
+  (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--battery-modeline)))))
 
 (defun fc--player-tip ()
   (let ((meta (fc-player--get-metadata *fc-player*)))
@@ -82,6 +91,7 @@
                ('Playing "⏸️")
                ((or 'Paused 'Stopped) "▶️")
                (_ ""))
+             :face 'fc-modeline-hl-face
              :tip '(fc--player-tip)
              :keys *fc--player-seg-keymap*)))
 
@@ -90,7 +100,7 @@
 
 (when *is-gui*
   (add-hook '*fc-player-hook* #'fc--player-modeline-cb)
-  (add-to-list 'global-mode-string '(t (:eval (fc--player-modeline)))))
+  (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--player-modeline)))))
 
 (provide 'fc-ergo-seg)
 

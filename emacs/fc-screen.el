@@ -39,9 +39,6 @@
 (column-number-mode t)
 (line-number-mode t)
 
-(when *is-laptop*
-  (display-battery-mode))
-
 (setf blink-cursor-interval 0.6)
 
 (mouse-avoidance-mode 'animate)

@@ -14,9 +14,9 @@
 
 (defvar *fc-narrow-window-threshold* 65 "Criteria for narrow window.")
 (defvar *fc-extreme-narrow-window-threshold* 40 "Criteria for extreme narrow window.")
-(defconst fc--modeline-hi-face 'fc-modeline-highlight-face)
-(defconst fc--mode-hi-sep (fc-text " " :face fc--modeline-hi-face))
-(defconst fc--modeline-hi-inactive-face 'fc-modeline-highlight-inactive-face)
+(defconst fc--modeline-hl-face 'fc-modeline-hl-face)
+(defconst fc--mode-hi-sep (fc-text " " :face fc--modeline-hl-face))
+(defconst fc--modeline-hi-inactive-face 'fc-modeline-hl-inactive-face)
 (defconst fc--modeline-hi-inactive-sep (fc-text " " :face fc--modeline-hi-inactive-face))
 
 (defvar *fc-selected-window* (frame-selected-window))
@@ -27,6 +27,9 @@
 (defvar *fc-pos-keymap* (fc-make-keymap
                          '(([mode-line mouse-1] counsel-imenu))
                          "fc-pos-keymap"))
+
+(defun fc-mode-line-height ()
+  (round (* (fc-get-face-attribute 'mode-line :height) 0.9)))
 
 (defun fc--active-window-p ()
   "Test if current window is active."
@@ -41,7 +44,7 @@
 (defun fc--modeline-get-hi-face ()
   "Get approparite highlight face."
   (if (fc--active-window-p)
-      fc--modeline-hi-face
+      fc--modeline-hl-face
     fc--modeline-hi-inactive-face))
 
 (defun fc--modeline-get-hi-sep ()
@@ -269,11 +272,14 @@
                (color-defined-p (face-attribute 'default :foreground)))
     (cl-return-from fc-modeline-mode))
 
-  (unless (facep 'fc-modeline-highlight-face)
-    (make-face 'fc-modeline-highlight-face))
+  (unless (facep 'fc-modeline-hl-face)
+    (make-face 'fc-modeline-hl-face))
 
-  (unless (facep 'fc-modeline-highlight-inactive-face)
-    (make-face 'fc-modeline-highlight-inactive-face))
+  (unless (facep 'fc-modeline-icon-hl-face)
+    (make-face 'fc-modeline-icon-hl-face))
+
+  (unless (facep 'fc-modeline-hl-inactive-face)
+    (make-face 'fc-modeline-hl-inactive-face))
 
   (let* ((deep-dark (fc-deep-dark-theme-p))
          (bg (if deep-dark
@@ -282,16 +288,20 @@
          (fg (if deep-dark
                  *fc-modeline-dark-active-hl-fg*
                *fc-modeline-active-hl-fg*)))
-    (set-face-attribute 'fc-modeline-highlight-face nil
+    (set-face-attribute 'fc-modeline-hl-face nil
                         :foreground fg
                         :background bg
                         :weight 'medium
                         :inherit 'mode-line)
-    (set-face-attribute 'fc-modeline-highlight-inactive-face nil
+    (set-face-attribute 'fc-modeline-hl-inactive-face nil
                         :foreground bg
                         :background fg
                         :weight 'medium
                         :inherit 'mode-line))
+
+  (set-face-attribute 'fc-modeline-icon-hl-face nil
+                      :inherit 'fc-modeline-hl-face
+                      :height (round (* (fc-get-face-attribute 'mode-line :height) 0.9)))
 
   (fc-ml-sep-reset)
 

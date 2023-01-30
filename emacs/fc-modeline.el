@@ -65,6 +65,13 @@
   "Test if current window is extreme narrow."
   (>= *fc-extreme-narrow-window-threshold* (window-width)))
 
+(defun fc--left-bottom-window-p ()
+  "Test if current window is at left-bottom."
+  (or (one-window-p)
+      (and (not (windmove-find-other-window 'left))
+           (eq (minibuffer-window)
+               (windmove-find-other-window 'down)))))
+
 (defun fc--right-bottom-window-p ()
   "Test if current window is at right-bottom."
   (or (one-window-p)

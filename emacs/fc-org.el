@@ -1108,7 +1108,8 @@ LANG: language of babel."
   (progn
     (setf org-roam-directory "~/org/roam"
           org-roam-database-connector 'sqlite3)
-    (org-roam-db-autosync-enable)))
+    (ignore-errors
+      (org-roam-db-autosync-enable))))
 
 (defun fc--org-chapter-mark (level title)
   (concat (s-repeat level "*")

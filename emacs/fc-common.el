@@ -106,12 +106,14 @@
                         )
       *fc-deep-dark-theme* (if *is-gui*
                                '(
+                                 (deeper-blue)
                                  (gotham . gotham-theme)
                                  (hybrid-reverse . hybrid-reverse-theme)
                                  (jazz . jazz-theme)
                                  (sanityinc-tomorrow-night . color-theme-sanityinc-tomorrow)
                                  )
                              '(
+                               (deeper-blue)
                                (jazz . jazz-theme)
                                (sanityinc-tomorrow-night . color-theme-sanityinc-tomorrow)
                                ))

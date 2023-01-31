@@ -29,6 +29,8 @@
 (defconst *is-windows* (eql system-type 'windows-nt))
 (defconst *is-gui* window-system)
 (defconst *is-colorful* (or *is-gui* (not (string= (getenv "TERM") "linux"))))
+(defvar *is-laptop* nil)
+(defvaralias '*has-battery* '*is-laptop*)
 
 (defvar *fc-boot* t)
 (defvar *fc-restart* nil)
@@ -49,9 +51,8 @@
 (fc-require 'fc-lang)
 
 ;; first step initilization
-(let ((has-battery (fc-has-battery)))
-  (setf *is-laptop* has-battery
-        *fc-enable-screen-saver* (not has-battery)))
+(setf *has-battery* (fc-has-battery)
+      *fc-enable-screen-saver* (not *has-battery*))
 
 (when *is-gui*
   (fc-require 'fc-font)

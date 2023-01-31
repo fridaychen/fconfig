@@ -207,6 +207,10 @@ COLOR: background color."
        (fc-set-face-attribute 'fringe nil
                               :background "coral"))
 
+      ('deeper-blue
+       (fc-set-face-attribute 'mode-line nil
+                              :background "gray61"))
+
       ('faff
        (setf soothe-percent 4))
 

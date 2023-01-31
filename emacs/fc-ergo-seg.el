@@ -57,9 +57,16 @@
 
 (defun fc--battery-modeline ()
   "Return the battery status."
-  (fc-text (format "🔋%s "
-                   (cdr (assq ?p (battery-pmset))))
-           :face 'fc-modeline-icon-hl-face))
+  (when-let* ((level-str (cdr (assq ?p (battery-pmset))))
+              (level (cl-parse-integer level-str)))
+    (fc-text (format (cond ((>= level 90)
+                            "🔋")
+                           ((>= level 30)
+                            "🔋%d")
+                           (t
+                            "🪫%d"))
+                     level)
+             :face 'fc-modeline-icon-hl-face)))
 
 (when *is-laptop*
   (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--battery-modeline)))))
@@ -91,7 +98,7 @@
                ('Playing "⏸️")
                ((or 'Paused 'Stopped) "▶️")
                (_ ""))
-             :face 'fc-modeline-hl-face
+             :face 'fc-modeline-icon-hl-face
              :tip '(fc--player-tip)
              :keys *fc--player-seg-keymap*)))
 

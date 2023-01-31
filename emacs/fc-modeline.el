@@ -15,9 +15,9 @@
 (defvar *fc-narrow-window-threshold* 65 "Criteria for narrow window.")
 (defvar *fc-extreme-narrow-window-threshold* 40 "Criteria for extreme narrow window.")
 (defconst fc--modeline-hl-face 'fc-modeline-hl-face)
-(defconst fc--mode-hi-sep (fc-text " " :face fc--modeline-hl-face))
-(defconst fc--modeline-hi-inactive-face 'fc-modeline-hl-inactive-face)
-(defconst fc--modeline-hi-inactive-sep (fc-text " " :face fc--modeline-hi-inactive-face))
+(defconst fc--modeline-hl-sep (fc-text " " :face fc--modeline-hl-face))
+(defconst fc--modeline-hl-inactive-face 'fc-modeline-hl-inactive-face)
+(defconst fc--modeline-hl-inactive-sep (fc-text " " :face fc--modeline-hl-inactive-face))
 
 (defvar *fc-selected-window* (frame-selected-window))
 
@@ -41,17 +41,17 @@
       'mode-line
     'mode-line-inactive))
 
-(defun fc--modeline-get-hi-face ()
+(defun fc--modeline-get-hl-face ()
   "Get approparite highlight face."
   (if (fc--active-window-p)
       fc--modeline-hl-face
-    fc--modeline-hi-inactive-face))
+    fc--modeline-hl-inactive-face))
 
-(defun fc--modeline-get-hi-sep ()
+(defun fc--modeline-get-hl-sep ()
   "Get approparite highlight separator."
   (if (fc--active-window-p)
-      fc--mode-hi-sep
-    fc--modeline-hi-inactive-sep))
+      fc--modeline-hl-sep
+    fc--modeline-hl-inactive-sep))
 
 (defun fc--narrow-window-p ()
   "Test if current window is narrow."
@@ -207,13 +207,13 @@
     (list -3
           (fc-text
            "%p"
-           :face (fc--modeline-get-hi-face)
+           :face (fc--modeline-get-hl-face)
            :keys *fc-pos-keymap*))))
 
 (defun fc--modeline-format-left ()
   "Format left modeline."
-  (let ((hi-face (fc--modeline-get-hi-face))
-        (hl-sep (fc--modeline-get-hi-sep)))
+  (let ((hi-face (fc--modeline-get-hl-face))
+        (hl-sep (fc--modeline-get-hl-sep)))
     (list
      hl-sep
      (fc-text
@@ -224,7 +224,7 @@
      (fc--pos-seg)
      hl-sep
      (fc-text
-      (fc--state-seg) :face (fc--modeline-get-hi-face))
+      (fc--state-seg) :face (fc--modeline-get-hl-face))
      (fc-ml-left-sep)
      (fc--major-mode-seg)
      " ")))

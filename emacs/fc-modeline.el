@@ -100,7 +100,7 @@
   "The name of the major mode."
   (when (and *fc-enable-major-mode-seg*
              (fc--wide-window-p))
-    mode-name))
+    (fc-mode-name)))
 
 (defvar-local *fc-buffer-title-seg* nil)
 

@@ -118,6 +118,7 @@
 (autoload #'fc-modeline-mode "fc-modeline")
 
 (autoload #'fc-modeline-proj-name "fc-ergo-seg")
+(autoload #'fc-mode-name "fc-modeline-mode-name")
 
 ;; book
 (autoload #'fc--book-p "fc-book")

@@ -98,6 +98,12 @@ static char * xpm [] = {
                  (lambda (&rest _rest)
                    data))))
 
+(defun fc-load-xpm (filename)
+  (create-image (fc-file-to-string filename)
+                'xpm t
+                :scale 1
+                :ascent 'center))
+
 (provide 'fc-xpm)
 
 ;; Local Variables:

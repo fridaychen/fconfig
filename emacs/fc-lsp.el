@@ -94,7 +94,9 @@
     (lsp-bridge-find-def))
 
    (t
-    (xref--find-definitions (fc-current-thing) nil))))
+    (let ((id (fc-current-thing)))
+      (set-text-properties 0 1 '(identifier-at-point t) id)
+      (xref-find-definitions id)))))
 
 (cl-defun fc--lsp-find-references ()
   (cond
@@ -103,7 +105,9 @@
     (lsp-bridge-find-references))
 
    (t
-    (xref--find-xrefs id 'references id nil))))
+    (let ((id (fc-current-thing)))
+      (set-text-properties 0 1 '(identifier-at-point t) id)
+      (xref-find-references id)))))
 
 (cl-defun fc--lsp-find-apropos (pattern)
   (cond

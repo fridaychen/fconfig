@@ -210,6 +210,18 @@
            :face (fc--modeline-get-hl-face)
            :keys *fc-pos-keymap*))))
 
+(defun fc--flycheck-seg()
+  (when-let ((result (flycheck-count-errors flycheck-current-errors)))
+    (list
+     "🪲"
+     (when-let* ((err (assoc 'error result))
+                 (cnt (cdr err)))
+       (fc-text cnt :face `(:foreground "red2" :font (:weight bold))))
+     "|"
+     (when-let* ((err (assoc 'warning result))
+                 (cnt (cdr err)))
+       (fc-text cnt)))))
+
 (defun fc--modeline-format-left ()
   "Format left modeline."
   (let ((hi-face (fc--modeline-get-hl-face))
@@ -240,7 +252,8 @@
   (list
    " "
    'global-mode-string
-   current-input-method-title))
+   current-input-method-title
+   (fc--flycheck-seg)))
 
 (defvar *fc-modeline-most-right-string* nil)
 

@@ -48,6 +48,12 @@
 
 (fc-load 'lsp-mode
   :enable *fc-lsp-enable*
+  :before (setq lsp-modeline-code-actions-enable nil
+                lsp-modeline-diagnostics-enable nil
+                lsp-modeline-workspace-status-enable nil
+                lsp-headerline-breadcrumb-enable nil
+                lsp-progress-via-spinner nil
+                lsp-enable-on-type-formatting nil)
   :after (progn
            (require 'lsp)
            (require 'lsp-mode)
@@ -55,13 +61,10 @@
            (message "Enabled lsp-mode")
 
            (setq *fc-lsp-enable* nil
-                 *fc-lsp-mode-enable* t
-                 lsp-headerline-breadcrumb-enable nil
-                 lsp-progress-via-spinner nil
-                 lsp-enable-on-type-formatting nil)
+                 *fc-lsp-mode-enable* t)
 
            (defun fc--lsp-enable ()
-             (lsp-mode 1))))
+             (lsp-deferred))))
 
 (fc-load 'lsp-ui
   :after (progn

@@ -5,6 +5,7 @@
 
 ;;; Code:
 
+(require 'cl-lib)
 (require 'fc-modeline-separator)
 
 (defvar *fc-modeline-active-hl-bg* "#FEBA07")
@@ -27,9 +28,6 @@
 (defvar *fc-pos-keymap* (fc-make-keymap
                          '(([mode-line mouse-1] counsel-imenu))
                          "fc-pos-keymap"))
-
-(defun fc-mode-line-height ()
-  (round (* (fc-get-face-attribute 'mode-line :height) 0.9)))
 
 (defun fc--active-window-p ()
   "Test if current window is active."
@@ -210,17 +208,22 @@
            :face (fc--modeline-get-hl-face)
            :keys *fc-pos-keymap*))))
 
-(defun fc--flycheck-seg()
-  (when-let ((result (flycheck-count-errors flycheck-current-errors)))
-    (list
-     "🪲"
-     (when-let* ((err (assoc 'error result))
-                 (cnt (cdr err)))
-       (fc-text cnt :face `(:foreground "red2" :font (:weight bold))))
-     "|"
-     (when-let* ((err (assoc 'warning result))
-                 (cnt (cdr err)))
-       (fc-text cnt)))))
+(cl-defun fc--flycheck-seg()
+  "Flycheck seg."
+  (when flycheck-mode
+    (let* ((result (flycheck-count-errors flycheck-current-errors))
+           (err (cdr (assoc 'error result)))
+           (warning (cdr (assoc 'warning result))))
+      (unless (or err warning)
+        (cl-return-from fc--flycheck-seg nil))
+
+      (list
+       "🪲"
+       (fc-text err :face `(:foreground "red2" :font (:weight bold)))
+       (when (and err warning)
+         "|")
+       (fc-text warning)
+       " "))))
 
 (defun fc--modeline-format-left ()
   "Format left modeline."

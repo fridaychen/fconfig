@@ -717,7 +717,7 @@ ARGS: the message of git commit."
 
 (cl-defun fc--search-set-target (regex)
   "Set search target.
-  REGEX: target."
+REGEX: target."
   (fc-bind-keys `(("C-r" ,(fc-manual
                            (fc-search-next nil t)))))
 
@@ -731,8 +731,8 @@ ARGS: the message of git commit."
 
 (cl-defun fc-search-next (&optional (regex nil) (backward nil))
   "Search next.
-  REGEX: target regex.
-  BACKWARD: search direction."
+REGEX: target regex.
+BACKWARD: search direction."
   (interactive)
 
   (cond (regex
@@ -1160,7 +1160,7 @@ REST: commands."
 
 (cl-defun fc-forward-to-char (c)
   "Move forward to char.
-  C: target char."
+C: target char."
   (interactive (list (progn
                        (fc-ergo-repeat-func 'fc-repeat-to-char)
                        (read-char "Forward to char : " nil *ergo-prefix-timeout*))))
@@ -1178,7 +1178,7 @@ REST: commands."
 
 (cl-defun fc-backward-to-char (c)
   "Move backward to char.
-  C: target char."
+C: target char."
   (interactive (list (progn
                        (fc-ergo-repeat-func 'fc-repeat-to-char)
                        (read-char "Backward to char : " nil *ergo-prefix-timeout*))))

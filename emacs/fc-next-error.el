@@ -51,9 +51,8 @@ PREV: previous function."
               (ops (gethash (buffer-local-value 'major-mode buf)
                             *fc--next-error-map*))
               (next (cl-first ops)))
-    (with-current-buffer buf
-      (call-interactively next)
-      t)))
+    (call-interactively next)
+    t))
 
 (cl-defun fc-prev-error ()
   "Goto previous error."
@@ -61,12 +60,10 @@ PREV: previous function."
               (ops (gethash (buffer-local-value 'major-mode buf)
                             *fc--next-error-map*))
               (prev (cl-second ops)))
-    (with-current-buffer buf
-      (call-interactively prev)
-      t)))
+    (call-interactively prev)
+    t))
 
 (--each '(compilation-mode
-          flycheck-error-list-mode
           ggtags-navigation-mode
           grep-mode
           occur-mode

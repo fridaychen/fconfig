@@ -225,7 +225,7 @@
       (list
        "🪲"
        (fc-text err
-                :face `(:foreground "red2" :font (:weight bold))
+                :face '(:foreground "red2" :weight bold)
                 :keys *fc-flycheck-seg-keymap*)
        (when (and err warning)
          "|")

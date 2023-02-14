@@ -96,8 +96,9 @@
         (gtags-file (fc-exists-file-in-path "GTAGS")))
     (cond
      (compile-json-file
-      (fc--lsp-enable)
-      (add-to-list 'company-backends 'company-capf))
+      (when (derived-mode-p 'prog-mode)
+        (fc--lsp-enable)
+        (add-to-list 'company-backends 'company-capf)))
 
      (gtags-file
       (ggtags-mode t))
@@ -130,8 +131,8 @@
   )
 
 (cl-defmethod fc-tag--open-file ((x fc-tag-lsp))
-  (if (derived-mode-p 'prog-mode)
-      (fc--lsp-enable)
+  (when (derived-mode-p 'prog-mode)
+    (fc--lsp-enable)
     (add-to-list 'company-backends 'company-capf)))
 
 (cl-defmethod fc-tag--list ((x fc-tag-lsp))

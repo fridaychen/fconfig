@@ -208,6 +208,11 @@
            :face (fc--modeline-get-hl-face)
            :keys *fc-pos-keymap*))))
 
+(defvar *fc-flycheck-seg-keymap*
+  (fc-make-keymap
+   '(([mode-line mouse-1] flycheck-list-errors))
+   "fc-flycheck-seg-keymap"))
+
 (cl-defun fc--flycheck-seg()
   "Flycheck seg."
   (when flycheck-mode
@@ -219,11 +224,13 @@
 
       (list
        "🪲"
-       (fc-text err :face `(:foreground "red2" :font (:weight bold)))
+       (fc-text err
+                :face `(:foreground "red2" :font (:weight bold))
+                :keys *fc-flycheck-seg-keymap*)
        (when (and err warning)
          "|")
-       (fc-text warning)
-       " "))))
+       (fc-text warning
+                :keys *fc-flycheck-seg-keymap*)))))
 
 (defun fc--modeline-format-left ()
   "Format left modeline."
@@ -256,7 +263,8 @@
    " "
    'global-mode-string
    current-input-method-title
-   (fc--flycheck-seg)))
+   (fc--flycheck-seg)
+   " "))
 
 (defvar *fc-modeline-most-right-string* nil)
 

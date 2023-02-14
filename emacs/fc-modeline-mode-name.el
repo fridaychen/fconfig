@@ -14,6 +14,8 @@
                             (cmake-mode "🍄")
 
                             (calc-mode "🧮")
+                            (compilation-mode "ℹ️")
+
                             (conf-space-mode "⚙️")
                             (conf-unix-mode "⚙️")
                             (conf-window-mode "⚙️")

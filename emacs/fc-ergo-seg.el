@@ -36,15 +36,18 @@
 
 (defvar *fc--menu-seg-format* (fc-visible "⟨%s⟩" "{%s}"))
 
+(defconst *fc--menu-seg-keymap*
+  (fc-make-keymap
+   `(([mode-line mouse-1]
+      ,(lambda () (interactive) (fc-eval-pop-menu *fc-menu*))))))
+
 (defun fc--menu-seg ()
   "Menu segment."
   (and (boundp '*fc-project-name*)
        (fc-text (format *fc--menu-seg-format*
                         *fc-project-name*)
                 :face 'fc-modeline-hl-face
-                :keys (fc-make-keymap
-                       `(([mode-line mouse-1]
-                          ,(lambda () (interactive) (fc-eval-pop-menu *fc-menu*))))))))
+                :keys *fc--menu-seg-keymap*)))
 
 (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--menu-seg))))
 

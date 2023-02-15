@@ -143,10 +143,10 @@ REST: new content."
                (zerop buflen))
       (delete-window win))))
 
-(cl-defun fc-pop-buf (buffer-or-name &key automode read-only highlight select escape local-vars)
+(cl-defun fc-pop-buf (buffer-or-name &key mode read-only highlight select escape local-vars)
   "Popup buf.
 BUFFER-OR-NAME: buffer or name.
-AUTOMODE: if run `normal-mode'.
+MODE: specify mode.
 READ-ONLY: set buffer to read-only mode.
 HIGHLIGHT: highlight regex.
 SELECT: focus in new window.
@@ -155,9 +155,6 @@ LOCAL-VARS: list of local-vars."
   (display-buffer buffer-or-name 'display-buffer-pop-up-window)
 
   (with-current-buffer buffer-or-name
-    (setf enable-local-variables :all
-          enable-dir-local-variables (if buffer-file-name t nil))
-
     (when local-vars
       (save-excursion
         (goto-char (point-min))
@@ -173,8 +170,12 @@ LOCAL-VARS: list of local-vars."
     (when escape
       (ansi-color-apply-on-region (point-min) (point-max)))
 
-    (when automode
-      (normal-mode))
+    (cond
+     ((eq mode 'auto)
+      (normal-mode t))
+
+     (mode
+      (fc-funcall mode)))
 
     (when read-only
       (read-only-mode))

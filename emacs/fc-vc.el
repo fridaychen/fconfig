@@ -99,10 +99,9 @@
 
     (with-current-buffer buf
       (goto-char (point-min))
-      (search-forward filename nil t)
-      (diff-mode))
+      (search-forward filename nil t))
 
-    (fc-pop-buf buf :read-only t :escape t)))
+    (fc-pop-buf buf :read-only t :escape t :mode 'diff-mode)))
 
 (fc-load 'diff-hl
   :after (progn
@@ -186,8 +185,7 @@ REMOTE: select from local or remote branchs."
 
       (shell-command (format "git diff %s" branch) (current-buffer)))
 
-    (fc-pop-buf buf :automode t :select t :local-vars `(("mode" . diff)
-                                                        ("default-directory" . ,(fc-vc-root))))))
+    (fc-pop-buf buf :mode 'diff-mode :select t :local-vars `(("default-directory" . ,(fc-vc-root))))))
 
 (cl-defun fc-vc-diff-file-with-other-branch ()
   "Diff current file with other branch."
@@ -200,8 +198,7 @@ REMOTE: select from local or remote branchs."
       (erase-buffer)
       (shell-command (format "git diff %s -- %s" branch filename) (current-buffer)))
 
-    (fc-pop-buf buf :automode t :select t :local-vars `(("mode" . diff)
-                                                        ("default-directory" . ,(fc-vc-root))))))
+    (fc-pop-buf buf :mode 'diff-mode :select t :local-vars `(("default-directory" . ,(fc-vc-root))))))
 
 (fc-add-network-advice 'fc-git-pull 'fc-git-push)
 

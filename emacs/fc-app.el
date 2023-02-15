@@ -33,7 +33,7 @@ TEMPLATE: template file path."
                       (template (-fc-select-template name)))
                  (list name template)))
 
-  (fc-pop-buf (get-buffer-create bufname) :automode t :select t)
+  (fc-pop-buf (get-buffer-create bufname) :select t)
 
   (yas-minor-mode 1)
   (fc-expand-snippet-file template)
@@ -435,10 +435,10 @@ FILE-TYPES: target file types to be searched."
             arg-type)))
 
   (goto-char (point-min))
-  (setf enable-local-variables :all)
+
   (insert
    (format
-    "-*- mode: grep; default-directory: \"%s\"; -*-\n"
+    "-*- default-directory: \"%s\"; -*-\n"
     dir)))
 
 (cl-defun fc--external-ftr-rg (dir pattern _file-types)
@@ -474,7 +474,7 @@ DIR: dir to search."
         (when filename
           (search-forward filename nil t)))
 
-      (fc-pop-buf buf :automode t :read-only t :highlight (list pattern)))))
+      (fc-pop-buf buf :mode 'grep-mode :read-only t :highlight (list pattern)))))
 
 ;; eshell extensions
 (setenv "_FASD_FUZZY" "16")
@@ -1039,8 +1039,7 @@ REST: commands."
     (insert (shell-command-to-string "curl -s wttr.in"))
     (fc-decode-ansi-esc-code)
     (goto-char (point-min))
-    (text-mode)
-    (fc-pop-buf (current-buffer) :read-only t)))
+    (fc-pop-buf (current-buffer) :read-only t :mode 'text-mode)))
 
 (defun fc-config-line-space ()
   "Setup line space for all file buffers."

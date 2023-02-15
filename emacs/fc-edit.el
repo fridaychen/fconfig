@@ -80,8 +80,6 @@
           *fc-basic-line-spacing*))))
 
 (defun fc--setup-file-buffer ()
-  (setf enable-dir-local-variables t)
-
   (when (fc-member major-mode *fc-doc-modes*)
     (fc-call-mode-func "set-visual-line-mode"
                        #'fc--set-visual-line-mode))

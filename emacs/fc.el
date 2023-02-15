@@ -13,6 +13,7 @@
   (setf package-native-compile t))
 
 (setf enable-local-variables :all
+      enable-dir-local-variables t
       warning-minimum-level :error
       inhibit-startup-message t
       gc-cons-threshold (* 128 1024 1024)

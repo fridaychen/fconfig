@@ -251,6 +251,29 @@
      (fc--major-mode-seg)
      " ")))
 
+(defvar *fc-comp-exit-code* 0)
+
+(defun fc--compilation-exit (status code msg)
+  (setq *fc-comp-exit-code* code)
+  (cons msg code))
+
+(setq compilation-exit-message-function #'fc--compilation-exit)
+
+(defun fc--compilation-seg ()
+  (when (eq major-mode 'compilation-mode)
+    (list
+     (cond
+      ((bound-and-true-p compilation-in-progress)
+       (propertize "[Compiling]"))
+
+      ((eq *fc-comp-exit-code* 0)
+       "")
+
+      (t
+       "❌"))
+
+     compilation-mode-line-errors)))
+
 (defun fc--modeline-format-center ()
   "Format center modeline."
   (list
@@ -264,6 +287,7 @@
    'global-mode-string
    current-input-method-title
    (fc--flycheck-seg)
+   (fc--compilation-seg)
    " "))
 
 (defvar *fc-modeline-most-right-string* nil)

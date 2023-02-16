@@ -31,8 +31,12 @@ function proj-build {
         err-msg "DO NOT know how to build"
     fi
 
+    local ret=$?
+
     fj-done "great" "oops"
     cd "$old_dir"
+
+    return $ret
 }
 
 function proj-root {

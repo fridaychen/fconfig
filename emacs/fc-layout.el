@@ -120,6 +120,20 @@ WINDOW: target window."
       (balance-windows (window-parent window))
     (fc--maximize-window-in-box window)))
 
+;; Predefined Window Layout
+(defun fc-use-code-layout ()
+  (setq display-buffer-alist
+        `(
+          ("\\*\\(vc-diff\\|help\\|info\\|man\\|Occur\\)\\*\\|\\*Man.*\\|\\*fc text retrieve.*"
+           display-buffer-in-side-window
+           (side . right) (slot . -1) (window-width . 0.4) (window-height . 0.6))
+
+          ("\\*compilation\\*"
+           display-buffer-in-side-window
+           (side . right) (slot . 1) (window-width . 0.4) (window-height . 0.4))
+          ))
+  )
+
 (provide 'fc-layout)
 
 ;; Local Variables:

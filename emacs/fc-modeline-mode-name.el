@@ -49,6 +49,7 @@
                             (mhtml-mode "🕸️")
                             (octave-mode "🧮")
                             (org-mode "🅾️")
+                            (org-agenda-mode "🗓️")
                             (package-menu-mode "📦")
                             (plantuml-mode "🛸")
                             (python-mode "🐍")

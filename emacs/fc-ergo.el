@@ -673,11 +673,11 @@ ARGS: list of infos."
   (interactive)
 
   (cond
-   ((one-window-p)
+   ((fc-one-window-p)
     (fc-switch-to-recent-buffer))
 
    ;; two or three windows
-   ((< (length (window-list)) 4)
+   ((< (length (cl-set-difference (window-list) (window-at-side-list))) 4)
     (other-window 1))
 
    ;; more than three windows
@@ -1191,6 +1191,7 @@ KEYMAP: keymap to run."
 (defconst *ergo-quick-map*
   (fc-make-keymap
    `(("SPC" fc-app-portal)
+     ("1")
      ("a" align)
      ("b" fc-quick-attention)
      ("c" ,(fc-cond-key :normal 'quick-calc

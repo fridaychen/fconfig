@@ -221,6 +221,10 @@ SIZE: width or height depending on POS."
     (set-window-parameter win 'no-delete-other-windows nil)
     (set-window-dedicated-p win nil)))
 
+(defun fc-one-window-p ()
+  (or (one-window-p)
+      (eq (window-main-window) (get-buffer-window))))
+
 (provide 'fc-buffer)
 
 ;; Local Variables:

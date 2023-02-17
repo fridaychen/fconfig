@@ -69,7 +69,8 @@ PREREGION: prefix and region mode"
       ((and ,proj (fc-proj-root))
        (fc-funcall ,proj))
 
-      ((and ,one (one-window-p))
+      ((and ,one (or (one-window-p)
+                     (eq (window-main-window) (get-buffer-window))))
        (fc-funcall ,one))
 
       (,fold

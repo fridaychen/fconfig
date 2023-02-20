@@ -155,7 +155,8 @@ LOCAL-VARS: list of local-vars."
   (display-buffer buffer-or-name 'display-buffer-pop-up-window)
 
   (with-current-buffer buffer-or-name
-    (when local-vars
+    (cond
+     ((and (eq mode 'auto) local-vars)
       (save-excursion
         (goto-char (point-min))
         (insert "-*- ")
@@ -166,6 +167,12 @@ LOCAL-VARS: list of local-vars."
                       (fc-string v))))
             (insert (car it) ": " s "; ")))
         (insert "-*-\n")))
+
+     (local-vars
+      (--each local-vars
+        (let ((name (intern (car it)))
+              (value (cdr it)))
+          (setq-local name value)))))
 
     (when escape
       (ansi-color-apply-on-region (point-min) (point-max)))

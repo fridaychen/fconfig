@@ -262,10 +262,11 @@ DIR: project path."
               (error-file (fc-proj--get *fc-project* :error-file))
               (build-dir (or (fc-proj--get *fc-project* :build-dir)
                              "")))
-    (fc-with-buffer (find-file (format "%s/%s" proj-dir error-file))
-      (setq default-directory (format "%s/%s" proj-dir build-dir))
-      (compilation-mode)
-      (goto-char (point-max)))))
+    (fc-pop-buf (find-file-noselect (format "%s/%s" proj-dir error-file))
+                :mode 'compilation-mode
+                :select t
+                :local-vars `(("default-directory" . ,(format "%s/%s" proj-dir build-dir))))
+    (goto-char (point-max))))
 
 (defun fc-user-select-project ()
   "Allow user to select project."

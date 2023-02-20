@@ -56,7 +56,7 @@
                             (xref--xref-buffer-mode "📚")
                             (yaml-mode "🖖"))))
 
-(defun fc-mode-name (&optional (mode major-mode))
+(cl-defun fc-mode-name (&optional (mode major-mode))
   "Get mode name.
 MODE: target mode."
   (gethash mode *fc-mode-name* mode-name))

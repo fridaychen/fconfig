@@ -668,6 +668,16 @@ ARGS: list of infos."
              (and (buffer-file-name)
                   (null (get-buffer-window)))))))
 
+(cl-defun fc-show-buffer ()
+  (when-let ((bufname (ivy-read "Switch to buffer: " #'internal-complete-buffer
+                                :keymap ivy-switch-buffer-map
+                                :preselect (buffer-name (other-buffer (current-buffer)))
+                                :matcher #'ivy--switch-buffer-matcher
+                                :caller 'ivy-switch-buffer)))
+    (display-buffer (get-buffer bufname)
+                    '(display-buffer-same-window
+                      display-buffer-pop-up-window))))
+
 (cl-defun fc-fast-switch-window ()
   "Fast switch window."
   (interactive)
@@ -770,7 +780,7 @@ KEYMAP: keymap to run."
                 ("M-q" ,(fc-head-key "Prefix Quick" '*ergo-prefix-quick-map*))
                 ("M-x" fc-M-x)
                 ("C-<return>" fc-ctrl-enter-key)
-                ("C-x b" ivy-switch-buffer)
+                ("C-x b" fc-show-buffer)
                 ("C-@" fc-escape-key)
                 ("C-<SPC>" fc-escape-key)
                 ("C-." ,(fc-manual (fc-find-definitions :apropos t)))
@@ -822,7 +832,7 @@ KEYMAP: keymap to run."
 (fc-bind-keys `(("M-1" fc-split-unsplit-window)
                 ("M-2" fc-split-window)
                 ("M-3" fc-show-hide-eshell)
-                ("M-4" ivy-switch-buffer)
+                ("M-4" fc-show-buffer)
                 ("M-5" toggle-frame-fullscreen)
 
                 ("M-6" fc-flycheck)
@@ -1442,7 +1452,7 @@ AUTO: auto select face."
                       :prefix #'split-window-horizontally))
    ("3" ,(fc-cond-key :normal (fc-head-key "ORG" '*ergo-gtd-map*)
                       :prefix #'split-window-vertically))
-   ("4" ,(fc-cond-key :normal #'ivy-switch-buffer))
+   ("4" ,(fc-cond-key :normal #'fc-show-buffer))
    ("5" toggle-frame-fullscreen)
    ("6" fc-toggle-window-maximize)
    ("7" ,(fc-cond-key :normal #'compile

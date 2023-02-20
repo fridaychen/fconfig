@@ -197,7 +197,7 @@ CREATE-FUNC: function to create buffer when it not exists."
       (bury-buffer)
     (let ((buffer (get-buffer buffer-name)))
       (if buffer
-          (switch-to-buffer buffer)
+          (fc-pop-buf buffer :select t)
         (when create-func
           (funcall create-func))))))
 

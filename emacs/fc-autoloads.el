@@ -48,6 +48,7 @@
 ;; layout
 (autoload #'fc-layout-save "fc-layout")
 (autoload #'fc-layout-switch "fc-layout")
+(autoload #'fc-use-layout-fhd "fc-layout")
 
 ;; modal
 (autoload #'fc-modal-enable "fc-modal")

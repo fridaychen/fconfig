@@ -121,18 +121,22 @@ WINDOW: target window."
     (fc--maximize-window-in-box window)))
 
 ;; Predefined Window Layout
-(defun fc-use-code-layout ()
+(defun fc-use-layout-fhd ()
+  "Setup layout for FHD monitor."
   (setq display-buffer-alist
         `(
-          ("\\*\\(vc-diff\\|help\\|info\\|man\\|Occur\\|xref\\)\\*\\|\\*Man.*\\|magit-\\(diff\\|log\\)\\|\\*fc text retrieve.*"
+          ("\\*\\(compilation\\|help\\|info\\|Occur\\|vc-diff\\|xref\\)\\*"
            display-buffer-in-side-window
            (side . right) (slot . -1) (window-width . 0.4) (window-height . 0.6))
 
-          ("\\*compilation\\*"
+          ("\\magit-\\(diff\\|log\\)\\|\\*Man.*\\|\\*fc text retrieve.*"
+           display-buffer-in-side-window
+           (side . right) (slot . -1) (window-width . 0.4) (window-height . 0.6))
+
+          ("\\*\\(eshell\\|fc-dict-buffer\\)\\*"
            display-buffer-in-side-window
            (side . right) (slot . 1) (window-width . 0.4) (window-height . 0.4))
-          ))
-  )
+          )))
 
 (provide 'fc-layout)
 

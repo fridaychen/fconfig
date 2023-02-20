@@ -85,7 +85,7 @@ ERROR-MSG: error message."
       (cl-return-from fc-select-buffer error-msg))
 
     (if pop
-        (fc-pop-buf buf)
+        (fc-pop-buf buf :select t)
       (switch-to-buffer buf))))
 
 ;; select buffers to show

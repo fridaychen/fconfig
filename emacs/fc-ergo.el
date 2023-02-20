@@ -677,7 +677,10 @@ ARGS: list of infos."
     (fc-switch-to-recent-buffer))
 
    ;; two or three windows
-   ((< (length (cl-set-difference (window-list) (window-at-side-list))) 4)
+   ((< (length
+        (--remove (window-parameter it 'window-slot)
+                  (window-list)))
+       4)
     (other-window 1))
 
    ;; more than three windows

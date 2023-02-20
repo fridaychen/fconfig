@@ -24,6 +24,8 @@
 
 (fc-load 'plantuml-mode
   :after (progn
+           (fc-add-mode-name 'plantuml-mode "🛸")
+
            (let ((jar (format "%s/site/resource/plantuml.jar" *fc-home*)))
              (setf plantuml-jar-path jar
                    plantuml-default-exec-mode 'jar

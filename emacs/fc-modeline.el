@@ -66,16 +66,14 @@
 (defun fc--left-bottom-window-p ()
   "Test if current window is at left-bottom."
   (or (one-window-p)
-      (and (not (windmove-find-other-window 'left))
-           (eq (minibuffer-window)
-               (windmove-find-other-window 'down)))))
+      (and (window-at-side-p (get-buffer-window) 'left)
+           (window-at-side-p (get-buffer-window) 'bottom))))
 
 (defun fc--right-bottom-window-p ()
   "Test if current window is at right-bottom."
   (or (one-window-p)
-      (and (not (window-right (get-buffer-window)))
-           (not (window-right (window-parent)))
-           (not (window-next-sibling)))))
+      (and (window-at-side-p (get-buffer-window) 'right)
+           (window-at-side-p (get-buffer-window) 'bottom))))
 
 (defvar-local *fc-enable-state-seg* t)
 
@@ -148,7 +146,7 @@
       (fc--vc-seg)
       (fc--buffer-full-id))))))
 
-(defun fc-vc-seg-tip()
+(defun fc-vc-seg-tip ()
   "Return VC seg tip message."
   (fc-text
    (list

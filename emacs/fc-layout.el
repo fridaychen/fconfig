@@ -124,7 +124,7 @@ WINDOW: target window."
 (defun fc-use-code-layout ()
   (setq display-buffer-alist
         `(
-          ("\\*\\(vc-diff\\|help\\|info\\|man\\|Occur\\)\\*\\|\\*Man.*\\|\\*fc text retrieve.*"
+          ("\\*\\(vc-diff\\|help\\|info\\|man\\|Occur\\|xref\\)\\*\\|\\*Man.*\\|magit-\\(diff\\|log\\)\\|\\*fc text retrieve.*"
            display-buffer-in-side-window
            (side . right) (slot . -1) (window-width . 0.4) (window-height . 0.6))
 

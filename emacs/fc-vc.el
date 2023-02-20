@@ -9,6 +9,11 @@
 (fc-load 'magit
   :autoload t
   :after (progn
+           (fc-add-mode-name 'magit-diff-mode "2️⃣")
+           (fc-add-mode-name 'magit-log-mode "🪵")
+           (fc-add-mode-name 'magit-revision-mode "2️⃣")
+           (fc-add-mode-name 'magit-status-mode "🍱")
+
            (fc-modal-exclude-mode 'magit-status-mode
                                   'magit-popup-mode)
 

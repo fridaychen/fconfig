@@ -28,6 +28,8 @@
 
 (fc-load 'go-mode
   :after (progn
+           (fc-add-mode-name 'go-mode "🎱")
+
            (cl-defun fc--go-setup ()
              (fc--lsp-enable))
 

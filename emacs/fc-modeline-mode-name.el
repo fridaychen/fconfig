@@ -29,7 +29,6 @@
                             (eshell-mode "🤖")
                             (fundamental-mode "📃")
                             (gnuplot-mode "🧮")
-                            (go-mode "🎱")
                             (grep-mode "🔎")
                             (help-mode "ℹ️")
                             (image-mode "🎨")
@@ -40,19 +39,13 @@
                             (latex-mode "🏮")
                             (log-edit-mode "🪵")
                             (log-view-mode "🪵")
-                            (magit-diff-mode "2️⃣")
-                            (magit-log-mode "🪵")
-                            (magit-revision-mode "2️⃣")
-                            (magit-status-mode "🍱")
                             (matlab-mode "🧮")
-                            (Man-mode "ℹ️")
+                            (Man-mode "👨")
                             (mhtml-mode "🕸️")
                             (octave-mode "🧮")
                             (org-mode "🅾️")
                             (org-agenda-mode "🗓️")
                             (package-menu-mode "📦")
-                            (plantuml-mode "🛸")
-                            (python-mode "🐍")
                             (sh-mode "🐚")
                             (special-mode "📊")
                             (text-mode "📝")
@@ -63,8 +56,16 @@
                             (xref--xref-buffer-mode "📚")
                             (yaml-mode "🖖"))))
 
-(defun fc-mode-name ()
-  (gethash major-mode *fc-mode-name* mode-name))
+(defun fc-mode-name (&optional (mode major-mode))
+  "Get mode name.
+MODE: target mode."
+  (gethash mode *fc-mode-name* mode-name))
+
+(defun fc-add-mode-name (mode name)
+  "Add mode name.
+MODE: target mode.
+NAME: mode name."
+  (puthash mode name *fc-mode-name*))
 
 (provide 'fc-modeline-mode-name)
 

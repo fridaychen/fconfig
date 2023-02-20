@@ -120,23 +120,32 @@ WINDOW: target window."
       (balance-windows (window-parent window))
     (fc--maximize-window-in-box window)))
 
+(defconst *fc-buf-info-regex* "\\*\\(help\\|info\\|vc-diff\\)\\*\\|\\*Man.*\\|\\magit-\\(diff\\|log\\)")
+(defconst *fc-buf-shell-regex* "\\*eshell\\*")
+(defconst *fc-buf-state-regex* "\\*fc-dict-buffer\\*")
+
 ;; Predefined Window Layout
 (defun fc-use-layout-fhd ()
   "Setup layout for FHD monitor."
-  (setq display-buffer-alist
-        `(
-          ("\\*\\(compilation\\|help\\|info\\|Occur\\|vc-diff\\|xref\\)\\*"
-           display-buffer-in-side-window
-           (side . right) (slot . -1) (window-width . 0.4) (window-height . 0.6))
+  (let ((upper-param '((side . right) (slot . -1) (window-width . 0.4) (window-height . 0.6)))
+        (lower-param '((side . right) (slot . 1) (window-width . 0.4) (window-height . 0.4))))
+    (setq display-buffer-alist
+          `(
+            (,*fc-buf-info-regex*
+             display-buffer-in-side-window
+             ,@upper-param)
 
-          ("\\magit-\\(diff\\|log\\)\\|\\*Man.*\\|\\*fc text retrieve.*"
-           display-buffer-in-side-window
-           (side . right) (slot . -1) (window-width . 0.4) (window-height . 0.6))
+            (fc--next-error-buffer-p
+             display-buffer-in-side-window
+             ,@upper-param)
 
-          ("\\*\\(eshell\\|fc-dict-buffer\\)\\*"
-           display-buffer-in-side-window
-           (side . right) (slot . 1) (window-width . 0.4) (window-height . 0.4))
-          )))
+            (,*fc-buf-shell-regex*
+             display-buffer-in-side-window
+             ,@lower-param)
+
+            (,*fc-buf-state-regex*
+             display-buffer-in-side-window
+             ,@lower-param)))))
 
 (provide 'fc-layout)
 

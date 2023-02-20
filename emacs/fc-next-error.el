@@ -9,7 +9,7 @@
 (fc-load 'simple
   :local t
   :after (progn
-           (defun fc--next-error-buffer-p (buf)
+           (defun fc--next-error-buffer-p (buf &rest rest)
              (gethash (buffer-local-value 'major-mode buf)
                       *fc--next-error-map*))
 

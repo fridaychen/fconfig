@@ -82,7 +82,7 @@ function ansi-reset {
 }
 
 function hl-msg {
-    if [[ -t 1 && $TERM != linux ]]; then
+    if [[ -t 1 && $FC_COLORFUL == true ]]; then
         ansi-part ${ANSI_HT} $((ANSI_WHITE + 30)) $((ANSI_BLACK + 40)) "🏮 $*\n" $ANSI_NORMAL
     else
         echo "🏮 $*\n"
@@ -90,7 +90,7 @@ function hl-msg {
 }
 
 function err-msg {
-    if [[ -t 1 && $TERM != linux ]]; then
+    if [[ -t 1 && $FC_COLORFUL == true ]]; then
         ansi-part "\n" ${ANSI_HT} $((ANSI_WHITE + 30)) $((ANSI_BLACK + 40)) "💩 $*\n\n" $ANSI_NORMAL
     else
         echo "💩 $*\n"

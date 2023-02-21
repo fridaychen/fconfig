@@ -120,7 +120,7 @@ WINDOW: target window."
       (balance-windows (window-parent window))
     (fc--maximize-window-in-box window)))
 
-(defconst *fc-buf-info-regex* "\\*\\(help\\|info\\|vc-diff\\)\\*\\|\\*Man.*\\|\\magit-\\(diff\\|log\\)")
+(defconst *fc-buf-info-regex* "\\*\\(help\\|info\\|vc-diff\\)\\*\\|\\*Man.*\\|\\magit-\\(diff\\|log\\|revision\\)")
 (defconst *fc-buf-shell-regex* "\\*eshell\\*")
 (defconst *fc-buf-state-regex* "\\*fc-dict-buffer\\*")
 

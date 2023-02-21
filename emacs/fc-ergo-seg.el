@@ -9,11 +9,12 @@
 
 (defun fc-modeline-extra-state (state)
   "Mode-line info func."
-  (concat (if fc-modal-mode *fc--modal-mark* "-")
-          (if *fc-ergo-prefix* "P" "-")
-          (if *fc-dev-mode* "D" "-")
-          state
-          (upcase (fc-layout-current))))
+  (when buffer-file-name
+    (concat (if fc-modal-mode *fc--modal-mark* "-")
+            (if *fc-ergo-prefix* "P" "-")
+            (if *fc-dev-mode* "D" "-")
+            state
+            (upcase (fc-layout-current)))))
 
 (defun fc-modeline-proj-name ()
   "Get project name of current buffer."

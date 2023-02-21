@@ -262,7 +262,7 @@
     (list
      (cond
       ((bound-and-true-p compilation-in-progress)
-       (propertize "[Compiling]"))
+       (propertize "🚧‍"))
 
       ((eq *fc-comp-exit-code* 0)
        "")

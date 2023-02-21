@@ -155,7 +155,11 @@ FROM-BEGINNING: start from beginnning."
   :before (autoload #'er/mark-symbol "expand-region")
   :autoload t)
 
-(fc-install 'imenu-list 'swiper)
+(fc-install 'swiper)
+
+(fc-load 'imenu-list
+  :after (progn
+           (setf imenu-list-buffer-name "📚")))
 
 (fc-load 'move-text
   :autoload t

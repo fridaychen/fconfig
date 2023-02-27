@@ -461,7 +461,7 @@ FILE-TYPES: target file types to be searched."
   "Text retrieve.
 DIR: dir to search."
   (let* ((pattern (fc-current-thing :prompt "Text retrieve" :regq t :confirm t))
-         (bufname (format "*fc text retrieve %s*" pattern))
+         (bufname (format "*search %s*" pattern))
          (buf (get-buffer-create bufname))
          (filename (when buffer-file-name
                      (file-name-nondirectory buffer-file-name))))

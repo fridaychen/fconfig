@@ -152,8 +152,6 @@ HIGHLIGHT: highlight regex.
 SELECT: focus in new window.
 ESCAPE: decode ansi escape sequence.
 LOCAL-VARS: list of local-vars."
-  (display-buffer buffer-or-name 'display-buffer-pop-up-window)
-
   (with-current-buffer buffer-or-name
     (cond
      ((and (eq mode 'auto) local-vars)
@@ -189,6 +187,9 @@ LOCAL-VARS: list of local-vars."
 
     (--each highlight
       (highlight-regexp it)))
+
+  (display-buffer buffer-or-name '(display-buffer-reuse-window
+                                   display-buffer-pop-up-window))
 
   (when select
     (select-window (get-buffer-window buffer-or-name))))

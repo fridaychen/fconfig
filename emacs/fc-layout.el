@@ -124,11 +124,13 @@ WINDOW: target window."
 (defconst *fc-buf-shell-regex* "\\*eshell\\*")
 (defconst *fc-buf-state-regex* "\\*fc-dict-buffer\\*")
 
+(defvar *fc-left-side-width* 0.4)
+
 ;; Predefined Window Layout
 (defun fc-use-layout-fhd ()
   "Setup layout for FHD monitor."
-  (let ((upper-param '((side . right) (slot . -1) (window-width . 0.4) (window-height . 0.6)))
-        (lower-param '((side . right) (slot . 1) (window-width . 0.4) (window-height . 0.4))))
+  (let ((upper-param `((side . right) (slot . -1) (window-width . ,*fc-left-side-width*) (window-height . 0.6)))
+        (lower-param `((side . right) (slot . 1) (window-width . ,*fc-left-side-width*) (window-height . 0.4))))
     (setq display-buffer-alist
           `(
             (,*fc-buf-info-regex*

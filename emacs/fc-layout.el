@@ -120,6 +120,14 @@ WINDOW: target window."
       (balance-windows (window-parent window))
     (fc--maximize-window-in-box window)))
 
+(cl-defun fc-side-window-p (&optional (window (get-buffer-window)))
+  (window-parameter window 'window-slot))
+
+(cl-defun fc-close-all-side-window ()
+  (--each (window-list)
+    (when (fc-side-window-p it)
+      (delete-window it))))
+
 (defconst *fc-buf-info-regex* "\\*\\(help\\|info\\|vc-diff\\)\\*\\|\\*Man.*\\|\\magit-\\(diff\\|log\\|revision\\)")
 (defconst *fc-buf-shell-regex* "\\*eshell\\*")
 (defconst *fc-buf-state-regex* "\\*fc-dict-buffer\\*")
@@ -127,8 +135,9 @@ WINDOW: target window."
 (defvar *fc-left-side-width* 0.4)
 
 ;; Predefined Window Layout
-(defun fc-use-layout-fhd ()
-  "Setup layout for FHD monitor."
+(defun fc-use-layout-simple ()
+  "Setup simple layout."
+
   (let ((upper-param `((side . right) (slot . -1) (window-width . ,*fc-left-side-width*) (window-height . 0.6)))
         (lower-param `((side . right) (slot . 1) (window-width . ,*fc-left-side-width*) (window-height . 0.4))))
     (setq display-buffer-alist

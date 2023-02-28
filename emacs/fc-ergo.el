@@ -692,7 +692,7 @@ ARGS: list of infos."
 
    ;; two or three windows
    ((< (length
-        (--remove (window-parameter it 'window-slot)
+        (--remove (fc-side-window-p it)
                   (window-list)))
        4)
     (other-window 1))
@@ -1208,7 +1208,7 @@ KEYMAP: keymap to run."
 (defconst *ergo-quick-map*
   (fc-make-keymap
    `(("SPC" fc-app-portal)
-     ("1")
+     ("1" fc-close-all-side-window)
      ("a" align)
      ("b" fc-quick-attention)
      ("c" ,(fc-cond-key :normal 'quick-calc
@@ -1360,6 +1360,7 @@ STEP: pixels."
      ("Diff current file with other branch"  . fc-vc-diff-file-with-other-branch)
      ("Gitk with current file" ,(fc-manual (start-process "gitk" nil "gitk" buffer-file-name)))
      ("Gitk" ,(fc-manual (start-process "gitk" nil "gitk")))
+     ("Rebase" magit-rebase-branch)
      ("Switch branch" . ,(fc-manual (fc-vc-switch-branch)
                                     (fc-vc-revert-repo)))
      )

@@ -49,7 +49,7 @@
 (autoload #'fc-layout-save "fc-layout")
 (autoload #'fc-layout-switch "fc-layout")
 (autoload #'fc-side-window-p "fc-layout")
-(autoload #'fc-use-layout-fhd "fc-layout")
+(autoload #'fc-use-layout-simple "fc-layout")
 
 ;; modal
 (autoload #'fc-modal-enable "fc-modal")

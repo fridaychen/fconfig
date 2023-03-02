@@ -65,7 +65,16 @@ MODE: target mode."
   "Add mode name.
 MODE: target mode.
 NAME: mode name."
-  (puthash mode name *fc-mode-name*))
+  (cond
+   ((symbolp mode)
+    (puthash mode name *fc-mode-name*))
+
+   ((sequencep mode)
+    (mapc #'(lambda (x) (puthash x name *fc-mode-name*))
+          mode))
+
+   (t
+    (error "Unknown arg %s" mode))))
 
 (provide 'fc-modeline-mode-name)
 

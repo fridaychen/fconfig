@@ -47,6 +47,13 @@
            (setf ivy-posframe-size-function #'fc--posframe-get-size)
            (ivy-posframe-mode 1)))
 
+(fc-load 'orderless
+  :after (progn
+           (setq completion-styles '(orderless basic)
+                 ivy-re-builders-alist '((t . orderless-ivy-re-builder)))
+           (add-to-list 'ivy-highlight-functions-alist
+                        '(orderless-ivy-re-builder . orderless-ivy-highlight))))
+
 (fc-load 'counsel
   :autoload t
   :before (progn

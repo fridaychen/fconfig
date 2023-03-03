@@ -153,7 +153,11 @@
     (fc-vc-branch)
     (vc-state buffer-file-name))))
 
-(defvar *fc--vc-mark* (fc-visible "" "VC"))
+(defvar *fc--vc-mark*
+  (if (and *is-gui* (fc-font-exists-p '(:family "github-octicons")))
+      (fc-text "\xf020"
+               :face `(:family "github-octicons"))
+    (fc-visible "" "VC")))
 
 (defun fc--vc-seg ()
   "VC state segment."
@@ -161,12 +165,11 @@
              vc-mode)
     (let ((color (pcase (vc-state buffer-file-name)
                    ('edited "#cf6a4c")
-                   ((or 'needs-merge 'conflict) "#ff0066"))))
-      (if color
-          (fc-text *fc--vc-mark*
-                   :face `(:foreground ,color)
-                   :tip '(fc-vc-seg-tip))
-        *fc--vc-mark*))))
+                   ((or 'needs-merge 'conflict) "#ff0066")))
+          (ret (concat *fc--vc-mark*)))
+      (when color
+        (font-lock-append-text-property 0 1 'face `(:foreground ,color) ret))
+      ret)))
 
 (defun fc--line-col-seg ()
   "Line column segment."

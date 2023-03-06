@@ -154,10 +154,9 @@
     (vc-state buffer-file-name))))
 
 (defvar *fc--vc-mark*
-  (if (and *is-gui* (fc-font-exists-p '(:family "github-octicons")))
-      (fc-text "\xf020"
-               :face `(:family "github-octicons"))
-    (fc-visible "" "VC")))
+  (fc-visible (fc-text "\xf020" :face '(:family "github-octicons"))
+              ""
+              "VC"))
 
 (defun fc--vc-seg ()
   "VC state segment."

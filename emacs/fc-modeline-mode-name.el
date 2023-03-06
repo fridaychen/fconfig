@@ -50,7 +50,6 @@
                             (special-mode "📊")
                             (text-mode "📝")
                             (makefile-gmake-mode "🍄")
-                            (markdown-mode "Ⓜ️")
                             (messages-buffer-mode "💬")
                             (nxml-mode "🕸️")
                             (xref--xref-buffer-mode "📚")

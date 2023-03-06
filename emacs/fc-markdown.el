@@ -16,6 +16,13 @@
 (fc-load 'markdown-mode
   :after
   (progn
+    (fc-add-mode-name
+     'markdown-mode
+     (fc-visible
+      (fc-text "\xf0c9"
+               :face '(:family "github-octicons" :foreground "red3"))
+      "Ⓜ️"))
+
     (setf markdown-hr-strings
           '("-----"))
 

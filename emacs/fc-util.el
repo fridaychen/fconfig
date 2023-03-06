@@ -736,19 +736,34 @@ FORM: test form."
        (insert new-text)
        new-text)))
 
-(cl-defun fc-visible (o default)
-  "Return o if every char of o is displayable, otherwise return default."
+(cl-defun -fc-visible-char (c &key font)
+  (if font
+      (font-has-char-p font c)
+    (let ((ret (char-displayable-p c)))
+      (and ret (not (eq ret 'unicode))))))
+
+(cl-defun -fc-visible (o)
   (pcase (type-of o)
     ('integer
-     (if (char-displayable-p o)
-         o
-       default))
+     (when (char-displayable-p o)
+       o))
 
     ('string
-     (dotimes (i (length o))
-       (unless (char-displayable-p (aref o i))
-         (cl-return-from fc-visible default)))
-     o)))
+     (let* ((font-spec (when *is-gui* (get-text-property 0 'face o)))
+            (font (when (and font-spec (fc-font-exists-p font-spec))
+                    (find-font (apply #'font-spec font-spec)))))
+       (dotimes (i (length o))
+         (unless (-fc-visible-char (aref o i) :font font)
+           (cl-return-from -fc-visible)))
+       o))))
+
+(cl-defun fc-visible (&rest rest)
+  "Return the elm of reset if every char of it is displayable."
+  (catch 'found
+    (mapc #'(lambda (x)
+              (when (-fc-visible x)
+                (throw 'found x)))
+          rest)))
 
 (cl-defun fc-call-mode-func (suffix default &rest args)
   (let* ((fsym (intern (format "fc--%s-%s"

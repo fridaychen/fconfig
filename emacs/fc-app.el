@@ -1054,6 +1054,20 @@ REST: commands."
      (unless fc-viewer-minor-mode
        (fc--setup-line-spacing)))))
 
+(cl-defun fc-config-reading-font ()
+  "Allow user config FONT."
+  (interactive)
+
+  (when-let* ((eng-family (fc-select-font-family))
+              (cjk-family (fc-select-font-family))
+              (fontset (create-fontset-from-ascii-font eng-family)))
+    (fc-setup-font-spec
+     fontset
+     `(((kana han cjk-misc bopomofo) :family ,cjk-family)))
+    (set-face-attribute 'fc-viewer-face nil
+                        :fontset fontset
+                        :family eng-family)))
+
 (defconst *fc-app-font-size-map*
   (fc-make-keymap
    `(
@@ -1129,13 +1143,14 @@ REST: commands."
   (fc-user-select-func
    "UI"
    `(
-     ("bg color"    . fc-select-bg-color)
-     ("font"        . fc-config-font)
-     ("font size"   . ,(fc-head-key-repeat "Adjust font size"
-                                           '*fc-app-font-size-map*))
-     ("line space"  . fc-config-line-space)
-     ("theme"       . fc-select-theme)
-     ("theme reset" . fc-reset-theme)
+     ("bg color"     . fc-select-bg-color)
+     ("font"         . fc-config-font)
+     ("font size"    . ,(fc-head-key-repeat "Adjust font size"
+                                            '*fc-app-font-size-map*))
+     ("line space"   . fc-config-line-space)
+     ("reading font" . fc-config-reading-font)
+     ("theme"        . fc-select-theme)
+     ("theme reset"  . fc-reset-theme)
      )))
 
 (advice-add 'package-utils-upgrade-all :after #'fc-job-done)

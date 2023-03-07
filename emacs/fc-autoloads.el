@@ -70,6 +70,7 @@
 
 ;; viewer
 (defvar *fc-reading-face* nil)
+(defvar *fc-reading-fontset* nil)
 (defvar-local fc-viewer-minor-mode nil)
 (autoload #'fc-viewer-toggle "fc-viewer")
 

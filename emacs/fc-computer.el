@@ -65,15 +65,15 @@
             *fc-mode-line-font* (funcall find-font *fc-mode-line-fonts*))
 
       (make-face 'fc-viewer-face)
-      (setf *fc-reading-face* 'fc-viewer-face)
-
+      (setf *fc-reading-face* 'fc-viewer-face
+            *fc-reading-fontset* (create-fontset-from-ascii-font
+                                  (elt english-reading-font 1)))
       (apply #'set-face-attribute 'fc-viewer-face nil
-             :fontset (create-fontset-from-ascii-font
-                       (elt english-reading-font 1))
+             :fontset *fc-reading-fontset*
              english-reading-font)
 
       (fc-setup-font-spec
-       (create-fontset-from-ascii-font (elt english-reading-font 1))
+       *fc-reading-fontset*
        `(((kana han cjk-misc bopomofo) ,@cjk-reading-font)))))
 
   (fc-idle-delay

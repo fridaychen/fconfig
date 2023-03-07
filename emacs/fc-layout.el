@@ -121,7 +121,7 @@ WINDOW: target window."
     (fc--maximize-window-in-box window)))
 
 (cl-defun fc-side-window-p (&optional (window (get-buffer-window)))
-  (window-parameter window 'window-slot))
+  (window-parameter window 'window-side))
 
 (cl-defun fc-close-all-side-window ()
   (--each (window-list)

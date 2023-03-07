@@ -1208,7 +1208,6 @@ KEYMAP: keymap to run."
 (defconst *ergo-quick-map*
   (fc-make-keymap
    `(("SPC" fc-app-portal)
-     ("1" fc-close-all-side-window)
      ("a" align)
      ("b" fc-quick-attention)
      ("c" ,(fc-cond-key :normal 'quick-calc
@@ -1242,6 +1241,7 @@ KEYMAP: keymap to run."
      ("v" fc-tomato)
      ("w" write-file)
      ("x" fc-viewer-toggle)
+     ("y" fc-close-all-side-window)
      ("z" flush-lines)
 
      ("B" )

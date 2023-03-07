@@ -215,7 +215,7 @@
 
 (cl-defun fc--flycheck-seg()
   "Flycheck seg."
-  (when flycheck-mode
+  (when (bound-and-true-p flycheck-mode)
     (let* ((result (flycheck-count-errors flycheck-current-errors))
            (err (cdr (assoc 'error result)))
            (warning (cdr (assoc 'warning result))))

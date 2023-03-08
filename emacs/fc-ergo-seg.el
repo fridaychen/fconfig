@@ -72,7 +72,7 @@
                      level)
              :face 'fc-modeline-icon-hl-face)))
 
-(when *is-laptop*
+(when *has-battery*
   (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--battery-modeline)))))
 
 (defun fc--player-tip ()

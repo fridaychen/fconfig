@@ -148,7 +148,7 @@
           org-preview-latex-image-directory "output/"
           org-startup-indented nil
           org-fontify-quote-and-verse-blocks t
-          org-superstar-headline-bullets-list '(?◉ ?🞛 ?○ ?▷)
+          org-superstar-headline-bullets-list '(?● ?◯ ?○ ?▷)
           org-imenu-depth 4
           )
 

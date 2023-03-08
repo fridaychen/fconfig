@@ -737,10 +737,12 @@ FORM: test form."
        new-text)))
 
 (cl-defun -fc-visible-char (c &key font)
-  (if font
-      (font-has-char-p font c)
-    (let ((ret (char-displayable-p c)))
-      (and ret (not (eq ret 'unicode))))))
+  (when font
+    (cl-return-from -fc-visible-char (font-has-char-p font c)))
+
+  (let ((ret (char-displayable-p c)))
+    (and ret (or *is-colorful*
+                 (not (eq ret 'unicode))))))
 
 (cl-defun -fc-visible (o)
   (pcase (type-of o)
@@ -749,9 +751,13 @@ FORM: test form."
        o))
 
     ('string
-     (let* ((font-spec (when *is-gui* (get-text-property 0 'face o)))
-            (font (when (and font-spec (fc-font-exists-p font-spec))
+     (let* ((font-spec (get-text-property 0 'face o))
+            (font (when (and *is-gui* font-spec (fc-font-exists-p font-spec))
                     (find-font (apply #'font-spec font-spec)))))
+
+       (when (and font-spec (not *is-gui*))
+         (cl-return-from -fc-visible))
+
        (dotimes (i (length o))
          (unless (-fc-visible-char (aref o i) :font font)
            (cl-return-from -fc-visible)))

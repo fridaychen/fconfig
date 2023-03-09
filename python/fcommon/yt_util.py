@@ -1,4 +1,4 @@
-import youtube_dl
+import yt_dlp
 import os.path
 
 import fc
@@ -10,7 +10,7 @@ class YoutubeUtil:
 
     @staticmethod
     def fetch_meta(url):
-        return youtube_dl.YoutubeDL({}).extract_info(
+        return yt_dlp.YoutubeDL({}).extract_info(
             url, download=False, process=False
         )
 
@@ -50,7 +50,7 @@ class YoutubeUtil:
             "quiet": quiet,
         }
 
-        with youtube_dl.YoutubeDL(
+        with yt_dlp.YoutubeDL(
             ydl_audio_opts if audio_only else ydl_video_opts
         ) as ydl:
             ydl.download([url])

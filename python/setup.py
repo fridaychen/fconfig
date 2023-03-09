@@ -18,6 +18,6 @@ setup(
         "python-lsp-server",
         "wikipedia",
         "ydiff",
-        "youtube_dl",
+        "yt_dlp",
     ],
 )

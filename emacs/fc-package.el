@@ -34,6 +34,7 @@ REST: include :package :local :enable :bind :before :after :autoload :run"
         (local (make-symbol "local"))
         (enable (make-symbol "enable"))
         (autoload (make-symbol "autoload"))
+        (raw (make-symbol "raw"))
         (run (make-symbol "run"))
         (idle (make-symbol "idle"))
         (bind (make-symbol "bind"))
@@ -45,6 +46,7 @@ REST: include :package :local :enable :bind :before :after :autoload :run"
             (,local (plist-get ,l :local))
             (,enable (plist-get ,l :enable))
             (,autoload (plist-get ,l :autoload))
+            (,raw (plist-get ,l :raw))
             (,run (plist-get ,l :run))
             (,idle (plist-get ,l :idle))
             (,bind (plist-get ,l :bind))
@@ -55,6 +57,18 @@ REST: include :package :local :enable :bind :before :after :autoload :run"
          (when ,before
            (eval ,before t))
 
+         (when ,raw
+           (unless (file-exists-p (format "%s/site/%s"
+                                          user-emacs-directory
+                                          ,n))
+             (shell-command (format "cd %s/site; git clone %s"
+                                    user-emacs-directory
+                                    ,raw)))
+
+           (add-to-list 'load-path (format "%s/site/%s"
+                                           (expand-file-name user-emacs-directory)
+                                           ,n)))
+
          (cond
           ;; load locally
           ((and ,local (eval ,local t))
@@ -62,7 +76,8 @@ REST: include :package :local :enable :bind :before :after :autoload :run"
 
           ;; load package
           (t
-           (when (not (package-installed-p (or ,pkg ,n)))
+           (when (and (not ,raw)
+                      (not (package-installed-p (or ,pkg ,n))))
              (package-install (if (null ,pkg)
                                   ,n
                                 (eval ,pkg t))))

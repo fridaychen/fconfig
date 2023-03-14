@@ -599,6 +599,14 @@ DISPLAY: display property."
            (--mapcat (list (car it) (cdr it))
                      args))))
 
+(cl-defun fc-text-propertize (text face-def &key (start 0) (end (length text)))
+  (apply #'font-lock-append-text-property
+         (list
+          start end
+          'face face-def
+          text))
+  text)
+
 ;; insert text
 (cl-defun fc-insert-text (after-fun &rest rest)
   "Insert text then run AFTER-FUN on the region.
@@ -755,7 +763,7 @@ FORM: test form."
             (font (when (and *is-gui* font-spec (fc-font-exists-p font-spec))
                     (find-font (apply #'font-spec font-spec)))))
 
-       (when (and font-spec (not *is-gui*))
+       (when (and font-spec (cl-member :family font-spec) (not *is-gui*))
          (cl-return-from -fc-visible))
 
        (dotimes (i (length o))

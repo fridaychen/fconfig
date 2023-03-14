@@ -599,12 +599,12 @@ DISPLAY: display property."
            (--mapcat (list (car it) (cdr it))
                      args))))
 
-(cl-defun fc-text-propertize (text face-def &key (start 0) (end (length text)))
+(cl-defun fc-text-propertize (text props &key (start 0) (end (length text)))
   (apply #'font-lock-append-text-property
-         (list
-          start end
-          'face face-def
-          text))
+         `(
+           ,start ,end
+           ,@props
+           ,text))
   text)
 
 ;; insert text

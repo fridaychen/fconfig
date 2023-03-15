@@ -7,4 +7,4 @@ fc-enable-alias
 pip3 list --outdated |
     grep wheel$ |
     awk '{print $1}' |
-    xargs --no-run-if-empty pip3 install --upgrade --user
+    $XARGS --no-run-if-empty pip3 install --upgrade --user

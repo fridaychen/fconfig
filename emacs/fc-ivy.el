@@ -44,7 +44,9 @@
                                 (min height (or ivy-posframe-height height))))
               :min-width (round (* 0.7 (frame-width)))))
 
-           (setf ivy-posframe-size-function #'fc--posframe-get-size)
+           (setf ivy-posframe-size-function #'fc--posframe-get-size
+                 ivy-posframe-style 'frame-bottom-center
+                 ivy-posframe-border-width 6)
            (ivy-posframe-mode 1)))
 
 (fc-load 'orderless

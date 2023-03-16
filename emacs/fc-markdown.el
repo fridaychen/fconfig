@@ -19,8 +19,7 @@
     (fc-add-mode-name
      'markdown-mode
      (fc-visible
-      (fc-text "\xf0c9"
-               :face '(:family "github-octicons" :foreground "red3"))
+      (fc-nerd-icon "\xf48a" :foreground "red3")
       "Ⓜ️"))
 
     (setf markdown-hr-strings

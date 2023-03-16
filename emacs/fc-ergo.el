@@ -679,10 +679,12 @@ ARGS: list of infos."
                                  :preselect (buffer-name (other-buffer (current-buffer)))
                                  :matcher #'ivy--switch-buffer-matcher
                                  :caller 'ivy-switch-buffer))
-              (buf (get-buffer bufname)))
-    (display-buffer buf
-                    '(display-buffer-same-window
-                      display-buffer-pop-up-window))))
+              (buf (get-buffer bufname))
+              (win (display-buffer buf
+                                   '(display-buffer-same-window
+                                     display-buffer-use-some-window
+                                     display-buffer-reuse-window))))
+    (select-window win)))
 
 (cl-defun fc-fast-switch-window ()
   "Fast switch window."

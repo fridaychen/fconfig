@@ -140,6 +140,10 @@ FONT: to be tested."
           *fc-font-weight-of-default* weight)
     (fc-setup-font)))
 
+(cl-defun fc-nerd-icon (rune &rest rest)
+  (fc-text rune
+           :face `(:family "Iosevka Nerd Font" ,@rest)))
+
 ;; configration
 (setf font-lock-maximum-decoration t
       text-scale-mode-step 1.1

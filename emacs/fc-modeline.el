@@ -154,21 +154,26 @@
     (vc-state buffer-file-name))))
 
 (defvar *fc--vc-mark*
-  (fc-visible (fc-text "\xf020" :face '(:family "github-octicons"))
+  (fc-visible (fc-nerd-icon "\xE725")
               ""
               "VC"))
+(defvar *fc--vc-modified-mark*
+  (fc-visible (fc-nerd-icon "\xE725" :foreground "red1")
+              (fc-text "" :face '(:foreground "#cf6a4c"))
+              (fc-text "VC" :face '(:foreground "#cf6a4c"))))
+(defvar *fc--vc-merge-mark*
+  (fc-visible (fc-nerd-icon "\xE726" :foreground "red1")
+              (fc-text "" :face '(:foreground "#ff0066"))
+              (fc-text "VC" :face '(:foreground "#ff0066"))))
 
 (defun fc--vc-seg ()
   "VC state segment."
   (when (and (fc-main-thread-p)
              vc-mode)
-    (let ((color (pcase (vc-state buffer-file-name)
-                   ('edited "#cf6a4c")
-                   ((or 'needs-merge 'conflict) "#ff0066")))
-          (ret (concat *fc--vc-mark*)))
-      (when color
-        (font-lock-append-text-property 0 1 'face `(:foreground ,color) ret))
-      ret)))
+    (pcase (vc-state buffer-file-name)
+      ('edited *fc--vc-modified-mark*)
+      ((or 'needs-merge 'conflict) *fc--vc-merge-mark*)
+      (_ *fc--vc-mark*))))
 
 (defun fc--line-col-seg ()
   "Line column segment."
@@ -245,8 +250,9 @@
      hl-sep
      (fc--pos-seg)
      hl-sep
-     (fc-text
-      (fc--state-seg) :face (fc--modeline-get-hl-face))
+     (fc-text-propertize
+      (fc--state-seg)
+      `(face (:inherit ,(fc--modeline-get-hl-face))))
      (fc-ml-left-sep)
      (fc--major-mode-seg)
      " ")))
@@ -255,9 +261,9 @@
 
 (defun fc--compilation-exit (status code msg)
   (setq *fc-comp-exit-code* code)
-  (cons msg code))
+  (cons msg code)
 
-(setq compilation-exit-message-function #'fc--compilation-exit)
+  (setq compilation-exit-message-function #'fc--compilation-exit))
 
 (defun fc--compilation-seg ()
   (when (eq major-mode 'compilation-mode)

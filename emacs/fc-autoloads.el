@@ -34,6 +34,7 @@
 
 ;; font
 (autoload #'fc-setup-font "fc-font")
+(autoload #'fc-nerd-icon "fc-font")
 
 ;; format
 (defvar-local *fc-format-at-save* t)

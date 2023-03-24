@@ -69,8 +69,7 @@
                             "🔋%d")
                            (t
                             "🪫%d"))
-                     level)
-             :face 'fc-modeline-icon-hl-face)))
+                     level))))
 
 (when *has-battery*
   (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--battery-modeline)))))
@@ -102,7 +101,6 @@
                ('Playing "⏸️")
                ((or 'Paused 'Stopped) "▶️")
                (_ ""))
-             :face 'fc-modeline-icon-hl-face
              :tip '(fc--player-tip)
              :keys *fc--player-seg-keymap*)))
 

@@ -599,13 +599,14 @@ DISPLAY: display property."
            (--mapcat (list (car it) (cdr it))
                      args))))
 
-(cl-defun fc-text-propertize (text props &key (start 0) (end (length text)))
-  (apply #'font-lock-append-text-property
-         `(
-           ,start ,end
-           ,@props
-           ,text))
-  text)
+(cl-defun fc-text-propertize (text props &key (start 0) (end (length text)) copy)
+  (let ((obj (if copy (concat text) text)))
+    (apply #'font-lock-append-text-property
+           `(
+             ,start ,end
+             ,@props
+             ,obj))
+    obj))
 
 ;; insert text
 (cl-defun fc-insert-text (after-fun &rest rest)
@@ -681,7 +682,8 @@ FACE: target face
 ATTR: attribute."
   (let* ((face-bg (face-attribute face attr)))
     (cond
-     ((stringp face-bg)
+     ((or (stringp face-bg)
+          (numberp face-bg))
       face-bg)
      (t (face-attribute 'default attr)))))
 

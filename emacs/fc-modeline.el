@@ -8,6 +8,8 @@
 (require 'cl-lib)
 (require 'fc-modeline-separator)
 
+(defvar *fc-ml-icon-height* *fc-font-height*)
+
 (defvar *fc-modeline-active-hl-bg* "#FEBA07")
 (defvar *fc-modeline-active-hl-fg* "#1E3124")
 (defvar *fc-modeline-dark-active-hl-bg* "#887322")
@@ -96,7 +98,10 @@
   "The name of the major mode."
   (when (and *fc-enable-major-mode-seg*
              (fc--wide-window-p))
-    (fc-mode-name)))
+    (fc-text-propertize
+     (fc-mode-name)
+     `(face (:height ,*fc-ml-icon-height*))
+     :copy t)))
 
 (defvar-local *fc-buffer-title-seg* nil)
 
@@ -252,7 +257,7 @@
      hl-sep
      (fc-text-propertize
       (fc--state-seg)
-      `(face (:inherit ,(fc--modeline-get-hl-face))))
+      `(face (:inherit ,hi-face)))
      (fc-ml-left-sep)
      (fc--major-mode-seg)
      " ")))
@@ -303,15 +308,16 @@
   (let* ((left (fc--modeline-format-left))
          (center (fc--modeline-format-center))
          (right (fc--modeline-format-right))
-         (most-right-str (cons '(t (:eval (fc-ml-right-sep)))
-                               *fc-modeline-most-right-string*))
-         (most-right (if (fc--right-bottom-window-p)
-                         most-right-str
-                       nil))
+         (right-str (format-mode-line right))
+         (most-right (cons '(t (:eval (fc-ml-right-sep)))
+                           *fc-modeline-most-right-string*))
+         (most-right-str (if (fc--right-bottom-window-p)
+                             (format-mode-line most-right)
+                           ""))
          (right-len (if (fboundp #'string-pixel-width)
                         (/ (+
-                            (string-pixel-width (format-mode-line right))
-                            (string-pixel-width (format-mode-line most-right)))
+                            (string-pixel-width right-str)
+                            (string-pixel-width most-right-str))
                            (string-pixel-width " ")
                            1.0)
                       (+
@@ -320,9 +326,12 @@
          (padding (propertize " "
                               'display `(space :align-to (- (+ scroll-bar scroll-bar) ,right-len)))))
     (nconc left center
-           (list padding)
-           right
-           most-right)))
+           (list padding
+                 right-str
+                 (fc-text-propertize
+                  most-right-str
+                  `(face (:background ,*fc-modeline-active-hl-bg*))
+                  :copy t)))))
 
 (cl-defun fc-modeline-mode ()
   "Setup mode line."
@@ -360,9 +369,11 @@
                         :weight 'medium
                         :inherit 'mode-line))
 
+  (setf *fc-ml-icon-height* (round (* (fc-get-face-attribute 'mode-line :height) 0.9)))
+
   (set-face-attribute 'fc-modeline-icon-hl-face nil
                       :inherit 'fc-modeline-hl-face
-                      :height (round (* (fc-get-face-attribute 'mode-line :height) 0.9)))
+                      :height *fc-ml-icon-height*)
 
   (fc-ml-sep-reset)
 

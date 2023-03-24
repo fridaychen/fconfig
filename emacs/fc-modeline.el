@@ -312,7 +312,9 @@
          (most-right (cons '(t (:eval (fc-ml-right-sep)))
                            *fc-modeline-most-right-string*))
          (most-right-str (if (fc--right-bottom-window-p)
-                             (format-mode-line most-right)
+                             (fc-text-propertize
+                              (format-mode-line most-right)
+                              `(face (:background ,*fc-modeline-active-hl-bg* :height ,*fc-ml-icon-height*)))
                            ""))
          (right-len (if (fboundp #'string-pixel-width)
                         (/ (+
@@ -321,17 +323,14 @@
                            (string-pixel-width " ")
                            1.0)
                       (+
-                       (string-width (format-mode-line right))
-                       (string-width (format-mode-line most-right)))))
+                       (string-width right-str)
+                       (string-width  most-right-str))))
          (padding (propertize " "
                               'display `(space :align-to (- (+ scroll-bar scroll-bar) ,right-len)))))
     (nconc left center
            (list padding
                  right-str
-                 (fc-text-propertize
-                  most-right-str
-                  `(face (:background ,*fc-modeline-active-hl-bg*))
-                  :copy t)))))
+                 most-right-str))))
 
 (cl-defun fc-modeline-mode ()
   "Setup mode line."

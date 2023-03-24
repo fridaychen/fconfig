@@ -72,31 +72,26 @@
                          :family
                          (fc-get-face-attribute 'default :family))
 
-  (if (not (fc-get-face-attribute 'org-level-1 :overline))
-      (cond
-       ((fc-dark-theme-p)
-        (fc-set-face-attribute 'org-level-1 nil
-                               :overline "#efcab2"
-                               :foreground "#c7c3cb"
-                               :background "#3d2a2d"
-                               :height 1.1)
-        (fc-set-face-attribute 'org-level-2 nil
-                               :overline "#efcab2"
-                               :foreground "#efcab2"
-                               :background "#3d2a2d"
-                               :height 1.05))
+  (cond
+   ((fc-dark-theme-p)
+    (fc-set-face-attribute 'org-level-1 nil
+                           :overline "#efcab2"
+                           :foreground "#c7c3cb"
+                           :background "#3d2a2d")
+    (fc-set-face-attribute 'org-level-2 nil
+                           :overline "#efcab2"
+                           :foreground "#efcab2"
+                           :background "#3d2a2d"))
 
-       (t
-        (fc-set-face-attribute 'org-level-1 nil
-                               :overline "#A7A7A7"
-                               :foreground "#3C3C3C"
-                               :background "#F0F0F0"
-                               :height 1.1)
-        (fc-set-face-attribute 'org-level-2 nil
-                               :overline "#123555"
-                               :foreground "#123555"
-                               :background "#E5F4FB"
-                               :height 1.05))))
+   (t
+    (fc-set-face-attribute 'org-level-1 nil
+                           :overline "#A7A7A7"
+                           :foreground "#3C3C3C"
+                           :background "#F0F0F0")
+    (fc-set-face-attribute 'org-level-2 nil
+                           :overline "#123555"
+                           :foreground "#123555"
+                           :background "#E5F4FB")))
 
   (fc-set-face-attribute 'org-level-1 nil :height 1.1)
   (fc-set-face-attribute 'org-level-2 nil :height 1.05)

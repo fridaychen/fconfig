@@ -309,7 +309,7 @@ COLOR: background color."
        (fc-set-face-attribute 'default nil
                               :background "#303030")
        (fc-set-face-attribute 'ivy-current-match nil
-                              :background "#606060"))
+                              :background "#404040"))
 
       ('tango-dark
        (fc-set-face-attribute 'default nil

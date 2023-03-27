@@ -145,7 +145,7 @@
       *fc-ml-sep-active-left*
     *fc-ml-sep-inactive-left*))
 
-(defun fc-ml-right-sep()
+(defun fc-ml-right-sep ()
   (if (fc--active-window-p)
       *fc-ml-sep-active-right*
     *fc-ml-sep-inactive-right*))

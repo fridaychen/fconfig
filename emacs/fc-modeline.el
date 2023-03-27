@@ -309,27 +309,31 @@
          (center (fc--modeline-format-center))
          (right (fc--modeline-format-right))
          (right-str (format-mode-line right))
-         (most-right (cons '(t (:eval (fc-ml-right-sep)))
-                           *fc-modeline-most-right-string*))
+         (most-right-sep-str (when (fc--right-bottom-window-p)
+                               (fc-ml-right-sep)))
          (most-right-str (if (fc--right-bottom-window-p)
                              (fc-text-propertize
-                              (format-mode-line most-right)
+                              (format-mode-line *fc-modeline-most-right-string*)
                               `(face (:background ,*fc-modeline-active-hl-bg* :height ,*fc-ml-icon-height*)))
                            ""))
          (right-len (if (fboundp #'string-pixel-width)
                         (/ (+
                             (string-pixel-width right-str)
+                            (string-pixel-width most-right-sep-str)
                             (string-pixel-width most-right-str))
                            (string-pixel-width " ")
                            1.0)
                       (+
                        (string-width right-str)
+                       (string-pixel-width most-right-sep-str)
                        (string-width  most-right-str))))
          (padding (propertize " "
                               'display `(space :align-to (- (+ scroll-bar scroll-bar) ,right-len)))))
-    (nconc left center
+    (nconc left
+           center
            (list padding
                  right-str
+                 most-right-sep-str
                  most-right-str))))
 
 (cl-defun fc-modeline-mode ()

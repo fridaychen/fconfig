@@ -322,7 +322,9 @@ COLOR: background color."
 
       ('zenburn
        (set-face-attribute 'mode-line nil
-                           :box '(:line-width 1 :style flat))
+                           :box nil)
+       (set-face-attribute 'mode-line-inactive nil
+                           :box nil)
 
        (fc-set-face-attribute 'fringe nil
                               :background (cdr

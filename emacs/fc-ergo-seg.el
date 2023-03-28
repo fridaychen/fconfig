@@ -14,7 +14,7 @@
             (if *fc-ergo-prefix* "P" "-")
             (if *fc-dev-mode* "D" "-")
             state
-            (upcase (fc-layout-current)))))
+            (upcase *fc-layout-current*))))
 
 (defun fc-modeline-proj-name ()
   "Get project name of current buffer."

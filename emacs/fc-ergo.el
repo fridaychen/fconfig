@@ -1765,33 +1765,35 @@ FUNC: new repeat func."
           )
   (advice-add it :after #'fc-ergo-prefix-off))
 
-(--each '(
-          ace-delete-window
-          compile
-          delete-other-window
-          delete-window
-          fc-ergo-simple-grep
-          fc-ergo-grep
-          fc-lisp-find-tag
-          fc-proj-build
-          fc-split-window
-          ggtags-find-tag-dwim
-          split-window-vertically
-          split-window-horizontally
-          )
-  (advice-add it :before #'fc-layout-push))
-
-(--each '(
-          fc-find-definitions
-          fc-find-references
-          )
-  (advice-add it :after #'fc-layout-push))
+;; (--each '(
+;;           ace-delete-window
+;;           compile
+;;           delete-other-window
+;;           delete-window
+;;           fc-ergo-simple-grep
+;;           fc-ergo-grep
+;;           fc-lisp-find-tag
+;;           fc-proj-build
+;;           fc-split-window
+;;           ggtags-find-tag-dwim
+;;           split-window-vertically
+;;           split-window-horizontally
+;;           )
+;;   (advice-add it :before #'fc-layout-push))
 
 (fc-add-to-hook '*fc-ergo-restore-hook*
                 #'fc-ergo-prefix-off
                 #'(lambda ()
                     (fc-ergo-repeat-func *fc--repeat-orignal-func*))
                 #'fc-search-stop)
+
+(when (boundp '*fc-layout-around-advice*)
+  (--each '(
+            compile
+            fc-text-retrieve
+            fc-find-references
+            )
+    (advice-add it :around *fc-layout-around-advice*)))
 
 ;; install theme packages
 (let ((install-theme (lambda (x)

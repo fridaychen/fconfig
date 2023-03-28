@@ -6,50 +6,44 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defvar *fc-use-layout-stack* nil)
+(defvar *fc-layout-stack* nil)
+(defvar *fc-layout-current* nil)
+(defvar *fc-layout-map* (make-hash-table))
+(defvar *fc-layout-around-advice* nil)
 
-;; layout functions
-(let ((layout-stack nil)
-      (current nil)
-      (named-map (make-hash-table)))
+(defun fc-layout-push (&rest _)
+  "Push the current layout."
+  (push (current-window-configuration) *fc-layout-stack*)
+  (when (length> *fc-layout-stack* 6)
+    (setq *fc-layout-stack* (butlast *fc-layout-stack* 6))))
 
-  (defun fc-layout-push (&rest rest)
-    "Push the current layout.
-REST: not used, for advice."
-    (when *fc-use-layout-stack*
-      (push (current-window-configuration) layout-stack)))
+(defun fc-layout-pop ()
+  "Pop the last layout."
+  (let ((conf (pop *fc-layout-stack*)))
+    (when conf
+      (set-window-configuration conf))))
 
-  (defun fc-layout-pop ()
-    "Pop the last layout."
-    (when *fc-use-layout-stack*
-      (let ((conf (pop layout-stack)))
-        (when conf
-          (set-window-configuration conf)))))
-
-  (defun fc-layout-current ()
-    current)
-
-  (defun fc-layout-save (name)
-    "Save current layout with a specific name.
+(defun fc-layout-save (name)
+  "Save current layout with a specific name.
 NAME: name for the current layout."
-    (let ((s (if (stringp name) (intern name) name)))
-      (remhash s named-map)
-      (puthash s (current-window-configuration) named-map)))
+  (let ((s (if (stringp name) (intern name) name)))
+    (remhash s *fc-layout-map*)
+    (puthash s (current-window-configuration) *fc-layout-map*)))
 
-  (defun fc-layout-load (name)
-    "Load specified layout.
+(defun fc-layout-load (name)
+  "Load specified layout.
 NAME: the name of layout"
-    (let* ((s (if (stringp name) (intern name) name))
-           (conf (gethash s named-map)))
-      (setf current name)
-      (when conf
-        (set-window-configuration conf))))
+  (let* ((s (if (stringp name) (intern name) name))
+         (conf (gethash s *fc-layout-map*)))
+    (setf *fc-layout-current* name)
+    (when conf
+      (set-window-configuration conf))))
 
-  (defun fc-layout-switch (name)
-    "swith to another layout"
-
-    (fc-layout-save current)
-    (fc-layout-load name)))
+(defun fc-layout-switch (name)
+  "Switch to another layout.
+NAME: target layout."
+  (fc-layout-save *fc-layout-current*)
+  (fc-layout-load name))
 
 (cl-defun fc-layout-split (&key (h t) size)
   "Split the current window, and the new window will be selected.
@@ -128,16 +122,31 @@ WINDOW: target window."
     (when (fc-side-window-p it)
       (delete-window it))))
 
+(cl-defun fc-close-other-normal-window ()
+  (let ((current-win (get-buffer-window)))
+    (--each (window-list)
+      (unless (or (eq it current-win) (fc-side-window-p it))
+        (delete-window it)))))
+
+(cl-defun fc-layout-setup-style (style)
+  (let ((setup-func (intern (format "fc-layout-%s-setup" style)))
+        (around (intern (format "fc-layout-%s-around-advice" style))))
+
+    (message "Setup layout style to %s." style)
+
+    (apply setup-func nil)
+    (setq *fc-layout-around-advice* around)))
+
+;; Predefined Window Layout
 (defconst *fc-buf-info-regex* "\\*\\(help\\|info\\|vc-diff\\)\\*\\|\\*Man.*\\|\\magit-\\(diff\\|log\\|revision\\)")
 (defconst *fc-buf-shell-regex* "\\*eshell\\*")
 (defconst *fc-buf-state-regex* "\\*fc-dict-buffer\\*")
 
 (defvar *fc-left-side-width* 0.4)
 
-;; Predefined Window Layout
-(defun fc-use-layout-simple ()
+;; Simple style
+(cl-defun fc-layout-simple-setup ()
   "Setup simple layout."
-
   (let ((upper-param `((side . right) (slot . -1) (window-width . ,*fc-left-side-width*) (window-height . 0.6)))
         (lower-param `((side . right) (slot . 1) (window-width . ,*fc-left-side-width*) (window-height . 0.4))))
     (setq display-buffer-alist
@@ -157,6 +166,11 @@ WINDOW: target window."
             (,*fc-buf-state-regex*
              display-buffer-in-side-window
              ,@lower-param)))))
+
+(cl-defun fc-layout-simple-around-advice (orig-fun &rest args)
+  (fc-layout-push)
+  (apply orig-fun args)
+  (fc-close-other-normal-window))
 
 (provide 'fc-layout)
 

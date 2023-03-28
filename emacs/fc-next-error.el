@@ -10,7 +10,7 @@
   :local t
   :after (progn
            (defun fc--next-error-buffer-p (buf &rest rest)
-             (gethash (buffer-local-value 'major-mode buf)
+             (gethash (buffer-local-value 'major-mode (get-buffer buf))
                       *fc--next-error-map*))
 
            (defun fc--find-visible-next-error-buffer ()

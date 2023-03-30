@@ -225,7 +225,10 @@
       (add-hook 'pre-command-hook #'fc--org-hide-footnote)
 
       (add-hook 'write-contents-functions
-                (lambda () (org-update-statistics-cookies t)) nil t))
+                (lambda ()
+                  (unless (or (fc-big-buffer-p)
+                              (fc--book-p))
+                    (org-update-statistics-cookies t))) nil t))
 
     (cl-defun fc--capture-copy-region ()
       (save-excursion

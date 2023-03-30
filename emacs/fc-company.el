@@ -26,13 +26,9 @@
   :bind '((nil
            ("M-/" company-complete))
           (company-active-map
-           ("C-h" company-abort)
-           ("M-i" company-select-previous)
-           ("M-k" company-select-next)
+           ("SPC" company-abort)
            ("C-j" company-select-next)
            ("C-k" company-select-previous)
-           ("S-<SPC>" company-select-previous)
-           ("C-<SPC>" company-select-next)
            ("M-/" company-select-next))))
 
 (fc-load 'company-c-headers

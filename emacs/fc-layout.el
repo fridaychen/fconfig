@@ -9,7 +9,7 @@
 (defvar *fc-layout-stack* nil)
 (defvar *fc-layout-current* nil)
 (defvar *fc-layout-map* (make-hash-table))
-(defvar *fc-layout-around-advice* nil)
+(defvar *fc-layout-spotlight-around-advice* nil)
 
 (defun fc-layout-push (&rest _)
   "Push the current layout."
@@ -90,8 +90,10 @@ WINDOW: the sibling of the this specific window will be put into the list."
 WINDOW: target window."
   (let* ((vertical (window-combined-p window))
          (test-func (if vertical
-                        (lambda (w) (if (> (window-height w) window-min-height) 1 0))
-                      (lambda (w) (if (> (fc-get-window-width w) window-min-width) 1 0)))))
+                        (lambda (w)
+                          (if (> (window-height w) window-min-height) 1 0))
+                      (lambda (w)
+                        (if (> (fc-get-window-width w) window-min-width) 1 0)))))
     (<= (fc-walk-sibling-windows 0 (+ acc (apply test-func (list it))) window)
         1)))
 
@@ -129,13 +131,21 @@ WINDOW: target window."
         (delete-window it)))))
 
 (cl-defun fc-layout-setup-style (style)
+  "Setup layout style.
+STYLE: new style."
   (let ((setup-func (intern (format "fc-layout-%s-setup" style)))
-        (around (intern (format "fc-layout-%s-around-advice" style))))
+        (around (intern (format "fc-layout-%s-spotlight-around-advice" style))))
 
     (message "Setup layout style to %s." style)
 
     (apply setup-func nil)
-    (setq *fc-layout-around-advice* around)))
+    (setq *fc-layout-spotlight-around-advice* around)))
+
+(cl-defun fc-layout-spotlight (&rest rest)
+  "Setup spotlight mode for functions.
+REST: functions."
+  (--each rest
+    (advice-add it :around *fc-layout-spotlight-around-advice*)))
 
 ;; Predefined Window Layout
 (defconst *fc-buf-info-regex* "\\*\\(help\\|info\\|vc-diff\\)\\*\\|\\*Man.*\\|\\magit-\\(diff\\|log\\|revision\\)")
@@ -167,7 +177,7 @@ WINDOW: target window."
              display-buffer-in-side-window
              ,@lower-param)))))
 
-(cl-defun fc-layout-simple-around-advice (orig-fun &rest args)
+(cl-defun fc-layout-simple-spotlight-around-advice (orig-fun &rest args)
   (fc-layout-push)
   (apply orig-fun args)
   (fc-close-other-normal-window))

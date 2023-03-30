@@ -51,6 +51,7 @@
 (autoload #'fc-layout-switch "fc-layout")
 (autoload #'fc-side-window-p "fc-layout")
 (autoload #'fc-layout-setup-style "fc-layout")
+(autoload #'fc-layout-spotlight "fc-layout")
 
 ;; modal
 (autoload #'fc-modal-enable "fc-modal")

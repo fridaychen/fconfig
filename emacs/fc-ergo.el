@@ -1384,7 +1384,7 @@ STEP: pixels."
      ("r" fc-vc-rename-file)
      ("s" fc-git-add)
      ("u" vc-revert)
-     ("v" vc-diff)
+     ("v" magit-diff-buffer-file)
      ("x" magit-status)
      ("H" magit-blame-addition)
      ("L" magit-log-all)
@@ -1787,13 +1787,14 @@ FUNC: new repeat func."
                     (fc-ergo-repeat-func *fc--repeat-orignal-func*))
                 #'fc-search-stop)
 
-(when (boundp '*fc-layout-around-advice*)
-  (--each '(
-            compile
-            fc-text-retrieve
-            fc-find-references
-            )
-    (advice-add it :around *fc-layout-around-advice*)))
+(fc-layout-spotlight
+ #'compile
+ #'fc-text-retrieve
+ #'fc-find-references
+ #'magit-diff-buffer-file
+ #'magit-log-all
+ #'magit-diff-working-tree
+ #'man)
 
 ;; install theme packages
 (let ((install-theme (lambda (x)

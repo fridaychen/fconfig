@@ -1453,7 +1453,9 @@ AUTO: auto select face."
  `(
    ("1" ,(fc-cond-key :normal #'delete-other-windows
                       :prefix #'ace-delete-other-windows
-                      :one #'fc-split-window))
+                      :one #'fc-split-window
+                      :main #'fc-close-all-side-window
+                      :side #'fc-close-all-side-window))
    ("2" ,(fc-cond-key :normal (fc-manuals
                                #'fc-split-window
                                #'other-window
@@ -1791,6 +1793,7 @@ FUNC: new repeat func."
  #'compile
  #'fc-text-retrieve
  #'fc-find-references
+ #'fc-switch-next-error-buffer
  #'magit-diff-buffer-file
  #'magit-log-all
  #'magit-diff-working-tree

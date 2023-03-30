@@ -36,12 +36,14 @@ KEYMAP: keymap to operate with"
         (define-key keymap (kbd it) nil)
       (global-set-key (kbd it) nil))))
 
-(cl-defmacro fc-cond-key (&key normal region proj one work prefix fold dev preregion)
+(cl-defmacro fc-cond-key (&key normal region proj one main side work prefix fold dev preregion)
   "Run operation conditionaly.
 NORMAL: normal mode.
 REGION: region mode.
 PROJ: project mode.
 ONE: one-window mode.
+MAIN: main-window mode.
+SIDE: side-window mode.
 WORK: work on project mode.
 PREFIX: fc prefix mode.
 FOLD: function return function.
@@ -69,9 +71,14 @@ PREREGION: prefix and region mode"
       ((and ,proj (fc-proj-root))
        (fc-funcall ,proj))
 
-      ((and ,one (or (one-window-p)
-                     (eq (window-main-window) (get-buffer-window))))
+      ((and ,one (one-window-p))
        (fc-funcall ,one))
+
+      ((and ,main (eq (window-main-window) (get-buffer-window)))
+       (fc-funcall ,main))
+
+      ((and ,side (window-parameter (get-buffer-window) 'window-side))
+       (fc-funcall ,side))
 
       (,fold
        (let ((f (fc-funcall ,fold)))

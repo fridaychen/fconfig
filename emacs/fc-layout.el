@@ -119,6 +119,9 @@ WINDOW: target window."
 (cl-defun fc-side-window-p (&optional (window (get-buffer-window)))
   (window-parameter window 'window-side))
 
+(cl-defun fc-side-window-exist-p ()
+  (--first (fc-side-window-p it) (window-list)))
+
 (cl-defun fc-close-all-side-window ()
   (--each (window-list)
     (when (fc-side-window-p it)

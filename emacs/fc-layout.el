@@ -11,11 +11,15 @@
 (defvar *fc-layout-map* (make-hash-table))
 (defvar *fc-layout-spotlight-around-advice* nil)
 
-(defun fc-layout-push (&rest _)
-  "Push the current layout."
-  (push (current-window-configuration) *fc-layout-stack*)
+(defun fc--layout-push (conf)
+  (push conf *fc-layout-stack*)
+
   (when (length> *fc-layout-stack* 6)
     (setq *fc-layout-stack* (butlast *fc-layout-stack* 6))))
+
+(defun fc-layout-push (&rest _)
+  "Push the current layout."
+  (fc--layout-push (current-window-configuration)))
 
 (defun fc-layout-pop ()
   "Pop the last layout."
@@ -130,7 +134,9 @@ WINDOW: target window."
 (cl-defun fc-close-other-normal-window ()
   (let ((current-win (get-buffer-window)))
     (--each (window-list)
-      (unless (or (eq it current-win) (fc-side-window-p it))
+      (unless (or (eq it current-win)
+                  (fc-side-window-p it)
+                  (eq (window-main-window) (get-buffer-window)))
         (delete-window it)))))
 
 (cl-defun fc-layout-setup-style (style)

@@ -606,6 +606,7 @@ LANG: language."
       ("Convert markdown verse"		. fc--org-convert-mk-verse)
       ("Conervt to table"		. fc--org-convert-table)
       ("Fix footnote"			. fc--org-fix-fn)
+      ("Fix headline spacing"           . fc--org-fix-headline-spacing)
       ("Ingest"                         . ,(fc-manual (org-babel-lob-ingest buffer-file-name)))
       ("Org ctrl-c-minus"		. org-ctrl-c-minus)
       ("Org Sort"			. org-sort)
@@ -616,6 +617,8 @@ LANG: language."
       ("Update dblock"			. org-update-all-dblocks)
       ("Update source block"		. org-babel-execute-buffer)
       ("Validate footnote number"	. fc--org-validate-fn-number)
+      ("Visual line"                    . ,(fc-manual
+                                            (org-set-property "VISUAL-LINE" "true")))
       )
     *fc-book-func-list*)))
 

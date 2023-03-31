@@ -1128,6 +1128,12 @@ KEYMAP: keymap to run."
                  :entry (fc-assist-cmd "--mute")
                  :quit (fc-assist-cmd "--unmute")))
 
+(cl-defun fc-do-info ()
+  (interactive)
+
+  (fc-show-hide-buffer "*info*"
+                       #'info))
+
 (defconst *ergo-help-map*
   (fc-make-keymap
    `(("SPC" fc-help-portal)
@@ -1144,10 +1150,7 @@ KEYMAP: keymap to run."
               ((latex-mode markdown-mode org-mode) . fc-ergo-which-function)
               (_ . fc-describe-function))))
      ("h" fc-modal-input)
-     ("i" ,(fc-manual
-            (if-let ((buf (get-buffer "*info*")))
-                (fc-pop-buf buf :select t)
-              (info))))
+     ("i" fc-do-info)
      ("k" describe-key)
      ("m" man)
      ("o" ,(fc-manual
@@ -1767,22 +1770,6 @@ FUNC: new repeat func."
           )
   (advice-add it :after #'fc-ergo-prefix-off))
 
-;; (--each '(
-;;           ace-delete-window
-;;           compile
-;;           delete-other-window
-;;           delete-window
-;;           fc-ergo-simple-grep
-;;           fc-ergo-grep
-;;           fc-lisp-find-tag
-;;           fc-proj-build
-;;           fc-split-window
-;;           ggtags-find-tag-dwim
-;;           split-window-vertically
-;;           split-window-horizontally
-;;           )
-;;   (advice-add it :before #'fc-layout-push))
-
 (fc-add-to-hook '*fc-ergo-restore-hook*
                 #'fc-ergo-prefix-off
                 #'(lambda ()
@@ -1791,12 +1778,14 @@ FUNC: new repeat func."
 
 (fc-layout-spotlight
  #'compile
+ #'fc-do-info
  #'fc-text-retrieve
  #'fc-find-references
+ #'fc-occur-dwim
  #'fc-switch-next-error-buffer
  #'magit-diff-buffer-file
- #'magit-log-all
  #'magit-diff-working-tree
+ #'magit-log-all
  #'man)
 
 ;; install theme packages

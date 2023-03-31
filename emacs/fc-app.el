@@ -986,6 +986,7 @@ REST: commands."
   (let ((fg (fc-user-select "Foreground color"
                             '(
                               ("white"  . "white")
+                              ("gray95" . "gray95")
                               ("gray90" . "gray90")
                               ("gray80" . "gray80")
                               ("gray70" . "gray70")

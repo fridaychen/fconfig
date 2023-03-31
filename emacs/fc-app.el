@@ -981,6 +981,22 @@ REST: commands."
 
   (fc-reset-theme))
 
+(cl-defun fc-select-fg-color ()
+  "Select foreground color."
+  (let ((fg (fc-user-select "Foreground color"
+                            '(
+                              ("white"  . "white")
+                              ("gray90" . "gray90")
+                              ("gray80" . "gray80")
+                              ("gray70" . "gray70")
+                              ("gray60" . "gray60")
+                              ("pale golden"   . "PaleGoldenrod")
+                              ("pale green". "PaleGreen")
+                              ("lemon" . "LemonChiffon")
+                              ))))
+
+    (fc-set-face-attribute 'default nil :foreground fg)))
+
 ;; theme
 (cl-defun fc-select-theme ()
   "Allow user to select theme."
@@ -1144,6 +1160,7 @@ REST: commands."
    "UI"
    `(
      ("bg color"     . fc-select-bg-color)
+     ("fg color"     . fc-select-fg-color)
      ("font"         . fc-config-font)
      ("font size"    . ,(fc-head-key-repeat "Adjust font size"
                                             '*fc-app-font-size-map*))

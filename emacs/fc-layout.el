@@ -187,9 +187,14 @@ REST: functions."
              ,@lower-param)))))
 
 (cl-defun fc-layout-simple-spotlight-around-advice (orig-fun &rest args)
-  (fc-layout-push)
-  (apply orig-fun args)
-  (fc-close-other-normal-window))
+  (let ((old-conf (current-window-configuration))
+        (old-win-list (cl-copy-list (window-list))))
+    (apply orig-fun args)
+
+    (when (or (cl-set-difference (window-list) old-win-list)
+              (cl-set-difference old-win-list (window-list)))
+      (fc--layout-push old-conf)
+      (fc-close-other-normal-window))))
 
 (provide 'fc-layout)
 

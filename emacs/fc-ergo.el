@@ -1780,6 +1780,7 @@ FUNC: new repeat func."
  #'compile
  #'fc-do-info
  #'fc-text-retrieve
+ #'fc-find-definitions
  #'fc-find-references
  #'fc-occur-dwim
  #'fc-switch-next-error-buffer

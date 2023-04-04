@@ -52,14 +52,14 @@
 
 (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--menu-seg))))
 
-(defun fc--tomato-modeline ()
+(defun fc--tomato-seg ()
   "Return the tomate status."
   (when (and (fc--wide-window-p) (fc--right-bottom-window-p))
     *fc-tomato-bar*))
 
-(add-to-list 'global-mode-string '(t (:eval (fc--tomato-modeline))))
+(add-to-list 'global-mode-string '(t (:eval (fc--tomato-seg))))
 
-(defun fc--battery-modeline ()
+(defun fc--battery-seg ()
   "Return the battery status."
   (when-let* ((level-str (cdr (assq ?p (battery-pmset))))
               (level (cl-parse-integer level-str)))
@@ -72,7 +72,7 @@
                      level))))
 
 (when *has-battery*
-  (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--battery-modeline)))))
+  (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--battery-seg)))))
 
 (defun fc--player-tip ()
   (let ((meta (fc-player--get-metadata *fc-player*)))

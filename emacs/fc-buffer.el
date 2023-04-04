@@ -7,6 +7,8 @@
 (require 'cl-lib)
 
 (defvar *fc-buffer-count-threshold* 4)
+(defvar *fc-buffer-pop-display-action* '(display-buffer-reuse-window
+                                         display-buffer-pop-up-window))
 
 ;; buffer extension
 (cl-defun fc-buffer-visible-p (&optional (bufname (current-buffer)))
@@ -188,8 +190,7 @@ LOCAL-VARS: list of local-vars."
     (--each highlight
       (highlight-regexp it)))
 
-  (display-buffer buffer-or-name '(display-buffer-reuse-window
-                                   display-buffer-pop-up-window))
+  (display-buffer buffer-or-name *fc-buffer-pop-display-action*)
 
   (when select
     (select-window (get-buffer-window buffer-or-name))))

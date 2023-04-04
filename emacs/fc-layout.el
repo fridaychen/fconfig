@@ -191,8 +191,7 @@ REST: functions."
         (old-win-list (cl-copy-list (window-list))))
     (apply orig-fun args)
 
-    (when (or (cl-set-difference (window-list) old-win-list)
-              (cl-set-difference old-win-list (window-list)))
+    (unless (seq-set-equal-p (window-list) old-win-list)
       (fc--layout-push old-conf)
       (fc-close-other-normal-window))))
 

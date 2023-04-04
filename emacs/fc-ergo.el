@@ -612,11 +612,12 @@ N: number."
                            *fc-default-font*
                            *fc-font-weight-of-default*
                            *fc-font-height*))
-          ("Theme" ,(format "%s, %s, %s"
+          ("Theme" ,(format "%s, %s, fg %s, bg %s"
                             *fc-current-theme*
                             (if (fboundp 'fc-modeline-mode)
                                 "fc-modeline"
                               (symbol-name powerline-default-separator))
+                            (fc-get-face-attribute 'default :foreground)
                             *fc-common-light-theme-bg*)))
       `(
         ("Emacs" ,(format "%s, colorful %S" emacs-version *is-colorful*))
@@ -1128,7 +1129,7 @@ KEYMAP: keymap to run."
                  :entry (fc-assist-cmd "--mute")
                  :quit (fc-assist-cmd "--unmute")))
 
-(cl-defun fc-do-info ()
+(cl-defun fc-info-dwim ()
   (interactive)
 
   (fc-show-hide-buffer "*info*"
@@ -1150,7 +1151,7 @@ KEYMAP: keymap to run."
               ((latex-mode markdown-mode org-mode) . fc-ergo-which-function)
               (_ . fc-describe-function))))
      ("h" fc-modal-input)
-     ("i" fc-do-info)
+     ("i" fc-info-dwim)
      ("k" describe-key)
      ("m" man)
      ("o" ,(fc-manual
@@ -1778,7 +1779,11 @@ FUNC: new repeat func."
 
 (fc-layout-spotlight
  #'compile
- #'fc-do-info
+ #'describe-char
+ #'describe-face
+ #'describe-function
+ #'describe-variable
+ #'fc-info-dwim
  #'fc-text-retrieve
  #'fc-find-definitions
  #'fc-find-references

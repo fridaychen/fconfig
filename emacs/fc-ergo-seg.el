@@ -94,7 +94,7 @@
      )
    "fc-player-keymap"))
 
-(defun fc--player-modeline ()
+(defun fc--player-seg ()
   "Return the player states."
   (when (and *is-gui* (fc--right-bottom-window-p) (fc--wide-window-p) *fc-player*)
     (fc-text (pcase (fc-player--get-play-status *fc-player*)
@@ -104,12 +104,12 @@
              :tip '(fc--player-tip)
              :keys *fc--player-seg-keymap*)))
 
-(defun fc--player-modeline-cb ()
+(defun fc--player-seg-cb ()
   (force-mode-line-update))
 
 (when *is-gui*
-  (add-hook '*fc-player-hook* #'fc--player-modeline-cb)
-  (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--player-modeline)))))
+  (add-hook '*fc-player-hook* #'fc--player-seg-cb)
+  (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--player-seg)))))
 
 (provide 'fc-ergo-seg)
 

@@ -985,15 +985,18 @@ REST: commands."
   "Select foreground color."
   (let ((fg (fc-user-select "Foreground color"
                             '(
-                              ("white"  . "white")
+                              ("cornsilk" . "cornsilk")
+                              ("DarkSeaGreen1" . "DarkSeaGreen1")
                               ("gray95" . "gray95")
                               ("gray90" . "gray90")
                               ("gray80" . "gray80")
                               ("gray70" . "gray70")
                               ("gray60" . "gray60")
+                              ("lemon" . "LemonChiffon")
+                              ("navajo white" . "navajo white")
                               ("pale golden"   . "PaleGoldenrod")
                               ("pale green". "PaleGreen")
-                              ("lemon" . "LemonChiffon")
+                              ("white"  . "white")
                               ))))
 
     (fc-set-face-attribute 'default nil :foreground fg)))

@@ -314,7 +314,10 @@
          (most-right-str (if (fc--right-bottom-window-p)
                              (fc-text-propertize
                               (format-mode-line *fc-modeline-most-right-string*)
-                              `(face (:background ,*fc-modeline-active-hl-bg* :height ,*fc-ml-icon-height*)))
+                              `(face ,(list
+                                       :background *fc-modeline-active-hl-bg*
+                                       :foreground *fc-modeline-active-hl-fg*
+                                       :height *fc-ml-icon-height*)))
                            ""))
          (right-len (if (fboundp #'string-pixel-width)
                         (/ (+

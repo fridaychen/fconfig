@@ -251,13 +251,13 @@ INDENT-FUNC: function for indent."
     (unless (yas-expand)
       (insert "y")))
 
-   ((looking-at-p "[\"'\\$)}]\\|\\]")
+   ((and (not (zerop (current-column)))
+         (looking-at-p "[\"'\\$)}]\\|\\]"))
     (forward-char))
 
-   ((looking-at-p "[[:space:]]*$")
-    (if fc-modal-global-mode
-        (delete-blank-lines)
-      (indent-for-tab-command)))
+   ((or (looking-at-p "[[:space:]]+$")
+        (looking-back "[[:space:]]+$" 6))
+    (delete-blank-lines))
 
    ((or fc-modal-global-mode
         (not *fc-dev-mode*)

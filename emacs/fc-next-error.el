@@ -63,6 +63,12 @@ PREV: previous function."
     (call-interactively prev)
     t))
 
+(cl-defun fc-close-all-next-error-buffer ()
+  "Close all next-error buffers."
+  (fc-with-each-buffer
+   (when (gethash major-mode *fc--next-error-map*)
+     (kill-buffer it))))
+
 (--each '(compilation-mode
           ggtags-navigation-mode
           grep-mode

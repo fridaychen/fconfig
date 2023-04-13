@@ -1044,7 +1044,8 @@ KEYMAP: keymap to run."
      ("l" windmove-right)
 
      ("m" fc-switch-layout)
-     ("n" ,(fc-cond-key :normal 'fc-switch-next-error-buffer))
+     ("n" ,(fc-cond-key :normal 'fc-switch-next-error-buffer
+                        :prefix 'fc-close-all-next-error-buffer))
 
      ("o" next-buffer)
      ("p" ,(fc-manual (goto-char (read-number "Point : "))))

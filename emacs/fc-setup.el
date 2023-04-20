@@ -53,12 +53,10 @@
          magit
          markdown-mode
          material-theme
-         mode-icons
          monokai-theme
          monokai-pro-theme
          mozc
          neotree
-         nyan-mode
          rainbow-delimiters
          rainbow-mode
          saveplace

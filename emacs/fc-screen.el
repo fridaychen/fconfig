@@ -7,11 +7,8 @@
 (require 'cl-lib)
 
 (defvar *fc-fringe-width* 16)
-(defvar *fc-enable-nyan* nil)
 (defvar *fc-screen-ratio-split-threshold* (if *is-gui* (/ 4.0 3) 2.5))
 (defvar *fc-enable-beacon* t)
-(defvar *fc-enable-golden-ratio* nil)
-(defvar *fc-enable-zoom* nil)
 (defvar *fc-window-title-format* "🐰 Emacs {%s} 🐱")
 (defvar *fc-screensave-backup-winconf*)
 
@@ -73,25 +70,6 @@
            (setf beacon-blink-when-window-scrolls nil)
            (beacon-mode -1)))
 
-(fc-load 'nyan-mode
-  :enable *fc-enable-nyan*
-  :idle t
-
-  :after (progn
-           (setf nyan-animation-frame-interval 4)
-           (nyan-mode 1)))
-
-(fc-load 'golden-ratio
-  :enable *fc-enable-golden-ratio*
-  :autoload t
-
-  :after (progn
-           (setf golden-ratio-auto-scale t)
-           (golden-ratio-mode t)))
-
-(fc-load 'zoom
-  :enable *fc-enable-zoom*)
-
 ;; screen saver
 (fc-load 'fireplace
   :autoload t
@@ -111,9 +89,6 @@
                       fireplace-off
                       t
                       (lambda ()
-                        (when *fc-enable-nyan*
-                          (nyan-mode 0))
-
                         (when (minibufferp (current-buffer))
                           (other-window 1)
                           (deactivate-mark)
@@ -126,9 +101,6 @@
              "Setup after screen saver."
              (set-window-configuration *fc-screensave-backup-winconf*)
              (setf *fc-screensave-backup-winconf* nil)
-
-             (when *fc-enable-nyan*
-               (nyan-mode 1))
 
              (display-time-mode -1)
              (column-number-mode t)
@@ -151,12 +123,6 @@
 
 (when *fc-enable-screen-saver*
   (fc-add-idle-hook #'fc-screen-saver))
-
-(fc-load 'mode-icons
-  :enable *is-gui*
-  :idle t
-  :after (progn
-           (mode-icons-mode 1)))
 
 (fc-load 'info-colors
   :idle t

@@ -18,8 +18,7 @@
 
   (when *is-gui*
     ;;(fc-play-sound 'welcome)
-    (cl-incf *fc-font-height* 2)
-    (setf *fc-enable-nyan* nil))
+    (cl-incf *fc-font-height* 2))
 
   (defconst *fc-location-gateway*
     '((work . "mac-addr")

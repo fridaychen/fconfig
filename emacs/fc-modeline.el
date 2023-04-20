@@ -36,9 +36,9 @@
   (equal *fc-selected-window* (selected-window)))
 
 (defun fc--modeline-base-face ()
-  "Return base face for modeline."
+  "Return base face of modeline."
   (if (fc--active-window-p)
-      'mode-line
+      'mode-line-active
     'mode-line-inactive))
 
 (defun fc--modeline-get-hl-face ()
@@ -100,7 +100,9 @@
              (fc--wide-window-p))
     (fc-text-propertize
      (fc-mode-name)
-     `(face (:height ,*fc-ml-icon-height*))
+     `(face ,(list :height *fc-ml-icon-height*
+                   :foreground (fc-color-complement
+                                (fc--modeline-base-face))))
      :copy t)))
 
 (defvar-local *fc-buffer-title-seg* nil)
@@ -264,7 +266,7 @@
 
 (defvar *fc-comp-exit-code* 0)
 
-(defun fc--compilation-exit (status code msg)
+(defun fc--compilation-exit (_ code msg)
   (setq *fc-comp-exit-code* code)
   (cons msg code)
 
@@ -383,7 +385,6 @@
 
   (fc-ml-sep-reset)
 
-  (fc-funcall #'mode-icons-mode :args (list -1))
   (setq-default mode-line-format
                 '("%e"
                   (:eval

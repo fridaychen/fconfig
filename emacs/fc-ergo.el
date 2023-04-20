@@ -1191,17 +1191,13 @@ KEYMAP: keymap to run."
   (fc-make-keymap
    `(
      ("b" toggle-scroll-bar)
-     ("g" golden-ratio-mode)
      ("h" highlight-changes-mode)
      ("l" display-line-numbers-mode)
-     ("n" nyan-mode)
      ("r" rainbow-delimiters-mode)
      ("t" fc-toggle-transparency)
      ("v" visual-line-mode)
      ("w" whitespace-mode)
-     ("z" zoom-mode)
 
-     ("A" global-anzu-mode)
      ("H" global-highlight-changes-mode)
      ("L" global-display-line-numbers-mode)
      ("S" ,(fc-manual (fc-toggle-var *fc-enable-sound*)
@@ -1212,7 +1208,7 @@ KEYMAP: keymap to run."
      ("V" global-visual-line-mode)
      )
    "ergo-mode-map")
-  "KEYS  b: scroll bar  g: golden ratio  h: highlight changs  l: linum  n: nyan  r: rainbow-delimiter  t: transparency  v: visual line  A: anzu  H: highlight changs  L: linum  S: sound  T: tabbar  V: global visual line.")
+  "KEYS  b: scroll bar  g: golden ratio  h: highlight changs  l: linum  r: rainbow-delimiter  t: transparency  v: visual line  H: highlight changs  L: linum  S: sound  T: tabbar  V: global visual line.")
 
 (defconst *ergo-quick-map*
   (fc-make-keymap

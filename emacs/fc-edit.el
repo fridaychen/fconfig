@@ -6,7 +6,6 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defvar *fc-enable-anzu* nil)
 (defvar ns-command-modifier)
 (defvar *fc-dev-mode* nil)
 (defvar *fc-text-scale-modes* '(markdown-mode latex-mode))
@@ -101,11 +100,6 @@
 (put 'narrow-to-region 'disabled nil)
 
 (setq-default case-fold-search t)
-
-(fc-load 'anzu
-  :autoload t
-  :enable *fc-enable-anzu*
-  :after (global-anzu-mode -1))
 
 (setf auto-save-interval 2500
       auto-save-timeout nil)

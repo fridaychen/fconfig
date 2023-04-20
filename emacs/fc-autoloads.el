@@ -69,6 +69,7 @@
 
 ;; util
 (autoload #'fc-has-battery "fc-util")
+(autoload #'fc-color-complement "fc-util")
 
 ;; viewer
 (defvar *fc-reading-face* nil)

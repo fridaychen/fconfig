@@ -799,6 +799,15 @@ FORM: test form."
         (symbol-value fsym)
       default)))
 
+(cl-defun fc-color-complement (o)
+  "Get complement color.
+O: color or face."
+  (when (facep o)
+    (setq o (fc-get-face-attribute o :background)))
+
+  (apply #'color-rgb-to-hex
+         (color-complement o)))
+
 (provide 'fc-util)
 
 ;; Local Variables:

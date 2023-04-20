@@ -64,6 +64,7 @@ MODE: target mode."
   "Add mode name.
 MODE: target mode.
 NAME: mode name."
+  (declare (indent 1))
   (cond
    ((symbolp mode)
     (puthash mode name *fc-mode-name*))

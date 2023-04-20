@@ -142,7 +142,7 @@ FONT: to be tested."
 
 (cl-defun fc-nerd-icon (rune &rest rest)
   (fc-text rune
-           :face `(:family "Iosevka Nerd Font" ,@rest)))
+           :face `(:family "Symbols Nerd Font Mono" ,@rest)))
 
 ;; configration
 (setf font-lock-maximum-decoration t

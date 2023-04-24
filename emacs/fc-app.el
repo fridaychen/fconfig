@@ -987,6 +987,7 @@ REST: commands."
                             '(
                               ("cornsilk" . "cornsilk")
                               ("DarkSeaGreen1" . "DarkSeaGreen1")
+                              ("DarkSeaGreen3" . "DarkSeaGreen3")
                               ("gray95" . "gray95")
                               ("gray90" . "gray90")
                               ("gray80" . "gray80")

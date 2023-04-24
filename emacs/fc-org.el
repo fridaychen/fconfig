@@ -46,6 +46,9 @@
 (defvar *fc-agenda-list* nil)
 (defvar *fc-org-no-tag-captures* '("Book" "Study"))
 
+(defvar *fc-enable-valign* nil)
+(defvar *fc-enable-font-to-align-table* "Sarasa Fixed SC")
+
 (fc-install 'blockdiag-mode
             'gnuplot
             'ob-blockdiag
@@ -71,6 +74,17 @@
   (fc-set-face-attribute 'org-block nil
                          :family
                          (fc-get-face-attribute 'default :family))
+
+  (when *fc-enable-font-to-align-table*
+    (let* ((family *fc-enable-font-to-align-table*)
+           (fontset (create-fontset-from-ascii-font family)))
+      (fc-setup-font-spec
+       fontset
+       '(((kana han cjk-misc bopomofo) :family family)))
+
+      (fc-set-face-attribute 'org-table nil
+                             :family family
+                             :fontset fontset)))
 
   (cond
    ((fc-dark-theme-p)
@@ -293,7 +307,7 @@
 
     (add-hook 'org-mode-hook #'fc--book-setup)
     (add-hook 'org-mode-hook #'fc--org-setup)
-    (when *is-gui*
+    (when (and *fc-enable-valign* *is-gui*)
       (add-hook 'org-mode-hook #'valign-mode))
 
     (add-hook 'after-save-hook #'fc--org-auto-ingest)

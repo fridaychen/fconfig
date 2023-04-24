@@ -15,6 +15,12 @@
 (defvar *fc-use-another-font-for-mode-line* nil)
 (defvar *fc-mode-line-font* nil)
 
+(cl-defun fc-create-fontset (fontset-name family)
+  (create-fontset-from-ascii-font
+   (format "%s:weight=normal:slant=normal" family)
+   nil
+   fontset-name))
+
 (cl-defun fc-setup-font-spec (fontset charset-specs)
   (-map (lambda (n)
           (dolist (charset (car n))

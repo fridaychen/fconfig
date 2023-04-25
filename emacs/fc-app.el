@@ -1081,7 +1081,7 @@ REST: commands."
 
   (when-let* ((eng-family (fc-select-font-family))
               (cjk-family (fc-select-font-family))
-              (fontset (create-fontset-from-ascii-font eng-family)))
+              (fontset (fc-create-fontset "reading" eng-family)))
     (fc-setup-font-spec
      fontset
      `(((kana han cjk-misc bopomofo) :family ,cjk-family)))

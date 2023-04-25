@@ -66,7 +66,8 @@
 
       (make-face 'fc-viewer-face)
       (setf *fc-reading-face* 'fc-viewer-face
-            *fc-reading-fontset* (create-fontset-from-ascii-font
+            *fc-reading-fontset* (fc-create-fontset
+                                  "reading"
                                   (elt english-reading-font 1)))
       (apply #'set-face-attribute 'fc-viewer-face nil
              :fontset *fc-reading-fontset*

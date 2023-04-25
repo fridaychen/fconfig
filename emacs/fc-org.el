@@ -77,7 +77,7 @@
 
   (when *fc-enable-font-to-align-table*
     (let* ((family *fc-enable-font-to-align-table*)
-           (fontset (create-fontset-from-ascii-font family)))
+           (fontset (fc-create-fontset "orgtable" family "spacing=m")))
       (fc-setup-font-spec
        fontset
        '(((kana han cjk-misc bopomofo) :family family)))

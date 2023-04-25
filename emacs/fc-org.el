@@ -47,7 +47,7 @@
 (defvar *fc-org-no-tag-captures* '("Book" "Study"))
 
 (defvar *fc-enable-valign* nil)
-(defvar *fc-enable-font-to-align-table* "Sarasa Fixed SC")
+(defvar *fc-enable-font-to-align-table* "Sarasa Mono Slab SC")
 
 (fc-install 'blockdiag-mode
             'gnuplot
@@ -75,7 +75,7 @@
                          :family
                          (fc-get-face-attribute 'default :family))
 
-  (when *fc-enable-font-to-align-table*
+  (when (and *is-gui* *fc-enable-font-to-align-table*)
     (let* ((family *fc-enable-font-to-align-table*)
            (fontset (fc-create-fontset "orgtable" family "spacing=m")))
       (fc-setup-font-spec

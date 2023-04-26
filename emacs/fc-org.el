@@ -77,11 +77,14 @@
 
   (when (and *is-gui* *fc-enable-font-to-align-table*)
     (let* ((family *fc-enable-font-to-align-table*)
-           (fontset (fc-create-fontset "orgtable" family "spacing=m")))
+           (fontset (fc-create-fontset "orgalign" family "spacing=m")))
       (fc-setup-font-spec
        fontset
        '(((kana han cjk-misc bopomofo) :family family)))
 
+      (fc-set-face-attribute 'org-link nil
+                             :family family
+                             :fontset fontset)
       (fc-set-face-attribute 'org-table nil
                              :family family
                              :fontset fontset)))

@@ -161,15 +161,15 @@
     (vc-state buffer-file-name))))
 
 (defvar *fc--vc-mark*
-  (fc-visible (fc-nerd-icon "\xE725")
+  (fc-visible (fc-nerd-icon ?\xE725)
               ""
               "VC"))
 (defvar *fc--vc-modified-mark*
-  (fc-visible (fc-nerd-icon "\xE725" :foreground "red1")
+  (fc-visible (fc-nerd-icon ?\xE725 :foreground "red1")
               (fc-text "" :face '(:foreground "#cf6a4c"))
               (fc-text "VC" :face '(:foreground "#cf6a4c"))))
 (defvar *fc--vc-merge-mark*
-  (fc-visible (fc-nerd-icon "\xE726" :foreground "red1")
+  (fc-visible (fc-nerd-icon ?\xE726 :foreground "red1")
               (fc-text "" :face '(:foreground "#ff0066"))
               (fc-text "VC" :face '(:foreground "#ff0066"))))
 

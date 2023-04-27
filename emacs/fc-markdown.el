@@ -17,7 +17,7 @@
   :after
   (progn
     (fc-add-mode-name 'markdown-mode
-      (fc-visible (fc-nerd-icon "\xf48a" :foreground "red3") "Ⓜ️"))
+      (fc-visible (fc-nerd-icon ?\xf48a :foreground "red3") "Ⓜ️"))
 
     (setf markdown-hr-strings
           '("-----"))

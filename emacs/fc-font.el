@@ -150,10 +150,8 @@ FONT: to be tested."
     (fc-setup-font)))
 
 (cl-defun fc-nerd-icon (rune &rest rest)
-  (if *is-gui*
-      (fc-text (char-to-string rune)
-               :face `(:family "Symbols Nerd Font Mono" ,@rest))
-    (char-to-string rune)))
+  (fc-text (char-to-string rune)
+           :face `(:family "Symbols Nerd Font Mono" ,@rest)))
 
 ;; configration
 (setf font-lock-maximum-decoration t

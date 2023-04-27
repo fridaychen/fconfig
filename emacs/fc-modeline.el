@@ -123,6 +123,7 @@
       (when proj
         (concat proj "::"))
       (buffer-name))
+     :face 'mode-line-buffer-id
      :limit (ceiling
              (* (window-width) 0.5))
      :separator ""
@@ -131,6 +132,7 @@
 (defun fc--buffer-short-id ()
   "Generate buffer short id."
   (fc-text (buffer-name)
+           :face 'mode-line-buffer-id
            :limit (ceiling
                    (* (window-width) 0.35))
            :keys *fc-buffer-id-keymap*))
@@ -225,6 +227,9 @@
    '(([mode-line mouse-1] flycheck-list-errors))
    "fc-flycheck-seg-keymap"))
 
+(defvar *fc--flycheck-mark*
+  (fc-visible (fc-nerd-icon ?\xf188 :face 'mode-line-emphasis) "🪲"))
+
 (cl-defun fc--flycheck-seg()
   "Flycheck seg."
   (when (bound-and-true-p flycheck-mode)
@@ -235,7 +240,7 @@
         (cl-return-from fc--flycheck-seg nil))
 
       (list
-       "🪲"
+       *fc--flycheck-mark*
        (fc-text err
                 :face '(:foreground "red2" :weight bold)
                 :keys *fc-flycheck-seg-keymap*)

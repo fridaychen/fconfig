@@ -228,7 +228,7 @@
    "fc-flycheck-seg-keymap"))
 
 (defvar *fc--flycheck-mark*
-  (fc-visible (fc-nerd-icon ?\xf188 :face 'mode-line-emphasis) "🪲"))
+  (fc-visible (fc-nerd-icon ?\xf188 :inherit 'mode-line-emphasis) "🪲"))
 
 (cl-defun fc--flycheck-seg()
   "Flycheck seg."

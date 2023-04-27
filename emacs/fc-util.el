@@ -676,16 +676,18 @@ REST: text to be speak."
     (apply #'osx-lib-say rest))))
 
 ;; face
-(defun fc-get-face-attribute (face attr)
+(cl-defun fc-get-face-attribute (face attr &key (default t))
   "Get attribute of specific face.
-FACE: target face
-ATTR: attribute."
-  (let* ((face-bg (face-attribute face attr)))
+FACE: target face.
+ATTR: attribute.
+DEFAULT: use default face."
+  (let* ((face-bg (face-attribute face attr nil t)))
     (cond
      ((or (stringp face-bg)
           (numberp face-bg))
       face-bg)
-     (t (face-attribute 'default attr)))))
+     (t (when default
+          (face-attribute 'default attr))))))
 
 (defun fc-set-face-attribute (face frame &rest rest)
   "Safely set face attribute.
@@ -802,11 +804,12 @@ FORM: test form."
 (cl-defun fc-color-complement (o)
   "Get complement color.
 O: color or face."
-  (when (facep o)
-    (setq o (fc-get-face-attribute o :background)))
-
-  (apply #'color-rgb-to-hex
-         (color-complement o)))
+  (when-let ((color (if (facep o)
+                        (fc-get-face-attribute
+                         o :background :default nil)
+                      o)))
+    (apply #'color-rgb-to-hex
+           (color-complement color))))
 
 (provide 'fc-util)
 

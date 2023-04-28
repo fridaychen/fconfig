@@ -1658,6 +1658,7 @@ AUTO: auto select face."
    ("`" ,(fc-cond-key :normal #'fc-ergo-restore
                       :region (fc-decorate-region "`" "`")))
    ("C-`" ,(fc-manual (fc-layout-pop)))
+   ("C-'" ,(fc-manual (fc-layout-pop)))
    ("~" ,(fc-manual (fc-player--app *fc-player*)))
    (":" fc-M-x)
    ("=" ,(fc-cond-key :normal (fc-mode-key
@@ -1784,6 +1785,7 @@ FUNC: new repeat func."
  #'fc-text-retrieve
  #'fc-find-definitions
  #'fc-find-references
+ #'fc-flycheck
  #'fc-occur-dwim
  #'fc-switch-next-error-buffer
  #'magit-diff-buffer-file

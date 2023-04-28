@@ -233,7 +233,7 @@ COLOR: background color."
        (fc-set-face-attribute 'org-agenda-date-weekend nil
                               :height 1.1)
        (fc-set-face-attribute 'default nil
-                              :foreground "#444444"))
+                              :foreground "black"))
 
       ((or 'gruvbox-light-soft 'gruvbox-light-medium 'gruvbox-light-hard)
        (setf soothe-percent 6))

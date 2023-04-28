@@ -776,7 +776,7 @@ FORM: test form."
        o))))
 
 (cl-defun fc-visible (&rest rest)
-  "Return the elm of reset if every char of it is displayable."
+  "Return the elm of rest if every char of it is displayable."
   (catch 'found
     (mapc #'(lambda (x)
               (when (-fc-visible x)

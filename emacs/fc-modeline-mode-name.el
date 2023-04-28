@@ -27,6 +27,8 @@
                             (dired-mode . "📂")
                             (emacs-lisp-mode . "♉")
                             (eshell-mode . "🤖")
+                            (flycheck-mode . "🪲")
+                            (flycheck-error-list-mode . "🪲")
                             (fundamental-mode . "📃")
                             (gnuplot-mode . "🧮")
                             (grep-mode . "🔎")
@@ -55,10 +57,21 @@
                             (xref--xref-buffer-mode . "📚")
                             (yaml-mode . "🖖"))))
 
+(fc-load 'nerd-icons
+  :enable *is-colordul-term*)
+
 (cl-defun fc-mode-name (&optional (mode major-mode))
   "Get mode name.
 MODE: target mode."
-  (gethash mode *fc-mode-name* mode-name))
+  (cond
+   (*is-gui*
+    (gethash mode *fc-mode-name* mode-name))
+
+   (*is-colordul-term*
+    (nerd-icons-icon-for-mode mode))
+
+   (t
+    mode-name)))
 
 (defun fc-add-mode-name (mode name)
   "Add mode name.

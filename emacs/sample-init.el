@@ -25,6 +25,9 @@
       (home . "mac-addr"))))
 
 (defun fc-user-org-config ()
+  (setq *fc-left-side-width* 0.6)
+  (fc-layout-setup-style 'simple)
+
   (setq org-tags-column -66
         org-agenda-tags-column -66)
   (fc-org-agenda-customize :project '("fconfig" "study" "book")))

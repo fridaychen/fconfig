@@ -153,8 +153,9 @@ STYLE: new style."
 (cl-defun fc-layout-spotlight (&rest rest)
   "Setup spotlight mode for functions.
 REST: functions."
-  (--each rest
-    (advice-add it :around *fc-layout-spotlight-around-advice*)))
+  (when *fc-layout-spotlight-around-advice*
+    (--each rest
+      (advice-add it :around *fc-layout-spotlight-around-advice*))))
 
 ;; Predefined Window Layout
 (defconst *fc-buf-info-regex* "\\*\\(help\\|info\\|vc-diff\\)\\*\\|\\*Man.*\\|\\magit-\\(diff\\|log\\|revision\\)")

@@ -1125,7 +1125,7 @@ LANG: language of babel."
   :after
   (progn
     (setf org-roam-directory "~/org/roam"
-          org-roam-database-connector 'sqlite3)
+          org-roam-database-connector 'sqlite-builtin)
     (ignore-errors
       (org-roam-db-autosync-enable))))
 

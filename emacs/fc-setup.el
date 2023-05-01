@@ -36,7 +36,7 @@
          company-quickhelp
          counsel
          ef-themes
-         emacsql-sqlite3
+         emacsql-sqlite-builtin
          faff-theme
          fantom-theme
          flycheck

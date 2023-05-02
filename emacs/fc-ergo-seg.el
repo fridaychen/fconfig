@@ -61,7 +61,7 @@
 
 (defun fc--battery-seg ()
   "Return the battery status."
-  (when-let* ((level-str (cdr (assq ?p (battery-pmset))))
+  (when-let* ((level-str (cdr (assq ?p (funcall battery-status-function))))
               (level (cl-parse-integer level-str)))
     (fc-text (format (cond ((>= level 90)
                             "🔋")

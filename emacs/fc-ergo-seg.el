@@ -71,7 +71,7 @@
                             "🪫%d"))
                      level))))
 
-(when *has-battery*
+(when (and *has-battery* battery-status-function)
   (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--battery-seg)))))
 
 (defun fc--player-tip ()

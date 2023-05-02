@@ -62,14 +62,15 @@
 (defun fc--battery-seg ()
   "Return the battery status."
   (when-let* ((level-str (cdr (assq ?p (funcall battery-status-function))))
-              (level (cl-parse-integer level-str)))
+              (level (cl-parse-integer level-str))
+              (icon (fc-battery-icon level)))
     (fc-text (format (cond ((>= level 90)
-                            "🔋")
+                            "%s ")
                            ((>= level 30)
-                            "🔋%d")
+                            "%s %d")
                            (t
-                            "🪫%d"))
-                     level))))
+                            "%s %d"))
+                     icon level))))
 
 (when (and *has-battery* battery-status-function)
   (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--battery-seg)))))

@@ -89,6 +89,30 @@ NAME: mode name."
    (t
     (error "Unknown arg %s" mode))))
 
+(defun fc-battery-icon (percent)
+  (cond
+   (*is-gui*
+    (cond ((>= percent 30)
+           "🔋")
+          (t
+           "🪫")))
+
+   (*is-colorful-term*
+    (cond ((>= percent 90)
+           (nerd-icons-faicon "nf-fa-battery_4"))
+
+          ((>= percent 70)
+           (nerd-icons-faicon "nf-fa-battery_3"))
+
+          ((>= percent 50)
+           (nerd-icons-faicon "nf-fa-battery_2"))
+
+          ((>= percent 25)
+           (nerd-icons-faicon "nf-fa-battery_1"))
+
+          (t
+           (nerd-icons-faicon "nf-fa-battery_0"))))))
+
 (provide 'fc-modeline-mode-name)
 
 ;; Local Variables:

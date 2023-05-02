@@ -124,8 +124,9 @@
 (autoload #'fc-modeline-mode "fc-modeline")
 
 (autoload #'fc-modeline-proj-name "fc-ergo-seg")
-(autoload #'fc-mode-name "fc-modeline-mode-name")
-(autoload #'fc-add-mode-name "fc-modeline-mode-name")
+(autoload #'fc-mode-name "fc-icon")
+(autoload #'fc-add-mode-name "fc-icon")
+(autoload #'fc-battery-icon "fc-icon")
 
 ;; book
 (autoload #'fc--book-p "fc-book")

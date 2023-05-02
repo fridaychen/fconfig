@@ -30,7 +30,7 @@
 (defconst *is-windows* (eql system-type 'windows-nt))
 (defconst *is-gui* window-system)
 (defconst *is-colorful* (or *is-gui* (not (string= (getenv "TERM") "linux"))))
-(defconst *is-colordul-term* (and (not *is-gui*) (not (string= (getenv "TERM") "linux"))))
+(defconst *is-colorful-term* (and (not *is-gui*) (not (string= (getenv "TERM") "linux"))))
 (defvar *is-laptop* nil)
 (defvaralias '*has-battery* '*is-laptop*)
 

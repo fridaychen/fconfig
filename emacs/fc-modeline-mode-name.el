@@ -58,7 +58,7 @@
                             (yaml-mode . "🖖"))))
 
 (fc-load 'nerd-icons
-  :enable *is-colordul-term*)
+  :enable *is-colorful-term*)
 
 (cl-defun fc-mode-name (&optional (mode major-mode))
   "Get mode name.
@@ -67,7 +67,7 @@ MODE: target mode."
    (*is-gui*
     (gethash mode *fc-mode-name* mode-name))
 
-   (*is-colordul-term*
+   (*is-colorful-term*
     (nerd-icons-icon-for-mode mode))
 
    (t

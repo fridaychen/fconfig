@@ -1,4 +1,4 @@
-;;; fc-modeline-mode-name.el --- DESCRIPTION -*- lexical-binding: t -*-
+;;; fc-icon.el --- DESCRIPTION -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;
@@ -113,10 +113,10 @@ NAME: mode name."
           (t
            (nerd-icons-faicon "nf-fa-battery_0"))))))
 
-(provide 'fc-modeline-mode-name)
+(provide 'fc-icon)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:
 
-;;; fc-modeline-mode-name.el ends here
+;;; fc-icon.el ends here

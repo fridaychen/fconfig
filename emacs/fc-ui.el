@@ -160,8 +160,10 @@ MENU: menu."
 (defun fc--popup-posframe (name text &rest rest)
   (apply #'posframe-show name
          :string text
-         :background-color "DarkRed"
-         :foreground-color "White"
+         :background-color "RoyalBlue3"
+         :foreground-color "LightYellow"
+         :border-width 4
+         :border-color "navy"
 
          rest))
 

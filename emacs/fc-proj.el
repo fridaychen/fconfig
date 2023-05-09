@@ -265,7 +265,7 @@ DIR: project path."
     (fc-pop-buf (find-file-noselect (format "%s/%s" proj-dir error-file))
                 :mode 'compilation-mode
                 :select t
-                :local-vars `(("default-directory" . ,(format "%s/%s" proj-dir build-dir))))
+                :dir (format "%s/%s" proj-dir build-dir))
     (goto-char (point-max))))
 
 (defun fc-user-select-project ()

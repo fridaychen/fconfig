@@ -190,7 +190,7 @@ REMOTE: select from local or remote branchs."
 
       (shell-command (format "git diff %s" branch) (current-buffer)))
 
-    (fc-pop-buf buf :mode 'diff-mode :select t :local-vars `(("default-directory" . ,(fc-vc-root))))))
+    (fc-pop-buf buf :mode 'diff-mode :select t :dir (fc-vc-root))))
 
 (cl-defun fc-vc-diff-file-with-other-branch ()
   "Diff current file with other branch."
@@ -203,7 +203,7 @@ REMOTE: select from local or remote branchs."
       (erase-buffer)
       (shell-command (format "git diff %s -- %s" branch filename) (current-buffer)))
 
-    (fc-pop-buf buf :mode 'diff-mode :select t :local-vars `(("default-directory" . ,(fc-vc-root))))))
+    (fc-pop-buf buf :mode 'diff-mode :select t :dir (fc-vc-root))))
 
 (fc-add-network-advice 'fc-git-pull 'fc-git-push)
 

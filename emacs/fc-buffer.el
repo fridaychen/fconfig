@@ -145,18 +145,21 @@ REST: new content."
                (zerop buflen))
       (delete-window win))))
 
-(cl-defun fc-pop-buf (buffer-or-name &key mode read-only highlight select escape local-vars)
+(cl-defun fc-pop-buf (buffer-or-name &key mode dir read-only highlight select escape local-vars)
   "Popup buf.
 BUFFER-OR-NAME: buffer or name.
 MODE: specify mode.
+DIR: default-directory.
 READ-ONLY: set buffer to read-only mode.
 HIGHLIGHT: highlight regex.
 SELECT: focus in new window.
 ESCAPE: decode ansi escape sequence.
 LOCAL-VARS: list of local-vars."
   (with-current-buffer buffer-or-name
-    (cond
-     ((and (eq mode 'auto) local-vars)
+    (when dir
+      (setq-local default-directory dir))
+
+    (when (and (eq mode 'auto) local-vars)
       (save-excursion
         (goto-char (point-min))
         (insert "-*- ")
@@ -167,12 +170,6 @@ LOCAL-VARS: list of local-vars."
                       (fc-string v))))
             (insert (car it) ": " s "; ")))
         (insert "-*-\n")))
-
-     (local-vars
-      (--each local-vars
-        (let ((name (intern (car it)))
-              (value (cdr it)))
-          (setq-local name value)))))
 
     (when escape
       (ansi-color-apply-on-region (point-min) (point-max)))

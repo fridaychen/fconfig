@@ -434,12 +434,7 @@ FILE-TYPES: target file types to be searched."
             arg-cpu
             arg-type)))
 
-  (goto-char (point-min))
-
-  (insert
-   (format
-    "-*- default-directory: \"%s\"; -*-\n"
-    dir)))
+  (goto-char (point-min)))
 
 (cl-defun fc--external-ftr-rg (dir pattern _file-types)
   "Ftr with ftr.
@@ -474,7 +469,7 @@ DIR: dir to search."
         (when filename
           (search-forward filename nil t)))
 
-      (fc-pop-buf buf :mode 'grep-mode :read-only t :highlight (list pattern)))))
+      (fc-pop-buf buf :mode 'grep-mode :read-only t :highlight (list pattern) :dir dir))))
 
 ;; eshell extensions
 (setenv "_FASD_FUZZY" "16")

@@ -450,10 +450,10 @@ DATE: date.
 LANG: language."
   (goto-char (point-min))
 
-  (insert "#+TITLE: " (or title (read-string "Title : ")) "\n"
-          "#+AUTHOR: " (or author (read-string "Author : ")) "\n"
-          "#+DATE: " (or date (read-string "Date : ")) "\n"
-          "#+LANGUAGE: " (or lang
+  (insert "#+title: " (or title (read-string "Title : ")) "\n"
+          "#+author: " (or author (read-string "Author : ")) "\n"
+          "#+date: " (or date (read-string "Date : ")) "\n"
+          "#+language: " (or lang
                              (fc-user-select "Language"
                                              `("en-US"
                                                "jp-JP"

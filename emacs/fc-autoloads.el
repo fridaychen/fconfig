@@ -92,6 +92,7 @@
 (autoload #'mark-ifdef "ifdef")
 
 ;; org
+(defvar-local *fc-auto-hide* nil)
 (autoload #'org-agenda "fc-org")
 
 ;; extra

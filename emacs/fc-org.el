@@ -64,10 +64,12 @@
 
 (defun fc--org-book-info()
   "Return org book meta info."
-  (list
-   :title (plist-get (org-export-get-environment) :title)
-   :author (plist-get (org-export-get-environment) :author)
-   :date (plist-get (org-export-get-environment) :date)))
+
+  (let ((info (org-export-get-environment)))
+    (list
+     :title (plist-get info :title)
+     :author (plist-get info :author)
+     :date (plist-get info :date))))
 
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."

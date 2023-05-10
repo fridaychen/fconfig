@@ -160,7 +160,7 @@
           org-preview-latex-image-directory "output/"
           org-startup-indented nil
           org-fontify-quote-and-verse-blocks t
-          org-superstar-headline-bullets-list '(?● ?◯ ?○ ?▷)
+          org-superstar-headline-bullets-list '(?⏹ ?● ?○ ?▷)
           org-imenu-depth 4
           )
 
@@ -234,9 +234,18 @@
         (setf buffer-face-mode-face *fc-reading-face*)
         (buffer-face-mode 1))
 
-      (unless (fc--org-capture-p)
-        (fc--org-hide-all)
-        (fc-idle-delay-task #'fc-hs-toggle 0.1))
+      (fc-idle-delay-task (lambda ()
+                            (when (and (not (fc--org-capture-p)) *fc-auto-hide*)
+                              (fc--org-hide-all)
+                              (fc-hs-toggle) 0.3)))
+
+      (setq prettify-symbols-alist '((":PROPERTIES:" . "»")
+                                     (":LOGBOOK:" . "›")
+                                     (":END:" . "›")
+                                     ("[ ]" . ?☐)
+                                     ("[X]" . ?☑ )
+                                     ("[-]" . ?☒ )))
+      (prettify-symbols-mode)
 
       (fc-dwell-enable #'fc--org-dwell)
       (add-hook 'pre-command-hook #'fc--org-hide-footnote)

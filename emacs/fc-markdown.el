@@ -26,8 +26,20 @@
       (when *is-gui*
         (markdown-display-inline-images))
 
-      (outline-hide-sublevels 3)
-      (fc-idle-delay-task #'fc-hs-toggle 0.1)
+      (setq prettify-symbols-alist '(("#" . ?⏹)
+                                     ("##" . ?●)
+                                     ("###" . ?○)
+                                     ("####" . ?▷)
+                                     ("[ ]" . ?☐)
+                                     ("[X]" . ?☑ )
+                                     ("[-]" . ?☒ )))
+      (prettify-symbols-mode)
+
+      (fc-idle-delay-task (lambda ()
+                            (when *fc-auto-hide*
+                              (outline-hide-sublevels 3)
+                              (fc-hs-toggle)))
+                          0.3)
 
       (eldoc-mode -1))
 

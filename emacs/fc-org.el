@@ -239,7 +239,9 @@
       (fc-idle-delay-task (lambda ()
                             (when (and (not (fc--org-capture-p)) *fc-auto-hide*)
                               (fc--org-hide-all)
-                              (fc-hs-toggle) 0.3)))
+                              (unless (zerop (fc-line-num))
+                                (fc-hs-toggle))))
+                          0.2)
 
       (setq prettify-symbols-alist '((":PROPERTIES:" . "»")
                                      (":LOGBOOK:" . "›")

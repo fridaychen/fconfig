@@ -38,8 +38,9 @@
       (fc-idle-delay-task (lambda ()
                             (when *fc-auto-hide*
                               (outline-hide-sublevels 3)
-                              (fc-hs-toggle)))
-                          0.3)
+                              (unless (zerop (fc-line-num))
+                                (fc-hs-toggle))))
+                          0.2)
 
       (eldoc-mode -1))
 

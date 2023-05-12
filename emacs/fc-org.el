@@ -54,8 +54,9 @@
             'ob-blockdiag
             'org-cliplink
             'org-link-beautify
-            'org-superstar
             'valign)
+
+(fc-load 'org-superstar)
 
 (cl-defun fc--org-clock-out ()
   "Clock out current task."
@@ -70,6 +71,13 @@
      :title (plist-get info :title)
      :author (plist-get info :author)
      :date (plist-get info :date))))
+
+(cl-defun fc--org-before-theme-changed ()
+  (when (facep 'org-superstar-header-bullet)
+    (fc-set-face-attribute 'org-superstar-header-bullet nil
+                           :foreground 'unspecified)
+    (fc-set-face-attribute 'org-superstar-leading nil
+                           :foreground 'unspecified)))
 
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
@@ -90,6 +98,17 @@
       (fc-set-face-attribute 'org-table nil
                              :family family
                              :fontset fontset)))
+
+  (when-let ((has-face (facep 'org-superstar-header-bullet))
+             (no-color (not (color-defined-p (face-attribute
+                                              'org-superstar-header-bullet
+                                              :foreground))))
+             (fg (fc-get-face-attribute 'font-lock-keyword-face
+                                        :foreground)))
+    (fc-set-face-attribute 'org-superstar-header-bullet nil
+                           :foreground fg)
+    (fc-set-face-attribute 'org-superstar-leading nil
+                           :foreground fg))
 
   (cond
    ((fc-dark-theme-p)

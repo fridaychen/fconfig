@@ -12,6 +12,8 @@
   "Reset color theme."
   (interactive)
 
+  (fc-run-hook '*fc-before-theme-hook*)
+
   (load-theme *fc-current-theme* t)
 
   (fc-run-hook '*fc-after-theme-hook*))
@@ -19,6 +21,7 @@
 (defun fc--do-load-theme ()
   "Load color theme."
   (-map #'disable-theme custom-enabled-themes)
+  (fc-run-hook '*fc-before-theme-hook*)
   (load-theme *fc-current-theme* t)
   (fc-run-hook '*fc-after-theme-hook*)
   (force-mode-line-update)

@@ -61,6 +61,7 @@
 (autoload #'fc-program "fc-program")
 
 ;; theme
+(defvar *fc-before-theme-hook* nil "Before theme hook.")
 (defvar *fc-after-theme-hook* nil "After theme hook.")
 
 (autoload #'fc-load-theme "fc-theme-config")

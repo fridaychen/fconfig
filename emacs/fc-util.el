@@ -811,6 +811,15 @@ O: color or face."
     (apply #'color-rgb-to-hex
            (color-complement color))))
 
+(cl-defun fc-yes-no (prompt &optional default)
+  (let ((ans (read-char (fc-prompt (concat prompt
+                                           " "
+                                           (if default "[Y|n]" "[y|N]"))))))
+    (pcase ans
+      ((or ?y ?Y ?t ?T) t)
+      ((or ?n ?N ?f ?F) nil)
+      (_ default))))
+
 (provide 'fc-util)
 
 ;; Local Variables:

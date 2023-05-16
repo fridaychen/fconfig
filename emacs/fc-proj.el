@@ -177,7 +177,7 @@ DIR: project path."
   (let* ((proj-file (fc-exists-file-in-path ".cricket" dir))
          (proj-dir (and proj-file (file-name-directory proj-file))))
     (unless proj-file
-      (if (y-or-n-p "Project not exists, run wizard to create one ? ")
+      (if (fc-yes-no "Project not exists, run wizard to create one")
           (fc--proj-add (fc-proj-wizard
                          (read-directory-name "Project directory : "))))
       (cl-return-from fc-proj-open))

@@ -180,8 +180,10 @@
           org-image-actual-width nil
           org-preview-latex-image-directory "output/"
           org-startup-indented nil
+          org-fontify-emphasized-text t
           org-fontify-quote-and-verse-blocks t
-          org-superstar-headline-bullets-list '(?⏹ ?● ?○ ?▷)
+          org-fontify-whole-heading-line t
+          org-superstar-headline-bullets-list '(?⏹ ?● ?○ ?▶ ?▷)
           org-imenu-depth 4
           )
 
@@ -482,7 +484,15 @@ DATE: date.
 LANG: language."
   (goto-char (point-min))
 
-  (insert "#+title: " (or title (read-string "Title : ")) "\n"
+  (insert ":options:\n"
+          (if (fc-yes-no "Enable inline image" t)
+              "#+startup: inlineimages\n"
+            "")
+          (if (fc-yes-no "Enable latex")
+              "#+startup: latexpreview\n"
+            "")
+          ":end:\n\n"
+          "#+title: " (or title (read-string "Title : ")) "\n"
           "#+author: " (or author (read-string "Author : ")) "\n"
           "#+date: " (or date (read-string "Date : ")) "\n"
           "#+language: " (or lang
@@ -490,7 +500,7 @@ LANG: language."
                                              `("en-US"
                                                "jp-JP"
                                                "zh-CN")))
-          "\n"))
+          "\n\n"))
 
 (cl-defun fc--org-convert-from-latex ()
   "Convert latex to org."

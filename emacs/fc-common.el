@@ -202,10 +202,15 @@ COLOR: background color."
 
       ('classic
        (setf soothe-percent -2)
+       (fc-set-face-attribute 'link nil
+                              :foreground "cyan2")
+       (fc-set-face-attribute 'ivy-current-match nil
+                              :background "gray60")
        (fc-set-face-attribute 'default nil
+                              :foreground "wheat"
                               :background (color-darken-name
                                            (fc-get-face-attribute 'default :background)
-                                           4))
+                                           6))
        (fc-set-face-attribute 'fringe nil
                               :background "coral"))
 

@@ -158,14 +158,16 @@ MENU: menu."
 (require 'notifications)
 
 (defun fc--popup-posframe (name text &rest rest)
-  (apply #'posframe-show name
-         :string text
-         :background-color "RoyalBlue3"
-         :foreground-color "LightYellow"
-         :border-width 4
-         :border-color "navy"
-
-         rest))
+  (seq-let (bg fg) (if (fc-dark-theme-p)
+                       '("RoyalBlue4" "PeachPuff")
+                     '("RoyalBlue3" "LightYellow"))
+    (apply #'posframe-show name
+           :string text
+           :background-color bg
+           :foreground-color fg
+           :border-width 4
+           :border-color "navy"
+           rest)))
 
 (defun fc--popup-tip (text)
   (let ((lines (s-count-matches "\n" text)))

@@ -991,9 +991,9 @@ REST: commands."
                               ("gray60" . "gray60")
                               ("lemon" . "LemonChiffon")
                               ("navajo white" . "navajo white")
-                              ("pale golden"   . "PaleGoldenrod")
-                              ("pale green". "PaleGreen")
-                              ("white"  . "white")
+                              ("pale goldenrod" . "PaleGoldenrod")
+                              ("pale green" . "PaleGreen")
+                              ("white" . "white")
                               ))))
 
     (fc-set-face-attribute 'default nil :foreground fg)))

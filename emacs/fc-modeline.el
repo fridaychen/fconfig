@@ -123,7 +123,9 @@
       (when proj
         (concat proj "::"))
       (buffer-name))
-     :face 'mode-line-buffer-id
+     :face (if (fc--active-window-p)
+               'mode-line-buffer-id
+             'mode-line-inactive)
      :limit (ceiling
              (* (window-width) 0.5))
      :separator ""

@@ -993,6 +993,7 @@ REST: commands."
                               ("navajo white" . "navajo white")
                               ("pale goldenrod" . "PaleGoldenrod")
                               ("pale green" . "PaleGreen")
+                              ("wheat" . "wheat")
                               ("white" . "white")
                               ))))
 

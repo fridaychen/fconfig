@@ -251,10 +251,8 @@ COLOR: background color."
                               :background "#102a20")
        (fc-set-face-attribute 'markdown-header-face-1 nil
                               :height 1.2)
-       (fc-set-face-attribute 'org-level-1 nil
-                              :height 1.2)
-       (fc-set-face-attribute 'org-level-2 nil
-                              :height 1.1))
+       (fc-set-face-attribute 'ivy-current-match nil
+                              :background "gray50"))
 
       ('material-light
        (setf soothe-percent 2)

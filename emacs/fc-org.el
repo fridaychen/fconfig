@@ -466,15 +466,16 @@ PRE-FORMAT: format the block content."
       (match-string 1))))
 
 (defun fc--org-convert-inline-fontnote (regex)
-  (while (re-search-forward regex nil t)
-    (let ((start (match-beginning 0))
-          (end (match-end 0))
-          (fn (match-string 1)))
-      (goto-char start)
-      (if (zerop (current-column))
-          (goto-char end)
-        (delete-region start end)
-        (insert "[fn:: " (s-trim (fc--org-find-oneline-footnote fn)) "]")))))
+  (fc--org-bulk-change
+   (while (re-search-forward regex nil t)
+     (let ((start (match-beginning 0))
+           (end (match-end 0))
+           (fn (match-string 1)))
+       (goto-char start)
+       (if (zerop (current-column))
+           (goto-char end)
+         (delete-region start end)
+         (insert "[fn:: " (s-trim (fc--org-find-oneline-footnote fn)) "]"))))))
 
 (cl-defun fc--org-add-header (&optional title author date lang)
   "Add header.
@@ -504,85 +505,87 @@ LANG: language."
 
 (cl-defun fc--org-convert-from-latex ()
   "Convert latex to org."
-  (save-excursion
-    (fc--org-add-header
-     (fc-search "\\title{\\(.+\\)}" :begin t :sub 1 :bound 1024)
-     (fc-search "\\author{\\(.+\\)}" :begin t :sub 1 :bound 1024)
-     (fc-search "\\date{\\([^}]+\\)}" :begin t :sub 1 :bound 1024))
+  (fc--org-bulk-change
+   (save-excursion
+     (fc--org-add-header
+      (fc-search "\\title{\\(.+\\)}" :begin t :sub 1 :bound 1024)
+      (fc-search "\\author{\\(.+\\)}" :begin t :sub 1 :bound 1024)
+      (fc-search "\\date{\\([^}]+\\)}" :begin t :sub 1 :bound 1024))
 
-    (save-excursion
-      (fc--org-add-footnote "\\\\footnote{\\([^}]+\\)}"))
+     (save-excursion
+       (fc--org-add-footnote "\\\\footnote{\\([^}]+\\)}"))
 
-    (save-excursion
-      (--each (if (fc-search "\\\\part{" :begin t :sub 0 :bound 20480)
-                  '(("\\part{" "* ")
-                    ("\\chapter{" "** ")
-                    ("\\chapter*{" "** ")
-                    ("\\section{" "*** ")
-                    ("\\section*{" "*** ")
-                    ("\\subsection{" "**** "))
-                '(("\\chapter{" "* ")
-                  ("\\chapter*{" "* ")
-                  ("\\section{" "** ")
-                  ("\\section*{" "** ")
-                  ("\\subsection{" "*** ")))
-        (fc-replace-string (cl-first it) (cl-second it) :from-start t)))
+     (save-excursion
+       (--each (if (fc-search "\\\\part{" :begin t :sub 0 :bound 20480)
+                   '(("\\part{" "* ")
+                     ("\\chapter{" "** ")
+                     ("\\chapter*{" "** ")
+                     ("\\section{" "*** ")
+                     ("\\section*{" "*** ")
+                     ("\\subsection{" "**** "))
+                 '(("\\chapter{" "* ")
+                   ("\\chapter*{" "* ")
+                   ("\\section{" "** ")
+                   ("\\section*{" "** ")
+                   ("\\subsection{" "*** ")))
+         (fc-replace-string (cl-first it) (cl-second it) :from-start t)))
 
-    (save-excursion
-      (--each '(("^ +\\\\sopening{" "")
-                ("^\\\\documentclass.+" "")
-                ("^\\\\usepackage.+" "")
-                ("^\\\\title.+" "")
-                ("^\\\\author.+" "")
-                ("^\\\\date.+" ""))
-        (fc-replace-regexp (cl-first it) (cl-second it) :from-start t)))
+     (save-excursion
+       (--each '(("^ +\\\\sopening{" "")
+                 ("^\\\\documentclass.+" "")
+                 ("^\\\\usepackage.+" "")
+                 ("^\\\\title.+" "")
+                 ("^\\\\author.+" "")
+                 ("^\\\\date.+" ""))
+         (fc-replace-regexp (cl-first it) (cl-second it) :from-start t)))
 
-    (save-excursion
-      (--each '(("\\begin{document}" "")
-                ("\\zhbook" "")
-                ("\\end{document}" "")
-                ("\\begin{sletter}" "#+BEGIN_QUOTE")
-                ("\\end{sletter}" "#+END_QUOTE")
-                ("\\begin{verse}" "#+BEGIN_VERSE")
-                ("\\end{verse}" "#+END_VERSE")
-                ("\\begin{zhverse}" "#+BEGIN_VERSE")
-                ("\\end{zhverse}" "#+END_VERSE")
-                ("\\begin{flushright}" "")
-                ("\\end{flushright}" "")
-                ("\\begin{flushleft}" "")
-                ("\\end{flushleft}" "")
-                ("\\end{document}" "")
-                ("\\sclosing{" "")
-                ("\\sps{" "")
-                ("\\" "")
-                ("}" ""))
-        (fc-replace-string (cl-first it) (cl-second it) :from-start t)))))
+     (save-excursion
+       (--each '(("\\begin{document}" "")
+                 ("\\zhbook" "")
+                 ("\\end{document}" "")
+                 ("\\begin{sletter}" "#+BEGIN_QUOTE")
+                 ("\\end{sletter}" "#+END_QUOTE")
+                 ("\\begin{verse}" "#+BEGIN_VERSE")
+                 ("\\end{verse}" "#+END_VERSE")
+                 ("\\begin{zhverse}" "#+BEGIN_VERSE")
+                 ("\\end{zhverse}" "#+END_VERSE")
+                 ("\\begin{flushright}" "")
+                 ("\\end{flushright}" "")
+                 ("\\begin{flushleft}" "")
+                 ("\\end{flushleft}" "")
+                 ("\\end{document}" "")
+                 ("\\sclosing{" "")
+                 ("\\sps{" "")
+                 ("\\" "")
+                 ("}" ""))
+         (fc-replace-string (cl-first it) (cl-second it) :from-start t))))))
 
 (defun fc--org-convert-from-markdown ()
   "Convert latex to org."
-  (save-excursion
-    (fc--org-add-header
-     (fc-search "^title: \\(.+\\)" :begin t :sub 1 :bound 1024)
-     (fc-search "^author: \\(.+\\)" :begin t :sub 1 :bound 1024)
-     (fc-search "^date: \\(.+\\)" :begin t :sub 1 :bound 1024)
-     (fc-search "^language: \\(.+\\)" :begin t :sub 1 :bound 1024))
+  (fc--org-bulk-change
+   (save-excursion
+     (fc--org-add-header
+      (fc-search "^title: \\(.+\\)" :begin t :sub 1 :bound 1024)
+      (fc-search "^author: \\(.+\\)" :begin t :sub 1 :bound 1024)
+      (fc-search "^date: \\(.+\\)" :begin t :sub 1 :bound 1024)
+      (fc-search "^language: \\(.+\\)" :begin t :sub 1 :bound 1024))
 
-    (fc-replace-regexp "\\[^\\([^\]\n]+\\)\\]" "[fn:\\1]" :from-start t)
+     (fc-replace-regexp "\\[^\\([^\]\n]+\\)\\]" "[fn:\\1]" :from-start t)
 
-    (fc-replace-regexp "^\\(\\[fn:[^
+     (fc-replace-regexp "^\\(\\[fn:[^
 ]+\\]\\): " "\\1 " :from-start t)
 
-    (--each '(("^#### " "**** ")
-              ("^### " "*** ")
-              ("^## " "** ")
-              ("^# " "* "))
-      (fc-replace-regexp (cl-first it) (cl-second it) :from-start t))
+     (--each '(("^#### " "**** ")
+               ("^### " "*** ")
+               ("^## " "** ")
+               ("^# " "* "))
+       (fc-replace-regexp (cl-first it) (cl-second it) :from-start t))
 
-    (--each '(("\n\n```" "\n\n#+BEGIN_QUOTE")
-              ("```\n\n" "#+END_QUOTE\n\n"))
-      (fc-replace-string (cl-first it) (cl-second it) :from-start t))
+     (--each '(("\n\n```" "\n\n#+BEGIN_QUOTE")
+               ("```\n\n" "#+END_QUOTE\n\n"))
+       (fc-replace-string (cl-first it) (cl-second it) :from-start t))
 
-    (fc--org-convert-mk-verse)))
+     (fc--org-convert-mk-verse))))
 
 (cl-defun fc--org-fix-fn-number ()
   (let ((ref-num 0)
@@ -634,9 +637,10 @@ LANG: language."
     (message "done")))
 
 (defun fc--org-fix-fn ()
-  (save-excursion
-    (fc--org-fix-fn-number))
-  (fc--org-merge-fn-sections))
+  (fc--org-bulk-change
+   (save-excursion
+     (fc--org-fix-fn-number))
+   (fc--org-merge-fn-sections)))
 
 (cl-defun fc-org-portal ()
   "Show org portal."
@@ -927,16 +931,23 @@ BODY: usually a pcase block."
                      "\n"
                      :from-start t))
 
+(cl-defmacro fc--org-bulk-change (&rest rest)
+  `(progn
+     (setq org-element-use-cache nil)
+     ,@rest
+     (setq org-element-use-cache t)))
+
 (cl-defun fc--org-add-footnote (regex)
   "Add footnote.
 REGEX: regex."
-  (let ((no (read-number "Footnote number start from")))
-    (fc-replace-regexp regex
-                       #'(lambda ()
-                           (let ((footnote (match-string 1)))
-                             (replace-match "")
-                             (fc--org-insert-footnote no footnote))
-                           (setq no (1+ no))))))
+  (fc--org-bulk-change
+   (let ((no (read-number "Footnote number start from")))
+     (fc-replace-regexp regex
+                        #'(lambda ()
+                            (let ((footnote (match-string 1)))
+                              (replace-match "")
+                              (fc--org-insert-footnote no footnote))
+                            (setq no (1+ no)))))))
 
 (defun fc--org-insert-footnote (label content)
   "Insert a footnote.

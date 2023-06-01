@@ -70,6 +70,7 @@ PREV: previous function."
      (kill-buffer it))))
 
 (--each '(compilation-mode
+          ggtags-global-mode
           ggtags-navigation-mode
           grep-mode
           occur-mode

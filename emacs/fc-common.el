@@ -247,8 +247,7 @@ COLOR: background color."
        (fc-set-face-attribute 'fringe nil
                               :background "#ff9800")
        (fc-set-face-attribute 'default nil
-                              :foreground "#dfdfdf"
-                              :background "#102a20")
+                              :foreground "wheat")
        (fc-set-face-attribute 'markdown-header-face-1 nil
                               :height 1.2)
        (fc-set-face-attribute 'ivy-current-match nil

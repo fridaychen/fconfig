@@ -251,6 +251,13 @@
        (fc-text warning
                 :keys *fc-flycheck-seg-keymap*)))))
 
+(defvar *fc--side-window-mark*
+  (fc-visible "🐕‍🦺" "SIDE"))
+
+(defun fc--side-window-seg ()
+  (when (fc-side-window-p)
+    *fc--side-window-mark*))
+
 (defun fc--modeline-format-left ()
   "Format left modeline."
   (let ((hi-face (fc--modeline-get-hl-face))
@@ -268,6 +275,7 @@
       (fc--state-seg)
       `(face (:inherit ,hi-face)))
      (fc-ml-left-sep)
+     (fc--side-window-seg)
      (fc--major-mode-seg)
      " ")))
 

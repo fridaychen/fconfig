@@ -175,6 +175,7 @@
   (progn
     (setf org-hide-emphasis-markers t
           org-log-done t
+          org-log-into-drawer "LOGBOOK"
           org-export-with-sub-superscripts nil
           org-src-ask-before-returning-to-edit-buffer nil
           org-image-actual-width nil

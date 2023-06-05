@@ -37,26 +37,44 @@
                "-nocolor"
                filename))))))
 
-(cl-defun fc--mybook-open (path _)
+(cl-defun fc--mybook-parse (link)
+  (cond
+   ((string-match "\\(.+\\)\\(::.+\\)" link)
+    (list (substring link
+                     (match-beginning 1)
+                     (match-end 1))
+          (substring link
+                     (+ 2 (match-beginning 2))
+                     (match-end 2))))
+   (t
+    (list link nil))))
+
+(cl-defun fc--mybook-open (link _)
   "Open file in mybook."
-  (--each *fc-mybook-homes*
-    (let* ((default-directory it)
-           (filename (-find-book path))
-           (ext (downcase (or (file-name-extension filename) "")))
-           (full-path (format "%s/%s" it filename)))
-      (cond
-       ((s-blank? filename))
 
-       ((and ext (member ext '("md" "org" "txt")))
-        (find-file full-path)
-        (cl-return-from fc--mybook-open))
+  (seq-let (path arg) (fc--mybook-parse link)
+    (--each *fc-mybook-homes*
+      (let* ((default-directory it)
+             (filename (-find-book path))
+             (ext (downcase (or (file-name-extension filename) "")))
+             (full-path (format "%s/%s" it filename)))
+        (cond
+         ((s-blank? filename))
 
-       (t
-        (message "open with a external app %s" filename)
-        (fc-exec-command "fj" "--open" full-path)
-        (cl-return-from fc--mybook-open)))))
+         ((and ext (member ext '("md" "org" "txt")))
+          (find-file full-path)
+          (cl-return-from fc--mybook-open))
 
-  (message "Mybook %s is not found" path))
+         ((and (equal ext "pdf") arg)
+          (fc-exec-command "evince" (format "--page-label=%s" arg) full-path)
+          (cl-return-from fc--mybook-open))
+
+         (t
+          (message "open with a external app %s" filename)
+          (fc-exec-command "fj" "--open" full-path)
+          (cl-return-from fc--mybook-open)))))
+
+    (message "Mybook %s is not found" path)))
 
 (defvar org-babel-default-header-args:packetdiag
   '(

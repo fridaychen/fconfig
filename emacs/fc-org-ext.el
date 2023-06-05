@@ -7,7 +7,7 @@
 
 (defvar *fc-mybook-candidates* (list
                                 "~/Documents/"
-                                "~/Google Drive/My Driver/"))
+                                "~/Google Drive/My Drive/"))
 
 (defvar *fc-mybook-homes* nil)
 
@@ -49,6 +49,13 @@
    (t
     (list link nil))))
 
+(cl-defun fc--mybook-open-pdf (path arg)
+  (cond (*is-linux*
+         (fc-exec-command "evince" (format "--page-label=%s" arg) path))
+
+        (*is-mac*
+         (fc-exec-command "previewtopage.sh" path arg))))
+
 (cl-defun fc--mybook-open (link _)
   "Open file in mybook."
 
@@ -66,7 +73,7 @@
           (cl-return-from fc--mybook-open))
 
          ((and (equal ext "pdf") arg)
-          (fc-exec-command "evince" (format "--page-label=%s" arg) full-path)
+          (fc--mybook-open-pdf full-path arg)
           (cl-return-from fc--mybook-open))
 
          (t

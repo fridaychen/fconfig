@@ -280,6 +280,18 @@ FUNC: new function."
          retval)
      ,@clean-up))
 
+(cl-defmacro fc-each (obj &rest body)
+  (declare (indent 1))
+  `(cond
+    ((and (not (stringp ,obj)) (seqp ,obj))
+     (seq-do (lambda (it)
+               ,@body)
+             ,obj))
+
+    (t
+     (let ((it ,obj))
+       (progn ,@body)))))
+
 (provide 'fc-facility)
 
 ;; Local Variables:

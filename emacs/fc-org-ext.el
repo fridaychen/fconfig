@@ -5,7 +5,15 @@
 
 ;;; Code:
 
-(defvar *fc-mybook-home* (expand-file-name "~/Documents/"))
+(defvar *fc-mybook-candidates* (list
+                                "~/Documents/"
+                                "~/Google Drive/My Driver/"))
+
+(defvar *fc-mybook-homes* nil)
+
+(--each *fc-mybook-candidates*
+  (when (fc-dir-exists-p it)
+    (add-to-list '*fc-mybook-homes* (expand-file-name it))))
 
 (org-link-set-parameters "music"
                          :follow #'fc--music-open)
@@ -20,28 +28,35 @@
 
 (defun -find-book (filename)
   "Find book by filename."
-  (s-trim
-   (fc-exec-command-to-string
-    "ff"
-    (list
-     "-nocolor"
-     filename))))
+  (car
+   (s-split "\n"
+            (s-trim
+             (fc-exec-command-to-string
+              "ff"
+              (list
+               "-nocolor"
+               filename))))))
 
-(defun fc--mybook-open (path _)
+(cl-defun fc--mybook-open (path _)
   "Open file in mybook."
-  (let* ((default-directory *fc-mybook-home*)
-         (filename (-find-book path))
-         (ext (downcase (file-name-extension filename))))
-    (cond
-     ((s-blank? filename)
-      (message "Mybook %s is not found" path))
+  (--each *fc-mybook-homes*
+    (let* ((default-directory it)
+           (filename (-find-book path))
+           (ext (downcase (or (file-name-extension filename) "")))
+           (full-path (format "%s/%s" it filename)))
+      (cond
+       ((s-blank? filename))
 
-     ((member ext '("md" "org" "txt"))
-      (find-file (format "%s/%s" *fc-mybook-home* filename)))
+       ((and ext (member ext '("md" "org" "txt")))
+        (find-file full-path)
+        (cl-return-from fc--mybook-open))
 
-     (t
-      (message "open with a external app %s" filename)
-      (fc-exec-command "fj" "--open" filename)))))
+       (t
+        (message "open with a external app %s" filename)
+        (fc-exec-command "fj" "--open" full-path)
+        (cl-return-from fc--mybook-open)))))
+
+  (message "Mybook %s is not found" path))
 
 (defvar org-babel-default-header-args:packetdiag
   '(

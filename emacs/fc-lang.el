@@ -43,7 +43,7 @@ FROM-START: non-nil means starts from beginning."
 (cl-defun fc-replace-regexp (regex to &key from-start)
   "REGEXP String replacement.
 REGEX: regexp.
-TO-STRING: to-string.
+TO: to-string.
 FROM-START: non-nil means starts from beginning."
   (when from-start
     (goto-char (point-min)))

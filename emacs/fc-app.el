@@ -345,7 +345,7 @@ FILE-TYPES: fc style file types."
                            "-t" "vim" "-t" "protobuf"
                            ))
                   ('doc '("-t" "markdown" "-t" "org" "-t" "tex" "-t" "txt" "-t" "uml"))
-                  ('conf '("-t" "cmake" "-t" "make" "-t" "config"
+                  ('conf '("-t" "cmake" "-t" "make" "-t" "config" "-t" "scons"
                            "-t" "json" "-t" "yaml"))
                   ('xml '("-t" "xml")))
                 file-types)))
@@ -360,6 +360,7 @@ FILE-TYPES: target file types to be finded."
     (let* ((result (apply #'fc-exec-command-to-string
                           "rg"
                           "--type-add" "uml:*.{puml,pu}"
+                          "--type-add" "scons:[Ss][Cc]ons,[Ss][Cc]onstruct}"
                           "--files"
                           "--no-ignore"
                           (seq-concatenate
@@ -423,6 +424,7 @@ FILE-TYPES: target file types to be searched."
            (current-buffer)
            "rg"
            "--type-add" "uml:*.{puml,pu}"
+           "--type-add" "scons:[Ss][Cc]ons,[Ss][Cc]onstruct}"
            "--vimgrep"
            "--stats"
            "--no-ignore"

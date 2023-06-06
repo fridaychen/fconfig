@@ -1466,7 +1466,8 @@ AUTO: auto select face."
                       :prefix #'split-window-vertically))
    ("4" ,(fc-cond-key :normal #'fc-show-buffer))
    ("5" toggle-frame-fullscreen)
-   ("6" fc-toggle-window-maximize)
+   ("6" ,(fc-cond-key :normal #'fc-toggle-window-maximize
+                      :prefix #'balance-windows))
    ("7" ,(fc-cond-key :normal #'compile
                       :work #'fc-proj-build
                       :prefix #'compile))

@@ -478,6 +478,23 @@ PRE-FORMAT: format the block content."
          (delete-region start end)
          (insert "[fn:: " (s-trim (fc--org-find-oneline-footnote fn)) "]"))))))
 
+;; (cl-defun
+(cl-defun fc--org-add-options ()
+  (let ((enable-img (fc-yes-no "Enable inline image" t))
+        (enable-latex (fc-yes-no "Enable latex")))
+
+    (unless (or enable-img enable-latex)
+      (cl-return-from fc--org-add-options))
+
+    (insert ":options:\n"
+            (if enable-img
+                "#+startup: inlineimages\n"
+              "")
+            (if enable-latex
+                "#+startup: latexpreview\n"
+              "")
+            ":end:\n\n")))
+
 (cl-defun fc--org-add-header (&optional title author date lang)
   "Add header.
 TITLE: title.
@@ -486,23 +503,18 @@ DATE: date.
 LANG: language."
   (goto-char (point-min))
 
-  (insert ":options:\n"
-          (if (fc-yes-no "Enable inline image" t)
-              "#+startup: inlineimages\n"
-            "")
-          (if (fc-yes-no "Enable latex")
-              "#+startup: latexpreview\n"
-            "")
-          ":end:\n\n"
-          "#+title: " (or title (read-string "Title : ")) "\n"
-          "#+author: " (or author (read-string "Author : ")) "\n"
-          "#+date: " (or date (read-string "Date : ")) "\n"
-          "#+language: " (or lang
-                             (fc-user-select "Language"
-                                             `("en-US"
-                                               "jp-JP"
-                                               "zh-CN")))
-          "\n\n"))
+  (fc--org-add-options)
+
+  (insert
+   "#+title: " (or title (read-string "Title : ")) "\n"
+   "#+author: " (or author (read-string "Author : ")) "\n"
+   "#+date: " (or date (read-string "Date : ")) "\n"
+   "#+language: " (or lang
+                      (fc-user-select "Language"
+                                      `("en-US"
+                                        "jp-JP"
+                                        "zh-CN")))
+   "\n\n"))
 
 (cl-defun fc--org-convert-from-latex ()
   "Convert latex to org."
@@ -650,6 +662,7 @@ LANG: language."
    (append
     `(
       ("Add header"			. fc--org-add-header)
+      ("Add options"			. fc--org-add-options)
       ("Convert footnote (from inline)"	. ,(fc-manual (fc--org-add-footnote
                                                        (read-string
                                                         "Confirm"

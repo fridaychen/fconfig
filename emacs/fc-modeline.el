@@ -252,7 +252,7 @@
                 :keys *fc-flycheck-seg-keymap*)))))
 
 (defvar *fc--side-window-mark*
-  (fc-visible "🐕‍🦺" "SIDE"))
+  (fc-visible "👩‍💼" "SIDE"))
 
 (defun fc--side-window-seg ()
   (when (fc-side-window-p)

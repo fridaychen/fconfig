@@ -32,33 +32,40 @@ Example:
 * Draw bar by Python
 
 #+NAME: draw_bar
-#+BEGIN_SRC python :var fname="bar.svg" :var table=bardata :results file
+#+BEGIN_SRC python :var fname="bar.svg" :var table=bardata :var height="none" :var width="none" :results file
   import matplotlib.pyplot as plt
   from matplotlib import rc as prc
 
-  prc("font", family="TsangerJinKai01-27533")
+  prc("font", family="Sarasa Gothic CL")
 
   x, y = zip(*table)
 
-  plt.figure(figsize=(16, 3), dpi=80)
+  if height != "none" and width != "none":
+      plt.figure(figsize=(width, height), dpi=90, facecolor="#C1E6C6")
+  else:
+      plt.figure(dpi=90, facecolor="#C1E6C6")
 
-  plt.bar(range(len(y)), y, 1)
+  ax = plt.axes()
+  ax.set_facecolor("#C1E6C6")
+  ax.grid(color="gray", linestyle="dashed")
+
+  plt.bar(range(len(y)), y, width=0.6)
   plt.xticks(range(len(y)), x)
   plt.savefig(fname, bbox_inches="tight")
 
   return fname
 #+END_SRC
 
-#+tblname: hello
+#+tblname: hello-bar
 | city   | population |
 |--------+------------|
 | foo    |        100 |
 | bar    |        200 |
 | わたし |         39 |
 | world  |         20 |
-| 我们   |        100 |
+| 我们   |        -100 |
 
-#+call: draw_bar(table=hello, fname="test-bar.png")
+#+call: draw_bar(table=hello-bar, fname="test-bar.png")
 
 #+RESULTS:
 [[file:test-bar.png]]
@@ -67,20 +74,21 @@ Example:
 
 #+NAME: draw_pie
 #+BEGIN_SRC python :var fname="pie.svg" :var table=piedata :results file
-import matplotlib.pyplot as plt
-from matplotlib import rc as prc
+  import matplotlib.pyplot as plt
+  from matplotlib import rc as prc
 
-prc('font', family='TsangerJinKai01-27533')
+  plt.figure(dpi=90, facecolor="#C1E6C6")
+  prc("font", family="Sarasa Gothic CL")
 
-x, y = zip(*table)
+  x, y = zip(*table)
 
-plt.pie(y, labels=x, shadow=True, autopct='%.0f%%')
-plt.savefig(fname, bbox_inches='tight')
+  plt.pie(y, labels=x, shadow=True, autopct='%.0f%%')
+  plt.savefig(fname, bbox_inches='tight')
 
-return fname
+  return fname
 #+END_SRC
 
-#+tblname: hello
+#+tblname: hello-pie
 | city   | population |
 |--------+------------|
 | foo    |        100 |
@@ -89,7 +97,7 @@ return fname
 | world  |         20 |
 | 我们   |        100 |
 
-#+call: draw_pie(table=hello, fname="test-pie.png")
+#+call: draw_pie(table=hello-pie, fname="test-pie.png")
 
 #+RESULTS:
 [[file:test-pie.png]]

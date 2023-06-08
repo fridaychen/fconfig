@@ -393,6 +393,10 @@ COLOR: background color."
                            yaml-mode
                            xml-mode))
 
+;; Plot settings
+(defvar *fc-plot-font* "Sarasa Gothic CL")
+(defvar *fc-plot-bg* "#C1E6C6")
+
 (provide 'fc-common)
 
 ;; Local Variables:

@@ -3,13 +3,22 @@
 :END:
 #+startup: inlineimages
 
+#+PROPERTY: header-args :var plotfont=(symbol-value '*fc-plot-font*)
+#+PROPERTY: header-args+ :var plotbg=(symbol-value '*fc-plot-bg*)
+#+PROPERTY: header-args+ :var plotdpi=90
+#+PROPERTY: header-args+ :var ptitle=""
+#+PROPERTY: header-args+ :var fname=""
+#+PROPERTY: header-args+ :var datatable=""
+
 * Draw functions/datafile by Gnuplot
 
 #+NAME: draw_func
-#+BEGIN_SRC gnuplot :var cmd="" :var xl="" :var yl="" t="" :results file
+#+BEGIN_SRC gnuplot :var cmd="" :var xl="" :var yl="" :results file
   reset
 
-  set title t
+  set terminal png enhanced background rgb plotbg
+  set term png font plotfont
+  set title ptitle
   set grid
 
   set xlabel xl
@@ -19,7 +28,7 @@
 #+END_SRC
 
 Example:
-#+CALL: draw_func(cmd="[-10:10] [-2:2] sin(x) title 'sin', cos(x) title 'cos'", xl="X", yl="Y", t="Title") :file test-func.png
+#+CALL: draw_func(cmd="[-10:10] [-2:2] sin(x) title 'sin', cos(x) title 'cos'", xl="X", yl="Y", ptitle="你好，世界!") :file test-func.png
 
 #+RESULTS:
 [[file:test-func.png]]
@@ -32,21 +41,22 @@ Example:
 * Draw bar by Python
 
 #+NAME: draw_bar
-#+BEGIN_SRC python :var fname="bar.svg" :var table=bardata :var height="none" :var width="none" :results file
+#+BEGIN_SRC python :var height=0 :var width=0 :results file
   import matplotlib.pyplot as plt
   from matplotlib import rc as prc
 
-  prc("font", family="Sarasa Gothic CL")
+  prc("font", family=plotfont)
 
-  x, y = zip(*table)
+  x, y = zip(*datatable)
 
-  if height != "none" and width != "none":
-      plt.figure(figsize=(width, height), dpi=90, facecolor="#C1E6C6")
+  if height != 0 and width != 0:
+      plt.figure(figsize=(width, height), dpi=plotdpi, facecolor=plotbg)
   else:
-      plt.figure(dpi=90, facecolor="#C1E6C6")
+      plt.figure(dpi=plotdpi, facecolor=plotbg)
 
   ax = plt.axes()
-  ax.set_facecolor("#C1E6C6")
+  ax.set_title(ptitle)
+  ax.set_facecolor(plotbg)
   ax.grid(color="gray", linestyle="dashed")
 
   plt.bar(range(len(y)), y, width=0.6)
@@ -60,12 +70,12 @@ Example:
 | city   | population |
 |--------+------------|
 | foo    |        100 |
-| bar    |        200 |
+| bar    |        300 |
 | わたし |         39 |
 | world  |         20 |
 | 我们   |        -100 |
 
-#+call: draw_bar(table=hello-bar, fname="test-bar.png")
+#+call: draw_bar(datatable=hello-bar, fname="test-bar.png",height=3,width=8,ptitle="Hello world!")
 
 #+RESULTS:
 [[file:test-bar.png]]
@@ -73,15 +83,16 @@ Example:
 * Draw pie by Python
 
 #+NAME: draw_pie
-#+BEGIN_SRC python :var fname="pie.svg" :var table=piedata :results file
+#+BEGIN_SRC python :results file
   import matplotlib.pyplot as plt
   from matplotlib import rc as prc
 
-  plt.figure(dpi=90, facecolor="#C1E6C6")
-  prc("font", family="Sarasa Gothic CL")
+  plt.figure(dpi=plotdpi, facecolor=plotbg)
+  prc("font", family=plotfont)
 
-  x, y = zip(*table)
+  x, y = zip(*datatable)
 
+  plt.title(ptitle)
   plt.pie(y, labels=x, shadow=True, autopct='%.0f%%')
   plt.savefig(fname, bbox_inches='tight')
 
@@ -92,12 +103,12 @@ Example:
 | city   | population |
 |--------+------------|
 | foo    |        100 |
-| bar    |        200 |
+| bar    |        800 |
 | わたし |         39 |
 | world  |         20 |
 | 我们   |        100 |
 
-#+call: draw_pie(table=hello-pie, fname="test-pie.png")
+#+call: draw_pie(datatable=hello-pie, fname="test-pie.png",ptitle="Hello world!")
 
 #+RESULTS:
 [[file:test-pie.png]]
@@ -105,10 +116,10 @@ Example:
 * Draw histogram by Python
 
 #+NAME: draw_histogram
-#+BEGIN_SRC python :var fname="histgram.svg" :var table=histodata :results file
+#+BEGIN_SRC python :results file
 import matplotlib.pyplot as plt
 
-x = *table
+x = *datatable
 
 plt.hist(x)
 plt.savefig(fname)

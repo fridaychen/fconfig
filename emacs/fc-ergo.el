@@ -681,10 +681,13 @@ ARGS: list of infos."
                                  :matcher #'ivy--switch-buffer-matcher
                                  :caller 'ivy-switch-buffer))
               (buf (get-buffer bufname))
-              (win (display-buffer buf
-                                   '(display-buffer-same-window
-                                     display-buffer-use-some-window
-                                     display-buffer-reuse-window))))
+              (win (progn
+                     (when (fc-side-window-p)
+                       (select-window (window-main-window)))
+                     (display-buffer buf
+                                     '(display-buffer-same-window
+                                       display-buffer-use-some-window
+                                       display-buffer-reuse-window)))))
     (select-window win)))
 
 (cl-defun fc-fast-switch-window ()
@@ -1311,6 +1314,10 @@ STEP: pixels."
      ("d" ,(fc-manual (fc-load-desktop)))
      ("e" fc-new-buffer-with-template)
 
+     ("f" ,(fc-manual (fc--find-file
+                       default-directory
+                       (format "Find file under [%s]" default-directory)
+                       '(conf code doc xml) :sort t)))
      ("i" fc--fast-enlarge-v)
      ("j" fc--fast-reduce-h)
      ("k" fc--fast-reduce-v)

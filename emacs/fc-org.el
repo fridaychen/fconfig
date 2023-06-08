@@ -226,7 +226,8 @@
 
     (require 'org-clock)
 
-    (setf org-clock-clocked-in-display 'frame-title)
+    (setf org-clock-clocked-in-display 'frame-title
+          org-babel-python-command "python3")
 
     (add-to-list 'org-babel-default-header-args:plantuml
                  (cons :java "-Djava.awt.headless=true"))

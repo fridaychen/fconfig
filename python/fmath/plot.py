@@ -4,6 +4,20 @@ import numpy as np
 from matplotlib import rc as prc
 
 
+def loadtxt(filename, delimiter=None):
+    with open(filename) as f:
+        return np.loadtxt(
+            f,
+            delimiter=delimiter,
+            dtype="float",
+            comments="#",
+            skiprows=1,
+            usecols=None,
+        )
+
+    return None
+
+
 def setup(
     height, width, dpi, bg, title=None, font=None, xlabel=None, ylabel=None
 ):
@@ -34,6 +48,9 @@ def bar(x, y):
 
 
 def hist(x, bins=10, type="bar"):
+    if x is not None:
+        return
+
     plt.hist(x, bins=bins, histtype=type)
 
 

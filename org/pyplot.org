@@ -19,14 +19,13 @@
 
 #+PROPERTY: header-args+ :var xrange=""
 
-#+PROPERTY: header-args+ :var f1=""
-#+PROPERTY: header-args+ :var f2=""
-#+PROPERTY: header-args+ :var f3=""
-#+PROPERTY: header-args+ :var f4=""
-#+PROPERTY: header-args+ :var f5=""
-#+PROPERTY: header-args+ :var f6=""
-
 #+NAME: plot
+#+HEADER: :var f1=""
+#+HEADER: :var f2=""
+#+HEADER: :var f3=""
+#+HEADER: :var f4=""
+#+HEADER: :var f5=""
+#+HEADER: :var f6=""
 #+BEGIN_SRC python :results file
   import fmath.plot as fp
   import numpy as np
@@ -96,16 +95,7 @@
   if delimiter == "":
       delimiter = None
 
-  with open(datafile) as f:
-      v = np.loadtxt(
-          f,
-          delimiter=delimiter,
-          dtype="float",
-          comments="#",
-          skiprows=1,
-          usecols=None,
-      )
-      fp.hist(v, bins=bins, type=type)
+  fp.hist(fp.loadtxt(datafile), bins=bins, type=type)
 
   fp.save(output)
 

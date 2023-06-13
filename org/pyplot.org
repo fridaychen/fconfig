@@ -1,0 +1,113 @@
+:PROPERTIES:
+:AUTOINGEST: TRUE
+:END:
+
+#+PROPERTY: header-args :var font=(symbol-value '*fc-plot-font*)
+#+PROPERTY: header-args+ :var bg=(symbol-value '*fc-plot-bg*)
+#+PROPERTY: header-args+ :var dpi=90
+
+#+PROPERTY: header-args+ :var height=0
+#+PROPERTY: header-args+ :var width=0
+
+#+PROPERTY: header-args+ :var title=""
+#+PROPERTY: header-args+ :var xlabel=""
+#+PROPERTY: header-args+ :var ylabel=""
+
+#+PROPERTY: header-args+ :var output=""
+#+PROPERTY: header-args+ :var datafile=""
+#+PROPERTY: header-args+ :var datatable=""
+
+#+PROPERTY: header-args+ :var xrange=""
+
+#+PROPERTY: header-args+ :var f1=""
+#+PROPERTY: header-args+ :var f2=""
+#+PROPERTY: header-args+ :var f3=""
+#+PROPERTY: header-args+ :var f4=""
+#+PROPERTY: header-args+ :var f5=""
+#+PROPERTY: header-args+ :var f6=""
+
+#+NAME: plot
+#+BEGIN_SRC python :results file
+  import fmath.plot as fp
+  import numpy as np
+
+  import math
+
+  fp.setup(height, width, dpi, bg, title, font, xlabel, ylabel)
+
+  min, max = eval(xrange)
+  xa = np.arange(min, max, 0.1)
+
+  if f1 != "":
+      fp.plot(xa, eval(f1))
+  if f2 != "":
+      fp.plot(xa, eval(f2))
+  if f3 != "":
+      fp.plot(xa, eval(f3))
+  if f4 != "":
+      fp.plot(xa, eval(f4))
+  if f5 != "":
+      fp.plot(xa, eval(f4))
+  if f6 != "":
+      fp.plot(xa, eval(f5))
+
+  fp.save(output)
+
+  return output
+#+END_SRC
+
+#+NAME: plotbar
+#+BEGIN_SRC python :colnames no :results file
+  import fmath.plot as fp
+
+  x, y = zip(*datatable)
+
+  fp.setup(height, width, dpi, bg, title, font, x[0], y[0])
+
+  fp.bar(x[1:], y[1:])
+
+  fp.save(output)
+
+  return output
+#+END_SRC
+
+#+NAME: plotpie
+#+BEGIN_SRC python :results file
+  import fmath.plot as fp
+
+  x, y = zip(*datatable)
+
+  fp.setup(height, width, dpi, bg, title, font)
+
+  fp.pie(x, y)
+
+  fp.save(output)
+
+  return output
+#+END_SRC
+
+#+NAME: plothist
+#+BEGIN_SRC python :var bins=10 :var type="bar" :var delimiter="" :results file
+  import fmath.plot as fp
+  import numpy as np
+
+  fp.setup(height, width, dpi, bg, title, font)
+
+  if delimiter == "":
+      delimiter = None
+
+  with open(datafile) as f:
+      v = np.loadtxt(
+          f,
+          delimiter=delimiter,
+          dtype="float",
+          comments="#",
+          skiprows=1,
+          usecols=None,
+      )
+      fp.hist(v, bins=bins, type=type)
+
+  fp.save(output)
+
+  return output
+#+END_SRC

@@ -1,0 +1,41 @@
+:options:
+#+startup: inlineimages
+:end:
+
+#+call: plot(output="test-1d.png",title="World!", ylabel="人口",xrange="[0, math.pi *2]",f1="lambda x: math.cos(x)",f2="lambda x: math.sin(x) + 3")
+
+#+RESULTS:
+[[file:test-1d.png]]
+
+#+tblname: hello-bar
+| city   | population |
+|--------+------------|
+| foo    |        100 |
+| bar    |        200 |
+| わたし |         39 |
+| world  |         20 |
+| 我们   |        -10 |
+
+#+call: plotbar(output="test-bar.png",title="World!",datatable=hello-bar,height=4,width=10)
+
+#+RESULTS:
+[[file:test-bar.png]]
+
+#+tblname: hello-pie
+| city   | population |
+|--------+------------|
+| foo    |        100 |
+| bar    |        800 |
+| わたし |         39 |
+| world  |         20 |
+| 我们   |        100 |
+
+#+call: plotpie(datatable=hello-pie, output="test-pie.png",title="Hello world!")
+
+#+RESULTS:
+[[file:test-pie.png]]
+
+#+call: plothist(datafile="test-data1.txt",output="test-hist.png",title="New World!")
+
+#+RESULTS:
+[[file:test-hist.png]]

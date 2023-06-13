@@ -2,7 +2,7 @@
 #+startup: inlineimages
 :end:
 
-#+call: plot(output="test-1d.png",title="World!", ylabel="人口",xrange="[0, math.pi *2]",f1="lambda x: math.cos(x)",f2="lambda x: math.sin(x) + 3")
+#+call: plot(output="test-1d.png",title="World!", ylabel="人口",xrange="[0, m.pi *2]",f1="lambda x: m.cos(x)",f2="lambda x: m.sin(x) + 2")
 
 #+RESULTS:
 [[file:test-1d.png]]

@@ -229,6 +229,14 @@
     (setf org-clock-clocked-in-display 'frame-title
           org-babel-python-command "python3")
 
+    (defconst org-babel-python-wrapper-method
+      "
+import math as m
+def main():
+%s
+
+open('%s', 'w').write( str(main()) )")
+
     (add-to-list 'org-babel-default-header-args:plantuml
                  (cons :java "-Djava.awt.headless=true"))
 

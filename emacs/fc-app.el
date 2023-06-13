@@ -454,7 +454,7 @@ FILE-TYPES: target file types to be searched."
    dir
    pattern))
 
-(defun fc-text-retrieve (dir &key ignore-files)
+(cl-defun fc-text-retrieve (&key (dir default-directory) ignore-files)
   "Text retrieve.
 DIR: dir to search."
   (let* ((pattern (fc-current-thing :prompt "Text retrieve" :regq t :confirm t))

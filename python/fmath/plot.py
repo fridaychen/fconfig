@@ -23,14 +23,14 @@ def loadtxt(filename, delimiter=None):
 def setup(
     height=0,
     width=0,
-    dpi=None,
-    bg=None,
-    title=None,
-    font=None,
+    dpi=0,
+    bg="",
+    title="",
+    font="",
     xlabel="",
     ylabel="",
 ):
-    if font is not None and font != "":
+    if font != "":
         prc("font", family=font)
 
     fig = plt.figure()
@@ -38,11 +38,14 @@ def setup(
     if height != 0 and width != 0:
         fig.set_size_inches(width, height)
 
-    if bg is not None:
+    if dpi != 0:
+        fig.set_dpi(dpi)
+
+    if bg != "":
         fig.set_facecolor(bg)
 
     ax = plt.axes()
-    if title is not None and title != "":
+    if title != "":
         ax.set_title(title, fontdict={"fontweight": "bold"})
     ax.set_facecolor(bg)
     ax.grid(color="gray", linestyle="dashed")
@@ -112,27 +115,31 @@ def plotf(x, func, sub=None, label=""):
 def setup_subplot(
     rows,
     cols,
-    bg=None,
+    bg="",
     height=0,
     width=0,
-    dpi=None,
-    title=None,
-    font=None,
+    dpi=0,
+    title="",
+    font="",
     subtitles=None,
 ):
     global axes
+
+    if font != "":
+        prc("font", family=font)
+
     fig, axes = plt.subplots(rows, cols)
 
-    if bg is not None:
+    if bg != "":
         fig.set_facecolor(bg)
 
     if height != 0 and width != 0:
         fig.set_size_inches(width, height)
 
-    if dpi is not None:
+    if dpi != 0:
         fig.set_dpi(dpi)
 
-    if title is not None and title != "":
+    if title != "":
         fig.suptitle(title, fontweight="bold")
 
     for x in axes:

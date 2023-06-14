@@ -44,10 +44,10 @@
 import fmath.plot as fp
 import numpy as np
 
-fp.setup_subplot(1, 2, bg="#C1E6C6", title="Hello world!", subtitles=("hello111", "world222"))
+fp.setup_subplot(1, 2, bg="#C1E6C6", title="世界Hello world!", subtitles=("hello111", "world222"), font="Sarasa Gothic CL")
 
 xa = np.arange(0, 6.28, 0.1)
-fp.plotf(xa, lambda x: m.sin(x), sub=0, label="sin")
+fp.plotf(xa, lambda x: m.sin(x), sub=0, label="sin我们")
 fp.plotf(xa, lambda x: m.cos(x), sub=0, label="cos")
 
 data = fp.loadtxt("test-data2.txt")

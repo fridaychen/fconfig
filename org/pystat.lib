@@ -1,0 +1,24 @@
+-*- mode: org-*-
+:PROPERTIES:
+:AUTOINGEST: TRUE
+:END:
+
+#+NAME: stat
+#+BEGIN_SRC python :var delimiter="" :results replace table
+  import fmath.plot as fp
+  import numpy as np
+
+  if delimiter == "":
+      delimiter = None
+
+  data = fp.loadtxt(datafile)
+
+  return (
+      ("Min", np.amin(data)),
+      ("Max", np.amax(data)),
+      ("Mean", np.mean(data)),
+      ("Median", np.median(data)),
+      ("Std", np.std(data)),
+      ("Var", np.var(data)),
+  )
+#+END_SRC

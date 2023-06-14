@@ -1,3 +1,4 @@
+-*- mode: org -*-
 :PROPERTIES:
 :AUTOINGEST: TRUE
 :END:
@@ -88,7 +89,6 @@
 #+NAME: plothist
 #+BEGIN_SRC python :var bins=10 :var type="bar" :var delimiter="" :results file
   import fmath.plot as fp
-  import numpy as np
 
   fp.setup(height, width, dpi, bg, title, font)
 

@@ -1255,6 +1255,10 @@ LANG: language of babel."
 
     (org-publish-current-project)))
 
+(--each
+    (file-expand-wildcards (concat *fc-home* "/org/*.lib"))
+  (org-babel-lob-ingest it))
+
 (provide 'fc-org)
 
 ;; Local Variables:

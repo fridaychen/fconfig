@@ -3,6 +3,8 @@ import numpy as np
 
 from matplotlib import rc as prc
 
+axes = []
+
 
 def loadtxt(filename, delimiter=None):
     with open(filename) as f:
@@ -19,21 +21,33 @@ def loadtxt(filename, delimiter=None):
 
 
 def setup(
-    height, width, dpi, bg, title=None, font=None, xlabel=None, ylabel=None
+    height=0,
+    width=0,
+    dpi=None,
+    bg=None,
+    title=None,
+    font=None,
+    xlabel=None,
+    ylabel=None,
 ):
     if font is not None and font != "":
         prc("font", family=font)
 
+    fig = plt.figure()
+
     if height != 0 and width != 0:
-        plt.figure(figsize=(width, height), dpi=dpi, facecolor=bg)
-    else:
-        plt.figure(dpi=dpi, facecolor=bg)
+        fig.set_size_inches(width, height)
+
+    if bg is not None:
+        fig.set_facecolor(bg)
 
     ax = plt.axes()
     if title is not None and title != "":
         ax.set_title(title, fontdict={"fontweight": "bold"})
     ax.set_facecolor(bg)
     ax.grid(color="gray", linestyle="dashed")
+    ax.axvline(0, color="#000000")
+    ax.axhline(0, color="#000000")
 
     if xlabel is not None:
         plt.xlabel(xlabel)
@@ -42,26 +56,96 @@ def setup(
         plt.ylabel(ylabel)
 
 
-def bar(x, y):
-    plt.bar(range(len(y)), y, width=0.6)
-    plt.xticks(range(len(x)), x)
+def bar(x, y, sub=None):
+    if sub is None:
+        plt.bar(range(len(y)), y, width=0.6)
+        plt.xticks(range(len(x)), x)
+    else:
+        axes[sub].bar(range(len(y)), y, width=0.6)
+        axes[sub].xticks(range(len(x)), x)
 
 
-def hist(x, bins=10, type="bar"):
-    if x is not None:
+def hist(x, bins=10, type="bar", sub=None):
+    if x is None:
         return
 
-    plt.hist(x, bins=bins, histtype=type)
+    if sub is None:
+        plt.hist(x, bins=bins, histtype=type)
+    else:
+        axes[sub].hist(x, bins=bins, histtype=type)
 
 
-def pie(x, y):
-    plt.pie(y, labels=x, shadow=True, autopct="%.0f%%")
+def pie(x, y, sub=None):
+    if sub is None:
+        plt.pie(y, labels=x, shadow=True, autopct="%.0f%%")
+    else:
+        axes[sub].pie(y, labels=x, shadow=True, autopct="%.0f%%")
 
 
-def plot(x, func):
-    if func is not None:
-        y = np.array([func(n) for n in x])
-        plt.plot(x, y)
+def plot(x, y, sub=None, label=None):
+    if sub is None:
+        plt.plot(x, y, label=label)
+        if label is not None:
+            plt.legend()
+    else:
+        axes[sub].plot(x, y, label=label)
+        if label is not None:
+            axes[sub].legend()
+
+
+def plotf(x, func, sub=None, label=None):
+    if func is None:
+        return
+
+    print("sub is ", sub)
+    y = np.array([func(n) for n in x])
+
+    if sub is None:
+        plt.plot(x, y, label=label)
+        if label is not None:
+            plt.legend()
+    else:
+        axes[sub].plot(x, y, label=label)
+        if label is not None:
+            axes[sub].legend()
+
+
+def setup_subplot(
+    rows,
+    cols,
+    bg=None,
+    height=0,
+    width=0,
+    dpi=None,
+    title=None,
+    font=None,
+    subtitles=None,
+):
+    global axes
+    fig, axes = plt.subplots(rows, cols)
+
+    if bg is not None:
+        fig.set_facecolor(bg)
+
+    if height != 0 and width != 0:
+        fig.set_size_inches(width, height)
+
+    if dpi is not None:
+        fig.set_dpi(dpi)
+
+    if title is not None and title != "":
+        fig.suptitle(title, fontweight="bold")
+
+    for x in axes:
+        if bg is not None:
+            x.set_facecolor(bg)
+        x.grid(color="gray", linestyle="dashed")
+        x.axvline(0, color="black")
+        x.axhline(0, color="black")
+
+    if subtitles is not None:
+        for i, x in enumerate(axes):
+            x.set_title(subtitles[i])
 
 
 def save(output):

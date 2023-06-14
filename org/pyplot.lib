@@ -21,35 +21,35 @@
 #+PROPERTY: header-args+ :var xrange=""
 
 #+NAME: plot
-#+HEADER: :var f1=""
-#+HEADER: :var f2=""
-#+HEADER: :var f3=""
-#+HEADER: :var f4=""
-#+HEADER: :var f5=""
-#+HEADER: :var f6=""
+#+HEADER: :var f1="" :var l1=""
+#+HEADER: :var f2="" :var l2=""
+#+HEADER: :var f3="" :var l3=""
+#+HEADER: :var f4="" :var l4=""
+#+HEADER: :var f5="" :var l5=""
+#+HEADER: :var f6="" :var l6=""
 #+BEGIN_SRC python :results file
   import fmath.plot as fp
   import numpy as np
 
   import math
 
-  fp.setup(height, width, dpi, bg, title, font, xlabel, ylabel)
+  fp.setup(height=height, width=width, dpi=dpi, bg=bg, title=title, font=font, xlabel=xlabel, ylabel=ylabel)
 
   min, max = eval(xrange)
   xa = np.arange(min, max, 0.1)
 
   if f1 != "":
-      fp.plot(xa, eval(f1))
+      fp.plotf(xa, eval(f1), label=l1)
   if f2 != "":
-      fp.plot(xa, eval(f2))
+      fp.plotf(xa, eval(f2), label=l2)
   if f3 != "":
-      fp.plot(xa, eval(f3))
+      fp.plotf(xa, eval(f3), label=l3)
   if f4 != "":
-      fp.plot(xa, eval(f4))
+      fp.plotf(xa, eval(f4), label=l4)
   if f5 != "":
-      fp.plot(xa, eval(f4))
+      fp.plotf(xa, eval(f5), label=l5)
   if f6 != "":
-      fp.plot(xa, eval(f5))
+      fp.plotf(xa, eval(f6), label=l6)
 
   fp.save(output)
 
@@ -62,7 +62,7 @@
 
   x, y = zip(*datatable)
 
-  fp.setup(height, width, dpi, bg, title, font, x[0], y[0])
+  fp.setup(height=height, width=width, dpi=dpi, bg=bg, title=title, font=font, xlabel=x[0], ylabel=y[0])
 
   fp.bar(x[1:], y[1:])
 
@@ -77,7 +77,7 @@
 
   x, y = zip(*datatable)
 
-  fp.setup(height, width, dpi, bg, title, font)
+  fp.setup(height=height, width=width, dpi=dpi, bg=bg, title=title, font=font)
 
   fp.pie(x, y)
 
@@ -90,7 +90,7 @@
 #+BEGIN_SRC python :var bins=10 :var type="bar" :var delimiter="" :results file
   import fmath.plot as fp
 
-  fp.setup(height, width, dpi, bg, title, font)
+  fp.setup(height=height, width=width, dpi=dpi, bg=bg, title=title, font=font)
 
   if delimiter == "":
       delimiter = None

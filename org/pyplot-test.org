@@ -2,7 +2,7 @@
 #+startup: inlineimages
 :end:
 
-#+call: plot(output="test-1d.png",title="World!", ylabel="人口",xrange="[0, m.pi *2]",f1="lambda x: m.cos(x)",f2="lambda x: m.sin(x) + 2")
+#+call: plot(output="test-1d.png",title="World!", ylabel="人口",xrange="[0, m.pi *2]",f1="lambda x: m.cos(x)",l1="cos()",f2="lambda x: m.sin(x) + 1",l2="sin()+1")
 
 #+RESULTS:
 [[file:test-1d.png]]
@@ -39,3 +39,24 @@
 
 #+RESULTS:
 [[file:test-hist.png]]
+
+#+BEGIN_SRC python :results file
+import fmath.plot as fp
+import numpy as np
+
+fp.setup_subplot(1, 2, bg="#C1E6C6", title="Hello world!", subtitles=("hello111", "world222"))
+
+xa = np.arange(0, 6.28, 0.1)
+fp.plotf(xa, lambda x: m.sin(x), sub=0, label="sin")
+fp.plotf(xa, lambda x: m.cos(x), sub=0, label="cos")
+
+data = fp.loadtxt("test-data2.txt")
+fp.plot(data[:, 0], data[:, 1], sub=1, label="data2")
+
+fp.save("test-subplot.png")
+
+return "test-subplot.png"
+#+END_SRC
+
+#+RESULTS:
+[[file:test-subplot.png]]

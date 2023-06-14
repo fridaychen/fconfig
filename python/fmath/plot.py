@@ -27,8 +27,8 @@ def setup(
     bg=None,
     title=None,
     font=None,
-    xlabel=None,
-    ylabel=None,
+    xlabel="",
+    ylabel="",
 ):
     if font is not None and font != "":
         prc("font", family=font)
@@ -49,10 +49,10 @@ def setup(
     ax.axvline(0, color="#000000")
     ax.axhline(0, color="#000000")
 
-    if xlabel is not None:
+    if xlabel != "":
         plt.xlabel(xlabel)
 
-    if ylabel is not None:
+    if ylabel != "":
         plt.ylabel(ylabel)
 
 
@@ -82,31 +82,30 @@ def pie(x, y, sub=None):
         axes[sub].pie(y, labels=x, shadow=True, autopct="%.0f%%")
 
 
-def plot(x, y, sub=None, label=None):
+def plot(x, y, sub=None, label=""):
     if sub is None:
         plt.plot(x, y, label=label)
-        if label is not None:
+        if label != "":
             plt.legend()
     else:
         axes[sub].plot(x, y, label=label)
-        if label is not None:
+        if label != "":
             axes[sub].legend()
 
 
-def plotf(x, func, sub=None, label=None):
+def plotf(x, func, sub=None, label=""):
     if func is None:
         return
 
-    print("sub is ", sub)
     y = np.array([func(n) for n in x])
 
     if sub is None:
         plt.plot(x, y, label=label)
-        if label is not None:
+        if label != "":
             plt.legend()
     else:
         axes[sub].plot(x, y, label=label)
-        if label is not None:
+        if label != "":
             axes[sub].legend()
 
 

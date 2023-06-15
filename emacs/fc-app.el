@@ -344,8 +344,12 @@ FILE-TYPES: fc style file types."
                            "-t" "py" "-t" "ruby" "-t" "rust" "-t" "sh"
                            "-t" "vim" "-t" "protobuf"
                            ))
-                  ('doc '("-t" "markdown" "-t" "org" "-t" "tex" "-t" "txt" "-t" "uml"))
-                  ('conf '("-t" "cmake" "-t" "make" "-t" "config" "-t" "scons"
+                  ('doc '("-t" "markdown" "-t" "org" "-t" "tex" "-t" "txt"
+                          "--type-add" "orglib:*.olib" "-t" "orglib"
+                          "--type-add" "uml:*.{puml,pu}" "-t" "uml"))
+
+                  ('conf '("-t" "cmake" "-t" "make" "-t" "config"
+                           "--type-add" "scons:[Ss][Cc]ons,[Ss][Cc]onstruct}" "-t" "scons"
                            "-t" "json" "-t" "yaml"))
                   ('xml '("-t" "xml")))
                 file-types)))
@@ -359,8 +363,6 @@ FILE-TYPES: target file types to be finded."
         (arg-cpu (list "-j" (format "%d" *fc-rg-cpus*))))
     (let* ((result (apply #'fc-exec-command-to-string
                           "rg"
-                          "--type-add" "uml:*.{puml,pu}"
-                          "--type-add" "scons:[Ss][Cc]ons,[Ss][Cc]onstruct}"
                           "--files"
                           "--no-ignore"
                           (seq-concatenate
@@ -423,8 +425,6 @@ FILE-TYPES: target file types to be searched."
     (apply #'fc-exec-command-to-buffer
            (current-buffer)
            "rg"
-           "--type-add" "uml:*.{puml,pu}"
-           "--type-add" "scons:[Ss][Cc]ons,[Ss][Cc]onstruct}"
            "--vimgrep"
            "--stats"
            "--no-ignore"

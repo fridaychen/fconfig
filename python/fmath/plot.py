@@ -3,6 +3,7 @@ import numpy as np
 
 from matplotlib import rc as prc
 
+ax = None
 axes = []
 
 
@@ -18,6 +19,21 @@ def loadtxt(filename, delimiter=None):
         )
 
     return None
+
+
+def grid(sub=None, axis="both", caxis=True):
+    if sub is None:
+        ax.grid(color="gray", linestyle="dashed", axis=axis)
+
+        if caxis:
+            ax.axvline(0, color="#000000")
+            ax.axhline(0, color="#000000")
+    else:
+        axes[sub].xgrid(color="gray", linestyle="dashed")
+
+        if caxis:
+            axes[sub].axvline(0, color="black")
+            axes[sub].axhline(0, color="black")
 
 
 def setup(
@@ -44,13 +60,11 @@ def setup(
     if bg != "":
         fig.set_facecolor(bg)
 
+    global ax
     ax = plt.axes()
     if title != "":
         ax.set_title(title, fontdict={"fontweight": "bold"})
     ax.set_facecolor(bg)
-    ax.grid(color="gray", linestyle="dashed")
-    ax.axvline(0, color="#000000")
-    ax.axhline(0, color="#000000")
 
     if xlabel != "":
         plt.xlabel(xlabel)
@@ -59,13 +73,21 @@ def setup(
         plt.ylabel(ylabel)
 
 
-def bar(x, y, sub=None):
+def bar(x, y, sub=None, mean=True):
+    mean = np.mean(y)
+
     if sub is None:
         plt.bar(range(len(y)), y, width=0.6)
         plt.xticks(range(len(x)), x)
+
+        if mean:
+            ax.axhline(mean, color="#ff0000", linestyle="--")
     else:
         axes[sub].bar(range(len(y)), y, width=0.6)
         axes[sub].xticks(range(len(x)), x)
+
+        if mean:
+            ax.axhline(mean, color="#ff0000", linestyle="--")
 
 
 def hist(x, bins=10, type="bar", sub=None):
@@ -145,9 +167,6 @@ def setup_subplot(
     for x in axes:
         if bg is not None:
             x.set_facecolor(bg)
-        x.grid(color="gray", linestyle="dashed")
-        x.axvline(0, color="black")
-        x.axhline(0, color="black")
 
     if subtitles is not None:
         for i, x in enumerate(axes):

@@ -32,7 +32,17 @@
 
   import math
 
-  fp.setup(height=height, width=width, dpi=dpi, bg=bg, title=title, font=font, xlabel=xlabel, ylabel=ylabel)
+  fp.setup(
+      height=height,
+      width=width,
+      dpi=dpi,
+      bg=bg,
+      title=title,
+      font=font,
+      xlabel=xlabel,
+      ylabel=ylabel,
+  )
+  fp.grid()
 
   min, max = eval(xrange)
   xa = np.arange(min, max, 0.1)
@@ -61,7 +71,18 @@
 
   x, y = zip(*datatable)
 
-  fp.setup(height=height, width=width, dpi=dpi, bg=bg, title=title, font=font, xlabel=x[0], ylabel=y[0])
+  fp.setup(
+      height=height,
+      width=width,
+      dpi=dpi,
+      bg=bg,
+      title=title,
+      font=font,
+      xlabel=x[0],
+      ylabel=y[0],
+  )
+
+  fp.grid(axis="y", caxis=False)
 
   fp.bar(x[1:], y[1:])
 

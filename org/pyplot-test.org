@@ -2,7 +2,9 @@
 #+startup: inlineimages
 :end:
 
-#+call: plot(output="test-1d.png",title="World!", ylabel="人口",xrange="[0, m.pi *2]",f1="lambda x: m.cos(x)",l1="cos()",f2="lambda x: m.sin(x) + 1",l2="sin()+1")
+#+call: plot(output="test-1d.png",title="World!", ylabel="人口",xrange="[0, m.pi *2]",
+f1="lambda x: m.cos(x)",l1="cos()",
+f2="lambda x: m.sin(x) + 1",l2="sin()+2")
 
 #+RESULTS:
 [[file:test-1d.png]]
@@ -38,7 +40,7 @@
 #+call: plothist(datafile="test-data1.txt",output="test-hist.png",title="New World!")
 
 #+RESULTS:
-[[file:test-hist.png]]
+[[file:]]
 
 #+BEGIN_SRC python :results file
 import fmath.plot as fp

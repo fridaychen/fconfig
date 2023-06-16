@@ -1,3 +1,5 @@
+from itertools import chain
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -21,6 +23,16 @@ def loadtxt(filename, delimiter=None):
     return None
 
 
+def get_axes(sub):
+    if type(sub) is tuple:
+        if type(axes[0]) is np.ndarray:
+            return axes[sub[0]][sub[1]]
+        else:
+            return axes[sub[1]]
+    else:
+        return axes[sub]
+
+
 def grid(sub=None, axis="both", caxis=True):
     if sub is None:
         ax.grid(color="gray", linestyle="dashed", axis=axis)
@@ -29,11 +41,13 @@ def grid(sub=None, axis="both", caxis=True):
             ax.axvline(0, color="#000000")
             ax.axhline(0, color="#000000")
     else:
-        axes[sub].xgrid(color="gray", linestyle="dashed")
+        subax = get_axes(sub)
+
+        subax.grid(color="gray", linestyle="dashed", axis=axis)
 
         if caxis:
-            axes[sub].axvline(0, color="black")
-            axes[sub].axhline(0, color="black")
+            subax.axvline(0, color="black")
+            subax.axhline(0, color="black")
 
 
 def setup(
@@ -83,11 +97,14 @@ def bar(x, y, sub=None, mean=True):
         if mean:
             ax.axhline(mean, color="#ff0000", linestyle="--")
     else:
-        axes[sub].bar(range(len(y)), y, width=0.6)
-        axes[sub].xticks(range(len(x)), x)
+        subax = get_axes(sub)
+        print("bar subax ", subax)
+
+        subax.bar(range(len(y)), y, width=0.6)
+        subax.set_xticks(range(len(x)), x)
 
         if mean:
-            ax.axhline(mean, color="#ff0000", linestyle="--")
+            subax.axhline(mean, color="#ff0000", linestyle="--")
 
 
 def hist(x, bins=10, type="bar", sub=None):
@@ -97,14 +114,18 @@ def hist(x, bins=10, type="bar", sub=None):
     if sub is None:
         plt.hist(x, bins=bins, histtype=type)
     else:
-        axes[sub].hist(x, bins=bins, histtype=type)
+        subax = get_axes(sub)
+
+        subax.hist(x, bins=bins, histtype=type)
 
 
 def pie(x, y, sub=None):
     if sub is None:
         plt.pie(y, labels=x, shadow=True, autopct="%.0f%%")
     else:
-        axes[sub].pie(y, labels=x, shadow=True, autopct="%.0f%%")
+        subax = get_axes(sub)
+
+        subax.pie(y, labels=x, shadow=True, autopct="%.0f%%")
 
 
 def plot(x, y, sub=None, label=""):
@@ -113,9 +134,11 @@ def plot(x, y, sub=None, label=""):
         if label != "":
             plt.legend()
     else:
-        axes[sub].plot(x, y, label=label)
+        subax = get_axes(sub)
+
+        subax.plot(x, y, label=label)
         if label != "":
-            axes[sub].legend()
+            subax.legend()
 
 
 def plotf(x, func, sub=None, label=""):
@@ -129,9 +152,11 @@ def plotf(x, func, sub=None, label=""):
         if label != "":
             plt.legend()
     else:
-        axes[sub].plot(x, y, label=label)
+        subax = get_axes(sub)
+
+        subax.plot(x, y, label=label)
         if label != "":
-            axes[sub].legend()
+            subax.legend()
 
 
 def setup_subplot(
@@ -164,14 +189,26 @@ def setup_subplot(
     if title != "":
         fig.suptitle(title, fontweight="bold")
 
-    for x in axes:
-        if bg is not None:
-            x.set_facecolor(bg)
+    if bg is not None:
+        if type(axes[0]) is np.ndarray:
+            for x in chain.from_iterable(axes):
+                x.set_facecolor(bg)
+        else:
+            for x in axes:
+                x.set_facecolor(bg)
 
     if subtitles is not None:
-        for i, x in enumerate(axes):
-            x.set_title(subtitles[i])
+        if type(axes[0]) is np.ndarray:
+            for x, t in zip(
+                list(chain.from_iterable(axes)),
+                list(chain.from_iterable(subtitles)),
+            ):
+                x.set_title(t)
+        else:
+            for x, t in zip(axes, subtitles):
+                x.set_title(t)
 
 
 def save(output):
+    plt.tight_layout()
     plt.savefig(output, bbox_inches="tight")

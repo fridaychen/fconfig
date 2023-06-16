@@ -2,8 +2,9 @@
 #+startup: inlineimages
 :end:
 
-#+call: plot(output="test-1d.png",title="World!", ylabel="人口",xrange="[0, m.pi *2]",
-f1="lambda x: m.cos(x)",l1="cos()",
+#+call: plot(output="test-1d.png", title="World!", ylabel="人口",
+xrange="[0, m.pi *2]",
+f1="lambda x: m.cos(x)", l1="cos()",
 f2="lambda x: m.sin(x) + 1",l2="sin()+2")
 
 #+RESULTS:
@@ -40,24 +41,35 @@ f2="lambda x: m.sin(x) + 1",l2="sin()+2")
 #+call: plothist(datafile="test-data1.txt",output="test-hist.png",title="New World!")
 
 #+RESULTS:
-[[file:]]
+[[file:test-hist.png]]
 
 #+BEGIN_SRC python :results file
-import fmath.plot as fp
-import numpy as np
+  import fmath.plot as fp
+  import numpy as np
 
-fp.setup_subplot(1, 2, bg="#C1E6C6", title="世界Hello world!", subtitles=("hello111", "world222"), font="Sarasa Gothic CL")
+  fp.setup_subplot(
+      1,
+      2,
+      bg="#C1E6C6",
+      title="世界Hello world!",
+      subtitles=("hello111", "world222"),
+      font="Sarasa Gothic CL",
+  )
 
-xa = np.arange(0, 6.28, 0.1)
-fp.plotf(xa, lambda x: m.sin(x), sub=0, label="sin我们")
-fp.plotf(xa, lambda x: m.cos(x), sub=0, label="cos")
+  xa = np.arange(0, 6.28, 0.1)
 
-data = fp.loadtxt("test-data2.txt")
-fp.plot(data[:, 0], data[:, 1], sub=1, label="data2")
+  fp.grid(sub=(0,0))
+  fp.plotf(xa, lambda x: m.sin(x), sub=(0, 0), label="sin我们")
+  fp.plotf(xa, lambda x: m.cos(x), sub=(0, 0), label="cos")
 
-fp.save("test-subplot.png")
+  data = fp.loadtxt("test-data2.txt")
 
-return "test-subplot.png"
+  fp.grid(sub=(0,1))
+  fp.plot(data[:, 0], data[:, 1], sub=(0, 1), label="data2")
+
+  fp.save("test-subplot.png")
+
+  return "test-subplot.png"
 #+END_SRC
 
 #+RESULTS:

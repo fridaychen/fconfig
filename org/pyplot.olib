@@ -112,6 +112,8 @@
 
   fp.setup(height=height, width=width, dpi=dpi, bg=bg, title=title, font=font)
 
+  fp.grid(axis="y", caxis=False)
+
   if delimiter == "":
       delimiter = None
 

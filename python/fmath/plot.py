@@ -62,6 +62,24 @@ class FigureBase:
         if mean:
             self.ref().axhline(np.mean(y), color="#ff0000", linestyle="--")
 
+    def mbar(self, x, y, label=None, rotation=0):
+        n = len(y[0, :])
+
+        X_axis = np.arange(len(y[:, 0]))
+        X_step = 0.9 / n
+
+        if label is not None:
+            self.mark_legend()
+        else:
+            label = np.full(len(y[0]), "")
+
+        for i in range(len(y[0])):
+            Xi = X_axis - 0.5 + 0.05 + X_step / 2 + i * X_step
+
+            self.ref().bar(Xi, y[:, i], width=X_step, label=label[i])
+
+        self.ref().set_xticks(range(len(x)), x, rotation=rotation)
+
     def hist(self, x, bins=10, type="bar"):
         self.ref().hist(x, bins=bins, histtype=type)
 
@@ -110,7 +128,7 @@ class SubFigure(FigureBase):
 
         if bg != "":
             self.fig.set_facecolor(bg)
-            print(self.axes)
+
             for x in self.axes.ravel():
                 x.set_facecolor(bg)
 

@@ -18,8 +18,38 @@ f2="lambda x: m.sin(x) + 1",l2="sin()+2")
 | わたし |         39 |
 | world  |         20 |
 | 我们   |         25 |
+| foo    |        100 |
+| bar    |        200 |
+| わたし |         39 |
+| world  |         20 |
+| 我们   |         25 |
+| foo    |        100 |
+| bar    |        200 |
+| わたし |         39 |
+| world  |         20 |
+| 我们   |         25 |
+| foo    |        100 |
+| bar    |        200 |
+| わたし |         39 |
+| world  |         20 |
+| 我们   |         25 |
+| foo    |        100 |
+| bar    |        200 |
+| わたし |         39 |
+| world  |         20 |
+| 我们   |         25 |
+| foo    |        100 |
+| bar    |        200 |
+| わたし |         39 |
+| world  |         20 |
+| 我们   |         25 |
+| foo    |        100 |
+| bar    |        200 |
+| わたし |         39 |
+| world  |         20 |
+| 我们   |         25 |
 
-#+call: plotbar(output="test-bar.png",title="World!",datatable=hello-bar,height=4,width=10)
+#+call: plotbar(output="test-bar.png",title="World!",datatable=hello-bar,height=4,width=10,rotation=45)
 
 #+RESULTS:
 [[file:test-bar.png]]

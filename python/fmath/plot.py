@@ -55,9 +55,9 @@ class FigureBase:
     def plotf(self, x, func, label=""):
         self.plot(x, np.array([func(n) for n in x]), label=label)
 
-    def bar(self, x, y, mean=True):
+    def bar(self, x, y, mean=True, rotation=0):
         self.ref().bar(range(len(y)), y, width=0.6)
-        self.ref().set_xticks(range(len(x)), x)
+        self.ref().set_xticks(range(len(x)), x, rotation=rotation)
 
         if mean:
             self.ref().axhline(np.mean(y), color="#ff0000", linestyle="--")
@@ -87,7 +87,6 @@ class SingleFigure(FigureBase):
             self.fig.set_dpi(dpi)
 
         if height != 0 and width != 0:
-            print("set figure size")
             self.fig.set_size_inches(width, height)
 
     def before_save(self):

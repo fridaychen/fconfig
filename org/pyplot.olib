@@ -58,6 +58,7 @@
 #+END_SRC
 
 #+NAME: plotbar
+#+HEADER: :var rotation=0
 #+BEGIN_SRC python :colnames no :results file
   import fmath.plot as fp
 
@@ -69,7 +70,7 @@
   f.label(x[0], y[0])
   f.grid(axis="y", caxis=False)
 
-  f.bar(x[1:], y[1:])
+  f.bar(x[1:], y[1:], rotation=rotation)
 
   f.save(output)
 

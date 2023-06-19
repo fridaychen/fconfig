@@ -32,35 +32,27 @@
 
   import math
 
-  fp.setup(
-      height=height,
-      width=width,
-      dpi=dpi,
-      bg=bg,
-      title=title,
-      font=font,
-      xlabel=xlabel,
-      ylabel=ylabel,
-  )
-  fp.grid()
+  f = fp.start_plot(bg=bg, title=title, font=font, dpi=dpi, height=height, width=width)
+  f.label(xlabel, ylabel)
+  f.grid()
 
   min, max = eval(xrange)
   xa = np.arange(min, max, 0.1)
 
   if f1 != "":
-      fp.plotf(xa, eval(f1), label=l1)
+      f.plotf(xa, eval(f1), label=l1)
   if f2 != "":
-      fp.plotf(xa, eval(f2), label=l2)
+      f.plotf(xa, eval(f2), label=l2)
   if f3 != "":
-      fp.plotf(xa, eval(f3), label=l3)
+      f.plotf(xa, eval(f3), label=l3)
   if f4 != "":
-      fp.plotf(xa, eval(f4), label=l4)
+      f.plotf(xa, eval(f4), label=l4)
   if f5 != "":
-      fp.plotf(xa, eval(f5), label=l5)
+      f.plotf(xa, eval(f5), label=l5)
   if f6 != "":
-      fp.plotf(xa, eval(f6), label=l6)
+      f.plotf(xa, eval(f6), label=l6)
 
-  fp.save(output)
+  f.save(output)
 
   return output
 #+END_SRC
@@ -71,22 +63,15 @@
 
   x, y = zip(*datatable)
 
-  fp.setup(
-      height=height,
-      width=width,
-      dpi=dpi,
-      bg=bg,
-      title=title,
-      font=font,
-      xlabel=x[0],
-      ylabel=y[0],
+  f = fp.start_plot(
+      bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
   )
+  f.label(x[0], y[0])
+  f.grid(axis="y", caxis=False)
 
-  fp.grid(axis="y", caxis=False)
+  f.bar(x[1:], y[1:])
 
-  fp.bar(x[1:], y[1:])
-
-  fp.save(output)
+  f.save(output)
 
   return output
 #+END_SRC
@@ -97,11 +82,13 @@
 
   x, y = zip(*datatable)
 
-  fp.setup(height=height, width=width, dpi=dpi, bg=bg, title=title, font=font)
+  f = fp.start_plot(
+      bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
+  )
 
-  fp.pie(x, y)
+  f.pie(x, y)
 
-  fp.save(output)
+  f.save(output)
 
   return output
 #+END_SRC
@@ -110,16 +97,18 @@
 #+BEGIN_SRC python :var bins=10 :var type="bar" :var delimiter="" :results file
   import fmath.plot as fp
 
-  fp.setup(height=height, width=width, dpi=dpi, bg=bg, title=title, font=font)
+  f = fp.start_plot(
+      bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
+  )
 
-  fp.grid(axis="y", caxis=False)
+  f.grid(axis="y", caxis=False)
 
   if delimiter == "":
       delimiter = None
 
-  fp.hist(fp.loadtxt(datafile), bins=bins, type=type)
+  f.hist(fp.loadtxt(datafile), bins=bins, type=type)
 
-  fp.save(output)
+  f.save(output)
 
   return output
 #+END_SRC

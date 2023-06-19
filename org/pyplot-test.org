@@ -2,7 +2,7 @@
 #+startup: inlineimages
 :end:
 
-#+call: plot(output="test-1d.png", title="World!", ylabel="人口",
+#+call: plot(output="test-1d.png", title="Single Plot2", ylabel="人口",
 xrange="[0, m.pi *2]",
 f1="lambda x: m.cos(x)", l1="cos()",
 f2="lambda x: m.sin(x) + 1",l2="sin()+2")
@@ -17,7 +17,7 @@ f2="lambda x: m.sin(x) + 1",l2="sin()+2")
 | bar    |        200 |
 | わたし |         39 |
 | world  |         20 |
-| 我们   |        -10 |
+| 我们   |         25 |
 
 #+call: plotbar(output="test-bar.png",title="World!",datatable=hello-bar,height=4,width=10)
 
@@ -43,31 +43,27 @@ f2="lambda x: m.sin(x) + 1",l2="sin()+2")
 #+RESULTS:
 [[file:test-hist.png]]
 
+#+HEADER: :var font=(symbol-value '*fc-plot-font*) :var bg=(symbol-value '*fc-plot-bg*)
 #+BEGIN_SRC python :results file
   import fmath.plot as fp
   import numpy as np
 
-  fp.setup_subplot(
-      1,
-      2,
-      bg="#C1E6C6",
-      title="世界Hello world!",
-      subtitles=("hello111", "world222"),
-      font="Sarasa Gothic CL",
-  )
+  f = fp.start_plot((1, 2), height=3, width=10, font=font, bg=bg)
 
   xa = np.arange(0, 6.28, 0.1)
 
-  fp.grid(sub=(0,0))
-  fp.plotf(xa, lambda x: m.sin(x), sub=(0, 0), label="sin我们")
-  fp.plotf(xa, lambda x: m.cos(x), sub=(0, 0), label="cos")
+  f.select((0, 0))
+  f.grid()
+  f.plotf(xa, lambda x: m.sin(x), label="sin我们hell")
+  f.plotf(xa, lambda x: m.cos(x), label="cos")
 
   data = fp.loadtxt("test-data2.txt")
 
-  fp.grid(sub=(0,1))
-  fp.plot(data[:, 0], data[:, 1], sub=(0, 1), label="data2")
+  f.select((0, 1))
+  f.grid()
+  f.plot(data[:, 0], data[:, 1], label="data2")
 
-  fp.save("test-subplot.png")
+  f.save("test-subplot.png")
 
   return "test-subplot.png"
 #+END_SRC

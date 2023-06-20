@@ -78,7 +78,7 @@
 #+END_SRC
 
 #+NAME: plotmbar
-#+HEADER: :var rotation=0
+#+HEADER: :var rotation=0 :var range="1:, 1:"
 #+BEGIN_SRC python :colnames no :results file
   import fmath.plot as fp
   import numpy as np
@@ -88,8 +88,7 @@
   label = alldata[0, :][1:]
   x = alldata[1:, 0]
 
-  data = np.delete(alldata, 0, axis=1)
-  data = np.delete(data, 0, axis=0)
+  data = eval("alldata[%s]" % range)
 
   f = fp.start_plot(
       bg=bg, title=title, font=font, dpi=dpi, height=height, width=width

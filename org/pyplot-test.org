@@ -2,71 +2,55 @@
 #+startup: inlineimages
 :end:
 
-#+call: plot(output="test-1d.png", title="Single Plot2", ylabel="人口",
+#+call: plot(output="test-plot-sin-cos.png", title="Single Plot",
 xrange="[0, m.pi *2]",
 f1="lambda x: m.cos(x)", l1="cos()",
-f2="lambda x: m.sin(x) + 1",l2="sin()+2")
+f2="lambda x: m.sin(x) + 1",l2="sin()+1")
 
 #+RESULTS:
-[[file:test-1d.png]]
+[[file:test-plot-sin-cos.png]]
 
-#+tblname: hello-bar
-| city   | population |
-|--------+------------|
-| foo    |        100 |
-| bar    |        200 |
-| わたし |         39 |
-| world  |         20 |
-| 我们   |         25 |
-| foo    |        100 |
-| bar    |        200 |
-| わたし |         39 |
-| world  |         20 |
-| 我们   |         25 |
-| foo    |        100 |
-| bar    |        200 |
-| わたし |         39 |
-| world  |         20 |
-| 我们   |         25 |
-| foo    |        100 |
-| bar    |        200 |
-| わたし |         39 |
-| world  |         20 |
-| 我们   |         25 |
-| foo    |        100 |
-| bar    |        200 |
-| わたし |         39 |
-| world  |         20 |
-| 我们   |         25 |
-| foo    |        100 |
-| bar    |        200 |
-| わたし |         39 |
-| world  |         20 |
-| 我们   |         25 |
-| foo    |        100 |
-| bar    |        200 |
-| わたし |         39 |
-| world  |         20 |
-| 我们   |         25 |
+#+tblname: city-pop
+| city     | 2020 population |
+|----------+-----------------|
+| Beijing  |             100 |
+| Shenyang |             200 |
+| Shanghai |              39 |
 
-#+call: plotbar(output="test-bar.png",title="World!",datatable=hello-bar,height=80,width=300,rotation=45)
+#+call: plotbar(output="test-city-pop-bar.png",title="City population",datatable=city-pop,height=60,width=100,rotation=45)
 
 #+RESULTS:
-[[file:test-bar.png]]
+[[file:test-city-pop-bar.png]]
 
-#+tblname: hello-pie
-| city   | population |
-|--------+------------|
-| foo    |        100 |
-| bar    |        800 |
-| わたし |         39 |
-| world  |         20 |
-| 我们   |        100 |
-
-#+call: plotpie(datatable=hello-pie, output="test-pie.png",title="Hello world!")
+#+call: plotpie(datatable=city-pop, output="test-city-pop-pie.png",title="City population")
 
 #+RESULTS:
-[[file:test-pie.png]]
+[[file:test-city-pop-pie.png]]
+
+#+HEADER: :var font=(symbol-value '*fc-plot-font*) :var bg=(symbol-value '*fc-plot-bg*)
+#+BEGIN_SRC python :var datatable=city-pop :colnames no :results file
+  import fmath.plot as fp
+  import numpy as np
+
+  x, y = zip(*datatable)
+
+  f = fp.start_plot((1, 2), height=60, width=200, font=font, bg=bg, subtitles=["Bar chart", "Pie chart"])
+
+  f.select((0, 0))
+  f.label(x[0], y[0])
+  f.grid(axis="y", caxis=False)
+  f.bar(x[1:], y[1:])
+
+  f.select((0, 1))
+  f.pie(x[1:], y[1:])
+
+  f.save("test-subplot.png")
+
+  return "test-subplot.png"
+#+END_SRC
+
+#+RESULTS:
+[[file:test-subplot.png]]
 
 #+call: plothist(datafile="test-data1.txt",output="test-hist.png",title="New World!")
 
@@ -78,7 +62,7 @@ f2="lambda x: m.sin(x) + 1",l2="sin()+2")
   import fmath.plot as fp
   import numpy as np
 
-  f = fp.start_plot((1, 2), height=3, width=10, font=font, bg=bg)
+  f = fp.start_plot((1, 2), height=60, width=200, font=font, bg=bg)
 
   xa = np.arange(0, 6.28, 0.1)
 
@@ -99,4 +83,16 @@ f2="lambda x: m.sin(x) + 1",l2="sin()+2")
 #+END_SRC
 
 #+RESULTS:
-[[file:]]
+[[file:test-subplot.png]]
+
+#+tblname: city-pops
+| city     | 2020 | 2021 | 2022 |
+|----------+------+------+------|
+| Beijing  |  100 |  102 |  120 |
+| Shenyang |  200 |  212 |  150 |
+| Shanghai |   39 |   50 |   41 |
+
+#+call: plotmbar(datatable=city-pops, output="test-city-pop-mbar.png",title="人口变化趋势",xlabel="City", ylabel="Population")
+
+#+RESULTS:
+[[file:test-city-pop-mbar.png]]

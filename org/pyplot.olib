@@ -4,7 +4,7 @@
 
 #+PROPERTY: header-args :var font=(symbol-value '*fc-plot-font*)
 #+PROPERTY: header-args+ :var bg=(symbol-value '*fc-plot-bg*)
-#+PROPERTY: header-args+ :var dpi=90
+#+PROPERTY: header-args+ :var dpi=(symbol-value '*fc-plot-dpi*)
 
 #+PROPERTY: header-args+ :var height=0
 #+PROPERTY: header-args+ :var width=0

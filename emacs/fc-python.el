@@ -12,7 +12,7 @@
 
            (require 'python)
            (fc-add-fmt 'python-mode
-                       `("black" "-l" ,(fc-string py-comment-fill-column) "-")
+                       `("black" "-t" "py311" "-l" ,(fc-string py-comment-fill-column) "-")
                        nil)))
 
 (defconst *fc-python-map*

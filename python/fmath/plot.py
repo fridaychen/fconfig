@@ -20,7 +20,15 @@ def loadtxt(filename, delimiter=None):
 
 class FigureBase:
     def __init__(self):
-        pass
+        self.fig = None
+
+    def set_dpi(self, dpi):
+        if dpi != 0:
+            self.fig.set_dpi(dpi)
+
+    def set_size(self, width, height):
+        if height != 0 and width != 0:
+            self.fig.set_size_inches(width / 25.4, height / 25.4)
 
     def save(self, fn):
         self.before_save()
@@ -33,7 +41,7 @@ class FigureBase:
     def mark_legend():
         pass
 
-    def ref(selft):
+    def ref(self):
         pass
 
     def grid(self, axis="both", caxis="both"):
@@ -47,13 +55,15 @@ class FigureBase:
         self.ref().set_xlabel(xlabel)
         self.ref().set_ylabel(ylabel)
 
-    def plot(self, x, y, label=""):
-        self.ref().plot(x, y, label=label)
+    def plot(self, x, y, label="", marker=""):
+        self.ref().plot(x, y, label=label, marker=marker)
         if label != "":
             self.mark_legend()
 
-    def plotf(self, x, func, label=""):
-        self.plot(x, np.array([func(n) for n in x]), label=label)
+    def plotf(self, x, func, label="", marker=""):
+        self.plot(
+            x, np.array([func(n) for n in x]), label=label, marker=marker
+        )
 
     def bar(self, x, y, mean=True, rotation=0):
         self.ref().bar(range(len(y)), y, width=0.6)
@@ -88,7 +98,7 @@ class FigureBase:
 
 
 class SingleFigure(FigureBase):
-    def __init__(self, bg="", title="", dpi=0, height=0, width=0):
+    def __init__(self, bg="", title=""):
         super().__init__()
 
         self.fig, self.ax = plt.subplots()
@@ -100,12 +110,6 @@ class SingleFigure(FigureBase):
 
         if title != "":
             self.ax.set_title(title)
-
-        if dpi != 0:
-            self.fig.set_dpi(dpi)
-
-        if height != 0 and width != 0:
-            self.fig.set_size_inches(width, height)
 
     def before_save(self):
         if self.enable_legend:
@@ -119,9 +123,7 @@ class SingleFigure(FigureBase):
 
 
 class SubFigure(FigureBase):
-    def __init__(
-        self, sub, bg="", title="", subtitles=None, dpi=0, height=0, width=0
-    ):
+    def __init__(self, sub, bg="", title="", subtitles=None):
         self.fig, self.axes = plt.subplots(*sub)
         self.enable_legend = np.full(sub, False)
         self.f1d = sub[0] == 1
@@ -139,12 +141,6 @@ class SubFigure(FigureBase):
             for x, t in zip(self.axes.ravel(), subtitles):
                 x.set_title(t)
 
-        if dpi != 0:
-            self.fig.set_dpi(dpi)
-
-        if height != 0 and width != 0:
-            self.fig.set_size_inches(width, height)
-
     def ref(self):
         return self.active
 
@@ -152,11 +148,12 @@ class SubFigure(FigureBase):
         if self.f1d:
             self.active = self.axes[sub[1]]
         else:
-            self.active = self.axes[*sub]
+            self.active = self.axes[sub]
+
         self.active_pos = sub
 
     def mark_legend(self):
-        self.enable_legend[*self.active_pos] = True
+        self.enable_legend[self.active_pos] = True
 
     def before_save(self):
         for x, b in zip(self.axes.ravel(), self.enable_legend.ravel()):
@@ -171,16 +168,11 @@ def start_plot(
         prc("font", family=font)
 
     if sub == "":
-        return SingleFigure(
-            bg=bg, title=title, dpi=dpi, height=height, width=width
-        )
+        f = SingleFigure(bg=bg, title=title)
     else:
-        return SubFigure(
-            sub,
-            bg=bg,
-            title=title,
-            subtitles=subtitles,
-            dpi=dpi,
-            height=height,
-            width=width,
-        )
+        f = SubFigure(sub, bg=bg, title=title, subtitles=subtitles)
+
+    f.set_dpi(dpi)
+    f.set_size(width, height)
+
+    return f

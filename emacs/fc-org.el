@@ -1255,9 +1255,10 @@ LANG: language of babel."
 
     (org-publish-current-project)))
 
-(--each
-    (file-expand-wildcards (concat *fc-home* "/org/*.olib"))
-  (org-babel-lob-ingest it))
+(fc-idle-delay
+  (--each
+      (file-expand-wildcards (concat *fc-home* "/org/*.olib"))
+    (org-babel-lob-ingest it)))
 
 (add-to-list 'auto-mode-alist '("\\.olib\\'" . org-mode))
 

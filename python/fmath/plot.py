@@ -57,22 +57,31 @@ class FigureBase:
 
     def plot(self, x, y, label="", marker=""):
         self.ref().plot(x, y, label=label, marker=marker)
+
         if label != "":
             self.mark_legend()
 
     def plotf(self, x, func, label="", marker=""):
         self.plot(
-            x, np.array([func(n) for n in x]), label=label, marker=marker
+            x,
+            np.array([func(n) for n in x]),
+            label=label,
+            marker=marker,
         )
 
-    def bar(self, x, y, mean=True, rotation=0):
+    def rotate_xtick(self, rotation):
+        if rotation != 0:
+            for label in self.ref().get_xticklabels():
+                label.set_rotation(rotation)
+
+    def bar(self, x, y, mean=True):
         self.ref().bar(range(len(y)), y, width=0.6)
-        self.ref().set_xticks(range(len(x)), x, rotation=rotation)
+        self.ref().set_xticks(range(len(x)), x)
 
         if mean:
             self.ref().axhline(np.mean(y), color="#ff0000", linestyle="--")
 
-    def mbar(self, x, y, label=None, rotation=0):
+    def mbar(self, x, y, label=None):
         n = len(y[0, :])
 
         X_axis = np.arange(len(y[:, 0]))
@@ -88,7 +97,7 @@ class FigureBase:
 
             self.ref().bar(Xi, y[:, i], width=X_step, label=label[i])
 
-        self.ref().set_xticks(range(len(x)), x, rotation=rotation)
+        self.ref().set_xticks(range(len(x)), x)
 
     def hist(self, x, bins=10, type="bar"):
         self.ref().hist(x, bins=bins, histtype=type)

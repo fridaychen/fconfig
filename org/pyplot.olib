@@ -12,12 +12,13 @@
 #+PROPERTY: header-args+ :var title=""
 #+PROPERTY: header-args+ :var xlabel=""
 #+PROPERTY: header-args+ :var ylabel=""
+#+PROPERTY: header-args+ :var rotation=0
 
 #+PROPERTY: header-args+ :var output=""
 #+PROPERTY: header-args+ :var datafile=""
 #+PROPERTY: header-args+ :var datatable=""
 
-#+PROPERTY: header-args+ :var xrange=""
+#+PROPERTY: header-args+ :var frange=""
 
 #+NAME: plot
 #+HEADER: :var f1="" :var l1=""
@@ -26,39 +27,50 @@
 #+HEADER: :var f4="" :var l4=""
 #+HEADER: :var f5="" :var l5=""
 #+HEADER: :var f6="" :var l6=""
+#+HEADER:  :var marker="" :var xrange=":,0" :var yrange=":,1" :var frange=""
 #+BEGIN_SRC python :results file
   import fmath.plot as fp
   import numpy as np
 
   import math
 
-  f = fp.start_plot(bg=bg, title=title, font=font, dpi=dpi, height=height, width=width)
+  f = fp.start_plot(
+      bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
+  )
   f.label(xlabel, ylabel)
   f.grid()
 
-  min, max = eval(xrange)
-  xa = np.arange(min, max, 0.1)
+  if datatable != "":
+      alldata = np.array(datatable)
+      x = eval("alldata[%s]" % xrange)
+      y = eval("alldata[%s]" % yrange)
 
-  if f1 != "":
-      f.plotf(xa, eval(f1), label=l1)
-  if f2 != "":
-      f.plotf(xa, eval(f2), label=l2)
-  if f3 != "":
-      f.plotf(xa, eval(f3), label=l3)
-  if f4 != "":
-      f.plotf(xa, eval(f4), label=l4)
-  if f5 != "":
-      f.plotf(xa, eval(f5), label=l5)
-  if f6 != "":
-      f.plotf(xa, eval(f6), label=l6)
+      f.plot(x, y, marker=marker)
 
+  if frange != "":
+      min, max = eval(frange)
+      xa = np.arange(min, max, 0.1)
+
+      if f1 != "":
+          f.plotf(xa, eval(f1), label=l1)
+      if f2 != "":
+          f.plotf(xa, eval(f2), label=l2)
+      if f3 != "":
+          f.plotf(xa, eval(f3), label=l3)
+      if f4 != "":
+          f.plotf(xa, eval(f4), label=l4)
+      if f5 != "":
+          f.plotf(xa, eval(f5), label=l5)
+      if f6 != "":
+          f.plotf(xa, eval(f6), label=l6)
+
+  f.rotate_xtick(rotation)
   f.save(output)
 
   return output
 #+END_SRC
 
 #+NAME: plotbar
-#+HEADER: :var rotation=0
 #+BEGIN_SRC python :colnames no :results file
   import fmath.plot as fp
 
@@ -70,7 +82,8 @@
   f.label(x[0], y[0])
   f.grid(axis="y", caxis=False)
 
-  f.bar(x[1:], y[1:], rotation=rotation)
+  f.bar(x[1:], y[1:])
+  f.rotate_xtick(rotation)
 
   f.save(output)
 
@@ -78,17 +91,15 @@
 #+END_SRC
 
 #+NAME: plotmbar
-#+HEADER: :var rotation=0 :var range="1:, 1:"
+#+HEADER:  :var xrange="1:,0" :var yrange="1:,1:"
 #+BEGIN_SRC python :colnames no :results file
   import fmath.plot as fp
   import numpy as np
 
   alldata = np.array(datatable)
 
-  label = alldata[0, :][1:]
-  x = alldata[1:, 0]
-
-  data = eval("alldata[%s]" % range)
+  x = eval("alldata[%s]" % xrange)
+  y = eval("alldata[%s]" % yrange)
 
   f = fp.start_plot(
       bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
@@ -96,7 +107,8 @@
 
   f.grid(axis="y", caxis=False)
 
-  f.mbar(x, data.astype(float), rotation=rotation, label=label)
+  f.mbar(x, y.astype(float), label=x)
+  f.rotate_xtick(rotation)
 
   f.label(xlabel, ylabel)
 

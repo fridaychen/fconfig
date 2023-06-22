@@ -44,12 +44,15 @@ class FigureBase:
     def ref(self):
         pass
 
-    def grid(self, axis="both", caxis="both"):
-        self.ref().grid(color="gray", linestyle="dashed", axis=axis)
+    def grid(self, axis="both", caxis=None):
+        self.ref().grid(color="gray", linestyle=":", alpha=0.5, zorder=1)
+        # self.ref().grid(color="gray", linestyle=":", axis=axis)
 
-        if caxis:
-            self.ref().axvline(0, color="#000000")
+        if caxis == "both" or caxis == "x":
             self.ref().axhline(0, color="#000000")
+
+        if caxis == "both" or caxis == "y":
+            self.ref().axvline(0, color="#000000")
 
     def label(self, xlabel, ylabel):
         self.ref().set_xlabel(xlabel)

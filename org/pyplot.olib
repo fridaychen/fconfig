@@ -27,7 +27,7 @@
 #+HEADER: :var f4="" :var l4=""
 #+HEADER: :var f5="" :var l5=""
 #+HEADER: :var f6="" :var l6=""
-#+HEADER:  :var marker="" :var xrange=":,0" :var yrange=":,1" :var frange=""
+#+HEADER:  :var marker="" :var xrange="1:,0" :var yrange="1:,1" :var frange=""
 #+BEGIN_SRC python :results file
   import fmath.plot as fp
   import numpy as np
@@ -45,7 +45,7 @@
       x = eval("alldata[%s]" % xrange)
       y = eval("alldata[%s]" % yrange)
 
-      f.plot(x, y, marker=marker)
+      f.plot(x.astype(float), y.astype(float), marker=marker)
 
   if frange != "":
       min, max = eval(frange)
@@ -80,7 +80,7 @@
       bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
   )
   f.label(x[0], y[0])
-  f.grid(axis="y", caxis=False)
+  f.grid(axis="y")
 
   f.bar(x[1:], y[1:])
   f.rotate_xtick(rotation)
@@ -91,15 +91,16 @@
 #+END_SRC
 
 #+NAME: plotmbar
-#+HEADER:  :var xrange="1:,0" :var yrange="1:,1:"
+#+HEADER:  :var xrange="0" :var yrange="1:"
 #+BEGIN_SRC python :colnames no :results file
   import fmath.plot as fp
   import numpy as np
 
   alldata = np.array(datatable)
 
-  x = eval("alldata[%s]" % xrange)
-  y = eval("alldata[%s]" % yrange)
+  label = eval("alldata[0,%s]" % yrange)
+  x = eval("alldata[1:,%s]" % xrange)
+  y = eval("alldata[1:,%s]" % yrange)
 
   f = fp.start_plot(
       bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
@@ -107,7 +108,7 @@
 
   f.grid(axis="y", caxis=False)
 
-  f.mbar(x, y.astype(float), label=x)
+  f.mbar(x, y.astype(float), label=label)
   f.rotate_xtick(rotation)
 
   f.label(xlabel, ylabel)

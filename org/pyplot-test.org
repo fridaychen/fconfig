@@ -3,12 +3,12 @@
 :end:
 
 #+call: plot(output="test-plot-sin-cos.png", title="Single Plot",
-xrange="[0, m.pi *2]",
+frange="[0, m.pi *2]",
 f1="lambda x: m.cos(x)", l1="cos()",
 f2="lambda x: m.sin(x) + 1",l2="sin()+1")
 
 #+RESULTS:
-[[file:]]
+[[file:test-plot-sin-cos.png]]
 
 #+tblname: city-pop
 | city     | 2020 population |
@@ -92,7 +92,7 @@ f2="lambda x: m.sin(x) + 1",l2="sin()+1")
 | Shenyang |  200 |  212 |  150 |
 | Shanghai |   39 |   50 |   41 |
 
-#+call: plotmbar(datatable=city-pops, output="test-city-pop-mbar.png",title="人口变化趋势",xlabel="City", ylabel="Population",rotation=-45)
+#+call: plotbar(datatable=city-pops, output="test-city-pop-mbar.png",title="人口变化趋势",xlabel="City", ylabel="Population",rotation=-45)
 
 #+RESULTS:
 [[file:test-city-pop-mbar.png]]

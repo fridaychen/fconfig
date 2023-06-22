@@ -18,6 +18,18 @@ def loadtxt(filename, delimiter=None):
     return None
 
 
+def get_data(data, types, *args):
+    if type(data) is not np.array:
+        data = np.array(data)
+
+    if types is None:
+        types = [None] * len(args)
+
+    data2 = [eval("data[%s]" % x, {"data": data}) for x in args]
+
+    return [x if t is None else x.astype(t) for x, t in zip(data2, types)]
+
+
 class FigureBase:
     def __init__(self):
         self.fig = None
@@ -46,7 +58,6 @@ class FigureBase:
 
     def grid(self, axis="both", caxis=None):
         self.ref().grid(color="gray", linestyle=":", alpha=0.5, zorder=1)
-        # self.ref().grid(color="gray", linestyle=":", axis=axis)
 
         if caxis == "both" or caxis == "x":
             self.ref().axhline(0, color="#000000")
@@ -125,7 +136,7 @@ class SingleFigure(FigureBase):
 
     def before_save(self):
         if self.enable_legend:
-            self.ax.legend()
+            self.ax.legend(bbox_to_anchor=(1, 1), loc="upper left")
 
     def ref(self):
         return self.ax
@@ -170,7 +181,7 @@ class SubFigure(FigureBase):
     def before_save(self):
         for x, b in zip(self.axes.ravel(), self.enable_legend.ravel()):
             if b:
-                x.legend()
+                x.legend(bbox_to_anchor=(1, 1), loc="upper left")
 
 
 def start_plot(

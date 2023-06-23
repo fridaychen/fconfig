@@ -1,7 +1,10 @@
+import matplotlib as mp
 import matplotlib.pyplot as plt
+
 import numpy as np
 
-from matplotlib import rc as prc
+DEFAULT_BG = "#C1E6C6"
+DEFAULT_FONT = "Sarasa Gothic CL"
 
 
 def loadtxt(filename, delimiter=None):
@@ -185,10 +188,21 @@ class SubFigure(FigureBase):
 
 
 def start_plot(
-    sub="", bg="", font="", dpi=0, title="", subtitles=None, height=0, width=0
+    sub="",
+    bg=DEFAULT_BG,
+    font=DEFAULT_FONT,
+    dpi=0,
+    title="",
+    subtitles=None,
+    height=0,
+    width=0,
+    tex=False,
 ):
     if font != "":
-        prc("font", family=font)
+        mp.rc("font", family=font)
+
+    if tex:
+        plt.rcParams["text.usetex"] = True
 
     if sub == "":
         f = SingleFigure(bg=bg, title=title)

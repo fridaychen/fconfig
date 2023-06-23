@@ -4,13 +4,13 @@
 
 #+call: plot(output="test-plot-sin-cos.png", title="Single Plot",
 frange="[0, m.pi *2]",
-f1="lambda x: m.cos(x)", l1="cos()",
+f1="lambda x: m.cos(x)", l1="hello $\\sqrt{4}$",
 f2="lambda x: m.sin(x) + 1",l2="sin()+1")
 
 #+RESULTS:
 [[file:test-plot-sin-cos.png]]
 
-#+tblname: city-pop
+#+name: city-pop
 | city     | 2020 population |
 |----------+-----------------|
 | Beijing  |             100 |
@@ -85,7 +85,7 @@ f2="lambda x: m.sin(x) + 1",l2="sin()+1")
 #+RESULTS:
 [[file:test-subplot.png]]
 
-#+tblname: city-pops
+#+name: city-pops
 | city     | 2020 | 2021 | 2022 |
 |----------+------+------+------|
 | Beijing  |  100 |  102 |  120 |

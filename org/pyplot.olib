@@ -27,7 +27,7 @@
 #+HEADER: :var f4="" :var l4=""
 #+HEADER: :var f5="" :var l5=""
 #+HEADER: :var f6="" :var l6=""
-#+HEADER:  :var marker="" :var xrange="1:,0" :var yrange="1:,1" :var frange=""
+#+HEADER:  :var marker="" :var xrange=":,0" :var yrange=":,1:" :var frange=""
 #+BEGIN_SRC python :results file
   import fmath.plot as fp
   import numpy as np

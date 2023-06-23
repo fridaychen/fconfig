@@ -232,6 +232,8 @@
     (defconst org-babel-python-wrapper-method
       "
 import math as m
+import numpy as np
+
 def main():
 %s
 

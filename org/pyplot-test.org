@@ -38,7 +38,6 @@ f2="lambda x: m.sin(x) + 1",l2="sin()+1")
 
   f.select((0, 0))
   f.label(x[0], y[0])
-  f.grid(axis="y", caxis=False)
   f.bar(x[1:], y[1:])
 
   f.select((0, 1))
@@ -62,22 +61,26 @@ f2="lambda x: m.sin(x) + 1",l2="sin()+1")
   import fmath.plot as fp
   import numpy as np
 
-  f = fp.start_plot((1, 2), height=60, width=200, font=font, bg=bg)
-
   xa = np.arange(0, 6.28, 0.1)
-
-  f.select((0, 0))
-  f.grid()
-  f.plotf(xa, lambda x: m.sin(x), label="sin我们hell")
-  f.plotf(xa, lambda x: m.cos(x), label="cos")
-
   data = fp.loadtxt("test-data2.txt")
 
-  f.select((0, 1))
-  f.grid()
-  f.plot(data[:, 0], data[:, 1], label="data2")
-
-  f.save("test-subplot.png")
+  f = fp.easy_subplot(
+      "test-subplot.png",
+      [
+          [
+              lambda f: f.plotf(xa, lambda x: m.sin(x), label="sin").plotf(
+                  xa, lambda x: m.cos(x), label="cos"
+              ),
+              lambda f: f.plot(data[:, 0], data[:, 1], label="data2"),
+          ]
+      ],
+      sub=(1, 2),
+      height=60,
+      width=200,
+      font=font,
+      bg=bg,
+      subtitles=["Fig 1", "Fig 2"],
+  )
 
   return "test-subplot.png"
 #+END_SRC

@@ -38,7 +38,6 @@
       bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
   )
   f.label(xlabel, ylabel)
-  f.grid()
 
   if datatable != "":
       x, y = fp.get_data(
@@ -47,10 +46,6 @@
           ":,%s" % xrange,
           ":,%s" % yrange,
       )
-
-      # alldata = np.array(datatable)
-      # x = eval("alldata[%s]" % xrange)
-      # y = eval("alldata[%s]" % yrange)
 
       f.plot(x, y, marker=marker)
 
@@ -81,7 +76,6 @@
 #+HEADER:  :var xrange="0" :var yrange="1:"
 #+BEGIN_SRC python :colnames no :results file
   import fmath.plot as fp
-  import numpy as np
 
   label, x, y = fp.get_data(
       datatable,
@@ -91,18 +85,18 @@
       "1:,%s" % yrange,
   )
 
-  f = fp.start_plot(
-      bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
+  fp.easy_plot(
+      output,
+      lambda f: f.mbar(x, y, label=label).rotate_xtick(rotation),
+      bg=bg,
+      title=title,
+      font=font,
+      dpi=dpi,
+      height=height,
+      width=width,
+      xlabel=xlabel,
+      ylabel=ylabel,
   )
-
-  f.grid(axis="y", caxis=False)
-
-  f.mbar(x, y, label=label)
-  f.rotate_xtick(rotation)
-
-  f.label(xlabel, ylabel)
-
-  f.save(output)
 
   return output
 #+END_SRC
@@ -119,13 +113,11 @@
       ":,%s" % yrange,
   )
 
-  f = fp.start_plot(
+  fp.easy_plot(
+      output,
+      lambda f: f.pie(x, y),
       bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
   )
-
-  f.pie(x, y)
-
-  f.save(output)
 
   return output
 #+END_SRC
@@ -134,18 +126,19 @@
 #+BEGIN_SRC python :var bins=10 :var type="bar" :var delimiter="" :results file
   import fmath.plot as fp
 
-  f = fp.start_plot(
-      bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
-  )
-
-  f.grid(axis="y", caxis=False)
-
   if delimiter == "":
       delimiter = None
 
-  f.hist(fp.loadtxt(datafile), bins=bins, type=type)
-
-  f.save(output)
+  f = fp.easy_plot(
+      output,
+      lambda f: f.hist(fp.loadtxt(datafile), bins=bins, type=type),
+      bg=bg,
+      title=title,
+      font=font,
+      dpi=dpi,
+      height=height,
+      width=width,
+  )
 
   return output
 #+END_SRC

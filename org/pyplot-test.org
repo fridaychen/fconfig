@@ -2,10 +2,12 @@
 #+startup: inlineimages
 :end:
 
-#+call: plot(output="test-plot-sin-cos.png", title="Single Plot",
-frange="[0, m.pi *2]",
-f1="lambda x: m.cos(x)", l1="hello $\\sqrt{4}$",
-f2="lambda x: m.sin(x) + 1",l2="sin()+1")
+#+name: tbl-funcs
+| sin      | m.sin                                   |
+| sin(10x) | lambda x: m.sin(10 * x)                 |
+| cos      | m.cos                                   |
+
+#+call: plot(output="test-plot-sin-cos.png", frange="[-3.14/2,  3.14/2]", fstep=0.01, ftable=tbl-funcs)
 
 #+RESULTS:
 [[file:test-plot-sin-cos.png]]
@@ -13,7 +15,7 @@ f2="lambda x: m.sin(x) + 1",l2="sin()+1")
 #+name: city-pop
 | city     | 2020 population |
 |----------+-----------------|
-| Beijing  |             100 |
+| Beijing  |             150 |
 | Shenyang |             200 |
 | Shanghai |              39 |
 

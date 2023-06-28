@@ -19,7 +19,7 @@ def static_vars(**kwargs):
 
 
 def execvp(cmd, args, wait=True):
-    """ exec wrapper """
+    """exec wrapper"""
     child_pid = os.fork()
 
     if child_pid == 0:
@@ -31,7 +31,7 @@ def execvp(cmd, args, wait=True):
 
 
 def run(cmd, args, wait=True, noret=False):
-    """ run external command """
+    """run external command"""
     if debug:
         dbg("fc.run %s : %s" % (cmd, str(args)))
 
@@ -61,7 +61,7 @@ def pipe(cmds, need_result=False):
 
 
 def first(obj):
-    """ return first object """
+    """return first object"""
     if obj is None:
         return ""
 
@@ -98,7 +98,7 @@ def get_suffix(words):
 
 
 def get_stem(words):
-    """ get stem """
+    """get stem"""
     ret = list(words)
 
     s = get_prefix(ret)
@@ -113,7 +113,7 @@ def get_stem(words):
 
 
 def fuzz_match(pattern, targets):
-    """ calculate fuzz ratio """
+    """calculate fuzz ratio"""
     ratios = [fuzz.ratio(pattern, x) for x in targets]
 
     n = ratios.index(max(ratios))

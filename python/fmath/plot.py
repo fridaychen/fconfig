@@ -62,6 +62,12 @@ class FigureBase:
         self.fig.tight_layout()
         self.fig.savefig(fn, bbox_inches="tight")
 
+    def show(self):
+        self.before_save()
+        self.fig.tight_layout()
+
+        plt.show()
+
     def before_save(self):
         pass
 
@@ -75,6 +81,11 @@ class FigureBase:
             ymin, ymax = ax.get_ylim()
             if ymin <= 0 and ymax >= 0:
                 ax.axhline(0, color="#000000")
+
+    def axline(self, point, slope=None, color="#880000"):
+        self.ref().axline(point, slope=slope, color=color, ls="-.", lw=0.5)
+
+        return self
 
     def mark_legend():
         pass
@@ -94,7 +105,7 @@ class FigureBase:
             self.draw_origin_axis(ax, axis)
 
     def plot(self, x, y, label="", marker=""):
-        self.ref().plot(x, y, label=label, marker=marker)
+        self.ref().plot(x, y, label=label, marker=marker, lw=1)
 
         if label != "":
             self.mark_legend()
@@ -104,13 +115,27 @@ class FigureBase:
         return self
 
     def plotf(self, x, func, label="", marker=""):
-        self.plot(
-            x,
-            np.array([func(n) for n in x]),
-            label=label,
-            marker=marker,
-        )
-        self.mark_grid("both")
+        if callable(func):
+            self.plot(
+                x,
+                np.array([func(n) for n in x]),
+                label=label,
+                marker=marker,
+            )
+            self.mark_grid("both")
+
+        return self
+
+    def plotfs(self, x, labels, funcs, marker=""):
+        for label, f in zip(labels, funcs):
+            if callable(f):
+                self.plot(
+                    x,
+                    np.array([f(n) for n in x]),
+                    label=label,
+                    marker=marker,
+                )
+                self.mark_grid("both")
 
         return self
 
@@ -165,6 +190,14 @@ class FigureBase:
 
         return self
 
+    def stem(self, x, y, label=""):
+        self.ref().stem(x, y, linefmt="--", label=label)
+
+        if label != "":
+            self.mark_legend()
+
+        return self
+
 
 class SingleFigure(FigureBase):
     def __init__(self, title=""):
@@ -204,7 +237,7 @@ class SubFigure(FigureBase):
         self.fig, self.axes = plt.subplots(*sub)
         self.enable_legend = np.full(sub, False)
         self.enable_grid = np.full(sub, None)
-        self.f1d = sub[0] == 1
+        self.f1d = sub[0] == 1 or sub[1] == 1
 
         if title != "":
             self.fig.suptitle(title)
@@ -221,7 +254,10 @@ class SubFigure(FigureBase):
 
     def select(self, sub):
         if self.f1d:
-            self.active = self.axes[sub[1]]
+            if sub[0] == 0:
+                self.active = self.axes[sub[1]]
+            else:
+                self.active = self.axes[sub[0]]
         else:
             self.active = self.axes[sub]
 
@@ -252,13 +288,13 @@ def start_plot(
     subtitles=None,
     height=0,
     width=0,
-    tex=False,
+    style=None,
 ):
+    if style is not None:
+        plt.style.use(style)
+
     if font != "":
         mp.rc("font", family=font)
-
-    if tex:
-        plt.rcParams["text.usetex"] = True
 
     if sub == "":
         f = SingleFigure(title=title)
@@ -272,6 +308,13 @@ def start_plot(
     return f
 
 
+def easy_save(ffig, output):
+    if output is None or output == "":
+        ffig.show()
+    else:
+        ffig.save(output)
+
+
 def easy_plot(
     output,
     func,
@@ -281,7 +324,6 @@ def easy_plot(
     title="",
     height=0,
     width=0,
-    tex=False,
     xlabel="",
     ylabel="",
 ):
@@ -292,14 +334,13 @@ def easy_plot(
         title=title,
         height=height,
         width=width,
-        tex=tex,
     )
 
     func(f)
 
     f.label(xlabel, ylabel)
 
-    f.save(output)
+    easy_save(f, output)
 
 
 def easy_subplot(
@@ -311,7 +352,6 @@ def easy_subplot(
     title="",
     height=0,
     width=0,
-    tex=False,
     sub="",
     subtitles=None,
 ):
@@ -322,7 +362,6 @@ def easy_subplot(
         title=title,
         height=height,
         width=width,
-        tex=tex,
         sub=sub,
         subtitles=subtitles,
     )
@@ -332,4 +371,4 @@ def easy_subplot(
             f.select((i, j))
             funcs[i][j](f)
 
-    f.save(output)
+    easy_save(f, output)

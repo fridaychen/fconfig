@@ -18,21 +18,12 @@
 #+PROPERTY: header-args+ :var datafile=""
 #+PROPERTY: header-args+ :var datatable=""
 
-#+PROPERTY: header-args+ :var frange=""
-
 #+NAME: plot
-#+HEADER: :var f1="" :var l1=""
-#+HEADER: :var f2="" :var l2=""
-#+HEADER: :var f3="" :var l3=""
-#+HEADER: :var f4="" :var l4=""
-#+HEADER: :var f5="" :var l5=""
-#+HEADER: :var f6="" :var l6=""
-#+HEADER:  :var marker="" :var xrange=":,0" :var yrange=":,1:" :var frange=""
+#+HEADER:  :var frange="" :var fstep=0.1 :var ftable=""
+#+HEADER:  :var marker="" :var xrange=":,0" :var yrange=":,1:"
 #+BEGIN_SRC python :results file
   import fmath.plot as fp
   import numpy as np
-
-  import math
 
   f = fp.start_plot(
       bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
@@ -51,20 +42,13 @@
 
   if frange != "":
       min, max = eval(frange)
-      xa = np.arange(min, max, 0.1)
+      xa = np.arange(min, max, fstep)
 
-      if f1 != "":
-          f.plotf(xa, eval(f1), label=l1)
-      if f2 != "":
-          f.plotf(xa, eval(f2), label=l2)
-      if f3 != "":
-          f.plotf(xa, eval(f3), label=l3)
-      if f4 != "":
-          f.plotf(xa, eval(f4), label=l4)
-      if f5 != "":
-          f.plotf(xa, eval(f5), label=l5)
-      if f6 != "":
-          f.plotf(xa, eval(f6), label=l6)
+      x, y = fp.get_data(ftable, None, ":,0", ":,1")
+
+      y = [n if n == "" else eval(n) for n in y]
+
+      f.plotfs(xa, x, y)
 
   f.rotate_xtick(rotation)
   f.save(output)

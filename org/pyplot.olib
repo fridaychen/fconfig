@@ -113,7 +113,7 @@
 
   f = fp.easy_plot(
       output,
-      lambda f: f.hist(fp.loadtxt(dfile), bins=bins, type=type),
+      lambda f: f.hist(fp.loadtxt(dfile, delimiter=delimiter), bins=bins, type=type),
       bg=bg,
       title=title,
       font=font,

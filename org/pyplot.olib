@@ -14,7 +14,7 @@
 #+PROPERTY: header-args+ :var rot=0
 
 #+PROPERTY: header-args+ :var output=""
-#+PROPERTY: header-args+ :var dfile""
+#+PROPERTY: header-args+ :var dfile=""
 #+PROPERTY: header-args+ :var dtbl=""
 
 #+NAME: plot

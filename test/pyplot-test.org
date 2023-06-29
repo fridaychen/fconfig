@@ -51,12 +51,12 @@
 #+END_SRC
 
 #+RESULTS:
-[[file:]]
+[[file:test-subplot.png]]
 
 #+call: plothist(datafile="test-data1.txt",output="test-hist.png",title="New World!")
 
 #+RESULTS:
-[[file:test-hist.png]]
+[[file:]]
 
 #+HEADER: :var font=(symbol-value '*fc-plot-font*) :var bg=(symbol-value '*fc-plot-bg*)
 #+BEGIN_SRC python :results file
@@ -88,7 +88,7 @@
 #+END_SRC
 
 #+RESULTS:
-[[file:]]
+[[file:test-subplot.png]]
 
 #+name: city-pops
 | city     | 2020 | 2021 | 2022 |

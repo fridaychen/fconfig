@@ -57,6 +57,16 @@ class FigureBase:
         if height != 0 and width != 0:
             self.fig.set_size_inches(width / 25.4, height / 25.4)
 
+    def set_xlim(self, left, right):
+        self.ref().set_xlim(left, right)
+
+        return self
+
+    def set_ylim(self, bottom, top):
+        self.ref().set_ylim(bottom, top)
+
+        return self
+
     def save(self, fn):
         self.before_save()
         self.fig.tight_layout()

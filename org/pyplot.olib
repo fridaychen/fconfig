@@ -6,33 +6,32 @@
 #+PROPERTY: header-args+ :var bg=(symbol-value '*fc-plot-bg*)
 #+PROPERTY: header-args+ :var dpi=(symbol-value '*fc-plot-dpi*)
 
-#+PROPERTY: header-args+ :var height=0
-#+PROPERTY: header-args+ :var width=0
+#+PROPERTY: header-args+ :var h=0 :var w=0
 
 #+PROPERTY: header-args+ :var title=""
 #+PROPERTY: header-args+ :var xlabel=""
 #+PROPERTY: header-args+ :var ylabel=""
-#+PROPERTY: header-args+ :var rotation=0
+#+PROPERTY: header-args+ :var rot=0
 
 #+PROPERTY: header-args+ :var output=""
-#+PROPERTY: header-args+ :var datafile=""
-#+PROPERTY: header-args+ :var datatable=""
+#+PROPERTY: header-args+ :var dfile""
+#+PROPERTY: header-args+ :var dtbl=""
 
 #+NAME: plot
-#+HEADER:  :var frange="" :var fstep=0.1 :var ftable=""
+#+HEADER:  :var xdi="" :var ftbl=""
 #+HEADER:  :var marker="" :var xrange=":,0" :var yrange=":,1:"
 #+BEGIN_SRC python :results file
   import fmath.plot as fp
   import numpy as np
 
   f = fp.start_plot(
-      bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
+      bg=bg, title=title, font=font, dpi=dpi, height=h, width=w
   )
   f.label(xlabel, ylabel)
 
-  if datatable != "":
+  if dtbl != "":
       x, y = fp.get_data(
-          datatable,
+          dtbl,
           (float, float),
           ":,%s" % xrange,
           ":,%s" % yrange,
@@ -40,17 +39,16 @@
 
       f.plot(x, y, marker=marker)
 
-  if frange != "":
-      min, max = eval(frange)
-      xa = np.arange(min, max, fstep)
+  if xdi != "":
+      xa = np.arange(*eval(xdi))
 
-      x, y = fp.get_data(ftable, None, ":,0", ":,1")
+      x, y = fp.get_data(ftbl, None, ":,0", ":,1")
 
       y = [n if n == "" else eval(n) for n in y]
 
       f.plotfs(xa, x, y)
 
-  f.rotate_xtick(rotation)
+  f.rotate_xtick(rot)
   f.save(output)
 
   return output
@@ -62,7 +60,7 @@
   import fmath.plot as fp
 
   label, x, y = fp.get_data(
-      datatable,
+      dtbl,
       (None, None, float),
       "0,%s" % yrange,
       "1:,%s" % xrange,
@@ -71,13 +69,13 @@
 
   fp.easy_plot(
       output,
-      lambda f: f.mbar(x, y, label=label).rotate_xtick(rotation),
+      lambda f: f.mbar(x, y, label=label).rotate_xtick(rot),
       bg=bg,
       title=title,
       font=font,
       dpi=dpi,
-      height=height,
-      width=width,
+      height=h,
+      width=w,
       xlabel=xlabel,
       ylabel=ylabel,
   )
@@ -91,7 +89,7 @@
   import fmath.plot as fp
 
   x, y = fp.get_data(
-      datatable,
+      dtbl,
       (None, float),
       ":,%s" % xrange,
       ":,%s" % yrange,
@@ -100,7 +98,7 @@
   fp.easy_plot(
       output,
       lambda f: f.pie(x, y),
-      bg=bg, title=title, font=font, dpi=dpi, height=height, width=width
+      bg=bg, title=title, font=font, dpi=dpi, height=h, width=w
   )
 
   return output
@@ -115,13 +113,13 @@
 
   f = fp.easy_plot(
       output,
-      lambda f: f.hist(fp.loadtxt(datafile), bins=bins, type=type),
+      lambda f: f.hist(fp.loadtxt(dfile), bins=bins, type=type),
       bg=bg,
       title=title,
       font=font,
       dpi=dpi,
-      height=height,
-      width=width,
+      height=h,
+      width=w,
   )
 
   return output

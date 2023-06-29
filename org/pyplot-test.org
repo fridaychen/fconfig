@@ -3,11 +3,11 @@
 :end:
 
 #+name: tbl-funcs
-| sin      | m.sin                                   |
-| sin(10x) | lambda x: m.sin(10 * x)                 |
-| cos      | m.cos                                   |
+| sin      | m.sin                   |
+| sin(10x) | lambda x: m.sin(10 * x) |
+| cos      | m.cos                   |
 
-#+call: plot(output="test-plot-sin-cos.png", frange="[-3.14/2,  3.14/2]", fstep=0.01, ftable=tbl-funcs)
+#+call: plot(output="test-plot-sin-cos.png", xdi="[-3.14/2,  3.14/2, 0.01]", ftbl=tbl-funcs)
 
 #+RESULTS:
 [[file:test-plot-sin-cos.png]]
@@ -19,22 +19,22 @@
 | Shenyang |             200 |
 | Shanghai |              39 |
 
-#+call: plotbar(output="test-city-pop-bar.png",title="City population",datatable=city-pop,height=60,width=100,rotation=45)
+#+call: plotbar(output="test-city-pop-bar.png",title="City population",dtbl=city-pop,height=60,width=100,rot=45)
 
 #+RESULTS:
 [[file:test-city-pop-bar.png]]
 
-#+call: plotpie(datatable=city-pop, output="test-city-pop-pie.png",title="City population")
+#+call: plotpie(dtbl=city-pop, output="test-city-pop-pie.png",title="City population")
 
 #+RESULTS:
 [[file:test-city-pop-pie.png]]
 
 #+HEADER: :var font=(symbol-value '*fc-plot-font*) :var bg=(symbol-value '*fc-plot-bg*)
-#+BEGIN_SRC python :var datatable=city-pop :colnames no :results file
+#+BEGIN_SRC python :var dtbl=city-pop :colnames no :results file
   import fmath.plot as fp
   import numpy as np
 
-  x, y = zip(*datatable)
+  x, y = zip(*dtbl)
 
   f = fp.start_plot((1, 2), height=60, width=200, font=font, bg=bg, subtitles=["Bar chart", "Pie chart"])
 
@@ -51,7 +51,7 @@
 #+END_SRC
 
 #+RESULTS:
-[[file:test-subplot.png]]
+[[file:]]
 
 #+call: plothist(datafile="test-data1.txt",output="test-hist.png",title="New World!")
 
@@ -88,7 +88,7 @@
 #+END_SRC
 
 #+RESULTS:
-[[file:test-subplot.png]]
+[[file:]]
 
 #+name: city-pops
 | city     | 2020 | 2021 | 2022 |
@@ -97,7 +97,7 @@
 | Shenyang |  200 |  212 |  150 |
 | Shanghai |   39 |   50 |   41 |
 
-#+call: plotbar(datatable=city-pops, output="test-city-pop-mbar.png",title="人口变化趋势",xlabel="City", ylabel="Population",rotation=-45)
+#+call: plotbar(dtbl=city-pops, output="test-city-pop-mbar.png",title="人口变化趋势",xlabel="City", ylabel="Population",rot=-45)
 
 #+RESULTS:
 [[file:test-city-pop-mbar.png]]

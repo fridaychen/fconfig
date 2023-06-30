@@ -2,6 +2,8 @@
 import os
 import unittest
 
+import matplotlib.pyplot as plt
+
 import fmath.plot as fp
 import fmath.signal as fs
 
@@ -157,6 +159,21 @@ class TestFMath(unittest.TestCase):
             subtitles=["Signal", "Abs", "Abs(real)", "Abs(imag)"],
             height=200,
             width=150,
+        )
+
+    def test_simple_3d(self):
+        x = np.linspace(-10, 10, 1000)
+        y = np.sin(x)
+        z0 = np.full(1000, 0)
+        z1 = np.full(1000, 1)
+
+        fp.easy_plot(
+            "output/test_single_3d.png",
+            lambda f: f.plot3d(x, y, z0, label="hello").plot3d(
+                x, y, z1, label="world"
+            ),
+            title="3D",
+            enable_3d=True,
         )
 
 

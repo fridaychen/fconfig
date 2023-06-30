@@ -62,6 +62,9 @@ class FigureBase:
 
         return self
 
+    def is3d(self, ax):
+        return ax.name == "3d"
+
     def set_ylim(self, bottom, top):
         self.ref().set_ylim(bottom, top)
 
@@ -110,7 +113,7 @@ class FigureBase:
         if ax is None:
             ax = self.ref()
 
-        if ax is not None:
+        if ax is not None and not self.is3d(ax):
             ax.grid(color=fg, linestyle=":", alpha=0.5, zorder=1, axis=axis)
             self.draw_origin_axis(ax, axis)
 
@@ -146,6 +149,16 @@ class FigureBase:
                     marker=marker,
                 )
                 self.mark_grid("both")
+
+        return self
+
+    def scatter(self, x, y, label="", marker=""):
+        self.ref().scatter(x, y, label=label, marker=marker)
+
+        if label != "":
+            self.mark_legend()
+
+        self.mark_grid("both")
 
         return self
 
@@ -208,12 +221,24 @@ class FigureBase:
 
         return self
 
+    def plot3d(self, x, y, z, label="", marker=""):
+        self.ref().plot(x, y, z, label=label, marker=marker, lw=1)
+
+        if label != "":
+            self.mark_legend()
+
+        return self
+
 
 class SingleFigure(FigureBase):
-    def __init__(self, title=""):
+    def __init__(self, title="", enable_3d=False):
         super().__init__()
 
-        self.fig, self.ax = plt.subplots()
+        arg = dict()
+        if enable_3d:
+            arg["projection"] = "3d"
+
+        self.fig, self.ax = plt.subplots(subplot_kw=arg)
         self.enable_legend = False
         self.enable_grid = None
 
@@ -299,6 +324,7 @@ def start_plot(
     height=0,
     width=0,
     style=None,
+    enable_3d=False,
 ):
     if style is not None:
         plt.style.use(style)
@@ -307,7 +333,7 @@ def start_plot(
         mp.rc("font", family=font)
 
     if sub == "":
-        f = SingleFigure(title=title)
+        f = SingleFigure(title=title, enable_3d=enable_3d)
     else:
         f = SubFigure(sub, title=title, subtitles=subtitles)
 
@@ -336,6 +362,7 @@ def easy_plot(
     width=0,
     xlabel="",
     ylabel="",
+    enable_3d=False,
 ):
     f = start_plot(
         bg=bg,
@@ -344,6 +371,7 @@ def easy_plot(
         title=title,
         height=height,
         width=width,
+        enable_3d=enable_3d,
     )
 
     func(f)
@@ -364,6 +392,7 @@ def easy_subplot(
     width=0,
     sub="",
     subtitles=None,
+    enable_3d=False,
 ):
     f = start_plot(
         bg=bg,
@@ -374,6 +403,7 @@ def easy_subplot(
         width=width,
         sub=sub,
         subtitles=subtitles,
+        enable_3d=enable_3d,
     )
 
     for i in range(0, sub[0]):

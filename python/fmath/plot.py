@@ -1,5 +1,6 @@
 import matplotlib as mp
 import matplotlib.pyplot as plt
+from matplotlib.ticker import AutoMinorLocator
 
 import numpy as np
 
@@ -109,12 +110,29 @@ class FigureBase:
     def refs(self):
         pass
 
-    def grid(self, axis="both", fg="navy", ax=None):
+    def set_minor_grid(self):
+        pass
+
+    def grid(self, axis="both", fg="navy", ax=None, minor=False):
         if ax is None:
             ax = self.ref()
 
         if ax is not None and not self.is3d(ax):
-            ax.grid(color=fg, linestyle=":", alpha=0.5, zorder=1, axis=axis)
+            if minor:
+                ax.grid(
+                    which="minor",
+                    color=fg,
+                    linestyle=":",
+                    alpha=0.3,
+                    zorder=1,
+                    axis=axis,
+                    lw=0.4,
+                )
+                ax.minorticks_on()
+
+            ax.grid(
+                color=fg, linestyle=":", alpha=0.5, zorder=1, axis=axis, lw=0.6
+            )
             self.draw_origin_axis(ax, axis)
 
     def plot(self, x, y, label="", marker=""):
@@ -219,6 +237,8 @@ class FigureBase:
         if label != "":
             self.mark_legend()
 
+        self.mark_grid("y")
+
         return self
 
     def plot3d(self, x, y, z, label="", marker=""):
@@ -241,6 +261,7 @@ class SingleFigure(FigureBase):
         self.fig, self.ax = plt.subplots(subplot_kw=arg)
         self.enable_legend = False
         self.enable_grid = None
+        self.enable_minor_grid = False
 
         if title != "":
             self.ax.set_title(title)
@@ -252,7 +273,7 @@ class SingleFigure(FigureBase):
             self.ax.legend(bbox_to_anchor=(1, 1), loc="upper left")
 
         if self.enable_grid is not None:
-            self.grid(axis=self.enable_grid)
+            self.grid(axis=self.enable_grid, minor=self.enable_minor_grid)
 
     def ref(self):
         return self.ax
@@ -266,12 +287,18 @@ class SingleFigure(FigureBase):
     def mark_grid(self, axis):
         self.enable_grid = axis
 
+    def set_minor_grid(self):
+        self.enable_minor_grid = True
+
+        return self
+
 
 class SubFigure(FigureBase):
     def __init__(self, sub, title="", subtitles=None):
         self.fig, self.axes = plt.subplots(*sub)
         self.enable_legend = np.full(sub, False)
         self.enable_grid = np.full(sub, None)
+        self.enable_minor_grid = np.full(sub, False)
         self.f1d = sub[0] == 1 or sub[1] == 1
 
         if title != "":
@@ -304,14 +331,23 @@ class SubFigure(FigureBase):
     def mark_grid(self, axis):
         self.enable_grid[self.active_pos] = axis
 
+    def set_minor_grid(self):
+        self.enable_minor_grid[self.active_pos] = True
+
+        return self
+
     def before_save(self):
         for x, b in zip(self.axes.ravel(), self.enable_legend.ravel()):
             if b:
                 x.legend(bbox_to_anchor=(1, 1), loc="upper left")
 
-        for x, b in zip(self.axes.ravel(), self.enable_grid.ravel()):
+        for x, b, m in zip(
+            self.axes.ravel(),
+            self.enable_grid.ravel(),
+            self.enable_minor_grid.ravel(),
+        ):
             if b is not None:
-                self.grid(axis=b, ax=x)
+                self.grid(axis=b, ax=x, minor=m)
 
 
 def start_plot(

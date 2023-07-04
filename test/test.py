@@ -60,7 +60,7 @@ class TestFMath(unittest.TestCase):
             lambda f: f.stem(
                 np.arange(10), [0, 3, 0, 0, 5, 0, 0, 0, 0, 0], label="hello"
             ),
-            title="Pie",
+            title="Stem",
         )
 
     def test_subplot_1_2(self):

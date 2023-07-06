@@ -59,6 +59,7 @@
            ("4" ,(fc-cond-key :normal 'fc-show-buffer))
            ("9" ,(fc-manual (kill-new (dired-get-filename))))
            ("d" dired-do-delete)
+           ("f" fc-basic-key)
            ("i" previous-line)
            ("k" next-line)
            ("m" fc-dired-toggle-mark)
@@ -71,7 +72,9 @@
            ("N" make-directory)
            (";" fc-fast-switch-window)
            ("C-o" fc-modal-run)
-           ("<tab>" dired-toggle-read-only))))
+           ("<tab>" ,(fc-manuals
+                      #'dired-toggle-read-only
+                      #'fc-modal-enable)))))
 
 (require 'dired-x)
 

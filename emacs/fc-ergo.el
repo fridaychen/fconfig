@@ -276,10 +276,9 @@ INDENT-FUNC: function for indent."
    "Basic" '*ergo-basic-map*
    :around
    (lambda (func)
-     (fc-region (region-beginning) (region-end)
-       (when (> (point) (mark))
-         (exchange-point-and-mark))
-       (fc-funcall func)))))
+     (when (> (point) (mark))
+       (exchange-point-and-mark))
+     (fc-funcall func))))
 
 (cl-defun fc-ctrl-enter-key ()
   "Ctrl-Enter key function."
@@ -1504,15 +1503,7 @@ AUTO: auto select face."
           `((image-mode . image-eol)
             (_ . end-of-line))))
    ("f" ,(fc-cond-key :normal #'scroll-down-command
-                      :region (fc-manual
-                               (fc-modal-head-key
-                                "Basic" '*ergo-basic-map*
-                                :around
-                                (lambda (func)
-                                  (fc-region (region-beginning) (region-end)
-                                    (when (> (point) (mark))
-                                      (exchange-point-and-mark))
-                                    (fc-funcall func)))))
+                      :region #'fc-basic-key
                       :prefix (fc-manual
                                (fc-modal-head-key
                                 "Basic prefix" '*ergo-basic-map*))))
@@ -1765,17 +1756,20 @@ FUNC: new repeat func."
 
 (defun fc-fill-region ()
   "Fill region."
-  (let* ((start-line (fc-line-num (region-beginning)))
+  (let* ((start (region-beginning))
+         (start-line (fc-line-num (region-beginning)))
          (end-line (fc-line-num (region-end)))
-         (start-num 1))
-    (goto-char (region-beginning))
+         (col (current-column))
+         (line-num 1))
+    (deactivate-mark)
+    (goto-char start)
 
     (cl-loop for i from start-line to end-line
              do
-             (save-excursion
-               (insert (message "%d" start-num)))
-             (cl-incf start-num)
-             (forward-line))))
+             (insert (format "%d" line-num))
+             (forward-line 1)
+             (cl-incf line-num)
+             (move-to-column col t))))
 
 (--each '(rpn-calc)
   (advice-add it :before #'fc-modal-global-mode-off))

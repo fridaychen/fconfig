@@ -706,9 +706,14 @@ COLORB: another color."
            sum (expt (- i j) 2) into x
            finally return (sqrt x)))
 
-(defun fc-line-num ()
-  "Get current line number."
-  (string-to-number (format-mode-line "%l")))
+(defun fc-line-num (&optional point)
+  "Get current line number.
+POINT: point of buffer."
+  (save-excursion
+    (when point
+      (goto-char point))
+
+    (string-to-number (format-mode-line "%l"))))
 
 (cl-defun fc-buffer-lines (&optional (buffer (current-buffer)))
   "Get line counts."

@@ -995,6 +995,7 @@ KEYMAP: keymap to run."
    `(("SPC" fc-basic-portal)
      ("c" ,(fc-cond-key :normal 'capitalize-word
                         :region 'capitalize-region))
+     ("f" ,(fc-cond-key :region 'fc-fill-region))
      ("l" ,(fc-cond-key :normal 'downcase-word
                         :region 'downcase-region))
      ("m" fc-merge-short-line)
@@ -1761,6 +1762,20 @@ FUNC: new repeat func."
   (interactive)
 
   (kill-buffer (current-buffer)))
+
+(defun fc-fill-region ()
+  "Fill region."
+  (let* ((start-line (fc-line-num (region-beginning)))
+         (end-line (fc-line-num (region-end)))
+         (start-num 1))
+    (goto-char (region-beginning))
+
+    (cl-loop for i from start-line to end-line
+             do
+             (save-excursion
+               (insert (message "%d" start-num)))
+             (cl-incf start-num)
+             (forward-line))))
 
 (--each '(rpn-calc)
   (advice-add it :before #'fc-modal-global-mode-off))

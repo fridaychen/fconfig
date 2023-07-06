@@ -396,7 +396,7 @@ COLOR: background color."
 ;; Plot settings
 (defvar *fc-plot-font* "Sarasa Gothic CL")
 (defvar *fc-plot-bg* "#C1E6C6")
-(defvar *fc-plot-dpi* (fc-display-ppi))
+(defvar *fc-plot-dpi* (if *is-gui* (fc-display-ppi) 96))
 
 (provide 'fc-common)
 

@@ -249,6 +249,14 @@ class FigureBase:
 
         return self
 
+    def scatter(self, x, y, label="", marker="s"):
+        self.ref().scatter(x, y, marker=marker, label=label)
+
+        if label != "":
+            self.mark_legend()
+
+        return self
+
 
 class SingleFigure(FigureBase):
     def __init__(self, title="", enable_3d=False):

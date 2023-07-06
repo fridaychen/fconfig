@@ -19,10 +19,10 @@
 | Shenyang |             200 |
 | Shanghai |              39 |
 
-#+call: plotbar(output="test-city-pop-bar.png",title="City population",dtbl=city-pop,height=60,width=100,rot=45)
+#+call: plotbar(output="test-city-pop-bar.png",title="City population",dtbl=city-pop,h=60,w=100,rot=45)
 
 #+RESULTS:
-[[file:test-city-pop-bar.png]]
+[[file:]]
 
 #+call: plotpie(dtbl=city-pop, output="test-city-pop-pie.png",title="City population")
 

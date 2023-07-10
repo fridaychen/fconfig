@@ -63,6 +63,9 @@
   (when org-clock-current-task
     (org-clock-out)))
 
+(defun fc--org-book-size-thold ()
+  4096)
+
 (defun fc--org-book-info()
   "Return org book meta info."
 

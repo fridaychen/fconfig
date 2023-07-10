@@ -1754,8 +1754,14 @@ FUNC: new repeat func."
 
   (kill-buffer (current-buffer)))
 
-(defun fc-fill-region ()
+(defvar *fc-fill-region-fmt* "%d")
+
+(cl-defun fc-fill-region ()
   "Fill region."
+  (when *fc-ergo-prefix*
+    (setf *fc-fill-region-fmt* (read-string "New fill region format" *fc-fill-region-fmt*))
+    (cl-return-from fc-fill-region))
+
   (let* ((start (region-beginning))
          (start-line (fc-line-num (region-beginning)))
          (end-line (fc-line-num (region-end)))
@@ -1766,7 +1772,7 @@ FUNC: new repeat func."
 
     (cl-loop for i from start-line to end-line
              do
-             (insert (format "%d" line-num))
+             (insert (format *fc-fill-region-fmt* line-num))
              (forward-line 1)
              (cl-incf line-num)
              (move-to-column col t))))

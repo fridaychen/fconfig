@@ -61,10 +61,13 @@ PAIRS: replacement list."
     (save-excursion (fc--remove-empty-line))
     (save-excursion (whitespace-cleanup))))
 
+(defun fc--book-size-thold()
+  32768)
+
 (defun fc--book-p ()
   "Return t if this file is book."
   (and
-   (> (buffer-size) 32768)
+   (> (buffer-size) (fc-call-mode-func "book-size-thold" #'fc--book-size-thold))
    (when-let ((meta (fc-call-mode-func "book-info" nil)))
      (and
       (plist-get meta :title)
@@ -79,7 +82,10 @@ PAIRS: replacement list."
       (setf buffer-face-mode-face *fc-reading-face*)
       (buffer-face-mode 1))
 
-    (text-scale-set *fc-book-scale*)))
+    (text-scale-set *fc-book-scale*)
+
+    (fc-delay
+      (fc-viewer-toggle))))
 
 (cl-defun fc-book-fix-zh-single-qoute ()
   "Fix chinese apostrophe punctuation."

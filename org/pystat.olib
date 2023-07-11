@@ -3,21 +3,21 @@
 :END:
 
 #+NAME: stat
-#+BEGIN_SRC python :var delimiter="" :results replace table
+#+BEGIN_SRC python :var delim="" :var dfile="" :var precis=4 :results replace table
   import fmath.plot as fp
   import numpy as np
 
-  if delimiter == "":
-      delimiter = None
+  if delim == "":
+      delim = None
 
-  data = fp.loadtxt(datafile)
+  data = fp.loadtxt(dfile)
 
   return (
-      ("Min", np.amin(data)),
-      ("Max", np.amax(data)),
-      ("Mean", np.mean(data)),
-      ("Median", np.median(data)),
-      ("Std", np.std(data)),
-      ("Var", np.var(data)),
+      ("Min", round(np.amin(data), precis)),
+      ("Max", round(np.amax(data), precis)),
+      ("Mean", round(np.mean(data), precis)),
+      ("Median", round(np.median(data), precis)),
+      ("Std", round(np.std(data), precis)),
+      ("Var", round(np.var(data), precis)),
   )
 #+END_SRC

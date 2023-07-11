@@ -2,12 +2,12 @@
 #+startup: inlineimages
 :end:
 
-#+call: stat(datafile="test-data1.txt")
+#+call: stat(dfile="test-data1.txt", precis=3)
 
 #+RESULTS:
-| Min    |                0.0 |
-| Max    |                6.0 |
-| Mean   |             3.9449 |
-| Median |            4.78135 |
-| Std    | 1.8906255416528148 |
-| Var    |      3.57446493875 |
+| Min    |   0.0 |
+| Max    |   6.0 |
+| Mean   | 3.945 |
+| Median | 4.781 |
+| Std    | 1.891 |
+| Var    | 3.574 |

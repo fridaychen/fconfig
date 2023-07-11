@@ -61,13 +61,12 @@ PAIRS: replacement list."
     (save-excursion (fc--remove-empty-line))
     (save-excursion (whitespace-cleanup))))
 
-(defun fc--book-size-thold()
-  32768)
+(defvar *fc-book-size-thold* 32768)
 
 (defun fc--book-p ()
   "Return t if this file is book."
   (and
-   (> (buffer-size) (fc-call-mode-func "book-size-thold" #'fc--book-size-thold))
+   (> (buffer-size) (fc-call-mode-func "book-size-thold" '*fc-book-size-thold*))
    (when-let ((meta (fc-call-mode-func "book-info" nil)))
      (and
       (plist-get meta :title)

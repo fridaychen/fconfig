@@ -789,13 +789,22 @@ FORM: test form."
           rest)))
 
 (cl-defun fc-call-mode-func (suffix default &rest args)
-  (let* ((fsym (intern (format "fc--%s-%s"
-                               (s-chop-suffix "-mode"
-                                              (fc-string major-mode))
-                               suffix)))
-         (f (if (fboundp fsym) fsym default)))
-    (when f
-      (apply f args))))
+  (let* ((sym (intern (format "fc--%s-%s"
+                              (s-chop-suffix "-mode"
+                                             (fc-string major-mode))
+                              suffix))))
+    (cond
+     ((fboundp sym)
+      (apply sym args))
+
+     ((boundp sym)
+      (symbol-value sym))
+
+     ((and default (fboundp default))
+      (apply default args))
+
+     ((and default (boundp default))
+      (symbol-value default)))))
 
 (cl-defun fc-get-mode-var (suffix &optional default)
   (let* ((fsym (intern (format "*fc--%s-%s*"

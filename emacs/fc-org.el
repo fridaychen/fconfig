@@ -1192,6 +1192,11 @@ TEMPLATES: fconfig templates."
         (org-edit-src-abort)
       (org-edit-src-exit)))
 
+   ((string-equal "*Edit Formulas*" (buffer-name))
+    (if *fc-ergo-prefix*
+        (org-table-fedit-abort)
+      (org-table-fedit-finish)))
+
    ((equal major-mode 'org-mode)
     (org-edit-special))))
 

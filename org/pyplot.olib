@@ -18,15 +18,13 @@
 #+PROPERTY: header-args+ :var dtbl=""
 
 #+NAME: plot
-#+HEADER:  :var xdi="" :var ftbl=""
+#+HEADER:  :var xdi="" :var ftbl="" :var mgrid=""
 #+HEADER:  :var marker="" :var xrange=":,0" :var yrange=":,1:"
 #+BEGIN_SRC python :results file
   import fmath.plot as fp
   import numpy as np
 
-  f = fp.start_plot(
-      bg=bg, title=title, font=font, dpi=dpi, height=h, width=w
-  )
+  f = fp.start_plot(bg=bg, title=title, font=font, dpi=dpi, height=h, width=w)
   f.label(xlabel, ylabel)
 
   if dtbl != "":
@@ -47,6 +45,9 @@
       y = [n if n == "" else eval(n) for n in y]
 
       f.plotfs(xa, x, y)
+
+  if mgrid in ["true", "True", "t", "T", "yes", "YES", "y", "Y"]:
+      f.set_minor_grid()
 
   f.rotate_xtick(rot)
   f.save(output)

@@ -170,7 +170,7 @@ class FigureBase:
 
         return self
 
-    def scatter(self, x, y, label="", marker=""):
+    def scatter(self, x, y, label="", marker="s"):
         self.ref().scatter(x, y, label=label, marker=marker)
 
         if label != "":
@@ -243,14 +243,6 @@ class FigureBase:
 
     def plot3d(self, x, y, z, label="", marker=""):
         self.ref().plot(x, y, z, label=label, marker=marker, lw=1)
-
-        if label != "":
-            self.mark_legend()
-
-        return self
-
-    def scatter(self, x, y, label="", marker="s"):
-        self.ref().scatter(x, y, marker=marker, label=label)
 
         if label != "":
             self.mark_legend()

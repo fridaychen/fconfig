@@ -89,7 +89,7 @@ STR: chinese number string."
     (--first (gethash it map)
              '(han kana emoji))))
 
-(cl-defun fc-detect-buf-has-wide-char (&optional (buf (current-buffer)) (max 128))
+(cl-defun fc-detect-buf-has-wide-char (&optional (buf (current-buffer)) (max 512))
   (with-current-buffer buf
     (fc-detect-has-wide-char (buffer-substring 1 (min max (point-max))))))
 

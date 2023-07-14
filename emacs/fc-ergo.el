@@ -1650,7 +1650,8 @@ AUTO: auto select face."
                       :region (fc-decorate-region "$" "$")))
    ("%" fc-program)
    ("^" ,(fc-manual (join-line 1)))
-   ("&" ,(fc-manual (fc-set-window-width 0.66)))
+   ("&" ,(fc-cond-key :normal (fc-manual (fc-set-window-width 0.66))
+                      :prefix (fc-manual (fc-set-window-width 0.33))))
    ("*" google-this-search)
    ("(" ,(fc-cond-key :normal #'fc-previous-bookmark
                       :region (fc-decorate-region "(" ")")))

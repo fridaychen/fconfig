@@ -64,7 +64,12 @@
     :after (xclip-mode)))
 
 (defun fc--set-visual-line-mode ()
-  (visual-line-mode (if (fc-detect-buf-has-wide-char) -1 1)))
+  (let((has-wide-char (fc-detect-buf-has-wide-char)))
+    (if has-wide-char
+        (progn
+          (visual-line-mode -1)
+          (toggle-truncate-lines -1))
+      (visual-line-mode 1))))
 
 (defun fc--setup-line-spacing ()
   (setf line-spacing

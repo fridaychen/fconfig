@@ -63,13 +63,13 @@ class FigureBase:
 
         return self
 
-    def is3d(self, ax):
-        return ax.name == "3d"
-
     def set_ylim(self, bottom, top):
         self.ref().set_ylim(bottom, top)
 
         return self
+
+    def is3d(self, ax):
+        return ax.name == "3d"
 
     def save(self, fn):
         self.before_save()
@@ -89,12 +89,12 @@ class FigureBase:
         if axis == "both" or axis == "x":
             xmin, xmax = ax.get_xlim()
             if xmin <= 0 and xmax >= 0:
-                ax.axvline(0, color="#000000")
+                ax.axvline(0, color="#707070", lw=0.8, zorder=-1)
 
         if axis == "both" or axis == "y":
             ymin, ymax = ax.get_ylim()
             if ymin <= 0 and ymax >= 0:
-                ax.axhline(0, color="#000000")
+                ax.axhline(0, color="#707070", lw=0.8, zorder=-1)
 
     def axline(self, point, slope=None, color="#880000"):
         self.ref().axline(point, slope=slope, color=color, ls="-.", lw=0.5)
@@ -135,17 +135,17 @@ class FigureBase:
             )
             self.draw_origin_axis(ax, axis)
 
-    def plot(self, x, y, label="", marker=""):
+    def plot(self, x, y, label="", marker="", axis="both"):
         self.ref().plot(x, y, label=label, marker=marker, lw=1)
 
         if label != "":
             self.mark_legend()
 
-        self.mark_grid("both")
+        self.mark_grid(axis)
 
         return self
 
-    def plotf(self, x, func, label="", marker=""):
+    def plotf(self, x, func, label="", marker="", axis="both"):
         if callable(func):
             self.plot(
                 x,
@@ -153,11 +153,11 @@ class FigureBase:
                 label=label,
                 marker=marker,
             )
-            self.mark_grid("both")
+            self.mark_grid(axis)
 
         return self
 
-    def plotfs(self, x, labels, funcs, marker=""):
+    def plotfs(self, x, labels, funcs, marker="", axis="both"):
         for label, f in zip(labels, funcs):
             if callable(f):
                 self.plot(
@@ -166,17 +166,17 @@ class FigureBase:
                     label=label,
                     marker=marker,
                 )
-                self.mark_grid("both")
+                self.mark_grid(axis)
 
         return self
 
-    def scatter(self, x, y, label="", marker="s"):
+    def scatter(self, x, y, label="", marker="s", axis="both"):
         self.ref().scatter(x, y, label=label, marker=marker)
 
         if label != "":
             self.mark_legend()
 
-        self.mark_grid("both")
+        self.mark_grid(axis)
 
         return self
 

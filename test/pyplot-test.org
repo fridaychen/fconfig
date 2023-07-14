@@ -22,7 +22,7 @@
 #+call: plotbar(output="test-city-pop-bar.png",title="City population",dtbl=city-pop,h=60,w=100,rot=45)
 
 #+RESULTS:
-[[file:]]
+[[file:test-city-pop-bar.png]]
 
 #+call: plotpie(dtbl=city-pop, output="test-city-pop-pie.png",title="City population")
 
@@ -67,7 +67,7 @@
   data = fp.loadtxt("test-data2.txt")
 
   f = fp.easy_subplot(
-      "test-subplot.png",
+      "test-subplot2.png",
       [
           [
               lambda f: f.plotf(xa, lambda x: m.sin(x), label="sin").plotf(
@@ -84,11 +84,11 @@
       subtitles=["Fig 1", "Fig 2"],
   )
 
-  return "test-subplot.png"
+  return "test-subplot2.png"
 #+END_SRC
 
 #+RESULTS:
-[[file:test-subplot.png]]
+[[file:test-subplot2.png]]
 
 #+name: city-pops
 | city     | 2020 | 2021 | 2022 |

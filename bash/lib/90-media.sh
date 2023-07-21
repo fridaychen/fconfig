@@ -82,3 +82,7 @@ function fj-set-snd-sink {
         fzf |
         xargs pactl set-default-sink
 }
+
+function fc-media-convert {
+    ffmpeg -y -i "$1" "${1%.*}.$2"
+}

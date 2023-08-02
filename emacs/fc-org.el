@@ -157,6 +157,7 @@
                                       "cornsilk2"
                                     nil))
 
+  (plist-put org-format-latex-options :background "Transparent")
   (plist-put org-format-latex-options
              :foreground
              (fc-get-face-attribute 'font-lock-keyword-face :foreground)))

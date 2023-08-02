@@ -94,7 +94,7 @@ END: end of region."
            (add-hook 'c-mode-common-hook 'elide-head)
 
            (defun fc--c-setup ()
-             (c-toggle-electric-state 1)
+             (c-toggle-electric-state 0)
              (c-toggle-auto-newline 1)
              (c-toggle-hungry-state 1)
 

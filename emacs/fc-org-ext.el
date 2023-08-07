@@ -89,10 +89,10 @@
     (:exports . "results")
     (:tool    . "packetdiag")
     (:transparency . t)
-    (:antialias . nil)
+    (:antialias . t)
     (:font    . nil)
     (:size    . nil)
-    (:type    . "svg"))
+    (:type    . "png"))
   "Default arguments for drawing a packetdiag image.")
 
 (add-to-list 'org-src-lang-modes '("packetdiag" . blockdiag))

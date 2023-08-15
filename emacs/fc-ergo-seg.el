@@ -64,13 +64,15 @@
   (when-let* ((level-str (cdr (assq ?p (funcall battery-status-function))))
               (level (cl-parse-integer level-str))
               (icon (fc-battery-icon level)))
-    (fc-text (format (cond ((>= level 90)
-                            "%s ")
-                           ((>= level 30)
-                            "%s %d")
-                           (t
-                            "%s %d"))
-                     icon level))))
+    (list (fc-ml-icon icon :pos 'most-right)
+          (format (cond ((>= level 90)
+                         "")
+                        ((>= level 30)
+                         "%d")
+                        (t
+                         "%d"))
+                  level)
+          " ")))
 
 (when (and *has-battery* battery-status-function)
   (add-to-list '*fc-modeline-most-right-string* '(t (:eval (fc--battery-seg)))))
@@ -98,10 +100,12 @@
 (defun fc--player-seg ()
   "Return the player states."
   (when (and *is-gui* (fc--right-bottom-window-p) (fc--wide-window-p) *fc-player*)
-    (fc-text (pcase (fc-player--get-play-status *fc-player*)
-               ('Playing "⏸️")
-               ((or 'Paused 'Stopped) "▶️")
-               (_ ""))
+    (fc-text (fc-ml-icon
+              (pcase (fc-player--get-play-status *fc-player*)
+                ('Playing "⏸️")
+                ((or 'Paused 'Stopped) "▶️")
+                (_ ""))
+              :pos 'most-right)
              :tip '(fc--player-tip)
              :keys *fc--player-seg-keymap*)))
 

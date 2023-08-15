@@ -31,6 +31,20 @@
                          '(([mode-line mouse-1] counsel-imenu))
                          "fc-pos-keymap"))
 
+(cl-defun fc-ml-icon (text &key (pos 'center))
+  (let ((base-face (pcase pos
+                     ('most-right
+                      fc--modeline-hl-face)
+
+                     ((or 'left 'right)
+                      (fc--modeline-get-hl-face))
+
+                     (_
+                      (fc--modeline-base-face)))))
+    (fc-text text :face (list
+                         :height *fc-ml-icon-height*
+                         :inherit base-face))))
+
 (defun fc--active-window-p ()
   "Test if current window is active."
   (equal *fc-selected-window* (selected-window)))
@@ -98,12 +112,7 @@
   "The name of the major mode."
   (when (and *fc-enable-major-mode-seg*
              (fc--wide-window-p))
-    (fc-text-propertize
-     (fc-mode-name)
-     `(face ,(list :height *fc-ml-icon-height*
-                   :foreground (fc-color-complement
-                                (fc--modeline-base-face))))
-     :copy t)))
+    (fc-ml-icon (concat (fc-mode-name)))))
 
 (defvar-local *fc-buffer-title-seg* nil)
 
@@ -333,8 +342,7 @@
                               (format-mode-line *fc-modeline-most-right-string*)
                               `(face ,(list
                                        :background *fc-modeline-active-hl-bg*
-                                       :foreground *fc-modeline-active-hl-fg*
-                                       :height *fc-ml-icon-height*)))
+                                       :foreground *fc-modeline-active-hl-fg*)))
                            ""))
          (right-len (if (fboundp #'string-pixel-width)
                         (/ (+
@@ -392,7 +400,7 @@
                         :weight 'medium
                         :inherit 'mode-line))
 
-  (setf *fc-ml-icon-height* (round (* (fc-get-face-attribute 'mode-line :height) 0.9)))
+  (setf *fc-ml-icon-height* (round (* (fc-get-face-attribute 'mode-line :height) 0.7)))
 
   (set-face-attribute 'fc-modeline-icon-hl-face nil
                       :inherit 'fc-modeline-hl-face

@@ -21,4 +21,4 @@ fi
 
 touch ~/.emacs.d/abbrev_defs
 
-emacs --batch --eval "(progn (add-to-list 'load-path \"~/.emacs.d/fconfig\") (require 'fc-setup))"
+#emacs --batch --eval "(progn (add-to-list 'load-path \"~/.emacs.d/fconfig\") (require 'fc-setup))"

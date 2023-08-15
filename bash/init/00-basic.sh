@@ -1,9 +1,14 @@
 # -*- mode: sh; sh-shell: bash; -*-
 
+if [[ -d /opt/homebrew/bin ]]; then
+    export PATH=/opt/homebrew/bin:$PATH
+fi
+
 fc-add-path ~/.local/bin/ \
     ${FCHOME}/bin \
     /usr/local/go/bin \
-    ${HOME}/go/bin
+    ${HOME}/go/bin \
+    /opt/homebrew/bin
 
 case $(uname) in
     Darwin)

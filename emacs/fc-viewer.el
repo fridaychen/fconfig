@@ -42,14 +42,17 @@
 
 (defun fc--viewer-seg ()
   "Generate viewer state string."
-  (fc-text (list *fc--viewer-mark*
-                 (which-function))
-           :face `(:foreground ,(color-complement-hex
-                                 (fc-get-face-attribute (fc--modeline-base-face) :background))
-                               :inherit ,(fc--modeline-base-face))
-           :limit (- (window-width) 10)
-           :separator " :"
-           :keys *fc-buffer-id-keymap*))
+  (list
+   (fc-text *fc--viewer-mark*
+            :face `(:foreground ,(color-complement-hex
+                                  (fc-get-face-attribute (fc--modeline-base-face) :background))
+                                :height ,*fc-ml-icon-height*
+                                :inherit ,(fc--modeline-base-face))
+            :separator " :")
+   (fc-text
+    (substring-no-properties (which-function))
+    :limit (- (window-width) 10)
+    :keys *fc-buffer-id-keymap*)))
 
 (defun fc--viewer-enter ()
   "Enter viewer mode."

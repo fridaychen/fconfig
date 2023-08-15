@@ -28,6 +28,7 @@ case $(uname) in
             libreoffice
             libtiff
             libxml2
+            mactex
             make
             mpg123
             most

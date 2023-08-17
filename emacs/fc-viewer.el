@@ -43,12 +43,7 @@
 (defun fc--viewer-seg ()
   "Generate viewer state string."
   (list
-   (fc-text *fc--viewer-mark*
-            :face `(:foreground ,(color-complement-hex
-                                  (fc-get-face-attribute (fc--modeline-base-face) :background))
-                                :height ,*fc-ml-icon-height*
-                                :inherit ,(fc--modeline-base-face))
-            :separator " :")
+   *fc--viewer-mark*
    (fc-text
     (substring-no-properties (which-function))
     :limit (- (window-width) 10)

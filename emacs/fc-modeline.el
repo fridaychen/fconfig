@@ -8,8 +8,6 @@
 (require 'cl-lib)
 (require 'fc-modeline-separator)
 
-(defvar *fc-ml-icon-height* *fc-font-height*)
-
 (defvar *fc-modeline-active-hl-bg* "#FEBA07")
 (defvar *fc-modeline-active-hl-fg* "#1E3124")
 (defvar *fc-modeline-dark-active-hl-bg* "#887322")
@@ -30,20 +28,6 @@
 (defvar *fc-pos-keymap* (fc-make-keymap
                          '(([mode-line mouse-1] counsel-imenu))
                          "fc-pos-keymap"))
-
-(cl-defun fc-ml-icon (text &key (pos 'center))
-  (let ((base-face (pcase pos
-                     ('most-right
-                      fc--modeline-hl-face)
-
-                     ((or 'left 'right)
-                      (fc--modeline-get-hl-face))
-
-                     (_
-                      (fc--modeline-base-face)))))
-    (fc-text text :face (list
-                         :height *fc-ml-icon-height*
-                         :inherit base-face))))
 
 (defun fc--active-window-p ()
   "Test if current window is active."
@@ -112,7 +96,7 @@
   "The name of the major mode."
   (when (and *fc-enable-major-mode-seg*
              (fc--wide-window-p))
-    (fc-ml-icon (concat (fc-mode-name)))))
+    (concat (fc-mode-name))))
 
 (defvar-local *fc-buffer-title-seg* nil)
 
@@ -376,9 +360,6 @@
   (unless (facep 'fc-modeline-hl-face)
     (make-face 'fc-modeline-hl-face))
 
-  (unless (facep 'fc-modeline-icon-hl-face)
-    (make-face 'fc-modeline-icon-hl-face))
-
   (unless (facep 'fc-modeline-hl-inactive-face)
     (make-face 'fc-modeline-hl-inactive-face))
 
@@ -399,12 +380,6 @@
                         :background fg
                         :weight 'medium
                         :inherit 'mode-line))
-
-  (setf *fc-ml-icon-height* (round (* (fc-get-face-attribute 'mode-line :height) 0.7)))
-
-  (set-face-attribute 'fc-modeline-icon-hl-face nil
-                      :inherit 'fc-modeline-hl-face
-                      :height *fc-ml-icon-height*)
 
   (fc-ml-sep-reset)
 

@@ -63,6 +63,11 @@
   '((:family "Sarasa Mono Slab SC")
     ))
 
+(setq face-font-rescale-alist
+      (append face-font-rescale-alist
+              (list (cons "Noto Color Emoji" 0.75)
+                    (cons "Apple Color Emoji" 0.75))))
+
 ;; sounds
 (defconst *fc-sounds* '((welcome "startrek.mp3")
                         (incoming "incomingmsg.mp3")

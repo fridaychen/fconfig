@@ -10,6 +10,7 @@ case $(uname) in
             autoconf
             automake
             bash
+            bat
             bc
             bear
             cmake

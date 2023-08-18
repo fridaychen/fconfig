@@ -33,7 +33,7 @@ setup-go:
 	@bash/setup/setup-go.sh
 
 setup-python:
-	@cd python; python3 setup.py egg_info; pip3 install -r fconfig.egg-info/requires.txt
+	@cd python; python3 setup.py egg_info; pip3 install --break-system-packages -r fconfig.egg-info/requires.txt
 
 setup-nvim:
 	@bash/setup/setup-nvim.sh

@@ -45,7 +45,7 @@
   (list
    *fc--viewer-mark*
    (fc-text
-    (substring-no-properties (which-function))
+    (substring-no-properties (or (which-function) ""))
     :limit (- (window-width) 10)
     :keys *fc-buffer-id-keymap*)))
 

@@ -343,6 +343,18 @@ open('%s', 'w').write( str(main()) )")
                   (flag (fc-bool (fc--org-get-file-property "AUTOINGEST"))))
         (org-babel-lob-ingest buffer-file-name)))
 
+    (defun fc--org-babel-execute-src-block (&optional orig-fun arg info &rest params)
+      (when-let ((path (cdr (assoc :file (nth 2 (or info (org-babel-get-src-block-info)))))))
+        (when (and (or (string-prefix-p "output/" path)
+                       (string-prefix-p "./output/" path))
+                   (not (fc-dir-exists-p "output")))
+          (mkdir "output")))
+
+      (apply orig-fun arg info params))
+
+    (advice-add 'org-babel-execute-src-block
+                :around 'fc--org-babel-execute-src-block)
+
     (add-hook 'org-capture-mode-hook #'fc--capture-edit)
     (add-hook 'org-capture-mode-hook #'fc--capture-copy-region)
     (add-hook 'org-capture-mode-hook #'fc--capture-tag)

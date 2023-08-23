@@ -1,0 +1,9 @@
+#+SETUPFILE: ~/fconfig/org/fc.org
+
+#+EXPORT_EXCLUDE_TAGS: noexport
+
+#+STARTUP: inlineimages
+#+STARTUP: latexpreview
+
+#+AUTHOR:
+#+EMAIL:

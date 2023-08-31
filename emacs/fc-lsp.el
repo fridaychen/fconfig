@@ -44,7 +44,11 @@
 ;; (fc-load 'eglot
 ;;   :local t
 ;;   :after (progn
-;;            (setf *fc-lsp-enable* nil)))
+;;            (setf *fc-lsp-enable* nil)
+
+;;            (defun fc--lsp-enable ()
+;;              (eglot--managed-mode))
+;;            ))
 
 (fc-load 'lsp-mode
   :enable *fc-lsp-enable*

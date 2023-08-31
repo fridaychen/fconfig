@@ -67,7 +67,8 @@
            ("r" dired-do-find-regexp-and-replace)
            ("s" fc-dired-sort)
            ("p" fc-dired-preview-file)
-           ("w" wdired-change-to-wdired-mode)
+           ("w" ,(fc-manuals #'wdired-change-to-wdired-mode
+                             #'fc-modal-enable))
            ("D" fc-kill-current-buffer)
            ("N" make-directory)
            (";" fc-fast-switch-window)

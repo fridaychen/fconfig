@@ -9,7 +9,7 @@
                     '(
                       (mhtml-mode ("tidy" "-utf8" "-upper" "-indent" "-quiet") nil)
                       (nxml-mode ("tidy" "-xml" "-utf8" "-indent" "-quiet") nil)
-                      (sh-mode ("shfmt" "-ci" "-i" "4") nil))))
+                      (sh-mode ("shfmt" "-ln" "bash" "-kp" "-sr" "-ci" "-i" "4") nil))))
 
 (defconst *fc-fmt-verbose* nil)
 

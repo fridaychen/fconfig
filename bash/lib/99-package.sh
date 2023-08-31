@@ -1,4 +1,4 @@
-function pkg_list_installed {
+function pkg-list-installed {
     case $FC_DISTRO in
         arch)
             pacman -Qe
@@ -9,7 +9,7 @@ function pkg_list_installed {
     esac
 }
 
-function pkg_list {
+function pkg-list {
     case $FC_DISTRO in
         arch)
             pacman -Ql $* | cut -f2- -d' '
@@ -20,7 +20,7 @@ function pkg_list {
     esac
 }
 
-function pkg_info {
+function pkg-info {
     case $FC_DISTRO in
         arch)
             pacman -Qi $*
@@ -31,7 +31,7 @@ function pkg_info {
     esac
 }
 
-function pkg_search {
+function pkg-search {
     case $FC_DISTRO in
         arch)
             pacman -Ss $*

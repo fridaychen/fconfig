@@ -71,8 +71,8 @@
 
  (*is-mac*
   (fc-add-to-list 'face-font-rescale-alist
-                  (cons "Symbols Nerd Font Mono" 0.75)
-                  (cons "Apple Color Emoji" 0.75))))
+                  (cons "Symbols Nerd Font Mono" 0.9)
+                  (cons "Apple Color Emoji" 0.8))))
 
 ;; sounds
 (defconst *fc-sounds* '((welcome "startrek.mp3")

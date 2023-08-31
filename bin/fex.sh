@@ -3,7 +3,7 @@
 VERBOSE=:
 
 function usage {
-    cat <<-EOF
+    cat <<- EOF
 Usage:  ${0##*/} [OPTION] package-files
     Extract packages into current directory.
 
@@ -32,10 +32,7 @@ function extract {
         gz)
             gzip -d "$1"
             ;;
-        rar)
-            unrar x "$1" || unar "$1"
-            ;;
-        zip | 7z)
+        rar | zip | 7z)
             7z x "$1"
             ;;
         *)

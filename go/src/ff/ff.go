@@ -448,7 +448,7 @@ func parseArg() {
 }
 
 func setupEnv() {
-	if *rootArg {
+	if *rootArg || *rootPathArg != "" {
 		if *rootPathArg == "" {
 			if err := fc.ChdirProjRoot(); err != nil {
 				log.Print(err)

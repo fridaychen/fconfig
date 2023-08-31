@@ -23,7 +23,7 @@ function fjf {
 function fzf-run {
     local cmd="${@}"
 
-    [[ ! ${cmd} == "*{}*" ]] && cmd="${cmd} {}"
+    [[ ! ${cmd} == *"{}"* ]] && cmd="${cmd} {}"
 
     fzf --ansi |
         $XARGS --no-run-if-empty \

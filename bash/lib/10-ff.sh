@@ -29,3 +29,11 @@ function ff-run-loop {
         sort -h |
         fzf-run-loop "$@"
 }
+
+function ff-pick {
+    local rp=${1}
+    shift
+
+    eval "ff -color -rp ${rp} $*" |
+        fzf-run "echo ${rp}/{}"
+}

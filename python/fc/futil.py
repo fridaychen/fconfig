@@ -1,3 +1,4 @@
+import dbus
 import functools
 from fuzzywuzzy import fuzz
 import os
@@ -183,3 +184,13 @@ def get_proj_root(git=False):
     if git and recent_git is not None:
         return recent_git
     return None
+
+
+def network_connected():
+    proxy = dbus.SystemBus().get_object(
+        "org.freedesktop.NetworkManager", "/org/freedesktop/NetworkManager"
+    )
+
+    return 70 == dbus.Interface(proxy, "org.freedesktop.DBus.Properties").Get(
+        "org.freedesktop.NetworkManager", "State"
+    )

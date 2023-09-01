@@ -18,11 +18,15 @@ def sdcard_prog(filename, dev):
             ".gz": "gzip -d -c %s",
             ".bz2": "bzip2 -d -c %s",
             ".7z": "7z x -so %s",
+            ".xz": "xz -d -c %s",
         }
 
         if ext in uncompress_cmd:
             os.system(
-                (uncompress_cmd[ext] + " | sudo dd of=%s bs=1M status=progress")
+                (
+                    uncompress_cmd[ext]
+                    + " | sudo dd of=%s bs=1M status=progress"
+                )
                 % (shlex.quote(filename), dev)
             )
         else:

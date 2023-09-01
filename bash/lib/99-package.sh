@@ -41,3 +41,25 @@ function pkg-search {
             ;;
     esac
 }
+
+function pkg-add {
+    case $FC_DISTRO in
+        arch)
+            sudo pacman -S $*
+            ;;
+        raspbian | ubuntu)
+            sudo apt install $*
+            ;;
+    esac
+}
+
+function pkg-del {
+    case $FC_DISTRO in
+        arch)
+            sudo pacman -R $*
+            ;;
+        raspbian | ubuntu)
+            sudo apt remove $*
+            ;;
+    esac
+}

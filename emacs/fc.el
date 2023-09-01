@@ -65,6 +65,8 @@
 (when *is-gui*
   (fc-setup-font))
 
+(fc-add-env-path (expand-file-name "~/.emacs.d/site/python/bin") t)
+
 (fc-add-env-path (concat (getenv "FCHOME") "/python") nil "PYTHONPATH")
 (fc-add-env-path (expand-file-name "~/.local/bin") nil "PATH")
 

@@ -12,7 +12,7 @@ if [[ ! -f ~/.emacs.d/init.el ]]; then
     cat ${FCHOME}/emacs/sample-init.el |
         sed -e s\@\${FCHOME}@${FCHOME}@ \
             -e s\@\${PYTHONPATH}@${PYTHONPATH}@ \
-            >~/.emacs.d/init.el
+            > ~/.emacs.d/init.el
 fi
 
 if [[ ! -d ~/org/roam ]]; then
@@ -20,5 +20,12 @@ if [[ ! -d ~/org/roam ]]; then
 fi
 
 touch ~/.emacs.d/abbrev_defs
+
+# setup python venv
+mkdir -p ~/.emacs.d/site/python
+python3 -m venv ~/.emacs.d/site/python
+~/.emacs.d/site/python/bin/pip3 install flake8
+~/.emacs.d/site/python/bin/pip3 install python-lsp-server
+~/.emacs.d/site/python/bin/pip3 install black
 
 #emacs --batch --eval "(progn (add-to-list 'load-path \"~/.emacs.d/fconfig\") (require 'fc-setup))"

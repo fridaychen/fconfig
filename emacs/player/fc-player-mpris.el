@@ -15,17 +15,17 @@
          :type list)))
 
 (cl-defun fc-player-dbus-cb (x prop value)
-  (pcase (intern prop)
-    ('PlaybackStatus
-     (oset x play-state (intern (car value))))
-
-    ('Volume
-     (oset *fc-player* volume (round (* (car value) 100))))
-
-    ('Metadata
-     (oset *fc-player* meta (car value))))
-
   (when (eq x *fc-player*)
+    (pcase (intern prop)
+      ('PlaybackStatus
+       (oset x play-state (intern (car value))))
+
+      ('Volume
+       (oset *fc-player* volume (round (* (car value) 100))))
+
+      ('Metadata
+       (oset *fc-player* meta (car value))))
+
     (run-hooks '*fc-player-hook*)))
 
 (cl-defmethod initialize-instance :after ((x fc-player-mpris) &rest args)

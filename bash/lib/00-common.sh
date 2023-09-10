@@ -10,9 +10,13 @@ function fc-run-drop-in {
     local dir=$1
     local pattern=$2
 
-    for x in $(ls $1/$2 | sort -n); do
+    cd $dir
+
+    for x in $(ls $2 | sort -n); do
         [[ -r $x ]] && source "$x"
     done
+
+    cd $OLDPWD
 }
 
 # enable interpretation alias

@@ -91,7 +91,7 @@
   (when (derived-mode-p 'prog-mode)
     (ligature-mode)
     (fc-delay
-      (color-identifiers-mode)))
+      (color-identifiers-mode-maybe)))
 
   (fc--setup-line-spacing)
   ;; hightlight ending whitespace
@@ -181,8 +181,7 @@
   :after (progn
            (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)))
 
-(fc-load 'color-identifiers-mode
-  :autoload t)
+(fc-load 'color-identifiers-mode)
 
 (fc-load 'which-func
   :local t

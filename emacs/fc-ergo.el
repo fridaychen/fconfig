@@ -1008,9 +1008,11 @@ KEYMAP: keymap to run."
      ("t" text-mode)
      ("u" ,(fc-cond-key :normal 'upcase-word
                         :region 'upcase-region))
+
+     ("T" toggle-truncate-lines)
      )
    "ergo-basic-map")
-  "KEYS c: capitalize  l: downcase  m: merge  p: copy path  t: text mode  u: upcase.")
+  "KEYS c: capitalize  l: downcase  m: merge  p: copy path  t: text mode  u: upcase  T: trunc.")
 
 (defconst *ergo-goto-map*
   (fc-make-keymap

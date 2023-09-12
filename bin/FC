@@ -1,4 +1,15 @@
 #!/bin/bash
 
+case $(uname) in
+    Darwin) ;;
+
+    Linux)
+        export FC_DISTRO=$(
+            . /etc/os-release
+            echo $ID
+        )
+        ;;
+esac
+
 source $FCHOME/bash/lib.sh
 source $FCHOME/bash/init.sh

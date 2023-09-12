@@ -1,25 +1,25 @@
 # -*- mode: sh; sh-shell: bash; -*-
 
-function pkg-list-installed {
+function fpm-list-installed {
     pacman -Qe
 }
 
-function pkg-list {
+function fpm-list {
     pacman -Ql $* | cut -f2- -d' '
 }
 
-function pkg-info {
+function fpm-info {
     pacman -Qi $*
 }
 
-function pkg-search {
+function fpm-search {
     pacman -Ss $*
 }
 
-function pkg-add {
+function fpm-add {
     sudo pacman -S $*
 }
 
-function pkg-del {
+function fpm-del {
     sudo pacman -R $*
 }

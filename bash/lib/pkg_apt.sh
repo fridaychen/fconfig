@@ -1,25 +1,25 @@
 # -*- mode: sh; sh-shell: bash; -*-
 
-function pkg-list-installed {
+function fpm-list-installed {
     apt list --installed
 }
 
-function pkg-list {
+function fpm-list {
     dpkg -L $*
 }
 
-function pkg-info {
+function fpm-info {
     apt info $*
 }
 
-function pkg-search {
+function fpm-search {
     apt search $*
 }
 
-function pkg-add {
+function fpm-add {
     sudo apt install $*
 }
 
-function pkg-del {
+function fpm-del {
     sudo apt remove $*
 }

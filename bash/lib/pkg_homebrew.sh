@@ -1,25 +1,25 @@
 # -*- mode: sh; sh-shell: bash; -*-
 
-function pkg-list-installed {
+function fpm-list-installed {
     brew list
 }
 
-function pkg-list {
+function fpm-list {
     true
 }
 
-function pkg-info {
+function fpm-info {
     brew info $*
 }
 
-function pkg-search {
+function fpm-search {
     brew search $*
 }
 
-function pkg-add {
+function fpm-add {
     brew install $*
 }
 
-function pkg-del {
+function fpm-del {
     brew uninstall $*
 }

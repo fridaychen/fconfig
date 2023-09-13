@@ -181,7 +181,8 @@
   :after (progn
            (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)))
 
-(fc-load 'color-identifiers-mode)
+(fc-load 'color-identifiers-mode
+  :after (add-hook '*fc-after-theme-hook* #'color-identifiers:regenerate-colors))
 
 (fc-load 'which-func
   :local t

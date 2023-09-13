@@ -94,6 +94,18 @@ DEFAULT: default function."
                               :mouse mouse)
               :default default))
 
+(cl-defun fc-user-select-color (prompt colors)
+  (let ((color (fc-user-select
+                prompt
+                (cl-loop for x in colors
+                         collect
+                         (cons (fc-text x
+                                        :face (list :foreground "black"
+                                                    :background x))
+                               x)))))
+    (when (color-defined-p color)
+      color)))
+
 ;; UI yes-or-no
 (cl-defun fc-user-confirm (prompt &optional (default-ans t))
   "Ask user 'y or n' question.

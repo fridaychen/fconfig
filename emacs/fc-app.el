@@ -960,46 +960,42 @@ REST: commands."
 
 (cl-defun fc-select-bg-color ()
   "Select background color."
-  (let ((bg (fc-user-select "Background color"
-                            '(
-                              ("NIL" . nil)
-                              ("beige" . "beige")
-                              ("bisque" .  "bisque")
-                              ("blanched almond" . "blanched almond")
-                              ("cornsilk1" . "cornsilk1")
-                              ("cornsilk2" . "cornsilk2")
-                              ("cornsilk3" . "cornsilk3")
-                              ("darkslategrey" . "darkslategrey")
-                              ("linen" . "linen")
-                              ("light lime green" . "#C1E6C6")))))
-    (when (or (not bg)
-              (color-defined-p bg))
-      (setf *fc-common-light-theme-bg* bg)))
+  (setf *fc-common-light-theme-bg*
+        (fc-user-select-color "Background color"
+                              '(
+                                "beige"
+                                "bisque"
+                                "blanched almond"
+                                "cornsilk1"
+                                "cornsilk2"
+                                "cornsilk3"
+                                "darkslategrey"
+                                "linen"
+                                "#C1E6C6")))
 
   (fc-reset-theme))
 
 (cl-defun fc-select-fg-color ()
   "Select foreground color."
-  (let ((fg (fc-user-select "Foreground color"
-                            '(
-                              ("black"  . "black")
-                              ("cornsilk" . "cornsilk")
-                              ("DarkSeaGreen1" . "DarkSeaGreen1")
-                              ("DarkSeaGreen3" . "DarkSeaGreen3")
-                              ("gray95" . "gray95")
-                              ("gray90" . "gray90")
-                              ("gray80" . "gray80")
-                              ("gray70" . "gray70")
-                              ("gray60" . "gray60")
-                              ("lemon" . "LemonChiffon")
-                              ("navajo white" . "navajo white")
-                              ("pale goldenrod" . "PaleGoldenrod")
-                              ("pale green" . "PaleGreen")
-                              ("wheat" . "wheat")
-                              ("white" . "white")
-                              ))))
-
-    (fc-set-face-attribute 'default nil :foreground fg)))
+  (fc-set-face-attribute
+   'default nil
+   :foreground
+   (fc-user-select-color "Foreground color"
+                         '("black"
+                           "cornsilk"
+                           "DarkSeaGreen1"
+                           "DarkSeaGreen3"
+                           "gray95"
+                           "gray90"
+                           "gray80"
+                           "gray70"
+                           "gray60"
+                           "LemonChiffon"
+                           "navajo white"
+                           "pale goldenrod"
+                           "pale green"
+                           "wheat"
+                           "white"))))
 
 ;; theme
 (cl-defun fc-select-theme ()

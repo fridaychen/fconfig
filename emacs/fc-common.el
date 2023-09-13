@@ -280,7 +280,7 @@ COLOR: background color."
          (fc-set-face-attribute 'fringe nil
                                 :background monokai-orange)
          (fc-set-face-attribute 'default nil
-                                :foreground "gray86"
+                                :foreground "wheat"
                                 :background "#282a3a")))
 
       ('monokai-pro
@@ -343,6 +343,8 @@ COLOR: background color."
                               :background (cdr
                                            (assoc-string "zenburn-orange"
                                                          zenburn-default-colors-alist)))
+       (fc-set-face-attribute 'default nil
+                              :foreground "wheat")
        (fc-set-face-attribute 'hl-line nil
                               :background (cond (*is-gui* "#505050")
                                                 (*is-colorful* "#505050")

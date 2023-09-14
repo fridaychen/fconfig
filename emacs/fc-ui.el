@@ -99,10 +99,17 @@ DEFAULT: default function."
                 prompt
                 (cl-loop for x in colors
                          collect
-                         (cons (fc-text x
-                                        :face (list :foreground "black"
-                                                    :background x))
-                               x)))))
+                         (cons
+                          (concat
+                           (fc-text
+                            x
+                            :face `(:foreground "black" :background ,x))
+                           " "
+                           (fc-text
+                            x
+                            :face `(:foreground ,x :background "black"))
+                           )
+                          x)))))
     (when (color-defined-p color)
       color)))
 

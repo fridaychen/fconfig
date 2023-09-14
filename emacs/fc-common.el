@@ -326,9 +326,11 @@ COLOR: background color."
 
       ('tango-dark
        (fc-set-face-attribute 'default nil
+                              :foreground "wheat"
                               :background "#203420")
        (fc-set-face-attribute 'mode-line nil
-                              :background "gray63")
+                              :foreground "black"
+                              :background "cornsilk3")
        (fc-set-face-attribute 'hl-line nil
                               :foreground "LightPink2"
                               :background "gray30"))

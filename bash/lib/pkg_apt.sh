@@ -23,3 +23,7 @@ function fpm-add {
 function fpm-del {
     sudo apt remove $*
 }
+
+function fpm-search-file {
+    dpkg -S $*
+}

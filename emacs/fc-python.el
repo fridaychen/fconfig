@@ -9,6 +9,7 @@
 (fc-load 'python-mode
   :after (progn
            (fc-add-mode-name 'python-mode "🐍")
+           (setf py-comment-fill-column 94)
 
            (require 'python)
            (fc-add-fmt 'python-mode

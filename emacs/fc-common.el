@@ -170,7 +170,7 @@ COLOR: background color."
 
 (defconst *fc-soothe-color* (make-hash-table))
 (--each '((material "gray20")
-          (tango-dark "gray23"))
+          (tango-dark "gray21"))
   (puthash (cl-first it) (cl-second it) *fc-soothe-color*))
 
 (defun fc-patch-theme ()
@@ -326,13 +326,11 @@ COLOR: background color."
 
       ('tango-dark
        (fc-set-face-attribute 'default nil
-                              :foreground "wheat"
-                              :background "#203420")
+                              :foreground "wheat")
        (fc-set-face-attribute 'mode-line nil
                               :foreground "black"
-                              :background "cornsilk3")
+                              :background "cornsilk4")
        (fc-set-face-attribute 'hl-line nil
-                              :foreground "LightPink2"
                               :background "gray30"))
 
       ('zenburn

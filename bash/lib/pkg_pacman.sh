@@ -23,3 +23,7 @@ function fpm-add {
 function fpm-del {
     sudo pacman -R $*
 }
+
+function fpm-search-file {
+    pacman -F $*
+}

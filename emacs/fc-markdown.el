@@ -13,6 +13,18 @@
         :author (fc-search "author: \\(.+\\)" :begin t :sub 1 :bound 128)
         :date (fc-search "date: \\(.+\\)" :begin t :sub 1 :bound 128)))
 
+(cl-defun fc--markdown-theme-changed ()
+  (when-let ((has-face (facep 'markdown-header-delimiter-face))
+             (no-color (not (color-defined-p (face-attribute
+                                              'markdown-header-delimiter-face
+                                              :foreground))))
+             (fg (fc-get-face-attribute 'font-lock-keyword-face
+                                        :foreground)))
+    (fc-set-face-attribute 'markdown-header-delimiter-face nil
+                           :foreground fg)))
+
+(add-hook '*fc-after-theme-hook* #'fc--markdown-theme-changed)
+
 (fc-load 'markdown-mode
   :after
   (progn

@@ -23,3 +23,9 @@ function fpm-add {
 function fpm-del {
     brew uninstall $*
 }
+
+function fpm-update {
+    brew update
+    brew upgrade
+    brew cleaniup
+}

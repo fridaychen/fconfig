@@ -27,3 +27,7 @@ function fpm-del {
 function fpm-search-file {
     pacman -F $*
 }
+
+function fpm-update {
+    sudo pacman -Syu
+}

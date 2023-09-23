@@ -27,3 +27,8 @@ function fpm-del {
 function fpm-search-file {
     dpkg -S $*
 }
+
+function fpm-update {
+    sudo apt update
+    sudo apt upgrade
+}

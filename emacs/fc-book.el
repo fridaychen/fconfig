@@ -70,8 +70,7 @@ PAIRS: replacement list."
    (when-let ((meta (fc-call-mode-func "book-info" nil)))
      (and
       (plist-get meta :title)
-      (plist-get meta :author)
-      (plist-get meta :date)))))
+      (plist-get meta :author)))))
 
 (defun fc--book-setup ()
   "Setup current buffer for book."

@@ -52,7 +52,7 @@ ARGS: arguments for the command."
     (apply #'call-process (if (string-prefix-p "~" command)
                               (expand-file-name command)
                             command)
-           nil 0 nil args)))
+           nil 0 nil (-flatten args))))
 
 (defun fc-exec-command-in-term (command)
   "Exec shell command.

@@ -158,7 +158,7 @@ REST: functions."
       (advice-add it :around *fc-layout-spotlight-around-advice*))))
 
 ;; Predefined Window Layout
-(defconst *fc-buf-info-regex* "\\*\\(ggtags-global\\|help\\|info\\|vc-diff\\)\\*\\|\\*Man.*\\|\\magit-\\(diff\\|log\\|revision\\)")
+(defconst *fc-buf-info-regex* "\\*\\(ggtags-global\\|help\\|info\\|vc-diff\\)\\*\\|\\*Man.*\\|\\magit-\\(diff\\|log\\|revision\\)\\|\\*fc-format-error\\*")
 (defconst *fc-buf-shell-regex* "\\*eshell\\*")
 (defconst *fc-buf-state-regex* "\\*fc-dict-buffer\\*")
 

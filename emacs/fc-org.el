@@ -711,6 +711,7 @@ LANG: language."
       ("Publish"                        . fc--org-publish)
       ("Publish to html"		. org-html-export-to-html)
       ("Publish to markdown"		. org-md-export-to-markdown)
+      ("Publish to epub"                . fc--org-publish-epub)
       ("Redisplay inline image"		. org-redisplay-inline-images)
       ("Update dblock"			. org-update-all-dblocks)
       ("Update source block"		. org-babel-execute-buffer)
@@ -1271,6 +1272,18 @@ LANG: language of babel."
             ("org" :components ("org-notes" "org-static"))))
 
     (org-publish-current-project)))
+
+(cl-defun fc--org-publish-epub()
+  (let ((file (buffer-file-name))
+        (img (read-file-name-default "Cover image"))
+        (epub (read-file-name-default "Epub file"))
+        )
+    (fc-exec-command
+     "pandoc"
+     file
+     (when img
+       (list "--epub-cover-image" img))
+     (list "-o" epub))))
 
 (fc-idle-delay
   (--each

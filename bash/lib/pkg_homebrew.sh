@@ -1,10 +1,10 @@
 # -*- mode: sh; sh-shell: bash; -*-
 
-function fpm-list-installed {
+function fpm-list {
     brew list
 }
 
-function fpm-list {
+function fpm-dump {
     true
 }
 

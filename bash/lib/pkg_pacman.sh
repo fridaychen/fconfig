@@ -1,10 +1,10 @@
 # -*- mode: sh; sh-shell: bash; -*-
 
-function fpm-list-installed {
+function fpm-list {
     pacman -Qe
 }
 
-function fpm-list {
+function fpm-dump {
     pacman -Ql $* | cut -f2- -d' '
 }
 

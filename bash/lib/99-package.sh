@@ -17,3 +17,12 @@ case $(uname) in
         esac
         ;;
 esac
+
+function fpm-help {
+    echo "fpm-list   :: list installed packges"
+    echo "fpm-add    :: install package"
+    echo "fpm-del    :: uninstall package"
+    echo "fpm-search :: search package"
+    echo "fpm-update :: update packages"
+    echo "fpm-dump   :: dump contents of a package"
+}

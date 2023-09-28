@@ -27,5 +27,5 @@ function fpm-del {
 function fpm-update {
     brew update
     brew upgrade
-    brew cleaniup
+    brew cleanup
 }

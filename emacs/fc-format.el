@@ -7,7 +7,7 @@
 
 (defconst *fc-fmt* (fc-make-hash-table
                     '(
-                      (mhtml-mode ("tidy" "-utf8" "-upper" "-indent" "-quiet") nil)
+                      (mhtml-mode ("tidy" "-utf8" "-indent" "-quiet" "--tidy-mark" "no" "-w" "120") nil)
                       (nxml-mode ("tidy" "-xml" "-utf8" "-indent" "-quiet") nil)
                       (sh-mode ("shfmt" "-ln" "bash" "-kp" "-sr" "-ci" "-i" "4") nil))))
 

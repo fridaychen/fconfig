@@ -117,6 +117,8 @@
 (global-eldoc-mode -1)
 (add-hook 'prog-mode-hook #'eldoc-mode)
 
+(setq-default indent-tabs-mode nil)
+
 (fc-load 'recentf
   :local t
   :autoload t

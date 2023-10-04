@@ -84,7 +84,6 @@ END: end of region."
            (setf c-default-style '((java-mode . "java")
                                    (awk-mode . "awk")
                                    (other . "linux")))
-           (setq-default indent-tabs-mode t)
 
            (--each (list c-mode-map c++-mode-map objc-mode-map java-mode-map)
              (fc-unbind-keys '("M-i" "M-j" "M-k" "M-l" "M-C-i" "M-C-j" "M-C-k" "M-C-l") it)

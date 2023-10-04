@@ -33,6 +33,7 @@
                             (gnuplot-mode . "🧮")
                             (grep-mode . "🔎")
                             (help-mode . "ℹ️")
+                            (html-mode . "🕸️")
                             (image-mode . "🎨")
                             (Info-mode . "ℹ️")
                             (java-mode . "☕")

@@ -9,6 +9,7 @@
                     '(
                       (mhtml-mode ("tidy" "-utf8" "-indent" "-quiet" "--tidy-mark" "no" "-w" "120") nil)
                       (nxml-mode ("tidy" "-xml" "-utf8" "-indent" "-quiet") nil)
+                      (css-mode nil fc--default-fmt-with-indent)
                       (sh-mode ("shfmt" "-ln" "bash" "-kp" "-sr" "-ci" "-i" "4") nil))))
 
 (defconst *fc-fmt-verbose* nil)

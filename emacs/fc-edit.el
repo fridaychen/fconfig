@@ -217,6 +217,17 @@
   :bind '((gnuplot-mode-map
            ("TAB" fc-tab-key))))
 
+(fc-load 'fish-mode
+  :after
+  (progn
+    (setf fish-enable-auto-indent t)
+
+    (fc-add-mode-name 'fish-mode "🐟")
+
+    (add-hook 'fish-mode-hook
+              (lambda ()
+                (add-hook 'before-save-hook 'fish_indent-before-save)))))
+
 (provide 'fc-edit)
 
 ;; Local Variables:

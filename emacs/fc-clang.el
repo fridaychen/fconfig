@@ -97,6 +97,10 @@ END: end of region."
              (c-toggle-auto-newline 1)
              (c-toggle-hungry-state 1)
 
+             (setf indent-tabs-mode nil
+                   c-basic-offset 4
+                   tab-width 4)
+
              (--each '("FIXME:" "TODO:" "ToDo:" "MEMO:"
                        "FIXME :" "TODO :" "MEMO :")
                (highlight-phrase it)))

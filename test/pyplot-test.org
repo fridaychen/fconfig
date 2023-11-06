@@ -90,12 +90,14 @@
 #+RESULTS:
 [[file:test-subplot2.png]]
 
+#+begin_table
 #+name: city-pops
 | city     | 2020 | 2021 | 2022 |
 |----------+------+------+------|
 | Beijing  |  100 |  102 |  120 |
 | Shenyang |  200 |  212 |  150 |
 | Shanghai |   39 |   50 |   41 |
+#+end_table
 
 #+call: plotbar(dtbl=city-pops, output="test-city-pop-mbar.png",title="人口变化趋势",xlabel="City", ylabel="Population",rot=-45)
 

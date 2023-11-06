@@ -340,18 +340,22 @@ FILE-TYPES: fc style file types."
          'list
          (--map (pcase it
                   ('code '("-t" "awk"
-                           "-t" "c" "-t" "cpp" "-t" "elisp" "-t" "go"
+                           "-t" "c" "-t" "cpp" "-t" "elisp" "-t" "fish" "-t" "go"
                            "-t" "py" "-t" "ruby" "-t" "rust" "-t" "sh"
                            "-t" "vim" "-t" "protobuf"
                            ))
                   ('doc '("-t" "markdown" "-t" "org" "-t" "tex" "-t" "txt"
                           "--type-add" "orglib:*.olib" "-t" "orglib"
-                          "--type-add" "uml:*.{puml,pu}" "-t" "uml"))
-
+                          "--type-add" "uml:*.{puml,pu}" "-t" "uml"
+                          ))
                   ('conf '("-t" "cmake" "-t" "make" "-t" "config"
                            "--type-add" "scons:[Ss][Cc]ons,[Ss][Cc]onstruct}" "-t" "scons"
-                           "-t" "json" "-t" "yaml"))
-                  ('xml '("-t" "xml")))
+                           "-t" "json" "-t" "yaml"
+                           ))
+                  ('web '("-t" "html" "-t" "css" "-t" "js"
+                          ))
+                  ('xml '("-t" "xml"
+                          )))
                 file-types)))
 
 (cl-defun fc--list-file-rg (dir file-types)

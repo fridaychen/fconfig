@@ -4,13 +4,13 @@
 # expand-env: ((yas-indent-line 'fixed))
 # --
 <!DOCTYPE html>
-<HTML>
-<HEAD>
-  <META charset="utf-8">
-  <TITLE> $1 </TITLE>
-  <LINK rel="stylesheet" href="$2">
-</HEAD>
-<BODY>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>$1</title>
+  <link rel="stylesheet" href="$2">
+</head>
+<body>
   $0
-</BODY>
-</HTML>
+</body>
+</html>

@@ -28,5 +28,8 @@ export PATH=~/.emacs.d/site/python/bin:$PATH
 pip3 install flake8
 pip3 install python-lsp-server
 pip3 install black
+pip3 install Pillow==9.5.0
+pip3 install nwdiag
+pip3 install blockdiag
 
-#emacs --batch --eval "(progn (add-to-list 'load-path \"~/.emacs.d/fconfig\") (require 'fc-setup))"
+emacs --batch --eval "(progn (add-to-list 'load-path \"~/.emacs.d/fconfig\") (require 'fc-setup))"

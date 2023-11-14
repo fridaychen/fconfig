@@ -331,7 +331,6 @@ COLOR: background color."
                               :foreground "black"
                               :background "cornsilk4")
        (fc-set-face-attribute 'hl-line nil
-                              :foreground "pale goldenrod"
                               :background "gray30"))
 
       ('zenburn

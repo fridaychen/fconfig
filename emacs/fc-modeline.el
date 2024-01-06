@@ -29,6 +29,16 @@
                          '(([mode-line mouse-1] counsel-imenu))
                          "fc-pos-keymap"))
 
+(defun fc--ml-hl-bg ()
+  (if (fc-deep-dark-theme-p)
+      *fc-modeline-dark-active-hl-bg*
+    *fc-modeline-active-hl-bg*))
+
+(defun fc--ml-hl-fg ()
+  (if (fc-deep-dark-theme-p)
+      *fc-modeline-dark-active-hl-fg*
+    *fc-modeline-active-hl-fg*))
+
 (defun fc--active-window-p ()
   "Test if current window is active."
   (equal *fc-selected-window* (selected-window)))
@@ -325,8 +335,8 @@
                              (fc-text-propertize
                               (format-mode-line *fc-modeline-most-right-string*)
                               `(face ,(list
-                                       :background *fc-modeline-active-hl-bg*
-                                       :foreground *fc-modeline-active-hl-fg*)))
+                                       :background (fc--ml-hl-bg)
+                                       :foreground (fc--ml-hl-fg))))
                            ""))
          (right-len (if (fboundp #'string-pixel-width)
                         (/ (+
@@ -364,12 +374,8 @@
     (make-face 'fc-modeline-hl-inactive-face))
 
   (let* ((deep-dark (fc-deep-dark-theme-p))
-         (bg (if deep-dark
-                 *fc-modeline-dark-active-hl-bg*
-               *fc-modeline-active-hl-bg*))
-         (fg (if deep-dark
-                 *fc-modeline-dark-active-hl-fg*
-               *fc-modeline-active-hl-fg*)))
+         (bg (fc--ml-hl-bg))
+         (fg (fc--ml-hl-fg)))
     (set-face-attribute 'fc-modeline-hl-face nil
                         :foreground fg
                         :background bg

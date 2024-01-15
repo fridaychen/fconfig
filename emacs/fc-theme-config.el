@@ -65,7 +65,7 @@ THEMES: list of themes."
    (color-name-to-rgb
     (face-attribute 'default :background))))
 
-(defvar *fc-theme-deep-dark-diff-threshold* 67000)
+(defvar *fc-theme-deep-dark-diff-threshold* 65000)
 
 (cl-defun fc-deep-dark-theme-p (&optional (threshold *fc-theme-deep-dark-diff-threshold*))
   "Test if the current theme is deep dark."

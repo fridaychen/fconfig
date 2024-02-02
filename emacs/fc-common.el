@@ -39,8 +39,8 @@
       ))
 
    (*is-mac*
-    '((:family "Iosevka Fixed SS07")
-      (:family "Iosevka Fixed")
+    '((:family "Iosevka SS02")
+      (:family "Iosevka Curly")
       (:family "Fira Code")
       (:family "Hack")
       (:family "Fira Mono")))

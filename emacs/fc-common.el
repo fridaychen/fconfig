@@ -31,7 +31,8 @@
 (defconst *fc-english-fonts*
   (cond
    (*is-linux*
-    '((:family "Iosevka Curly")
+    '((:family "Iosevka SS02")
+      (:family "Iosevka Curly")
       (:family "Iosevka")
       (:family "Fira Code")
       (:family "Hack")
@@ -254,7 +255,17 @@ COLOR: background color."
       ((or 'gruvbox-light-soft 'gruvbox-light-medium 'gruvbox-light-hard)
        (setf soothe-percent 6))
 
+      ('leuven-dark
+       (fc-set-face-attribute 'font-lock-type-face nil
+                              :slant 'italic)
+       (fc-set-face-attribute 'org-todo nil
+                              :foreground "pale green")
+       (fc-set-face-attribute 'default nil
+                              :foreground "cornsilk"))
+
       ('material
+       (fc-set-face-attribute 'font-lock-type-face nil
+                              :slant 'italic)
        (fc-set-face-attribute 'fringe nil
                               :background "#ff9800")
        (fc-set-face-attribute 'default nil
@@ -280,7 +291,6 @@ COLOR: background color."
          (fc-set-face-attribute 'fringe nil
                                 :background monokai-orange)
          (fc-set-face-attribute 'default nil
-                                :foreground "wheat"
                                 :background "#282a3a")))
 
       ('monokai-pro
@@ -331,20 +341,30 @@ COLOR: background color."
                               :foreground "black"
                               :background "cornsilk4")
        (fc-set-face-attribute 'hl-line nil
+                              :foreground "pale goldenrod"
                               :background "gray30"))
 
       ('zenburn
+       (setf soothe-percent -12)
+
+       (fc-set-face-attribute 'font-lock-type-face nil
+                              :slant 'italic)
        (set-face-attribute 'mode-line nil
                            :box nil)
        (set-face-attribute 'mode-line-inactive nil
+                           :foreground "tomato"
                            :box nil)
-
+       (fc-set-face-attribute 'org-superstar-header-bullet nil
+                              :foreground "tomato")
+       (fc-set-face-attribute 'markdown-header-delimiter-face nil
+                              :foreground "tomato")
        (fc-set-face-attribute 'fringe nil
                               :background (cdr
                                            (assoc-string "zenburn-orange"
                                                          zenburn-default-colors-alist)))
        (fc-set-face-attribute 'default nil
-                              :foreground "wheat")
+                              :background "#263238"
+                              :foreground "cornsilk")
        (fc-set-face-attribute 'hl-line nil
                               :background (cond (*is-gui* "#505050")
                                                 (*is-colorful* "#505050")

@@ -359,12 +359,10 @@ COLOR: background color."
        (fc-set-face-attribute 'markdown-header-delimiter-face nil
                               :foreground "tomato")
        (fc-set-face-attribute 'fringe nil
-                              :background (cdr
-                                           (assoc-string "zenburn-orange"
-                                                         zenburn-default-colors-alist)))
+                              :background "#ff9800")
        (fc-set-face-attribute 'default nil
                               :background "#263238"
-                              :foreground "cornsilk")
+                              :foreground "wheat")
        (fc-set-face-attribute 'hl-line nil
                               :background (cond (*is-gui* "#505050")
                                                 (*is-colorful* "#505050")

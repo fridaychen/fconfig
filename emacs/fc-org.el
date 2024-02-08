@@ -249,6 +249,13 @@ open('%s', 'w').write( str(main()) )")
                          (forward-char 1)
                          (org-cycle)))))
 
+    (cl-defun -fc-org-write ()
+      (org-hide-drawer-all)
+      (org-hide-block-all)
+      (unless (or (fc-big-buffer-p)
+                  (fc--book-p))
+        (org-update-statistics-cookies t)))
+
     (cl-defun fc--org-setup ()
       (when (and *is-gui*
                  (fboundp #'pixel-scroll-precision-mode))
@@ -285,11 +292,7 @@ open('%s', 'w').write( str(main()) )")
       (fc-dwell-enable #'fc--org-dwell)
       (add-hook 'pre-command-hook #'fc--org-hide-footnote)
 
-      (add-hook 'write-contents-functions
-                (lambda ()
-                  (unless (or (fc-big-buffer-p)
-                              (fc--book-p))
-                    (org-update-statistics-cookies t))) nil t))
+      (add-hook 'write-contents-functions #'-fc-org-write nil t))
 
     (cl-defun fc--capture-copy-region ()
       (save-excursion

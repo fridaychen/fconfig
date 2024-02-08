@@ -350,10 +350,10 @@ COLOR: background color."
        (fc-set-face-attribute 'font-lock-type-face nil
                               :slant 'italic)
        (set-face-attribute 'mode-line nil
-                           :box nil)
+                           :box 'unspecified)
        (set-face-attribute 'mode-line-inactive nil
-                           :foreground "tomato"
-                           :box nil)
+                           :foreground "coral"
+                           :box 'unspecified)
        (fc-set-face-attribute 'org-superstar-header-bullet nil
                               :foreground "tomato")
        (fc-set-face-attribute 'markdown-header-delimiter-face nil

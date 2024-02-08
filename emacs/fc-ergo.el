@@ -20,7 +20,7 @@
 (defconst *fc--repeat-orignal-func* #'fc-translate-word)
 
 (defvar *fc-theme-mode* 'dark)
-(defvar *fc--work-themes* '((dark gruvbox material zenburn)
+(defvar *fc--work-themes* '((dark gruvbox-dark-hard zenburn)
                             (light leuven gruvbox-light-soft ef-cyprus)))
 (defvar *fc--work-deep-themes* '((dark jazz sanityinc-tomorrow-night)
                                  (light acme)))

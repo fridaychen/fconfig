@@ -147,7 +147,7 @@
    (lsp-mode
     (when (lsp--capability :renameProvider)
       (progn
-        (lsp-rename)
+        (call-interactively #'lsp-rename)
         t)))
 
    (t)))

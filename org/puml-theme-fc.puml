@@ -119,6 +119,7 @@ skinparam sequence {
     MessageAlign center
 
     ArrowColor $LINECOLOR
+    ArrowThickness 1.3
 
     LifeLineBorderColor     $LINECOLOR
     LifeLineBackgroundColor #EEEEEE

@@ -18,6 +18,10 @@
 !$FOCUS = "#Technology/Physical"
 
 <style>
+root {
+    LineThickness 2
+}
+
 groupHeader {
     BackgroundColor IndianRed
     FontColor White
@@ -101,7 +105,7 @@ skinparam component {
 }
 
 skinparam note {
-    BorderColor     $LINECOLOR
+    BorderColor     #Bisque
     BackgroundColor #fbfb77/Yellow
 
     BackgroundColor<<focus>> #Technology/Physical

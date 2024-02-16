@@ -154,7 +154,7 @@
                          :height (- *fc-font-height* 30))
 
   (setf *fc-org-image-background* (if (fc-dark-theme-p)
-                                      "cornsilk2"
+                                      "wheat2"
                                     nil))
 
   (plist-put org-format-latex-options :background "Transparent")

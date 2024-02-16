@@ -9,7 +9,8 @@
 (require 'fc-modeline-separator)
 
 (defvar *fc-modeline-active-hl-bg* "#FEBA07")
-(defvar *fc-modeline-active-hl-fg* "#1E3124")
+;; used hl-fg "#1E3124"
+(defvar *fc-modeline-active-hl-fg* "darkslategrey")
 (defvar *fc-modeline-dark-active-hl-bg* "#887322")
 (defvar *fc-modeline-dark-active-hl-fg* "#1E3124")
 
@@ -373,17 +374,22 @@
   (unless (facep 'fc-modeline-hl-inactive-face)
     (make-face 'fc-modeline-hl-inactive-face))
 
-  (let* ((deep-dark (fc-deep-dark-theme-p))
-         (bg (fc--ml-hl-bg))
+  (let* ((bg (fc--ml-hl-bg))
          (fg (fc--ml-hl-fg)))
     (set-face-attribute 'fc-modeline-hl-face nil
                         :foreground fg
                         :background bg
-                        :weight 'medium
+                        :overline 'unspecified
+                        :strike-through 'unspecified
+                        :underline 'unspecified
+                        :weight 'bold
                         :inherit 'mode-line)
     (set-face-attribute 'fc-modeline-hl-inactive-face nil
                         :foreground bg
                         :background fg
+                        :overline 'unspecified
+                        :strike-through 'unspecified
+                        :underline 'unspecified
                         :weight 'medium
                         :inherit 'mode-line))
 

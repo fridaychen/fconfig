@@ -1369,13 +1369,13 @@ STEP: pixels."
   (fc-user-select-func
    "VC"
    `(
-     ("Diff with other branch"  . fc-vc-diff-with-other-branch)
-     ("Diff current file with other branch"  . fc-vc-diff-file-with-other-branch)
-     ("Gitk with current file" ,(fc-manual (start-process "gitk" nil "gitk" buffer-file-name)))
-     ("Gitk" ,(fc-manual (start-process "gitk" nil "gitk")))
-     ("Rebase" magit-rebase-branch)
-     ("Switch branch" . ,(fc-manual (fc-vc-switch-branch)
-                                    (fc-vc-revert-repo)))
+     ("Diff with other branch"              . fc-vc-diff-with-other-branch)
+     ("Diff current file with other branch" . fc-vc-diff-file-with-other-branch)
+     ("Gitk with current file"              . ,(fc-manual (start-process "gitk" nil "gitk" buffer-file-name)))
+     ("Gitk"                                . ,(fc-manual (start-process "gitk" nil "gitk")))
+     ("Rebase"                              . magit-rebase-branch)
+     ("Switch branch"                       . ,(fc-manual (fc-vc-switch-branch)
+                                                          (fc-vc-revert-repo)))
      )
    :mouse t))
 

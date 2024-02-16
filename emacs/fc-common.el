@@ -363,6 +363,9 @@ COLOR: background color."
        (fc-set-face-attribute 'default nil
                               :background "#263238"
                               :foreground "wheat")
+       (fc-set-face-attribute 'aw-leading-char-face nil
+                              :height (* *fc-font-height* 2)
+                              :foreground "red")
        (fc-set-face-attribute 'hl-line nil
                               :background (cond (*is-gui* "#505050")
                                                 (*is-colorful* "#505050")

@@ -89,11 +89,11 @@
 
 (defun fc--gen-colors (face1 face2)
   "Generate XPM color by faces."
-  (let* ((bg1 (fc-get-face-attribute face1 :background))
-         (bg2 (fc-get-face-attribute face2 :background))
+  (let* ((bg1 (fc-get-face face1 :background))
+         (bg2 (fc-get-face face2 :background))
          (c2 (fc--cal-middle-color bg1 bg2))
          (c3 (fc--cal-middle-color c2 bg2))
-         (h (fc-get-face-attribute 'fc-modeline-hl-face :background)))
+         (h (fc-get-face 'fc-modeline-hl-face :background)))
     `(("0" . ,bg1)
       ("1" . ,bg2)
       ("2" . ,c2)
@@ -116,8 +116,8 @@
            (fc-make-xpm-with-gradient
             (* (length *fc-ml-sep-string*) (frame-char-width))
             (fc--ml-height)
-            (fc-get-face-attribute face1 :background)
-            (fc-get-face-attribute face2 :background)
+            (fc-get-face face1 :background)
+            (fc-get-face face2 :background)
             reverse)))
 
 (cl-defun fc-ml-sep-reset ()

@@ -675,28 +675,6 @@ REST: text to be speak."
    (*is-mac*
     (apply #'osx-lib-say rest))))
 
-;; face
-(cl-defun fc-get-face-attribute (face attr &key (default t))
-  "Get attribute of specific face.
-FACE: target face.
-ATTR: attribute.
-DEFAULT: use default face."
-  (let* ((face-bg (face-attribute face attr nil t)))
-    (cond
-     ((or (stringp face-bg)
-          (numberp face-bg))
-      face-bg)
-     (t (when default
-          (face-attribute 'default attr))))))
-
-(defun fc-set-face-attribute (face frame &rest rest)
-  "Safely set face attribute.
-FACE: target face.
-FRAME: target frame.
-REST: all arguments."
-  (when (facep face)
-    (apply 'set-face-attribute face frame (flatten-list rest))))
-
 (defun fc-color-difference (colora colorb)
   "Calculate color difference between two colors.
 COLORA: the one color.
@@ -819,7 +797,7 @@ FORM: test form."
   "Get complement color.
 O: color or face."
   (when-let ((color (if (facep o)
-                        (fc-get-face-attribute
+                        (fc-get-face
                          o :background :default nil)
                       o)))
     (apply #'color-rgb-to-hex

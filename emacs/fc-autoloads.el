@@ -32,6 +32,11 @@
 
 (defvar *fc-common-fast-act-hook* nil "Common fast action hook.")
 
+;; face
+(autoload #'fc-get-face "fc-face")
+(autoload #'fc-set-face "fc-face")
+(autoload #'fc-set-faces "fc-face")
+
 ;; font
 (autoload #'fc-setup-font "fc-font")
 (autoload #'fc-nerd-icon "fc-font")

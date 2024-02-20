@@ -616,7 +616,7 @@ N: number."
                             (if (fboundp 'fc-modeline-mode)
                                 "fc-modeline"
                               (symbol-name powerline-default-separator))
-                            (fc-get-face-attribute 'default :foreground)
+                            (fc-get-face 'default :foreground)
                             *fc-common-light-theme-bg*)))
       `(
         ("Emacs" ,(format "%s, colorful %S" emacs-version *is-colorful*))

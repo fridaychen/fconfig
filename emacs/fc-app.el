@@ -509,7 +509,7 @@ DIR: dir to search."
 
 (defun fc-eshell-prompt-function ()
   (let ((branch (magit-get-current-branch))
-        (fg (color-complement-hex (fc-get-face-attribute 'default :background))))
+        (fg (color-complement-hex (fc-get-face 'default :background))))
     (concat
      "\n"
      (fc-text (fc-eshell-pwd) :face `(:foreground ,fg :underline t))
@@ -984,7 +984,7 @@ REST: commands."
 
 (cl-defun fc-select-fg-color ()
   "Select foreground color."
-  (fc-set-face-attribute
+  (fc-set-face
    'default nil
    :foreground
    (fc-user-select-color "Foreground color"

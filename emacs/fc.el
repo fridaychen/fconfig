@@ -87,7 +87,8 @@
 (fc-modal-enable)
 
 (fc-add-hook-func '*fc-before-theme-hook*
-  #'fc--org-before-theme-changed)
+  #'fc--org-before-theme-changed
+  #'fc-patch-theme-before-theme-changed)
 
 (fc-add-hook-func '*fc-after-theme-hook*
   #'fc-modal-after-theme-change

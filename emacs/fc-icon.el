@@ -10,8 +10,10 @@
                             (archive-mode . "📦")
                             (awk-mode . "🌳")
                             (c-mode . "🌊")
+                            (c-ts-mode . "🌊")
                             (cc-mode . "🌊")
                             (cmake-mode . "🍄")
+                            (cc-ts-mode . "🌊")
 
                             (calc-mode . "🧮")
                             (compilation-mode . "🏗️")

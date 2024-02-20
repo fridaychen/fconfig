@@ -29,13 +29,15 @@
 (fc-load 'go-mode
   :after (progn
            (fc-add-mode-name 'go-mode "🎱")
+           (fc-add-mode-name 'go-ts-mode "🎱")
 
            (cl-defun fc--go-setup ()
              (fc--lsp-enable))
 
            (add-hook 'go-mode-hook #'fc--go-setup)
 
-           (fc-add-fmt 'go-mode nil #'gofmt)))
+           (fc-add-fmt 'go-mode nil #'gofmt)
+           (fc-add-fmt 'go-ts-mode nil #'gofmt)))
 
 (provide 'fc-golang)
 

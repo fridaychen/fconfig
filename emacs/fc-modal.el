@@ -144,7 +144,7 @@
          (bg (or
               (and (facep 'fringe)
                    (face-attribute 'fringe :background))
-              (fc-get-face-attribute 'highlight :foreground)))
+              (fc-get-face 'highlight :foreground)))
          (fringe-bg (if (> (fc-color-difference default-bg bg) 30000)
                         bg
                       *fc-modal-command-fringe-color*)))

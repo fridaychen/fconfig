@@ -9,10 +9,14 @@
 (fc-load 'python-mode
   :after (progn
            (fc-add-mode-name 'python-mode "🐍")
+           (fc-add-mode-name 'python-ts-mode "🐍")
            (setf py-comment-fill-column 94)
 
            (require 'python)
            (fc-add-fmt 'python-mode
+                       `("black" "-t" "py311" "-l" ,(fc-string py-comment-fill-column) "-")
+                       nil)
+           (fc-add-fmt 'python-ts-mode
                        `("black" "-t" "py311" "-l" ,(fc-string py-comment-fill-column) "-")
                        nil)))
 

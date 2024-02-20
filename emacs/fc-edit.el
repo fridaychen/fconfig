@@ -6,6 +6,8 @@
 ;;; Code:
 (require 'cl-lib)
 
+(defvar *fc-enable-treesit* nil)
+
 (defvar ns-command-modifier)
 (defvar *fc-dev-mode* nil)
 (defvar *fc-text-scale-modes* '(markdown-mode latex-mode))
@@ -195,22 +197,21 @@
 
 (fc-load 'diff-mode
   :local t
-  :after
-  (progn
-    (defconst *fc-diff-map*
-      (fc-make-keymap
-       `(
-         ("d" diff-file-kill)
-         ("h" diff-refine-hunk)
-         ("o" diff-goto-source)
-         )
-       "fc-diff-map"
-       *fc-func-mode-map*)
-      "KEYS d: delete file  h: refine  o: open source.")
+  :after (progn
+           (defconst *fc-diff-map*
+             (fc-make-keymap
+              `(
+                ("d" diff-file-kill)
+                ("h" diff-refine-hunk)
+                ("o" diff-goto-source)
+                )
+              "fc-diff-map"
+              *fc-func-mode-map*)
+             "KEYS d: delete file  h: refine  o: open source.")
 
-    (defun fc--diff-mode-func ()
-      "Mode func."
-      (fc-modal-head-key "Diff" '*fc-diff-map*))))
+           (defun fc--diff-mode-func ()
+             "Mode func."
+             (fc-modal-head-key "Diff" '*fc-diff-map*))))
 
 (fc-load 'gnuplot
   :local t
@@ -218,15 +219,24 @@
            ("TAB" fc-tab-key))))
 
 (fc-load 'fish-mode
-  :after
-  (progn
-    (setf fish-enable-auto-indent t)
+  :after (progn
+           (setf fish-enable-auto-indent t)
 
-    (fc-add-mode-name 'fish-mode "🐟")
+           (fc-add-mode-name 'fish-mode "🐟")
 
-    (add-hook 'fish-mode-hook
-              (lambda ()
-                (add-hook 'before-save-hook 'fish_indent-before-save)))))
+           (add-hook 'fish-mode-hook
+                     (lambda ()
+                       (add-hook 'before-save-hook 'fish_indent-before-save)))))
+
+(fc-load 'treesit
+  :local t
+  :enable *fc-enable-treesit*
+  :after (progn
+           (setf treesit-font-lock-level 3)
+
+           (--each '(c go python)
+             (when (treesit-ready-p it)
+               (treesit-parser-create it)))))
 
 (provide 'fc-edit)
 

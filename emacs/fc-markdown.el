@@ -18,10 +18,10 @@
              (no-color (not (color-defined-p (face-attribute
                                               'markdown-header-delimiter-face
                                               :foreground))))
-             (fg (fc-get-face-attribute 'font-lock-keyword-face
-                                        :foreground)))
-    (fc-set-face-attribute 'markdown-header-delimiter-face nil
-                           :foreground fg)))
+             (fg (fc-get-face 'font-lock-keyword-face
+                              :foreground)))
+    (fc-set-face 'markdown-header-delimiter-face nil
+                 :foreground fg)))
 
 (add-hook '*fc-after-theme-hook* #'fc--markdown-theme-changed)
 

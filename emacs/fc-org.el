@@ -76,16 +76,16 @@
 
 (cl-defun fc--org-before-theme-changed ()
   (when (facep 'org-superstar-header-bullet)
-    (fc-set-face-attribute 'org-superstar-header-bullet nil
-                           :foreground 'unspecified)
-    (fc-set-face-attribute 'org-superstar-leading nil
-                           :foreground 'unspecified)))
+    (fc-set-face 'org-superstar-header-bullet nil
+                 :foreground 'unspecified)
+    (fc-set-face 'org-superstar-leading nil
+                 :foreground 'unspecified)))
 
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
-  (fc-set-face-attribute 'org-block nil
-                         :family
-                         (fc-get-face-attribute 'default :family))
+  (fc-set-face 'org-block nil
+               :family
+               (fc-get-face 'default :family))
 
   (when (and *is-gui* *fc-enable-font-to-align-table*)
     (let* ((family *fc-enable-font-to-align-table*)
@@ -94,64 +94,64 @@
        fontset
        '(((kana han cjk-misc bopomofo) :family family)))
 
-      (fc-set-face-attribute 'org-link nil
-                             :family family
-                             :fontset fontset)
-      (fc-set-face-attribute 'org-table nil
-                             :family family
-                             :fontset fontset)))
+      (fc-set-face 'org-link nil
+                   :family family
+                   :fontset fontset)
+      (fc-set-face 'org-table nil
+                   :family family
+                   :fontset fontset)))
 
   (when-let ((has-face (facep 'org-superstar-header-bullet))
              (no-color (not (color-defined-p (face-attribute
                                               'org-superstar-header-bullet
                                               :foreground))))
-             (fg (fc-get-face-attribute 'font-lock-keyword-face
-                                        :foreground)))
-    (fc-set-face-attribute 'org-superstar-header-bullet nil
-                           :foreground fg)
-    (fc-set-face-attribute 'org-superstar-leading nil
-                           :foreground fg))
+             (fg (fc-get-face 'font-lock-keyword-face
+                              :foreground)))
+    (fc-set-face 'org-superstar-header-bullet nil
+                 :foreground fg)
+    (fc-set-face 'org-superstar-leading nil
+                 :foreground fg))
 
   (cond
    ((fc-dark-theme-p)
-    (fc-set-face-attribute 'org-level-1 nil
-                           :overline "#efcab2"
-                           :foreground "#c7c3cb"
-                           :background "#3d2a2d")
-    (fc-set-face-attribute 'org-level-2 nil
-                           :overline "#efcab2"
-                           :foreground "#efcab2"
-                           :background "#3d2a2d"))
+    (fc-set-face 'org-level-1 nil
+                 :overline "#efcab2"
+                 :foreground "#c7c3cb"
+                 :background "#3d2a2d")
+    (fc-set-face 'org-level-2 nil
+                 :overline "#efcab2"
+                 :foreground "#efcab2"
+                 :background "#3d2a2d"))
 
    (t
-    (fc-set-face-attribute 'org-level-1 nil
-                           :overline "#A7A7A7"
-                           :foreground "#3C3C3C"
-                           :background "#F0F0F0")
-    (fc-set-face-attribute 'org-level-2 nil
-                           :overline "#123555"
-                           :foreground "#123555"
-                           :background "#E5F4FB")))
+    (fc-set-face 'org-level-1 nil
+                 :overline "#A7A7A7"
+                 :foreground "#3C3C3C"
+                 :background "#F0F0F0")
+    (fc-set-face 'org-level-2 nil
+                 :overline "#123555"
+                 :foreground "#123555"
+                 :background "#E5F4FB")))
 
-  (fc-set-face-attribute 'org-level-1 nil :height 1.1)
-  (fc-set-face-attribute 'org-level-2 nil :height 1.05)
-  (fc-set-face-attribute 'org-level-3 nil :height 1.01)
+  (fc-set-face 'org-level-1 nil :height 1.1)
+  (fc-set-face 'org-level-2 nil :height 1.05)
+  (fc-set-face 'org-level-3 nil :height 1.01)
 
   (--each '(org-quote org-block)
-    (let ((default-bg (fc-get-face-attribute 'default :background))
-          (target-bg (fc-get-face-attribute it :background)))
+    (let ((default-bg (fc-get-face 'default :background))
+          (target-bg (fc-get-face it :background)))
       (when (or
              (equal target-bg default-bg)
              (> (fc-color-difference target-bg default-bg) 8000))
-        (fc-set-face-attribute it nil
-                               :background
-                               (color-darken-name
-                                default-bg
-                                (if (fc-dark-theme-p) -5 5))))))
+        (fc-set-face it nil
+                     :background
+                     (color-darken-name
+                      default-bg
+                      (if (fc-dark-theme-p) -5 5))))))
 
-  (fc-set-face-attribute 'org-footnote
-                         nil
-                         :height (- *fc-font-height* 30))
+  (fc-set-face 'org-footnote
+               nil
+               :height (- *fc-font-height* 30))
 
   (setf *fc-org-image-background* (if (fc-dark-theme-p)
                                       "wheat2"
@@ -160,7 +160,7 @@
   (plist-put org-format-latex-options :background "Transparent")
   (plist-put org-format-latex-options
              :foreground
-             (fc-get-face-attribute 'font-lock-keyword-face :foreground)))
+             (fc-get-face 'font-lock-keyword-face :foreground)))
 
 (defun fc--org-set-visual-line-mode ()
   (fc--set-visual-line-mode)
@@ -187,7 +187,7 @@
           )
 
     (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
-    (plist-put org-format-latex-options :foreground (fc-get-face-attribute 'font-lock-keyword-face :foreground))
+    (plist-put org-format-latex-options :foreground (fc-get-face 'font-lock-keyword-face :foreground))
 
     (fc--org-theme-changed)
 

@@ -37,7 +37,7 @@
 
 (defun fc-setup-font ()
   "Setup font."
-  (fc-set-face-attribute
+  (fc-set-face
    'default
    nil
    :height *fc-font-height*
@@ -67,11 +67,11 @@
   (fc-setup-font-spec (frame-parameter nil 'font) *fc-font*)
 
   (when *fc-use-another-font-for-mode-line*
-    (fc-set-face-attribute 'mode-line
-                           nil
-                           *fc-mode-line-font*
-                           :height (+ *fc-font-height*
-                                      *fc-font-mode-line-delta*))))
+    (fc-set-face 'mode-line
+                 nil
+                 *fc-mode-line-font*
+                 :height (+ *fc-font-height*
+                            *fc-font-mode-line-delta*))))
 
 (cl-defun fc-reset-buffer-font ()
   (apply #'buffer-face-set

@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: class init
+# key: cls
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+@startuml
+
+!include %getenv("FCHOME")/org/fc.puml
+$init_class()
+
+$0
+
+@enduml

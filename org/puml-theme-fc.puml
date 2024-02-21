@@ -171,4 +171,5 @@ skinparam class {
     BackgroundColor $BGCOLOR
     ArrowColor      $LINECOLOR
     BorderColor     $LINECOLOR
+    arrowThickness  2
 }

@@ -68,7 +68,8 @@ WORDS: target words."
                   "en-US"
                 "zh-CN")))
     (ansi-color-apply
-     (fc-exec-command-to-string "trans" "-brief" (concat ":" lang) string))))
+     (fc-exec-command-to-string "trans"
+       "-brief" (concat ":" lang) string))))
 
 (provide 'fc-dict)
 

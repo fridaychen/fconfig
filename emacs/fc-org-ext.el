@@ -31,11 +31,10 @@
   (car
    (s-split "\n"
             (s-trim
-             (fc-exec-command-to-string
-              "ff"
-              (list
-               "-nocolor"
-               filename))))))
+             (fc-exec-command-to-string "ff"
+               (list
+                "-nocolor"
+                filename))))))
 
 (cl-defun fc--mybook-parse (link)
   (cond

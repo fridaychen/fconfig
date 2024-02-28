@@ -287,18 +287,18 @@ PATTERN: target pattern."
                       (fc-multi-line-comment-region start end)
                       (whitespace-cleanup)))
                   (fc-exec-command-to-string "figlet"
-                                             "-w"
-                                             (fc-string *fc-column-limit*)
-                                             "-f"
-                                             (fc-user-select
-                                              "Select font"
-                                              (--map
-                                               (cons (file-name-base it)
-                                                     (format "%s/extra/figlet/%s" *fc-home* it))
-                                               (fc--list-file (format "%s/extra/figlet" *fc-home*)
-                                                              nil
-                                                              :sort t)))
-                                             (read-string "Text : "))))
+                    "-w"
+                    (fc-string *fc-column-limit*)
+                    "-f"
+                    (fc-user-select
+                     "Select font"
+                     (--map
+                      (cons (file-name-base it)
+                            (format "%s/extra/figlet/%s" *fc-home* it))
+                      (fc--list-file (format "%s/extra/figlet" *fc-home*)
+                                     nil
+                                     :sort t)))
+                    (read-string "Text : "))))
 
 (cl-defun fc-insert-signature ()
   "Insert signature."

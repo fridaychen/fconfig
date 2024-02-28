@@ -63,6 +63,7 @@ COMMAND: command to be executed."
   "Run specific command and return the output.
 COMMAND: command to run.
 ARGS: arguments for command."
+  (declare (indent 1))
   (save-window-excursion
     (with-output-to-string
       (with-current-buffer

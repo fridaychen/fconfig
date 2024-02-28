@@ -9,12 +9,11 @@
   ())
 
 (defun fc-exec-itune-cmd (cmd)
-  (fc-exec-command-to-string
-   "osascript"
-   "-s" "o"
-   "-e" "tell application \"Music\""
-   "-e" cmd
-   "-e" "end tell"))
+  (fc-exec-command-to-string "osascript"
+    "-s" "o"
+    "-e" "tell application \"Music\""
+    "-e" cmd
+    "-e" "end tell"))
 
 (cl-defmethod fc-player--play-pause ((x fc-player-itunes))
   (fc-exec-itune-cmd "playpause")

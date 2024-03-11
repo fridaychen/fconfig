@@ -56,7 +56,8 @@
       (fc-load name
         :local t
         :after (progn
-                 (fc-call-mode-func "setup" nil))))))
+                 (fc-call-mode-func "setup" nil)
+                 (fc-call-mode-func "patch-theme" nil))))))
 
 (add-hook 'find-file-hook #'fc--load-mode-config)
 

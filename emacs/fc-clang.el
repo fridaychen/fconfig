@@ -99,12 +99,7 @@ END: end of region."
 
              (setf indent-tabs-mode nil
                    c-basic-offset 4
-                   tab-width 4
-                   c-ts-mode-indent-offset 4)
-
-             (--each '("FIXME:" "TODO:" "ToDo:" "MEMO:"
-                       "FIXME :" "TODO :" "MEMO :")
-               (highlight-phrase it)))
+                   tab-width 4))
 
            (defalias 'fc--c++-setup 'fc--c-setup)
 
@@ -202,10 +197,20 @@ END: end of region."
            (fc-add-fmt 'c++-mode #'fc-generate-clang-cmd nil)
            (fc-add-fmt 'protobuf-mode #'fc-generate-clang-cmd nil)
 
-           (fc-add-fmt 'c-ts-mode #'fc-generate-clang-cmd nil)
-
            (add-hook 'c-mode-hook #'fc--c-setup)
            (add-hook 'c++-mode-hook #'fc--c-setup)))
+
+(fc-load 'c-ts-mode
+  :local t
+  :after
+  (progn
+    (defun fc--c-ts-setup ()
+      (setq c-ts-mode-indent-offset 4
+            tab-width 4))
+
+    (add-hook 'c-ts-mode-hook #'fc--c-ts-setup)
+
+    (fc-add-fmt 'c-ts-mode #'fc-generate-clang-cmd nil)))
 
 (provide 'fc-clang)
 

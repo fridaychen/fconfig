@@ -119,6 +119,13 @@
 (global-eldoc-mode -1)
 (add-hook 'prog-mode-hook #'eldoc-mode)
 
+(defun fc-highlight-comment-keywords ()
+  (--each '("FIXME:" "TODO:" "ToDo:" "MEMO:"
+            "FIXME :" "TODO :" "ToDo :" "MEMO :")
+    (highlight-phrase it)))
+
+(add-hook 'prog-mode-hook #'fc-highlight-comment-keywords)
+
 (setq-default indent-tabs-mode nil)
 
 (fc-load 'recentf
@@ -236,7 +243,9 @@
 
            (--each '(c go python)
              (when (treesit-ready-p it)
-               (treesit-parser-create it)))))
+               (treesit-parser-create it)))
+
+           (treesit-major-mode-setup)))
 
 (provide 'fc-edit)
 

@@ -68,6 +68,11 @@
                  (equal (fc--md-lang) "en-US"))
         (fc-modal-visual-feedback)))
 
+    (when (eq (fc-get-face 'markdown-header-delimiter-face :foreground)
+              'unspecified)
+      (fc-set-face 'markdown-header-delimiter-face nil
+                   :foreground (fc-get-face 'font-lock-keyword-face :foregound)))
+
     (add-hook '*fc-viewer-hook* #'fc--md-toggle-viewer)
     (add-hook 'markdown-mode-hook #'fc--book-setup)
     (add-hook 'markdown-mode-hook #'fc--markdown-setup)))

@@ -202,6 +202,10 @@ COLOR: background color."
                 :overline 'unspecified
                 :slant 'unspecified))
 
+(defvar *fc-patch-modes* (list #'fc--markdown-patch-theme
+                               #'fc--org-patch-theme
+                               ))
+
 (defun fc-patch-theme ()
   "Patch theme."
   (when (member *fc-current-theme* '(adwaita
@@ -269,14 +273,6 @@ COLOR: background color."
        (setf soothe-percent 6)
        (fc-set-face 'show-paren-match nil
                     :background "pink")
-       (fc-set-face 'org-agenda-structure nil
-                    :height 1.1)
-       (fc-set-face 'org-agenda-date nil
-                    :height 1.1)
-       (fc-set-face 'org-agenda-date-today nil
-                    :height 1.2)
-       (fc-set-face 'org-agenda-date-weekend nil
-                    :height 1.1)
        (fc-set-face 'default nil
                     :foreground "black"))
 
@@ -286,8 +282,6 @@ COLOR: background color."
       ('leuven-dark
        (fc-set-face 'font-lock-type-face nil
                     :slant 'italic)
-       (fc-set-face 'org-todo nil
-                    :foreground "pale green")
        (fc-set-face 'default nil
                     :foreground "cornsilk"))
 
@@ -298,8 +292,6 @@ COLOR: background color."
                     :background "#ff9800")
        (fc-set-face 'default nil
                     :foreground "wheat")
-       (fc-set-face 'markdown-header-face-1 nil
-                    :height 1.2)
        (fc-set-face 'ivy-current-match nil
                     :background "gray50"))
 
@@ -311,8 +303,7 @@ COLOR: background color."
       ('modus-operandi
        (defvar modus-modified nil)
        (unless modus-modified
-         (setf soothe-percent 6)
-         (fc-set-face 'markdown-code-face nil :background "gray90")))
+         (setf soothe-percent 6)))
 
       ('monokai
        (when *is-gui*
@@ -382,10 +373,6 @@ COLOR: background color."
        (set-face-attribute 'mode-line-inactive nil
                            :foreground "coral"
                            :box 'unspecified)
-       (fc-set-face 'org-superstar-header-bullet nil
-                    :foreground "tomato")
-       (fc-set-face 'markdown-header-delimiter-face nil
-                    :foreground "tomato")
        (fc-set-face 'fringe nil
                     :background "#ff9800")
        (fc-set-face 'default nil
@@ -399,9 +386,49 @@ COLOR: background color."
                                       (*is-colorful* "#505050")
                                       (t "white")))))
 
+    (--each *fc-patch-modes*
+      (fc-funcall it))
+
     (fc-soothe-theme soothe-percent
                      (gethash *fc-current-theme*
                               *fc-soothe-color*))))
+
+(defun fc--org-patch-theme ()
+  (pcase *fc-current-theme*
+    ('leuven
+     (fc-set-face 'org-agenda-structure nil
+                  :height 1.1)
+     (fc-set-face 'org-agenda-date nil
+                  :height 1.1)
+     (fc-set-face 'org-agenda-date-today nil
+                  :height 1.2)
+     (fc-set-face 'org-agenda-date-weekend nil
+                  :height 1.1))
+
+    ('leuven-dark
+     (fc-set-face 'org-todo nil
+                  :foreground "pale green"))
+
+    ('zenburn
+     (fc-set-face 'org-superstar-header-bullet nil
+                  :foreground "tomato"))
+    ))
+
+(defun fc--markdown-patch-theme ()
+  (pcase *fc-current-theme*
+    ('material
+     (fc-set-face 'markdown-header-face-1 nil
+                  :height 1.2)
+     )
+
+    ('modus-operandi
+     (fc-set-face 'markdown-code-face nil :background "gray90")
+     )
+
+    ('zenburn
+     (fc-set-face 'markdown-header-delimiter-face nil
+                  :foreground "tomato"))
+    ))
 
 ;; players
 (cl-defun fc-init-user-player ()

@@ -269,6 +269,9 @@ COLOR: background color."
        (fc-set-face 'fringe nil
                     :background "#F2A4AC"))
 
+      ((or 'gruvbox-light-soft 'gruvbox-light-medium 'gruvbox-light-hard)
+       (setf soothe-percent 6))
+
       ('leuven
        (setf soothe-percent 6)
        (fc-set-face 'show-paren-match nil
@@ -276,12 +279,11 @@ COLOR: background color."
        (fc-set-face 'default nil
                     :foreground "black"))
 
-      ((or 'gruvbox-light-soft 'gruvbox-light-medium 'gruvbox-light-hard)
-       (setf soothe-percent 6))
-
       ('leuven-dark
        (fc-set-face 'font-lock-type-face nil
                     :slant 'italic)
+       (fc-set-face 'mode-line-inactive nil
+                    :foreground "black")
        (fc-set-face 'default nil
                     :foreground "cornsilk"))
 
@@ -368,11 +370,11 @@ COLOR: background color."
 
        (fc-set-face 'font-lock-type-face nil
                     :slant 'italic)
-       (set-face-attribute 'mode-line nil
-                           :box 'unspecified)
-       (set-face-attribute 'mode-line-inactive nil
-                           :foreground "coral"
-                           :box 'unspecified)
+       (fc-set-face 'mode-line nil
+                    :box 'unspecified)
+       (fc-set-face 'mode-line-inactive nil
+                    :foreground "coral"
+                    :box 'unspecified)
        (fc-set-face 'fringe nil
                     :background "#ff9800")
        (fc-set-face 'default nil
@@ -394,17 +396,16 @@ COLOR: background color."
                               *fc-soothe-color*))))
 
 (defun fc--org-patch-theme ()
-  (pcase *fc-current-theme*
-    ('leuven
-     (fc-set-face 'org-agenda-structure nil
-                  :height 1.1)
-     (fc-set-face 'org-agenda-date nil
-                  :height 1.1)
-     (fc-set-face 'org-agenda-date-today nil
-                  :height 1.2)
-     (fc-set-face 'org-agenda-date-weekend nil
-                  :height 1.1))
+  (fc-set-face 'org-agenda-structure nil
+               :height 1.1)
+  (fc-set-face 'org-agenda-date nil
+               :height 1.1)
+  (fc-set-face 'org-agenda-date-today nil
+               :height 1.2)
+  (fc-set-face 'org-agenda-date-weekend nil
+               :height 1.1)
 
+  (pcase *fc-current-theme*
     ('leuven-dark
      (fc-set-face 'org-todo nil
                   :foreground "pale green"))

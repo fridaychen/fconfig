@@ -20,7 +20,7 @@
 (defconst *fc--repeat-orignal-func* #'fc-translate-word)
 
 (defvar *fc-theme-mode* 'dark)
-(defvar *fc--work-themes* '((dark gruvbox-dark-hard zenburn)
+(defvar *fc--work-themes* '((dark gruvbox-dark-hard leuven-dark zenburn)
                             (light leuven gruvbox-light-soft ef-cyprus)))
 (defvar *fc--work-deep-themes* '((dark jazz sanityinc-tomorrow-night)
                                  (light acme)))
@@ -1813,6 +1813,7 @@ FUNC: new repeat func."
  #'fc-flycheck
  #'fc-occur-dwim
  #'fc-switch-next-error-buffer
+ #'imenu-list-smart-toggle
  #'magit-diff-buffer-file
  #'magit-diff-working-tree
  #'magit-log-all

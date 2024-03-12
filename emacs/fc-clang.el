@@ -178,7 +178,9 @@ END: end of region."
                          fc-proj-clang-style
                        "LLVM")
                      *fc-column-limit*
-                     c-basic-offset
+                     (if (eq c-basic-offset 'set-from-style)
+                         4
+                       c-basic-offset)
                      (if indent-tabs-mode
                          "Always"
                        "Never")))

@@ -167,10 +167,15 @@ REST: functions."
 ;; Simple style
 (cl-defun fc-layout-simple-setup ()
   "Setup simple layout."
-  (let ((upper-param `((side . right) (slot . -1) (window-width . ,*fc-left-side-width*) (window-height . 0.6)))
+  (let ((imenu-param `((side . left) (slot . -1) (window-width . 0.25) (window-height . 0.6)))
+        (upper-param `((side . right) (slot . -1) (window-width . ,*fc-left-side-width*) (window-height . 0.6)))
         (lower-param `((side . right) (slot . 1) (window-width . ,*fc-left-side-width*) (window-height . 0.4))))
     (setq display-buffer-alist
           `(
+            (,(cons 'derived-mode 'imenu-list-major-mode)
+             display-buffer-in-side-window
+             ,@imenu-param)
+
             (,*fc-buf-info-regex*
              display-buffer-in-side-window
              ,@upper-param)

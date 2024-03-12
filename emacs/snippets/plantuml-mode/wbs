@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: wbs init
+# key: wbs
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+@startwbs
+!include %getenv("FCHOME")/org/fc.puml
+
+$0
+
+@endwbs

@@ -63,12 +63,14 @@ ganttDiagram {
 
 mindmapDiagram {
     node {
-        BackgroundColor lightGreen
         Padding 7
-        Margin 6
+        Margin 10
     }
     boxless {
         FontColor darkgreen
+    }
+    .focus {
+        BackgroundColor $FOCUS
     }
     .important {
         BackgroundColor #FFBBCC
@@ -78,6 +80,24 @@ mindmapDiagram {
     }
 }
 
+wbsDiagram {
+    node {
+        Padding 7
+        Margin 10
+    }
+    .focus {
+        BackgroundColor $FOCUS
+        FontStyle bold
+    }
+    .important {
+        BackgroundColor #FFBBCC
+        FontStyle bold
+    }
+    .working {
+        BackgroundColor lightblue
+        FontStyle bold
+    }
+}
 </style>
 
 skinparam shadowing true
@@ -100,7 +120,7 @@ skinparam component {
     BorderColor     $LINECOLOR
     BorderThickness 1.2
 
-    BackgroundColor<<focus>> Technology/Physical
+    BackgroundColor<<focus>> $FOCUS
     FontStyle<<focus>>       Bold
 }
 
@@ -108,7 +128,7 @@ skinparam note {
     BorderColor     #Bisque
     BackgroundColor #fbfb77/Yellow
 
-    BackgroundColor<<focus>> #Technology/Physical
+    BackgroundColor<<focus>> $FOCUS
     FontColor<<focus>>       Black
     FontStyle<<focus>>       bold
 }

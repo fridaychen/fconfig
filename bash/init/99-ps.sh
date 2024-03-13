@@ -10,14 +10,14 @@ if [[ -z ${NODE_ICON[@]} ]]; then
 fi
 
 FC_CPU_OVERLOAD_TH=$(($(nproc) * 50))
-FC_PS_FIT_AWK=$(<$FCHOME/bin/ps-fit.awk)
+FC_PS_FIT_AWK=$(< $FCHOME/bin/ps-fit.awk)
 
 declare -g -A FC_PS_PREFIX
 
 if [[ $FC_COLORFUL == false || $FC_EMOJI == false ]]; then
-    FC_PS_PREFIX=([fit]="^" [fit_cherry]="Cherry" [ol]="OL" [ec]="NG" [exec]="!")
+    FC_PS_PREFIX=([fit]="^" [fit_cherry]="Cherry" [ol]="OL" [ec]="NG" [exec]="took ")
 else
-    FC_PS_PREFIX=([fit]="" [fit_cherry]="🍒" [ol]="🔥" [ec]="❌" [exec]="❕")
+    FC_PS_PREFIX=([fit]="" [fit_cherry]="🍒" [ol]="🔥" [ec]="❌" [exec]="took ")
 fi
 
 FC_EXITCODE_FILE=${USER}.bashexit.${FCROOTPID}
@@ -73,7 +73,7 @@ function ps-resource-overload {
         Darwin) ;;
 
         Linux)
-            local cpu=$(</proc/loadavg | awk '{n=$1*100} END {printf("%u", n);}')
+            local cpu=$(< /proc/loadavg | awk '{n=$1*100} END {printf("%u", n);}')
             local mem=$(free -m | awk '/^Mem/ {printf("%u", 100*$3/$2);}')
 
             if [[ $mem -gt 70 || $cpu -gt $FC_CPU_OVERLOAD_TH ]]; then
@@ -115,7 +115,6 @@ function ps-fit-info {
             echo -n " ${FC_PS_PREFIX[fit_cherry]}"
         fi
     fi
-
 }
 
 function ps-exec-start {

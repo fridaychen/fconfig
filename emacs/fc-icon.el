@@ -19,6 +19,7 @@
                             (compilation-mode . "🏗️")
 
                             (conf-space-mode . "⚙️")
+                            (conf-toml-mode . "⚙️")
                             (conf-unix-mode . "⚙️")
                             (conf-window-mode . "⚙️")
 

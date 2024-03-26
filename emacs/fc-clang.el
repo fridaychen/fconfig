@@ -37,7 +37,15 @@
   "Mode func."
   (fc-modal-head-key "C" '*fc-c-map*))
 
+(defun fc--c-ts-mode-func ()
+  "Mode func."
+  (fc-modal-head-key "C" '*fc-c-map*))
+
 (defun fc--c++-mode-func ()
+  "Mode func."
+  (fc-modal-head-key "CC" '*fc-c-map*))
+
+(defun fc--c++-ts-mode-func ()
   "Mode func."
   (fc-modal-head-key "CC" '*fc-c-map*))
 
@@ -176,7 +184,7 @@ END: end of region."
              (format *fc-clang-format-style*
                      (if (boundp 'fc-proj-clang-style)
                          fc-proj-clang-style
-                       "LLVM")
+                       "Google")
                      *fc-column-limit*
                      (if (eq c-basic-offset 'set-from-style)
                          4

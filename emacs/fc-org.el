@@ -31,6 +31,7 @@
                                      "elisp"
                                      "emacs-lisp"
                                      "gnuplot"
+                                     "julia"
                                      "octave"
                                      "packetdiag"
                                      "plantuml"

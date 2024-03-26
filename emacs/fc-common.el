@@ -49,7 +49,8 @@
     '(("Monaco")))))
 
 (defconst *fc-english-reading-fonts*
-  '((:family "Bookerly")
+  '((:family "ITC Cerigo Std Book")
+    (:family "Bookerly")
     (:family "Helvetica")
     (:family "Baskerville")
     (:family "Garamond")

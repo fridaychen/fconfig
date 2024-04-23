@@ -1,0 +1,27 @@
+test;
+
+AttributeBegin
+    test;
+
+    AttributeBegin
+        test;
+
+        foo;
+    AttributeEnd
+
+    bar;
+
+    AttributeBegin
+        100;
+    AttributeEnd
+
+    foo;
+AttributeEnd
+
+AttributeBegin
+    test;
+AttributeEnd
+
+test;
+
+# ...

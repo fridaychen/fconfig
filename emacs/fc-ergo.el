@@ -256,7 +256,8 @@ INDENT-FUNC: function for indent."
     (forward-char))
 
    ((or (looking-at-p "[[:space:]]+$")
-        (looking-back "[[:space:]]+$" 6))
+        (and (> (point) 6)
+             (looking-back "[[:space:]]+$" 6)))
     (delete-blank-lines))
 
    ((or fc-modal-global-mode

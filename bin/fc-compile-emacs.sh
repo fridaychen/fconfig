@@ -32,6 +32,7 @@ function compile {
                 --with-native-compilation \
                 --with-json \
                 --with-pgtk \
+                --with-tree-sitter \
                 --with-xwidgets
             ;;
     esac

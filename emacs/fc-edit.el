@@ -241,11 +241,13 @@
   :after (progn
            (setf treesit-font-lock-level 3)
 
-           (--each '(c go python)
+           (--each '(c go html python)
              (when (treesit-ready-p it)
                (treesit-parser-create it)))
 
            (treesit-major-mode-setup)))
+
+(fc-load 'ebnf-mode)
 
 (provide 'fc-edit)
 

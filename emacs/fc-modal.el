@@ -246,6 +246,7 @@ AROUND: advice function."
 
            ;; function or closure
            ((or (cl-typep ret 'byte-code-function)
+                (cl-typep ret 'interpreted-function)
                 (cl-typep ret 'symbol)
                 (and (consp ret)
                      (equal (car ret)

@@ -1107,6 +1107,7 @@ KEYMAP: keymap to run."
      ("l" org-store-link)
      ("m" org-tags-view)
      ("t" org-todo-list)
+     ("w" ,(fc-manual (fc-select-buffer "Org roam" (list :filter #'org-roam-buffer-p))))
      ("x" fc-org-study-agenda)
      )
    "ergo-gtd-map")

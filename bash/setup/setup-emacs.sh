@@ -25,11 +25,13 @@ touch ~/.emacs.d/abbrev_defs
 mkdir -p ~/.emacs.d/site/python
 python3 -m venv ~/.emacs.d/site/python
 export PATH=~/.emacs.d/site/python/bin:$PATH
-pip3 install flake8
-pip3 install python-lsp-server
+
+pip3 install autotools-language-server
 pip3 install black
-pip3 install Pillow==9.5.0
-pip3 install nwdiag
 pip3 install blockdiag
+pip3 install flake8
+pip3 install nwdiag
+pip3 install Pillow==9.5.0
+pip3 install python-lsp-server
 
 emacs --batch --eval "(progn (add-to-list 'load-path \"~/.emacs.d/fconfig\") (require 'fc-setup))"

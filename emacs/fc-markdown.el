@@ -35,7 +35,7 @@
           '("-----"))
 
     (defun fc--markdown-setup ()
-      (when *is-gui*
+      (when (and *is-gui* (not (fc-big-buffer-p)))
         (markdown-display-inline-images))
 
       (setq prettify-symbols-alist '(("#" . ?⏹)

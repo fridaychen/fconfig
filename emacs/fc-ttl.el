@@ -18,7 +18,7 @@
      ((looking-at "^:")
       (cl-return-from -ttl-find-last 4))
 
-     ((looking-at " *\\(if.+then$\\|else\\|for\\|while\\)")
+     ((looking-at " *\\(if.+then$\\|else\\|for\\|while\\|until\\)")
       (beginning-of-line-text)
       (cl-return-from -ttl-find-last 4))
 
@@ -72,6 +72,10 @@
                 (-ttl-find-regex-table '(("while" . 0)
                                          ("endwhile" . -4))))
 
+               ((looking-at "enduntil")
+                (-ttl-find-regex-table '(("until" . 0)
+                                         ("enduntil" . -4))))
+
                ((looking-at "next")
                 (-ttl-find-regex-table '(("for" . 0)
                                          ("next" . -4))))
@@ -106,6 +110,7 @@
   (font-lock-add-keywords nil `(
                                 (,(regexp-opt '("if" "then" "else" "endif"
                                                 "do" "while" "endwhile"
+                                                "until" "enduntil"
                                                 "for" "next"
                                                 "include"
                                                 "call" "goto" "return" "exit"))
@@ -113,8 +118,6 @@
                                 ("^:.+" . font-lock-function-name-face)))
 
   (setq-local indent-line-function #'fc-ttl-indent-line))
-
-(add-to-list 'auto-mode-alist '("\\.ttl" . fc-ttl-mode))
 
 (fc-add-fmt 'fc-ttl-mode nil #'fc--default-fmt-with-indent)
 

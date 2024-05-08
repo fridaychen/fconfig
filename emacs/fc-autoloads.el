@@ -139,6 +139,10 @@
 (autoload #'fc--book-p "fc-book")
 (autoload #'fc--book-setup "fc-book")
 
+;; ttl
+(autoload #'fc-ttl-mode "fc-ttl")
+(add-to-list 'auto-mode-alist '("\\.ttl" . fc-ttl-mode))
+
 (provide 'fc-autoload)
 
 ;; Local Variables:

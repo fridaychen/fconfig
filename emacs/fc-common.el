@@ -285,8 +285,11 @@ COLOR: background color."
                     :slant 'italic)
        (fc-set-face 'mode-line-inactive nil
                     :foreground "black")
+       (fc-set-face 'hl-line nil
+                    :background "MediumPurple4")
        (fc-set-face 'default nil
-                    :foreground "cornsilk"))
+                    :foreground "cornsilk"
+                    :background "gray30"))
 
       ('material
        (fc-set-face 'font-lock-type-face nil

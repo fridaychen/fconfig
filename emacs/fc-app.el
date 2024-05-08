@@ -343,6 +343,7 @@ FILE-TYPES: fc style file types."
                            "-t" "c" "-t" "cpp" "-t" "elisp" "-t" "fish" "-t" "go"
                            "-t" "py" "-t" "ruby" "-t" "rust" "-t" "sh"
                            "-t" "vim" "-t" "protobuf"
+                           "--type-add" "ttl:*.ttl" "-t" "ttl"
                            ))
                   ('doc '("-t" "markdown" "-t" "org" "-t" "tex" "-t" "txt"
                           "--type-add" "orglib:*.olib" "-t" "orglib"

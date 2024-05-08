@@ -55,6 +55,7 @@
                             (sh-mode . "🐚")
                             (special-mode . "📊")
                             (text-mode . "📝")
+                            (fc-ttl-mode . "🖥️")
                             (makefile-gmake-mode . "🍄")
                             (messages-buffer-mode . "💬")
                             (nxml-mode . "🕸️")

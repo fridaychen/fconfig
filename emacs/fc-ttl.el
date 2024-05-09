@@ -112,9 +112,13 @@
                                                 "do" "while" "endwhile"
                                                 "until" "enduntil"
                                                 "for" "next"
-                                                "include"
-                                                "call" "goto" "return" "exit"))
+                                                "break"
+                                                "goto"
+                                                "include")
+                                              'words)
                                  . font-lock-keyword-face)
+                                (,(regexp-opt '("call" "return" "exit") 'words)
+                                 . font-lock-function-name-face)
                                 ("^:.+" . font-lock-function-name-face)))
 
   (setq-local indent-line-function #'fc-ttl-indent-line))

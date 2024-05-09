@@ -45,6 +45,7 @@
                             (latex-mode . "🏮")
                             (log-edit-mode . "🪵")
                             (log-view-mode . "🪵")
+                            (lua-mode . "🌛")
                             (matlab-mode . "🧮")
                             (Man-mode . "👨")
                             (mhtml-mode . "🕸️")

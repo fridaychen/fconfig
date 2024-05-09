@@ -289,7 +289,7 @@ COLOR: background color."
                     :background "MediumPurple4")
        (fc-set-face 'default nil
                     :foreground "cornsilk"
-                    :background "gray30"))
+                    :background "gray22"))
 
       ('material
        (fc-set-face 'font-lock-type-face nil

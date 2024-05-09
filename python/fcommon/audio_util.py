@@ -106,21 +106,17 @@ def get_audio_streams(filename):
 
 
 def get_audio_extension_name(filename, idx=0):
-    return {"aac": "m4a", "mp3": "mp3", "opus": "opus", "vorbis": "ogg"}[
-        get_audio_streams(filename)[idx]["codec_name"]
-    ]
+    codec_name = get_audio_streams(filename)[idx]["codec_name"]
+
+    return {"aac": "m4a", "vorbis": "ogg"}.get(codec_name, codec_name)
 
 
 def extract_audio(filename, idx=0):
     new_filename = (
-        os.path.splitext(filename)[0]
-        + "."
-        + get_audio_extension_name(filename, idx)
+        os.path.splitext(filename)[0] + "." + get_audio_extension_name(filename, idx)
     )
 
     print("%s --> %s" % (filename, new_filename))
 
     if new_filename != filename:
-        os.system(
-            "ffmpeg -i '%s' -vn -acodec copy '%s'" % (filename, new_filename)
-        )
+        os.system("ffmpeg -i '%s' -vn -acodec copy '%s'" % (filename, new_filename))

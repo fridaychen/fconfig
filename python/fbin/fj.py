@@ -146,9 +146,7 @@ def preview_file(filename, args, mime):
         fc.run("mpv", ["mpv", "-quiet", "-length", "20", filename], noret=True)
     elif mime.startswith("video"):
         fc.run("mpv", ["mpv", "-quiet", "-length", "20", filename], noret=True)
-    elif fc.find_first(
-        lambda x: mime.startswith(x), ["image", "application/pdf"]
-    ):
+    elif fc.find_first(lambda x: mime.startswith(x), ["image", "application/pdf"]):
         fc.os_open_file(filename, noret=True)
     else:
         fc.run("file", ["file", filename], noret=True)
@@ -176,9 +174,7 @@ def view_file(filename, args, mime):
         fc.run("mpv", ["mpv", "-quiet", filename], noret=True)
     elif mime.startswith("video"):
         fc.run("mpv", ["mpv", "-quiet", filename], noret=True)
-    elif fc.find_first(
-        lambda x: mime.startswith(x), ["image", "application/pdf"]
-    ):
+    elif fc.find_first(lambda x: mime.startswith(x), ["image", "application/pdf"]):
         fc.os_open_file(filename, noret=True)
     else:
         fc.run("file", ["file", filename], noret=True)
@@ -224,9 +220,7 @@ def emacs_update(inputs):
 def emacs_init(inputs):
     "init emacs packages"
 
-    fc.run(
-        f"""{os.getenv("FCHOME")}/bin/Fsetup-emacs.sh""", ["Fsetup-emacs.sh"]
-    )
+    fc.run(f"""{os.getenv("FCHOME")}/bin/Fsetup-emacs.sh""", ["Fsetup-emacs.sh"])
 
 
 @action(cmd="allup")
@@ -247,8 +241,7 @@ def _play(file, noaudio=False, novideo=False):
     args.append(file)
 
     print(
-        f"""{fc.vt.fmt("File:", bg=fc.vt.BLUE)} """
-        f"""{fc.vt.fmt(file, fg=fc.vt.GREEN)}"""
+        f"""{fc.vt.fmt("File:", bg=fc.vt.BLUE)} """ f"""{fc.vt.fmt(file, fg=fc.vt.GREEN)}"""
     )
 
     try:
@@ -315,7 +308,10 @@ def main():
     action = None
 
     if len(sys.argv) >= 2 and sys.argv[1][2:] in actions_def:
-        action = actions_def[sys.argv[1][2:]]
+        if sys.argv[1].startswith("--"):
+            action = actions_def[sys.argv[1][2:]]
+        else:
+            action = actions_def[sys.argv[1]]
 
     if action is None:
         usage()

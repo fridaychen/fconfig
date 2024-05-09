@@ -1,0 +1,27 @@
+#!/bin/bash
+
+COMPRESS=false
+
+function arg-set {
+    case $1 in
+        z)
+            COMPRESS=true
+            ;;
+    esac
+}
+
+USAGE="Usage: any2org [OPTION] [FILE]\n\n
+  -z compress result file
+"
+ARGUMENTS="hz"
+source $FCHOME/bash/lib/argparser.sh
+
+for x in $@; do
+    target=${x%.*}.org
+
+    pandoc "$x" -o "${target}" --lua-filter ${FCHOME}/extra/pandoc/no_header.lua
+
+    if [[ $COMPRESS == true ]]; then
+        gzip "${target}"
+    fi
+done

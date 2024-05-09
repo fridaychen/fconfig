@@ -120,9 +120,7 @@
 (add-hook 'prog-mode-hook #'eldoc-mode)
 
 (defun fc-highlight-comment-keywords ()
-  (--each '("FIXME:" "TODO:" "ToDo:" "MEMO:"
-            "FIXME :" "TODO :" "ToDo :" "MEMO :")
-    (highlight-phrase it)))
+  (highlight-phrase "\\(FIXME\\|ToDo\\|TODO\\|MEMO\\) ?:"))
 
 (add-hook 'prog-mode-hook #'fc-highlight-comment-keywords)
 

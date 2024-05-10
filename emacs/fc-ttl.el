@@ -50,7 +50,7 @@
   (interactive)
 
   (beginning-of-line)
-  (when (looking-at " *;")
+  (when (looking-at " *;;")
     (indent-line-to 0)
     (cl-return-from fc-ttl-indent-line))
 
@@ -107,19 +107,21 @@
   (setf indent-tabs-mode nil
         tab-width 4)
 
-  (font-lock-add-keywords nil `(
-                                (,(regexp-opt '("if" "then" "else" "endif"
-                                                "do" "while" "endwhile"
-                                                "until" "enduntil"
-                                                "for" "next"
-                                                "break"
-                                                "goto"
-                                                "include")
-                                              'words)
-                                 . font-lock-keyword-face)
-                                (,(regexp-opt '("call" "return" "exit") 'words)
-                                 . font-lock-function-name-face)
-                                ("^:.+" . font-lock-function-name-face)))
+  (font-lock-add-keywords nil
+                          `(
+                            (,(regexp-opt '("if" "then" "else" "elseif" "endif"
+                                            "do" "loop"
+                                            "while" "endwhile"
+                                            "until" "enduntil"
+                                            "for" "next"
+                                            "break" "continue"
+                                            "goto"
+                                            "include")
+                                          'words)
+                             . font-lock-keyword-face)
+                            (,(regexp-opt '("call" "return" "exit") 'words)
+                             . font-lock-function-name-face)
+                            ("^:.+" . font-lock-function-name-face)))
 
   (setq-local indent-line-function #'fc-ttl-indent-line))
 

@@ -683,7 +683,8 @@ ARGS: list of infos."
               (buf (get-buffer bufname))
               (win (progn
                      (when (fc-side-window-p)
-                       (select-window (window-main-window)))
+                       (select-window (or (window-child (window-main-window))
+                                          (window-main-window))))
                      (display-buffer buf
                                      '(display-buffer-same-window
                                        display-buffer-use-some-window

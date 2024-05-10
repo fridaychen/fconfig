@@ -41,23 +41,19 @@ function extract {
     esac
 }
 
-(($# < 1)) && usage
-
-while getopts "hv" OPT; do
-    case $OPT in
-        h)
-            usage
-            ;;
+function arg-set {
+    case $1 in
         v)
             VERBOSE='echo'
             ;;
-        *)
-            usage
-            ;;
     esac
-done
+}
 
-shift $((OPTIND - 1))
+USAGE="Usage: fex.sh [OPTION] [FILES]\n\n
+  -v verbose\n
+"
+ARGUMENTS="hv"
+source $FCHOME/bash/lib/argparser.sh
 
 for arg; do
     [[ -f "$arg" ]] || {

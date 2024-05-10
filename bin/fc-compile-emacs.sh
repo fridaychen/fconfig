@@ -56,44 +56,46 @@ function update_package {
     fj --emup
 }
 
-function usage {
-    echo "Update and compile emacs"
-    echo ""
-    echo "  -c number of cpus will be used for compilation"
-    echo "  -f never prompt"
-    echo ""
-    exit
+function prepare {
+    case $(uname) in
+        Darwin)
+            export LDFLAGS="-L${BREW}/opt/libxml2/lib -L${BREW}/opt/giflib/lib -L${BREW}/opt/webp/lib -L${BREW}/opt/jpeg/lib -L${BREW}/opt/libtiff/lib"
+
+            export CPPFLAGS="-I${BREW}/opt/libxml2/include -I${BREW}/opt/jpeg/include -I${BREW}/opt/libtiff/include -I${BREW}/opt/giflib/include"
+            ;;
+    esac
 }
 
-while getopts "hc:f" OPT; do
-    case $OPT in
+function main {
+    if [[ $(basename $(pwd)) = "emacs" && -d .git ]]; then
+        fc-user-confirm "Update source code" && update
+        (fc-user-confirm "Compile" && compile) || exit
+        (fc-user-confirm "Install" && install) || exit
+        fc-user-confirm "Update packages" && update_package
+    elif fc-user-confirm "Clone emacs"; then
+        clone
+    else
+        error-msg "Not under emacs !"
+    fi
+}
+
+function arg-set {
+    case $1 in
         c)
-            CPUS=$OPTARG
+            CPUS=$2
             ;;
         f)
             NO_CONFIRM=true
             ;;
-        *)
-            usage
-            ;;
     esac
-done
+}
 
-case $(uname) in
-    Darwin)
-        export LDFLAGS="-L${BREW}/opt/libxml2/lib -L${BREW}/opt/giflib/lib -L${BREW}/opt/webp/lib -L${BREW}/opt/jpeg/lib -L${BREW}/opt/libtiff/lib"
+USAGE="Usage: fc-compile-emacs.sh [OPTION]\n\n
+  -c CPU numbers\n
+  -f force
+"
+ARGUMENTS="hc:f"
+source $FCHOME/bash/lib/argparser.sh
 
-        export CPPFLAGS="-I${BREW}/opt/libxml2/include -I${BREW}/opt/jpeg/include -I${BREW}/opt/libtiff/include -I${BREW}/opt/giflib/include"
-        ;;
-esac
-
-if [[ $(basename $(pwd)) = "emacs" && -d .git ]]; then
-    fc-user-confirm "Update source code" && update
-    (fc-user-confirm "Compile" && compile) || exit
-    (fc-user-confirm "Install" && install) || exit
-    fc-user-confirm "Update packages" && update_package
-elif fc-user-confirm "Clone emacs"; then
-    clone
-else
-    error-msg "Not under emacs !"
-fi
+prepare
+main

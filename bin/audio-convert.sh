@@ -4,35 +4,26 @@ source $FCHOME/bash/lib.sh
 
 TO_FMT=""
 
-function usage {
-    echo "Convert audio"
-    echo ""
-    echo "  -t to format"
-    echo ""
-    echo "  filenames"
-    echo ""
-    exit
-}
-
-while getopts "t:" OPT; do
-    case $OPT in
+function arg-set {
+    case $1 in
         t)
-            TO_FMT=$OPTARG
-            ;;
-        *)
-            usage
+            TO_FMT=$2
             ;;
     esac
-done
+}
 
-shift $((OPTIND - 1))
+USAGE="Usage: audio-convert.sh [OPTION] [FILE]\n\n
+  -t to format
+"
+ARGUMENTS="ht:"
+source $FCHOME/bash/lib/argparser.sh
 
 if [[ -z $TO_FMT ]]; then
-    usage
+    echo -e "\nNO Target format!!!\n"
+    exit -1
 fi
 
 export -f fc-media-convert
 export TO_FMT
 
-# printf '%s\0' "$@" | xargs -0 -I{} -n1 -P$(nproc) bash -c 'fc-media-convert "$@" "$TO_FMT"' _ {}
 printf '%s\0' "$@" | xargs -0 -I{} -n1 -P$(nproc) bash -c 'fc-media-convert "{}" "$TO_FMT"'

@@ -2,26 +2,11 @@
 
 source $FCHOME/bash/lib.sh
 
-function usage {
-    cat <<-EOF
-Usage:  ${0##*/} [OPTION] audio-files
-    Play audio files continuous
-
-    -c total count
-    -h usage
-    -i interactive mode
-    -s span between two files
-    -C ask user for total count
-EOF
-
-    exit
-}
-
 function player {
     if [[ $(which mpv) ]]; then
-        mpv --really-quiet "$@" 1</dev/null
+        mpv --really-quiet "$@" 1< /dev/null
     else
-        mplayer -nolirc -really-quiet "$@" 1</dev/null
+        mplayer -nolirc -really-quiet "$@" 1< /dev/null
     fi
 }
 
@@ -49,32 +34,32 @@ total_count=30
 span=4
 interactive=false
 
-while getopts "c:his:C" OPTION; do
-    case $OPTION in
+function arg-set {
+    case $1 in
         c)
-            total_count=$OPTARG
-            ;;
-        h)
-            usage
+            total_count=$2
             ;;
         i)
             interactive=true
             ;;
         s)
-            span=$OPTARG
+            span=$2
             ;;
         C)
             read -p "How many times do you want to run ? " total_count
             ;;
-        *)
-            usage
-            ;;
     esac
-done
+}
 
-shift $((OPTIND - 1))
-
-(($# < 1)) && usage
+USAGE="Usage: play-audio-files.sh [OPTION] [FILES]\n\n
+  -c total count\n
+  -h usage\n
+  -i interactive mode\n
+  -s span between two files\n
+  -C ask user for total count\n
+"
+ARGUMENTS="c:his:C"
+source $FCHOME/bash/lib/argparser.sh
 
 audio_files=("$@")
 audio_file_amount=${#audio_files[@]}

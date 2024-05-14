@@ -348,6 +348,7 @@ FILE-TYPES: fc style file types."
                   ('doc '("-t" "markdown" "-t" "org" "-t" "tex" "-t" "txt"
                           "--type-add" "orglib:*.olib" "-t" "orglib"
                           "--type-add" "uml:*.{puml,pu}" "-t" "uml"
+                          "--type-add" "gzdoc:*.{org.gz,md.gz}" "-t" "gzdoc"
                           ))
                   ('conf '("-t" "cmake" "-t" "make" "-t" "config"
                            "--type-add" "scons:[Ss][Cc]ons,[Ss][Cc]onstruct}" "-t" "scons"

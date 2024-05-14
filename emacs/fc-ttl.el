@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(cl-defun -ttl-find-last ()
+(cl-defun --ttl-find-previous-statement ()
   (beginning-of-line)
 
   (while (> (point) 1)
@@ -16,17 +16,17 @@
       )
 
      ((looking-at "^:")
-      (cl-return-from -ttl-find-last 4))
+      (cl-return-from --ttl-find-previous-statement 4))
 
      ((looking-at " *\\(if.+then$\\|else\\|for\\|while\\|until\\)")
       (beginning-of-line-text)
-      (cl-return-from -ttl-find-last 4))
+      (cl-return-from --ttl-find-previous-statement 4))
 
      ((looking-at " *;")
       )
 
      (t
-      (cl-return-from -ttl-find-last 0))))
+      (cl-return-from --ttl-find-previous-statement 0))))
 
   0)
 
@@ -81,7 +81,7 @@
                                          ("next" . -4))))
 
                (t
-                (-ttl-find-last)))))
+                (--ttl-find-previous-statement)))))
 
     (when (null last)
       (goto-char pos)
@@ -119,7 +119,7 @@
                                             "include")
                                           'words)
                              . font-lock-keyword-face)
-                            (,(regexp-opt '("call" "return" "exit") 'words)
+                            (,(regexp-opt '("call" "return" "end" "exit") 'words)
                              . font-lock-function-name-face)
                             ("^:.+" . font-lock-function-name-face)))
 

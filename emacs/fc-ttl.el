@@ -5,6 +5,15 @@
 
 ;;; Code:
 
+(defface *fc-ttl-function-name-face*
+  '((t :inherit font-lock-function-name-face
+       :weight bold
+       :underline t
+       ))
+  "TTL function name face.")
+
+(defvar *fc-ttl-function-name-face* '*fc-ttl-function-name-face*)
+
 (cl-defun --ttl-find-previous-statement ()
   (beginning-of-line)
 
@@ -121,7 +130,7 @@
                              . font-lock-keyword-face)
                             (,(regexp-opt '("call" "return" "end" "exit") 'words)
                              . font-lock-function-name-face)
-                            ("^:.+" . font-lock-function-name-face)))
+                            ("^:.+" . ,*fc-ttl-function-name-face*)))
 
   (setq-local indent-line-function #'fc-ttl-indent-line))
 

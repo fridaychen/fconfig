@@ -1387,7 +1387,12 @@ STEP: pixels."
    `(("SPC" fc-vc-portal)
      ("a" fc-git-amend)
      ("c" vc-next-action)
-     ("h" git-messenger:popup-message)
+     ("h" ,(fc-cond-key :normal (fc-manual
+                                 (save-excursion
+                                   (fc-mark-line)
+                                   (fc-funcall #'vc-region-history)
+                                   (deactivate-mark)))
+                        :prefix #'fc-vc-show-commit-blame-with-line))
      ("j" ,(fc-manual (shell-command-to-string "fit -s")))
      ("k" fc-git-commit)
      ("l" magit-log-buffer-file)

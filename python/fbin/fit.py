@@ -232,6 +232,39 @@ def git_commit(message):
         fc.run("git", ["git", "commit", "-m", message])
 
 
+def git_blame_line(line, file):
+    fc.run(
+        "git",
+        [
+            "git",
+            "--no-pager",
+            "blame",
+            "-L" "%s,+1" % line,
+            "--porcelain",
+            file,
+        ],
+    )
+
+
+def git_show_commit_blame_with_line(line, file):
+    # fit -L 124 test/cxd3785_test.c | sed '2,$d' | grep -E ^[0-9a-f]+ -o | git show
+    return fc.pipe(
+        [
+            [
+                "git",
+                "--no-pager",
+                "blame",
+                "-L" "%s,+1" % line,
+                "--porcelain",
+                file,
+            ],
+            ["sed", "2,$d"],
+            ["grep", "-E", "^[0-9a-f]+", "-o"],
+            ["xargs", "git", "--no-pager", "show"],
+        ]
+    )
+
+
 def git_squash():
     text = list_git_log(
         prompt="Select commit (not include this) to squash > ",
@@ -323,6 +356,15 @@ def main():
         "-v", dest="verbose", action="store_true", help="verbose mode"
     )
     parser.add_argument(
+        "-L",
+        dest="blame_line",
+        nargs=1,
+        help="blame line",
+    )
+    parser.add_argument(
+        "-S", dest="show", action="store_true", help="show mode"
+    )
+    parser.add_argument(
         "-debug", dest="debug", action="store_true", help="debug mode"
     )
 
@@ -349,6 +391,9 @@ def main():
     )
     parser.add_argument(
         "--squash", dest="squash", action="store_true", help="squash commits"
+    )
+    parser.add_argument(
+        "otherthings", default=[], nargs="*", help="media files"
     )
 
     if not get_root() and not os.path.exists(".repo"):
@@ -380,5 +425,12 @@ def main():
         git_commit(args.commit)
     elif args.portal:
         portal(args.once)
+    elif args.blame_line:
+        if args.show:
+            git_show_commit_blame_with_line(
+                args.blame_line[0], args.otherthings[0]
+            )
+        else:
+            git_blame_line(args.blame_line[0], args.otherthings[0])
     else:
         git_status()

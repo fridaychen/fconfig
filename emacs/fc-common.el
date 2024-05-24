@@ -31,7 +31,8 @@
 (defconst *fc-english-fonts*
   (cond
    (*is-linux*
-    '((:family "Iosevka SS02")
+    '((:family "Sarasa Mono SC")
+      (:family "Iosevka SS02")
       (:family "Iosevka Curly")
       (:family "Iosevka")
       (:family "Fira Code")
@@ -39,7 +40,8 @@
       ))
 
    (*is-mac*
-    '((:family "Iosevka SS02")
+    '((:family "Sarasa Mono SC")
+      (:family "Iosevka SS02")
       (:family "Iosevka Curly")
       (:family "Fira Code")
       (:family "Hack")
@@ -158,22 +160,23 @@
 PERCENT: produce background color by darken this percent.
 COLOR: background color."
   (--each '(font-lock-keyword-face
-            font-lock-type-face
-            font-lock-constant-face
-
-            font-lock-function-name-face
-            font-lock-property-name-face
-            font-lock-variable-name-face)
+            font-lock-function-name-face)
     (when (facep it)
       (fc-soothe-face it percent color)))
 
   (--each '(font-lock-string-face
+            font-lock-doc-face
+            font-lock-type-face
+            font-lock-constant-face
+            font-lock-property-name-face
+            font-lock-variable-name-face
 
+            font-lock-preprocessor-face
             font-lock-function-call-face
             font-lock-variable-use-face
             font-lock-property-use-face)
     (when (facep it)
-      (fc-soothe-face it (/ percent 3) color))))
+      (fc-soothe-face it (* percent 0.7) color))))
 
 (defvar *fc-common-light-theme-bg* "cornsilk2")
 
@@ -281,6 +284,8 @@ COLOR: background color."
                     :foreground "black"))
 
       ('leuven-dark
+       (setf soothe-percent -26)
+
        (fc-set-face 'font-lock-type-face nil
                     :slant 'italic)
        (fc-set-face 'mode-line-inactive nil
@@ -370,7 +375,7 @@ COLOR: background color."
                     :background "gray30"))
 
       ('zenburn
-       (setf soothe-percent -12)
+       (setf soothe-percent -24)
 
        (fc-set-face 'font-lock-type-face nil
                     :slant 'italic)
@@ -383,7 +388,7 @@ COLOR: background color."
                     :background "#ff9800")
        (fc-set-face 'default nil
                     :background "#263238"
-                    :foreground "wheat")
+                    :foreground "beige")
        (fc-set-face 'aw-leading-char-face nil
                     :height (* *fc-font-height* 2)
                     :foreground "red")

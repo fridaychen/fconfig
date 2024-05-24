@@ -23,7 +23,17 @@
            (fc-add-to-hook '*fc-ergo-restore-hook* #'magit-blame-quit)
            (setf magit-diff-arguments "-w")))
 
-(fc-install 'git-messenger 'git-timemachine 'git-lens)
+(fc-install 'git-timemachine 'git-lens)
+
+(fc-load 'git-messenger
+  :after (progn
+           (defun fc-git-messenger-cb (arg)
+             (fc-with-existing-buffer "*git-messenger*"
+               (diff-mode)))
+
+           (add-hook 'git-messenger:after-popup-hook #'fc-git-messenger-cb)))
+
+(add-to-list 'auto-mode-alist '("\\*git-messenger\\*" . diff-mode))
 
 (fc-load 'vc-git
   :local t
@@ -204,6 +214,18 @@ REMOTE: select from local or remote branchs."
       (shell-command (format "git diff %s -- %s" branch filename) (current-buffer)))
 
     (fc-pop-buf buf :mode 'diff-mode :select t :dir (fc-vc-root))))
+
+(cl-defun fc-vc-show-commit-blame-with-line ()
+  (interactive)
+
+  (let ((buf (get-buffer-create "*git-messenger*")))
+    (fc-exec-command-to-buffer
+     buf
+     "fit" "-S" "-L" (fc-string (fc-line-num)) buffer-file-name)
+
+    (fc-pop-buf buf :mode 'diff-mode :select t)
+    (with-current-buffer buf
+      (goto-char (point-min)))))
 
 (fc-add-network-advice 'fc-git-pull 'fc-git-push)
 

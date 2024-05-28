@@ -15,7 +15,7 @@
 (defvar *fc-ttl-function-name-face* '*fc-ttl-function-name-face*)
 
 (defconst *ttl-imenu-generic-expression*
-  (list (list nil "^:[^ \t\n]+$" 0)))
+  (list (list "Subroutine" "^:\\([^_][^ \t\n]+\\)$" 1)))
 
 (cl-defun --ttl-find-previous-statement ()
   (beginning-of-line)

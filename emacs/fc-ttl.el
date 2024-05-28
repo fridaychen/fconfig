@@ -107,6 +107,15 @@
     (goto-char pos)
     (indent-line-to (+ indent last))))
 
+(defun fc-ttl--beginning-of-defun ()
+  (re-search-backward "^:[^_].+"))
+
+(defun fc-ttl--end-of-defun ()
+  (forward-line 1)
+  (if (re-search-forward "^:[^_].+" (point-max) t)
+      (goto-char (1- (match-beginning 0)))
+    (goto-char (point-max))))
+
 (define-derived-mode fc-ttl-mode prog-mode "TTL"
   "Major mode for TeraTerm macro files."
   :syntax-table nil
@@ -137,7 +146,9 @@
                             ("^:[^_].+" . ,*fc-ttl-function-name-face*)
                             ("^:[_].+" . font-lock-function-name-face)))
 
-  (setq-local indent-line-function #'fc-ttl-indent-line))
+  (setq-local indent-line-function #'fc-ttl-indent-line
+              beginning-of-defun-function #'fc-ttl--beginning-of-defun
+              end-of-defun-function #'fc-ttl--end-of-defun))
 
 (fc-add-fmt 'fc-ttl-mode nil #'fc--default-fmt-with-indent)
 

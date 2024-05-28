@@ -134,7 +134,8 @@
                              . font-lock-keyword-face)
                             (,(regexp-opt '("call" "return" "end" "exit") 'words)
                              . font-lock-function-name-face)
-                            ("^:.+" . ,*fc-ttl-function-name-face*)))
+                            ("^:[^_].+" . ,*fc-ttl-function-name-face*)
+                            ("^:[_].+" . font-lock-function-name-face)))
 
   (setq-local indent-line-function #'fc-ttl-indent-line))
 

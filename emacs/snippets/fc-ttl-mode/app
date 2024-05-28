@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: app
+# key: app
+# expand-env: ((yas-indent-line 'fixed))
+# --
+;; init
+
+call main
+
+exit
+
+;----------------------------------------------
+; Subroute: Main function
+;----------------------------------------------
+:main
+
+    $0
+
+    return
+
+;; Subroutines

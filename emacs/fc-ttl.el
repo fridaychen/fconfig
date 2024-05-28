@@ -14,6 +14,9 @@
 
 (defvar *fc-ttl-function-name-face* '*fc-ttl-function-name-face*)
 
+(defconst *ttl-imenu-generic-expression*
+  (list (list nil "^:[^ \t\n]+$" 0)))
+
 (cl-defun --ttl-find-previous-statement ()
   (beginning-of-line)
 
@@ -111,7 +114,8 @@
   (modify-syntax-entry ?\n ">")
 
   (setq-local comment-start ";"
-              comment-end "")
+              comment-end ""
+              imenu-generic-expression *ttl-imenu-generic-expression*)
 
   (setf indent-tabs-mode nil
         tab-width 4)

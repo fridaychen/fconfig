@@ -10,8 +10,7 @@
 
 (defvar *fc-doc-modes* nil)
 
-(defvar *fc-hs-show-all* t)
-(make-local-variable '*fc-hs-show-all*)
+(defvar-local *fc-hs-show-all* t)
 
 (fc-require 'hideshow)
 (fc-require 'outline)
@@ -27,11 +26,11 @@
     (setf *fc-hs-show-all* nil))
 
   (cond
-   ((derived-mode-p 'prog-mode)
-    (hs-minor-mode 1))
-
    ((member major-mode *fc-doc-modes*)
-    (outline-minor-mode 1))))
+    (outline-minor-mode 1))
+
+   ((derived-mode-p 'prog-mode)
+    (hs-minor-mode 1))))
 
 (defun fc-hs--show-all ()
   "Show all levels."

@@ -3,18 +3,21 @@
 # key: app
 # expand-env: ((yas-indent-line 'fixed))
 # --
-;; init
+;; $1
 
-call main
+:entry
+    call init
+    call main
 
-exit
+    exit
 
-;;----------------------------------------------
-;; Subroute: Main function
-;;----------------------------------------------
-:main
+:init
 
     $0
+
+    return
+
+:main
 
     return
 

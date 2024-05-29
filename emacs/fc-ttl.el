@@ -17,6 +17,8 @@
 (defconst *ttl-imenu-generic-expression*
   (list (list "Subroutine" "^:\\([^_][^ \t\n]+\\)$" 1)))
 
+(defconst *fc-ttl-function-regex* "^:[^_].+")
+
 (cl-defun --ttl-find-previous-statement ()
   (beginning-of-line)
 
@@ -108,11 +110,11 @@
     (indent-line-to (+ indent last))))
 
 (defun fc-ttl--beginning-of-defun ()
-  (re-search-backward "^:[^_].+"))
+  (re-search-backward *fc-ttl-function-regex*))
 
 (defun fc-ttl--end-of-defun ()
   (forward-line 1)
-  (if (re-search-forward "^:[^_].+" (point-max) t)
+  (if (re-search-forward *fc-ttl-function-regex* (point-max) t)
       (goto-char (1- (match-beginning 0)))
     (goto-char (point-max))))
 
@@ -124,10 +126,11 @@
 
   (setq-local comment-start ";"
               comment-end ""
-              imenu-generic-expression *ttl-imenu-generic-expression*)
+              imenu-generic-expression *ttl-imenu-generic-expression*
+              outline-regexp *fc-ttl-function-regex*)
 
-  (setf indent-tabs-mode nil
-        tab-width 4)
+  (setq-local indent-tabs-mode nil
+              tab-width 4)
 
   (font-lock-add-keywords nil
                           `(
@@ -143,14 +146,20 @@
                              . font-lock-keyword-face)
                             (,(regexp-opt '("call" "return" "end" "exit") 'words)
                              . font-lock-function-name-face)
-                            ("^:[^_].+" . ,*fc-ttl-function-name-face*)
+                            (,*fc-ttl-function-regex* . ,*fc-ttl-function-name-face*)
                             ("^:[_].+" . font-lock-function-name-face)))
 
   (setq-local indent-line-function #'fc-ttl-indent-line
               beginning-of-defun-function #'fc-ttl--beginning-of-defun
-              end-of-defun-function #'fc-ttl--end-of-defun))
+              end-of-defun-function #'fc-ttl--end-of-defun)
+
+  (save-excursion
+    (outline-minor-mode 1)
+    (goto-char (point-min))
+    (fc-hs-toggle-all)))
 
 (fc-add-fmt 'fc-ttl-mode nil #'fc--default-fmt-with-indent)
+(add-to-list '*fc-doc-modes* 'fc-ttl-mode)
 
 (provide 'fc-ttl)
 

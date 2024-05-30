@@ -16,20 +16,6 @@
   :enable *fc-enable-online-dict*
   :autoload t)
 
-(fc-load 'youdao-dictionary
-  :enable *fc-enable-online-dict*
-  :autoload t
-  :after
-  (progn
-    (cl-defun youdao-dictionary--play-voice (word &optional (volume 25))
-      "Play voice of the WORD if there has mplayer or mpg123 program."
-      (let ((player (executable-find "mpv")))
-        (if player
-            (start-process player nil player
-                           (format "--volume=%d" volume)
-                           (youdao-dictionary--format-voice-url word))
-          (user-error "ERROR: mpv or mpg123 is needed to play word voice"))))))
-
 (cl-defun fc--goldendict-lookup (word)
   "Look up word by goldendict.
 WORD: target word."

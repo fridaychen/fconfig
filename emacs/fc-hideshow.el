@@ -81,7 +81,9 @@
 
    ((fc-hs--is-outline)
     (ignore-errors
-      (outline-toggle-children)))))
+      (if (outline-invisible-p (pos-eol))
+          (outline-show-entry)
+        (outline-hide-entry))))))
 
 (provide 'fc-hideshow)
 

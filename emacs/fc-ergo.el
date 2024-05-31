@@ -229,6 +229,10 @@ FROM-BEGINNING: start from beginnning."
     (iedit-mode -1)
     (fc-modal-enable))
 
+   (iedit-rectangle-mode
+    (iedit-rectangle-mode -1)
+    (fc-modal-enable))
+
    ((region-active-p)
     (kill-region (region-beginning) (region-end)))
 
@@ -1604,6 +1608,8 @@ AUTO: auto select face."
                       :preregion #'delete-rectangle))
    ("E" fc-end-of-semantic)
    ("F" ,(fc-cond-key :normal #'fc-find-files
+                      :preregion (fc-manual (call-interactively #'iedit-rectangle-mode)
+                                            (fc-modal-disable))
                       :region (fc-manual (call-interactively #'iedit-mode)
                                          (fc-modal-disable))))
    ("G" ,(fc-cond-key :normal (fc-manual (fc-text-retrieve :ignore-files *fc--ignore-files*))

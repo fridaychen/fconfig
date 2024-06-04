@@ -286,6 +286,9 @@ COLOR: background color."
       ('leuven-dark
        (setf soothe-percent -26)
 
+       (fc-set-face 'aw-leading-char-face nil
+                    :height (* *fc-font-height* 2)
+                    :foreground "red")
        (fc-set-face 'font-lock-type-face nil
                     :slant 'italic)
        (fc-set-face 'mode-line-inactive nil

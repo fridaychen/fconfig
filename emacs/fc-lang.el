@@ -152,6 +152,9 @@ OBJ: object"
    ((hash-table-p set)
     (gethash var set))))
 
+(cl-defmacro fc-val (s)
+  (and (boundp s) s))
+
 (provide 'fc-lang)
 
 ;; Local Variables:

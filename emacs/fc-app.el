@@ -15,9 +15,11 @@
   "Select template.
 NAME: target buffer name."
   (when-let* ((files (fc-concat
-                      (fc--list-file (format "%s/template/" *fc-resource*)
+                      (fc--list-file (format "~/org/template")
                                      '(doc) :fullpath t)
-                      (fc--list-file (format "%s/site/template/" *fc-home*)
+                      (fc--list-file (format "%s/template" *fc-resource*)
+                                     '(doc) :fullpath t)
+                      (fc--list-file (format "%s/site/template" *fc-home*)
                                      '(doc) :fullpath t)))
               (options (--map (cons (file-name-base it) it) files))
               (template (fc-user-select

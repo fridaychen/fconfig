@@ -152,7 +152,8 @@
 
 ;; multiple cursor
 (fc-install 'iedit)
-(defvar iedit-mode nil "Autoload workaround.")
+(autoload 'iedit-mode "iedit")
+(autoload 'iedit-rectangle-mode "iedit-rect")
 
 ;; alt key as meta, leave esc alone
 (setf x-alt-keysym (if *is-mac* 'meta 'super))

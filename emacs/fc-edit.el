@@ -248,6 +248,15 @@
 
 (fc-load 'ebnf-mode)
 
+(fc-load 'imenu
+  :after (progn
+           (cl-defun fc--imenu-after-jump ()
+             (message "hello")
+             (fc-hs-show-block)
+             (recenter 1))
+
+           (add-hook 'imenu-after-jump-hook #'fc--imenu-after-jump t)))
+
 (provide 'fc-edit)
 
 ;; Local Variables:

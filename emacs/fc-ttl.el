@@ -204,6 +204,7 @@
 
 (fc-add-fmt 'fc-ttl-mode nil #'fc--default-fmt-with-indent)
 (add-to-list '*fc-doc-modes* 'fc-ttl-mode)
+(fc-add-tag 'fc-ttl-mode *fc-tag-xref*)
 
 (provide 'fc-ttl)
 

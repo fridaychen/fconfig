@@ -66,6 +66,28 @@
 
   (setf *fc-hs-show-all* (not *fc-hs-show-all*)))
 
+(defun fc-hs-show-block ()
+  (cond
+   ((fc-hs--is-hideshow)
+    (hs-show-block))
+
+   ((eq major-mode 'org-mode)
+    (outline-show-entry))
+
+   ((fc-hs--is-outline)
+    (outline-show-entry))))
+
+(defun fc-hs-hide-block ()
+  (cond
+   ((fc-hs--is-hideshow)
+    (hs-hide-block))
+
+   ((eq major-mode 'org-mode)
+    (outline-hide-entry))
+
+   ((fc-hs--is-outline)
+    (outline-hide-entry))))
+
 (defun fc-hs-toggle ()
   "Toggle show/hide at current leaf."
   (interactive)

@@ -124,6 +124,8 @@
   (modify-syntax-entry ?\; "<")
   (modify-syntax-entry ?\n ">")
 
+  (add-hook 'xref-backend-functions #'xref-ttl-xref-backend t)
+
   (setq-local comment-start ";"
               comment-end ""
               imenu-generic-expression *ttl-imenu-generic-expression*
@@ -140,11 +142,10 @@
                                             "until" "enduntil"
                                             "for" "next"
                                             "break" "continue"
-                                            "goto"
-                                            "include")
+                                            "goto")
                                           'words)
                              . font-lock-keyword-face)
-                            (,(regexp-opt '("call" "return" "end" "exit") 'words)
+                            (,(regexp-opt '("call" "end" "exit" "include" "return") 'words)
                              . font-lock-function-name-face)
                             (,*fc-ttl-function-regex* . ,*fc-ttl-function-name-face*)
                             ("^:[_].+" . font-lock-function-name-face)))
@@ -156,7 +157,50 @@
   (save-excursion
     (outline-minor-mode 1)
     (goto-char (point-min))
-    (fc-hs-toggle-all)))
+    (fc-hs-toggle-all))
+
+  (fc-hs-toggle))
+
+(defun xref-ttl-xref-backend ()
+  "TTL backend for Xref."
+  'xref-ttl)
+
+(cl-defmethod xref-backend-identifier-at-point ((_backend (eql xref-ttl)))
+  (symbol-name (symbol-at-point)))
+
+(cl-defmethod xref-backend-definitions ((_backend (eql xref-ttl)) symbol)
+  (message "try to find def in ttl")
+  (or
+   (fc--ttl-find-def-in-current-buf symbol)
+   (fc--ttl-find-def-in-proj symbol)))
+
+(cl-defun fc--ttl-find-def-in-current-buf (symbol)
+  (save-excursion
+    (goto-char (point-min))
+    (when (re-search-forward (format "^:%s" symbol) (point-max) t)
+      (list (xref-make "function"
+                       (xref-make-file-location
+                        (buffer-file-name)
+                        (line-number-at-pos (point))
+                        0))))))
+
+(cl-defun fc--ttl-find-def-in-proj (symbol)
+  (when-let ((buf (fc--text-retrieve :pattern (format "^:%s_ENTRY$" symbol)
+                                     :file-types '(code)))
+             (regex "^\\([^:]+\\):\\([0-9]+\\):")
+             (bound (point-max)))
+    (with-current-buffer buf
+      (cl-loop
+       while (re-search-forward regex bound t)
+       collect (xref-make "function"
+                          (xref-make-file-location
+                           (match-string 1)
+                           (match-string 2)
+                           0))
+       finally (kill-buffer buf)))))
+
+(cl-defmethod xref-backend-references ((_backend (eql xref-ttl)) symbol)
+  (message "ttl backend references %s" symbol))
 
 (fc-add-fmt 'fc-ttl-mode nil #'fc--default-fmt-with-indent)
 (add-to-list '*fc-doc-modes* 'fc-ttl-mode)

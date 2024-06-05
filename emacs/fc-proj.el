@@ -164,6 +164,7 @@ DIR: project path."
                   (fc-user-select "Select tag system"
                                   '("global"
                                     "lsp"
+                                    "xref"
                                     "none")))
                  :tag)
 

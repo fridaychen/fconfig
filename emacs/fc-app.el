@@ -462,6 +462,19 @@ FILE-TYPES: target file types to be searched."
    dir
    pattern))
 
+(cl-defun fc--text-retrieve (&key (dir default-directory) ignore-files pattern (file-types '(code conf doc xml)))
+  "Text retrieve.
+DIR: dir to search."
+  (let* ((bufname (format "*search %s*" pattern))
+         (buf (get-buffer-create bufname)))
+    (save-excursion
+      (with-current-buffer buf
+        (fc--internal-ftr-rg dir pattern file-types :ignore-files ignore-files)
+
+        (goto-char (point-min))
+
+        buf))))
+
 (cl-defun fc-text-retrieve (&key (dir default-directory) ignore-files)
   "Text retrieve.
 DIR: dir to search."
@@ -1318,7 +1331,7 @@ END: end of region."
    `(("ascii"  . fc-show-ascii-table)
      ("common" . fc-show-common-keys)
      )))
-
+(add-hook 'xref-backend-functions #'xref-ttl-xref-backend t)
 (provide 'fc-app)
 
 ;; Local Variables:

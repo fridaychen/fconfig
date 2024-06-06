@@ -169,7 +169,6 @@
   (symbol-name (symbol-at-point)))
 
 (cl-defmethod xref-backend-definitions ((_backend (eql xref-ttl)) symbol)
-  (message "try to find def in ttl")
   (or
    (fc--ttl-find-def-in-current-buf symbol)
    (fc--ttl-find-def-in-proj symbol)))

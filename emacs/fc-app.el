@@ -1331,7 +1331,7 @@ END: end of region."
    `(("ascii"  . fc-show-ascii-table)
      ("common" . fc-show-common-keys)
      )))
-(add-hook 'xref-backend-functions #'xref-ttl-xref-backend t)
+
 (provide 'fc-app)
 
 ;; Local Variables:

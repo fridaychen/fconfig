@@ -36,6 +36,8 @@
               :error-msg "No navigatable buffer found."
               :pop (not (fc--next-error-buffer-p (current-buffer)))))
 
+           (add-hook 'next-error-hook #'fc--show-recenter-block t)
+
            (setf next-error-find-buffer-function #'fc--next-error-find-buffer)))
 
 (cl-defun fc-add-next-error-mode (mode next prev)

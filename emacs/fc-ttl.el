@@ -124,7 +124,7 @@
   (modify-syntax-entry ?\; "<")
   (modify-syntax-entry ?\n ">")
 
-  (add-hook 'xref-backend-functions #'xref-ttl-xref-backend t)
+  (add-hook 'xref-backend-functions #'xref-ttl-xref-backend)
 
   (setq-local comment-start ";"
               comment-end ""
@@ -163,10 +163,14 @@
 
 (defun xref-ttl-xref-backend ()
   "TTL backend for Xref."
-  'xref-ttl)
+  (and (eq major-mode 'fc-ttl-mode)
+       'xref-ttl))
+
+(cl-defmethod xref-backend-identifier-completion-table ((_backend (eql xref-ttl)))
+  nil)
 
 (cl-defmethod xref-backend-identifier-at-point ((_backend (eql xref-ttl)))
-  (symbol-name (symbol-at-point)))
+  (fc-current-thing))
 
 (cl-defmethod xref-backend-definitions ((_backend (eql xref-ttl)) symbol)
   (or

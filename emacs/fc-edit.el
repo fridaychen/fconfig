@@ -248,20 +248,18 @@
 
 (fc-load 'ebnf-mode)
 
+(cl-defun fc--show-recenter-block ()
+  (fc-hs-show-block)
+  (recenter (/ (window-height) 3)))
+
 (fc-load 'imenu
   :after (progn
-           (cl-defun fc--imenu-after-jump ()
-             (fc-hs-show-block)
-             (recenter 1))
-
-           (add-hook 'imenu-after-jump-hook #'fc--imenu-after-jump t)))
+           (add-hook 'imenu-after-jump-hook #'fc--show-recenter-block t)))
 
 (fc-load 'xref
   :after (progn
-           (cl-defun fc--xref-after-jump ()
-             (fc-hs-show-block))
-
-           (add-hook 'xref-after-jump-hook #'fc--xref-after-jump t)))
+           (remove-hook 'xref-after-jump-hook #'recenter)
+           (add-hook 'xref-after-jump-hook #'fc--show-recenter-block t)))
 
 (provide 'fc-edit)
 

@@ -54,7 +54,6 @@
             'gnuplot
             'ob-blockdiag
             'org-cliplink
-            'org-link-beautify
             'valign)
 
 (fc-load 'org-superstar)
@@ -268,7 +267,6 @@ open('%s', 'w').write( str(main()) )")
       (electric-indent-local-mode -1)
 
       (org-superstar-mode 1)
-      (org-link-beautify-mode -1)
 
       (when-let* ((face *fc-reading-face*)
                   (force-mono (not (fc-bool (fc--org-get-file-property "MONO-FONT")))))

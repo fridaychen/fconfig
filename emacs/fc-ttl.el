@@ -142,10 +142,11 @@
                                             "until" "enduntil"
                                             "for" "next"
                                             "break" "continue"
-                                            "goto")
+                                            "goto"
+                                            "call" "include")
                                           'words)
                              . font-lock-keyword-face)
-                            (,(regexp-opt '("call" "end" "exit" "include" "return") 'words)
+                            (,(regexp-opt '("end" "exit" "return") 'words)
                              . font-lock-function-name-face)
                             (,*fc-ttl-function-regex* . ,*fc-ttl-function-name-face*)
                             ("^:[_].+" . font-lock-function-name-face)))

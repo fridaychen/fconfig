@@ -11,7 +11,7 @@
 
 (fc-load 'company
   :after (progn
-           (setf company-backends '(company-elisp company-ispell)
+           (setf company-backends '(company-ispell)
                  company-idle-delay *fc-company-delay*
                  company-minimum-prefix-length *fc-company-minimum-prefix-len*
                  company-show-numbers t

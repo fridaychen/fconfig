@@ -203,8 +203,53 @@
                            0))
        finally (kill-buffer buf)))))
 
+(cl-defun fc--ttl-function-p (symbol)
+  (let ((case-fold-search nil))
+    (eq 0 (string-match "^:?[a-z0-9_]+$" symbol))))
+
+(cl-defun fc--ttl-find-ref-in-current-buf (symbol)
+  (save-excursion
+    (goto-char (point-min))
+    (cl-loop
+     with func = (if (eq (seq-elt symbol 0) ?:)
+                     (cl-subseq symbol 0)
+                   symbol)
+     with name = (format "call %s" symbol)
+     while (re-search-forward (format "^ +call +%s" symbol) (point-max) t)
+     collect (xref-make name
+                        (xref-make-file-location
+                         (buffer-file-name)
+                         (line-number-at-pos (point))
+                         0)))))
+
+(cl-defun fc--ttl-find-ref-in-proj (symbol)
+  (when-let* ((func (if (s-suffix? "_ENTRY" symbol)
+                        (cl-subseq symbol 0 -6)
+                      symbol))
+              (buf (fc--text-retrieve :pattern (format "include %s$" func)
+                                      :dir (fc-proj-root)
+                                      :file-types '(code)))
+              (regex "^\\([^:]+\\):\\([0-9]+\\):")
+              (bound (point-max)))
+    (with-current-buffer buf
+      (cl-loop
+       with func = (if (eq (seq-elt symbol 0) ?:)
+                       (cl-subseq symbol 1 -6)
+                     symbol)
+       with name = (format "include %s" symbol)
+       while (re-search-forward regex bound t)
+       collect (xref-make name
+                          (xref-make-file-location
+                           (concat (fc-proj-root) (match-string 1))
+                           (string-to-number (match-string 2))
+                           0))
+                                        ;finally (kill-buffer buf)
+       ))))
+
 (cl-defmethod xref-backend-references ((_backend (eql xref-ttl)) symbol)
-  (message "ttl backend references %s" symbol))
+  (if (fc--ttl-function-p symbol)
+      (fc--ttl-find-ref-in-current-buf symbol)
+    (fc--ttl-find-ref-in-proj symbol)))
 
 (fc-add-fmt 'fc-ttl-mode nil #'fc--default-fmt-with-indent)
 (add-to-list '*fc-doc-modes* 'fc-ttl-mode)

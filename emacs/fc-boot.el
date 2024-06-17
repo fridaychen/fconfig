@@ -38,6 +38,7 @@
 (defvar *fc--mode-config-map* (fc-make-hash-table
                                '(
                                  (c-mode . fc-clang)
+                                 (c-ts-mode . fc-clang)
                                  (c++-mode . fc-clang)
                                  (emacs-lisp-mode . fc-elisp)
                                  (go-mode . fc-golang)
@@ -47,7 +48,8 @@
                                  (markdown-mode . fc-markdown)
                                  (ocaml-mode . fc-ocaml)
                                  (plantuml-mode . fc-plantuml)
-                                 (python-mode . fc-python))))
+                                 (python-mode . fc-python)
+                                 (python-ts-mode . fc-python))))
 
 (cl-defun fc--load-mode-config ()
   "Load config for current mode."

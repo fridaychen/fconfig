@@ -240,11 +240,15 @@
   :after (progn
            (setf treesit-font-lock-level 3)
 
-           (--each '(c go html python)
-             (when (treesit-ready-p it)
-               (treesit-parser-create it)))
+           (treesit-major-mode-setup)
 
-           (treesit-major-mode-setup)))
+           (--each '((c . (c-mode . c-ts-mode))
+                     (cpp . (c-or-c++-mode . c-or-c++-ts-mode))
+                     (go . (go-mode . go-ts-mode))
+                     (python . (python-mode . python-ts-mode)))
+             (when (treesit-ready-p (car it))
+               (treesit-parser-create (car it))
+               (add-to-list 'major-mode-remap-alist (cdr it))))))
 
 (fc-load 'ebnf-mode)
 

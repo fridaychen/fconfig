@@ -1426,28 +1426,45 @@ STEP: pixels."
    "ergo-layout-map")
   "KEYS l: load  p: pop  q: push  s: save.")
 
-(cl-defun fc--select-bookmark (&key (title "Select bookmark"))
+(cl-defun fc--select-bookmark (&key (prompt "Select bookmark"))
   (fc-user-select
-   title
-   (-map #'car bookmark-alist)
+   prompt
+   (-map #'car (bookmark-maybe-sort-alist))
    :mouse t))
+
+(cl-defun fc--auto-bookmark ()
+  (interactive)
+
+  (when-let ((meta (fc--book-p)))
+    (bookmark-set (format "Book: <<%s>> furthest read position" (plist-get meta :title)))
+    (cl-return-from fc--auto-bookmark))
+
+  (when-let ((root (fc-proj-root))
+             (has-name (boundp 'fc-proj-name)))
+    (bookmark-set (format "Proj %s: %s"
+                          fc-proj-name
+                          (file-relative-name buffer-file-name root)))
+    (cl-return-from fc--auto-bookmark))
+
+  (when-let ((name (read-string "New Bookmark name"))
+             (not-empty (not (seq-empty-p name))))
+    (bookmark-set name)
+    (cl-return-from fc--auto-bookmark))
+
+  (message "Do nothing!"))
 
 (defconst *ergo-bookmark-map*
   (fc-make-keymap
    `(
      ("<SPC>" fc-bookmark)
      ("d" ,(fc-manual
-            (when-let* ((bm (fc--select-bookmark :title "Select bookmark to remove"))
+            (when-let* ((bm (fc--select-bookmark :prompt "Select bookmark to remove"))
                         (confirm (fc-user-confirm
                                   (format "Remove bookmark '%s'" bm))))
               (bookmark-delete bm))))
-     ("l" ,(fc-manual
-            (when-let ((meta (fc--book-p)))
-              (message "%s -> %s (%s)" meta (plist-get meta :title)
-                       (type-of (plist-get meta :title)))
-              (bookmark-set (format "Book <<%s>> furthest read position" (plist-get meta :title))))))
+     ("l" fc--auto-bookmark)
      ("u" ,(fc-manual
-            (when-let* ((bm (fc--select-bookmark :title "Select bookmark to create or update"))
+            (when-let* ((bm (fc--select-bookmark :prompt "Select bookmark to create or update"))
                         (confirm (fc-user-confirm
                                   (format "Update bookmark '%s'" bm))))
               (bookmark-set bm)))))))
@@ -1756,7 +1773,8 @@ AUTO: auto select face."
                         :region #'kill-ring-save
                         :prefix #'just-one-space))
    ("<escape>" fc-escape-key)
-   ("<mouse-1>" fc-mouse-func)))
+   ("<mouse-1>" fc-mouse-func)
+   ("<mouse-8>" fc-backward)))
 
 (cl-defun fc-ergo-search-next ()
   "Ergo search next."

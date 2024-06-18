@@ -10,7 +10,6 @@
 (cl-defun fc-mouse-turn-page (event)
   "Turning page.
 EVENT: mouse evnet."
-  (message "hello")
   (let* ((posn (elt event 1))
          (start (fc-point-to-line (window-start)))
          (end (fc-point-to-line (window-end)))

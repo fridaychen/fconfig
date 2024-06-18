@@ -240,8 +240,6 @@
   :after (progn
            (setf treesit-font-lock-level 3)
 
-           (treesit-major-mode-setup)
-
            (--each '((c . (c-mode . c-ts-mode))
                      (cpp . (c-or-c++-mode . c-or-c++-ts-mode))
                      (go . (go-mode . go-ts-mode))

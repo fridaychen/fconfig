@@ -1426,6 +1426,32 @@ STEP: pixels."
    "ergo-layout-map")
   "KEYS l: load  p: pop  q: push  s: save.")
 
+(cl-defun fc--select-bookmark (&key (title "Select bookmark"))
+  (fc-user-select
+   title
+   (-map #'car bookmark-alist)
+   :mouse t))
+
+(defconst *ergo-bookmark-map*
+  (fc-make-keymap
+   `(
+     ("<SPC>" fc-bookmark)
+     ("d" ,(fc-manual
+            (when-let* ((bm (fc--select-bookmark :title "Select bookmark to remove"))
+                        (confirm (fc-user-confirm
+                                  (format "Remove bookmark '%s'" bm))))
+              (bookmark-delete bm))))
+     ("l" ,(fc-manual
+            (when-let ((meta (fc--book-p)))
+              (message "%s -> %s (%s)" meta (plist-get meta :title)
+                       (type-of (plist-get meta :title)))
+              (bookmark-set (format "Book <<%s>> furthest read position" (plist-get meta :title))))))
+     ("u" ,(fc-manual
+            (when-let* ((bm (fc--select-bookmark :title "Select bookmark to create or update"))
+                        (confirm (fc-user-confirm
+                                  (format "Update bookmark '%s'" bm))))
+              (bookmark-set bm)))))))
+
 (defun fc-mode-func-key ()
   "Run function base on mode."
   (interactive)
@@ -1587,18 +1613,7 @@ AUTO: auto select face."
                     (undo)))
 
    ("A" fc-begin-of-semantic)
-   ("B" ,(fc-cond-key :normal #'fc-bookmark
-                      :prefix (fc-manual
-                               (let ((bm (fc-user-select
-                                          "Select bookmark to remove"
-                                          (-map #'car bookmark-alist)
-                                          :mouse t)))
-                                 (when (and bm
-                                            (fc-user-confirm
-                                             (format
-                                              "Remove bookmark '%s'"
-                                              bm)))
-                                   (bookmark-delete bm))))))
+   ("B" ,(fc-cond-key :normal (fc-head-key "Bookmark" '*ergo-bookmark-map*)))
 
    ;; C := VC
    ("C" ,(fc-head-key "VC" '*ergo-vc-map*))

@@ -70,9 +70,9 @@
 
   (let ((info (org-export-get-environment)))
     (list
-     :title (plist-get info :title)
-     :author (plist-get info :author)
-     :date (plist-get info :date))))
+     :title (car (plist-get info :title))
+     :author (car (plist-get info :author))
+     :date (car (plist-get info :date)))))
 
 (cl-defun fc--org-before-theme-changed ()
   (when (facep 'org-superstar-header-bullet)

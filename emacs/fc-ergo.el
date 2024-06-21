@@ -418,7 +418,7 @@ INDENT-FUNC: function for indent."
     ((guard (derived-mode-p 'prog-mode))
      (if (and (boundp 'lsp-bridge-mode) lsp-bridge-mode)
          (lsp-bridge-find-def-return)
-       (pop-tag-mark)))
+       (xref-go-back)))
 
     (_
      (scroll-down-command))))
@@ -883,7 +883,6 @@ KEYMAP: keymap to run."
 (fc-bind-keys `(("C-M-s" fc-toggle-hide-show-all)
                 ("M-s" fc-toggle-hide-show)
 
-                ("M-b" pop-tag-mark)
                 ("C-<tab>" fc-fast-switch-window)
                 ("<backtab>" fc-buffers-list)
                 ("<S-C-iso-lefttab>" previous-buffer)
@@ -1029,7 +1028,12 @@ KEYMAP: keymap to run."
      ("a" ,(fc-mode-key
             `((image-mode . image-bob)
               (_ . beginning-of-buffer))))
-     ("b" ,(fc-cond-key :normal (fc-manual (fc-select-buffer
+     ("b" ,(fc-cond-key :normal (fc-head-key "Bookmark" '*ergo-bookmark-map*)))
+     ("c" ,(fc-manual (recenter (/ (window-height) 2))))
+     ("e" ,(fc-mode-key
+            `((image-mode . image-eob)
+              (_ . end-of-buffer))))
+     ("f" ,(fc-cond-key :normal (fc-manual (fc-select-buffer
                                             "Favorite buffer"
                                             '(:no-curr t :var *fc-favorite-buffer*)))
                         :prefix (fc-manual
@@ -1037,10 +1041,6 @@ KEYMAP: keymap to run."
                                   *fc-favorite-buffer*
                                   :entry (message "Add to favorite buffer list")
                                   :quit (message "Remove from favorite buffer list")))))
-     ("c" ,(fc-manual (recenter (/ (window-height) 2))))
-     ("e" ,(fc-mode-key
-            `((image-mode . image-eob)
-              (_ . end-of-buffer))))
      ("g" ,(fc-manual
             (bury-buffer)
             (fc-select-buffer ""
@@ -1432,6 +1432,33 @@ STEP: pixels."
    (-map #'car (bookmark-maybe-sort-alist))
    :mouse t))
 
+(cl-defun fc--add-bookmark ()
+  (interactive)
+
+  (when-let ((meta (fc--book-p)))
+    (bookmark-set (read-string "Add bookmark "
+                               (format "Book: <<%s>> "
+                                       (plist-get meta :title)
+                                       (which-function))))
+    (cl-return-from fc--auto-bookmark))
+
+  (when-let ((root (fc-proj-root))
+             (has-name (boundp 'fc-proj-name)))
+    (bookmark-set (read-string "Add bookmark "
+                               (format "Proj %s: %s %s"
+                                       fc-proj-name
+                                       (file-relative-name buffer-file-name root)
+                                       (which-function))))
+    (cl-return-from fc--auto-bookmark))
+
+  (when-let* ((name (read-string "Add bookmark name"
+                                 (format "Doc : %s -- %s"
+                                         (buffer-name)
+                                         (which-function))))
+              (not-empty (not (seq-empty-p name))))
+    (bookmark-set name)
+    (cl-return-from fc--auto-bookmark)))
+
 (cl-defun fc--auto-bookmark ()
   (interactive)
 
@@ -1441,14 +1468,10 @@ STEP: pixels."
 
   (when-let ((root (fc-proj-root))
              (has-name (boundp 'fc-proj-name)))
-    (bookmark-set (format "Proj %s: %s"
+    (bookmark-set (format "Proj %s: %s -- %s"
                           fc-proj-name
-                          (file-relative-name buffer-file-name root)))
-    (cl-return-from fc--auto-bookmark))
-
-  (when-let ((name (read-string "New Bookmark name"))
-             (not-empty (not (seq-empty-p name))))
-    (bookmark-set name)
+                          (file-relative-name buffer-file-name root)
+                          (which-function)))
     (cl-return-from fc--auto-bookmark))
 
   (message "Do nothing!"))
@@ -1463,6 +1486,7 @@ STEP: pixels."
                                   (format "Remove bookmark '%s'" bm))))
               (bookmark-delete bm))))
      ("l" fc--auto-bookmark)
+     ("j" fc--add-bookmark)
      ("u" ,(fc-manual
             (when-let* ((bm (fc--select-bookmark :prompt "Select bookmark to create or update"))
                         (confirm (fc-user-confirm
@@ -1631,6 +1655,7 @@ AUTO: auto select face."
 
    ("A" fc-begin-of-semantic)
    ("B" ,(fc-cond-key :normal (fc-head-key "Bookmark" '*ergo-bookmark-map*)))
+   ("M-b" ,(fc-cond-key :normal (fc-head-key "Bookmark" '*ergo-bookmark-map*)))
 
    ;; C := VC
    ("C" ,(fc-head-key "VC" '*ergo-vc-map*))

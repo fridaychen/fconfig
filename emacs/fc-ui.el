@@ -19,7 +19,7 @@ MOUSE: allow user to select with mouse."
 
   (cond
    (mouse
-    (ivy-read (fc-prompt prompt) collection))
+    (ivy-read (fc-prompt prompt) collection :caller 'fc-ui-ivy))
 
    ((and fullscreen (fboundp 'helm))
     (let ((helm-full-frame t))

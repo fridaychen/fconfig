@@ -69,7 +69,8 @@
 (defun fc-hs-show-block ()
   (cond
    ((fc-hs--is-hideshow)
-    (hs-show-block))
+    (when (hs-already-hidden-p)
+      (hs-show-block)))
 
    ((eq major-mode 'org-mode)
     (outline-show-entry))

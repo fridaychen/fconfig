@@ -1655,7 +1655,7 @@ AUTO: auto select face."
 
    ("A" fc-begin-of-semantic)
    ("B" ,(fc-cond-key :normal (fc-head-key "Bookmark" '*ergo-bookmark-map*)))
-   ("M-b" ,(fc-cond-key :normal (fc-head-key "Bookmark" '*ergo-bookmark-map*)))
+   ("M-b" fc-bookmark)
 
    ;; C := VC
    ("C" ,(fc-head-key "VC" '*ergo-vc-map*))

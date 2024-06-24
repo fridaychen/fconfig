@@ -18,6 +18,9 @@ MOUSE: allow user to select with mouse."
   (defvar helm-full-frame)
 
   (cond
+   ((eq *fc-completion* 'vertico)
+    (completing-read prompt collection))
+
    (mouse
     (ivy-read (fc-prompt prompt) collection :caller 'fc-ui-ivy))
 

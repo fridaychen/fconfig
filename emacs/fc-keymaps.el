@@ -15,7 +15,7 @@ KEYDEFS: default key bindings."
     (fc-bind-keys keydefs keymap)
     keymap))
 
-(defun fc-bind-keys (keydefs &optional keymap)
+(cl-defun fc-bind-keys (keydefs &optional (keymap (current-global-map)))
   "Bind keys.
 KEYDEFS: key binding maps.
 KEYMAP: keymap to operate with"
@@ -23,9 +23,7 @@ KEYMAP: keymap to operate with"
     (let* ((key (cl-first it))
            (func (cl-second it))
            (key-def (if (stringp key) (kbd key) key)))
-      (if keymap
-          (define-key keymap key-def func)
-        (global-set-key key-def func)))))
+      (define-key keymap key-def func))))
 
 (defun fc-unbind-keys (keydefs &optional keymap)
   "Unbind keys.

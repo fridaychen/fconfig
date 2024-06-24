@@ -128,8 +128,8 @@
              (diff-hl-margin-mode 1))
 
            (fc-bind-keys
-            '(("n" diff-hl-previous-hunk)
-              ("m" diff-hl-next-hunk))
+            '(("[" diff-hl-previous-hunk)
+              ("]" diff-hl-next-hunk))
             *ergo-vc-map*)))
 
 (cl-defun fc-vc-rename-file ()

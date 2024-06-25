@@ -74,6 +74,7 @@
               (defalias 'fc-find-files 'counsel-find-file)
               (defalias 'fc-recentf 'counsel-recentf)
               (defalias 'fc-imenu 'counsel-imenu)
+              (defalias 'fc-yank-pop 'counsel-yank-pop)
               (defalias 'fc-M-x 'counsel-M-x)
               (defalias 'fc-bookmark 'counsel-bookmark)))
 
@@ -97,6 +98,25 @@
   :autoload t
   :before (when (eq *fc-completion* 'ivy)
             (defalias 'fc-projectile-buffers-list 'counsel-projectile-switch-to-buffer)))
+
+(cl-defun fc-show-buffer ()
+  (interactive)
+  (when-let* ((bufname (ivy-read "Switch to buffer: "
+                                 #'internal-complete-buffer
+                                 :keymap ivy-switch-buffer-map
+                                 :preselect (buffer-name (other-buffer (current-buffer)))
+                                 :matcher #'ivy--switch-buffer-matcher
+                                 :caller 'ivy-switch-buffer))
+              (buf (get-buffer bufname))
+              (win (progn
+                     (when (fc-side-window-p)
+                       (select-window (or (window-child (window-main-window))
+                                          (window-main-window))))
+                     (display-buffer buf
+                                     '(display-buffer-same-window
+                                       display-buffer-use-some-window
+                                       display-buffer-reuse-window)))))
+    (select-window win)))
 
 (when (eq *fc-completion* 'ivy)
   (defalias 'fc-flycheck 'flycheck-list-errors)

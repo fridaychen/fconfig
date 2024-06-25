@@ -74,9 +74,11 @@
   :after
   (fc-add-hook-func '*fc-after-theme-hook* #'fc--setup-line-spacing))
 
-(when (eq *fc-completion* 'helm)
-  (fc-require 'fc-helm t))
-(fc-require 'fc-ivy t)
+(pcase *fc-completion*
+  ('helm (fc-require 'fc-helm t))
+  ('vertico (fc-require 'fc-vertico t))
+  ('ivy (fc-require 'fc-ivy t)))
+
 (fc-require 'fc-buffer t)
 
 (fc-load 'ido

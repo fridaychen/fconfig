@@ -677,24 +677,6 @@ ARGS: list of infos."
              (and (buffer-file-name)
                   (null (get-buffer-window)))))))
 
-(cl-defun fc-show-buffer ()
-  (when-let* ((bufname (ivy-read "Switch to buffer: "
-                                 #'internal-complete-buffer
-                                 :keymap ivy-switch-buffer-map
-                                 :preselect (buffer-name (other-buffer (current-buffer)))
-                                 :matcher #'ivy--switch-buffer-matcher
-                                 :caller 'ivy-switch-buffer))
-              (buf (get-buffer bufname))
-              (win (progn
-                     (when (fc-side-window-p)
-                       (select-window (or (window-child (window-main-window))
-                                          (window-main-window))))
-                     (display-buffer buf
-                                     '(display-buffer-same-window
-                                       display-buffer-use-some-window
-                                       display-buffer-reuse-window)))))
-    (select-window win)))
-
 (cl-defun fc-fast-switch-window ()
   "Fast switch window."
   (interactive)
@@ -1021,7 +1003,7 @@ KEYMAP: keymap to run."
 
 (defconst *ergo-goto-map*
   (fc-make-keymap
-   `(("<SPC>" counsel-imenu)
+   `(("<SPC>" fc-imenu)
 
      ("7" ,(fc-manual (fc-show-hide-buffer "*compilation*")))
 
@@ -1645,11 +1627,11 @@ AUTO: auto select face."
    ("x" ,(fc-cond-key :normal #'fc-delete-char
                       :region #'exchange-point-and-mark))
    ("y" ,(fc-cond-key :normal #'yank
-                      :prefix #'counsel-yank-pop
+                      :prefix #'fc-yank-pop
                       :region (fc-manuals #'delete-region
                                           #'yank)
                       :preregion (fc-manuals #'delete-region
-                                             #'counsel-yank-pop)))
+                                             #'fc-yank-pop)))
    ("z" ,(fc-manual (push-mark (point))
                     (undo)))
 

@@ -11,6 +11,8 @@
            (vertico-mode 1))
 
   :bind '((vertico-map
+           ("C-j" vertico-next)
+           ("C-k" vertico-previous)
            ("M-i" vertico-previous)
            ("M-k" vertico-next)
            ("M-j" vertico-scroll-down)
@@ -23,12 +25,22 @@
                         (if (fc-dark-theme-p)
                             "#FEBA07"
                           "SkyBlue3"))
-           (setq-default vertico-posframe-border-width 30)
+           (setq-default vertico-posframe-border-width 6)
            (vertico-posframe-mode 1)))
 
 (fc-load 'consult)
 
+(fc-load 'orderless
+  :after (progn
+           (setq completion-styles '(orderless basic))))
+
 (defalias 'fc-bookmark 'fc-vertico-bookmark)
+(defalias 'fc-show-buffer 'consult-buffer)
+(defalias 'fc-recentf 'consult-recent-file)
+(defalias 'fc-buffers-list 'consult-buffer)
+(defalias 'fc-imenu 'consult-imenu)
+(defalias 'fc-yank-pop 'consult-yank-pop)
+(defalias 'fc-find-files 'find-file)
 
 (cl-defun fc-vertico-bookmark ()
   (interactive)

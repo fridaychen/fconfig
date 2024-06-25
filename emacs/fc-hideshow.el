@@ -108,6 +108,15 @@
           (outline-show-entry)
         (outline-hide-entry))))))
 
+(defun fc-hs-goto ()
+  (interactive)
+  (cond
+   ((fc-hs--is-outline)
+    (fc-outline))
+
+   (t
+    (fc-imenu))))
+
 (provide 'fc-hideshow)
 
 ;; Local Variables:

@@ -76,7 +76,8 @@
               (defalias 'fc-imenu 'counsel-imenu)
               (defalias 'fc-yank-pop 'counsel-yank-pop)
               (defalias 'fc-M-x 'counsel-M-x)
-              (defalias 'fc-bookmark 'counsel-bookmark)))
+              (defalias 'fc-bookmark 'counsel-bookmark)
+              (defalias 'fc-outline 'counsel-outline)))
 
   :after (progn
            (setf counsel-find-file-ignore-regexp

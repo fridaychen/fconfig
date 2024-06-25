@@ -1003,7 +1003,7 @@ KEYMAP: keymap to run."
 
 (defconst *ergo-goto-map*
   (fc-make-keymap
-   `(("<SPC>" fc-imenu)
+   `(("<SPC>" fc-hs-goto)
 
      ("7" ,(fc-manual (fc-show-hide-buffer "*compilation*")))
 

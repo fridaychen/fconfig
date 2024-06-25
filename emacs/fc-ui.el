@@ -19,7 +19,11 @@ MOUSE: allow user to select with mouse."
 
   (cond
    ((eq *fc-completion* 'vertico)
-    (completing-read prompt collection))
+    (if (and (> 9 (length collection))
+             (> (- (frame-width) 20 (length prompt))
+                (fc--list-string-width collection)))
+        (ido-completing-read (fc-prompt prompt) collection)
+      (completing-read prompt collection)))
 
    (mouse
     (ivy-read (fc-prompt prompt) collection :caller 'fc-ui-ivy))

@@ -41,47 +41,36 @@
 (defalias 'fc-imenu 'consult-imenu)
 (defalias 'fc-yank-pop 'consult-yank-pop)
 (defalias 'fc-find-files 'find-file)
+(defalias 'fc-M-x 'execute-extended-command)
+(defalias 'fc-outline 'consult-outline)
+
+(cl-defun fc--vertico--delete-bookmark ()
+  (interactive)
+
+  (when-let* ((name (seq-elt vertico--candidates
+                             vertico--index))
+              (confirm (fc-user-confirm (format "Delete bookmark %s" name))))
+    (bookmark-delete name)
+
+    (setq vertico--candidates
+          (seq-remove-at-position vertico--candidates
+                                  vertico--index))))
 
 (cl-defun fc-vertico-bookmark ()
   (interactive)
 
-  (fc-bind-keys `(("M-d" ,(fc-manual
-                           (let* ((name (seq-elt vertico--candidates
-                                                 vertico--index)))
-                             (when (fc-user-confirm (format "Delete bookmark %s" name))
-                               (bookmark-delete name)))
-
-                           (setq vertico--candidates
-                                 (seq-remove-at-position vertico--candidates
-                                                         vertico--index)))))
+  (fc-bind-keys `(("M-d" fc--vertico--delete-bookmark))
                 vertico-map)
 
-  (when-let ((name (completing-read "Bookmarks"
-                                    (-map #'car (bookmark-maybe-sort-alist)))))
+  (when-let ((name (completing-read
+                    "Bookmarks"
+                    (-map #'car (bookmark-maybe-sort-alist)))))
     (cond
      ((member name (bookmark-all-names))
       (bookmark-jump name))
 
      (t
       (bookmark-set name)))))
-
-(cl-defun fc-show-buffer ()
-  (when-let* ((bufname (completing-read "Switch to buffer: "
-                                        #'internal-complete-buffer
-                                        :keymap ivy-switch-buffer-map
-                                        :preselect (buffer-name (other-buffer (current-buffer)))
-                                        :matcher #'ivy--switch-buffer-matcher
-                                        :caller 'ivy-switch-buffer))
-              (buf (get-buffer bufname))
-              (win (progn
-                     (when (fc-side-window-p)
-                       (select-window (or (window-child (window-main-window))
-                                          (window-main-window))))
-                     (display-buffer buf
-                                     '(display-buffer-same-window
-                                       display-buffer-use-some-window
-                                       display-buffer-reuse-window)))))
-    (select-window win)))
 
 (provide 'fc-vertico)
 

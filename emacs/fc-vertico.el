@@ -7,8 +7,8 @@
 
 (fc-load 'vertico
   :after (progn
-           (ivy-mode -1)
-           (vertico-mode 1))
+           (vertico-mode 1)
+           (vertico-mouse-mode 1))
 
   :bind '((vertico-map
            ("C-j" vertico-next)
@@ -35,7 +35,7 @@
            (setq completion-styles '(orderless basic))))
 
 (defalias 'fc-bookmark 'fc-vertico-bookmark)
-(defalias 'fc-show-buffer 'consult-buffer)
+(defalias 'fc-show-buffer (fc-manual (consult-buffer '(consult--source-buffer))))
 (defalias 'fc-recentf 'consult-recent-file)
 (defalias 'fc-buffers-list 'consult-buffer)
 (defalias 'fc-imenu 'consult-imenu)
@@ -44,7 +44,7 @@
 (defalias 'fc-M-x 'execute-extended-command)
 (defalias 'fc-outline 'consult-outline)
 
-(cl-defun fc--vertico--delete-bookmark ()
+(cl-defun fc-vertico--delete-bookmark ()
   (interactive)
 
   (when-let* ((name (seq-elt vertico--candidates
@@ -59,7 +59,7 @@
 (cl-defun fc-vertico-bookmark ()
   (interactive)
 
-  (fc-bind-keys `(("M-d" fc--vertico--delete-bookmark))
+  (fc-bind-keys `(("M-d" fc-vertico--delete-bookmark))
                 vertico-map)
 
   (when-let ((name (completing-read

@@ -7,6 +7,9 @@
 
 (fc-load 'vertico
   :after (progn
+           (setf consult-project-function #'fc-proj-root
+                 vertico-sort-function nil)
+
            (vertico-mode 1)
            (vertico-mouse-mode 1))
 
@@ -28,14 +31,16 @@
            (setq-default vertico-posframe-border-width 6)
            (vertico-posframe-mode 1)))
 
-(fc-load 'consult)
+(fc-load 'consult
+  :after (progn
+           (add-hook 'consult-after-jump-hook #'fc--show-recenter-block t)
+           (consult-preview-at-point-mode -1)))
 
 (fc-load 'orderless
   :after (progn
            (setq completion-styles '(orderless basic))))
 
 (defalias 'fc-bookmark 'fc-vertico-bookmark)
-(defalias 'fc-show-buffer (fc-manual (consult-buffer '(consult--source-buffer))))
 (defalias 'fc-recentf 'consult-recent-file)
 (defalias 'fc-buffers-list 'consult-buffer)
 (defalias 'fc-imenu 'consult-imenu)

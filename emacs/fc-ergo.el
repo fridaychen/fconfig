@@ -779,7 +779,6 @@ KEYMAP: keymap to run."
                 ("M-q" ,(fc-head-key "Prefix Quick" '*ergo-prefix-quick-map*))
                 ("M-x" fc-M-x)
                 ("C-<return>" fc-ctrl-enter-key)
-                ("C-x b" fc-show-buffer)
                 ("C-@" fc-escape-key)
                 ("C-<SPC>" fc-escape-key)
                 ("C-." ,(fc-manual (fc-find-definitions :apropos t)))
@@ -831,7 +830,7 @@ KEYMAP: keymap to run."
 (fc-bind-keys `(("M-1" fc-split-unsplit-window)
                 ("M-2" fc-split-window)
                 ("M-3" fc-show-hide-eshell)
-                ("M-4" fc-show-buffer)
+                ("M-4" fc-switch-buffer)
                 ("M-5" toggle-frame-fullscreen)
 
                 ("M-6" fc-flycheck)
@@ -1533,7 +1532,7 @@ AUTO: auto select face."
                       :prefix #'split-window-horizontally))
    ("3" ,(fc-cond-key :normal (fc-head-key "ORG" '*ergo-gtd-map*)
                       :prefix #'split-window-vertically))
-   ("4" ,(fc-cond-key :normal #'fc-show-buffer))
+   ("4" ,(fc-cond-key :normal #'fc-switch-buffer))
    ("5" toggle-frame-fullscreen)
    ("6" ,(fc-cond-key :normal #'fc-toggle-window-maximize
                       :prefix #'balance-windows))
@@ -1809,6 +1808,22 @@ FUNC: new repeat func."
   (interactive)
 
   (kill-buffer (current-buffer)))
+
+(cl-defun fc-switch-buffer ()
+  (interactive)
+
+  (when-let* ((buf (fc-user-select "Switch to buffer: "
+                                   (seq-map (lambda (x) (cons (buffer-name x) x))
+                                            (cdr (fc-list-buffer)))))
+              (win (progn
+                     (when (fc-side-window-p)
+                       (select-window (or (window-child (window-main-window))
+                                          (window-main-window))))
+                     (display-buffer buf
+                                     '(display-buffer-same-window
+                                       display-buffer-use-some-window
+                                       display-buffer-reuse-window)))))
+    (select-window win)))
 
 (defvar *fc-fill-region-fmt* "%d")
 

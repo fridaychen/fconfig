@@ -23,12 +23,18 @@
 
 (fc-load 'vertico-posframe
   :after (progn
-           (fc-set-face 'vertico-posframe-border nil
-                        :background
-                        (if (fc-dark-theme-p)
-                            "#FEBA07"
-                          "SkyBlue3"))
-           (setq-default vertico-posframe-border-width 6)
+           (cl-defun fc-vertico--posframe-theme-changed ()
+             (fc-set-face 'vertico-posframe-border nil
+                          :background
+                          (if (fc-dark-theme-p)
+                              "#FEBA07"
+                            "SkyBlue3"))
+
+             (setq-default vertico-posframe-border-width 6))
+
+           (add-hook '*fc-after-theme-hook* #'fc-vertico--posframe-theme-changed)
+           (fc-vertico--posframe-theme-changed)
+
            (vertico-posframe-mode 1)))
 
 (fc-load 'consult

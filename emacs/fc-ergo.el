@@ -1814,7 +1814,8 @@ FUNC: new repeat func."
 
   (when-let* ((buf (fc-user-select "Switch to buffer: "
                                    (seq-map (lambda (x) (cons (buffer-name x) x))
-                                            (cdr (fc-list-buffer)))))
+                                            (cdr (fc-list-buffer)))
+                                   :mouse t))
               (win (progn
                      (when (fc-side-window-p)
                        (select-window (or (window-child (window-main-window))

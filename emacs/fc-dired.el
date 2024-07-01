@@ -56,7 +56,7 @@
                                  ("folder" "-aBhl --group-directories-first")))))
 
   :bind `((dired-mode-map
-           ("4" ,(fc-cond-key :normal 'fc-switch-buffer))
+           ("4" ,(fc-cond-key :normal 'fc-switch-to-buffer))
            ("9" ,(fc-manual (kill-new (dired-get-filename))))
            ("d" dired-do-delete)
            ("f" fc-basic-key)

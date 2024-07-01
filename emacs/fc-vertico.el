@@ -5,15 +5,31 @@
 
 ;;; Code:
 
+(defconst *fc-vertico--base-keymap*
+  (fc-make-keymap
+   `(
+     ("C-j" vertico-next)
+     ("C-k" vertico-previous)
+     )))
+
+(cl-defun fc-vertico--clear ()
+  (interactive)
+
+  (beginning-of-line-text)
+  (kill-line)
+  (vertico--update))
+
 (fc-load 'vertico
   :after (progn
            (setf consult-project-function #'fc-proj-root
+                 vertico-count 20
                  vertico-sort-function nil)
 
            (vertico-mode 1)
            (vertico-mouse-mode 1))
 
   :bind '((vertico-map
+           ("M-d" fc-vertico--clear)
            ("C-j" vertico-next)
            ("C-k" vertico-previous)
            ("M-i" vertico-previous)
@@ -47,10 +63,10 @@
            (setq completion-styles '(orderless basic))))
 
 (defalias 'fc-bookmark 'fc-vertico-bookmark)
-(defalias 'fc-recentf 'consult-recent-file)
+(defalias 'fc-recentf 'recentf-open)
 (defalias 'fc-buffers-list 'consult-buffer)
 (defalias 'fc-imenu 'consult-imenu)
-(defalias 'fc-yank-pop 'consult-yank-pop)
+(defalias 'fc-yank-pop 'yank-pop)
 (defalias 'fc-find-files 'find-file)
 (defalias 'fc-M-x 'execute-extended-command)
 (defalias 'fc-outline 'consult-outline)
@@ -67,15 +83,23 @@
           (seq-remove-at-position vertico--candidates
                                   vertico--index))))
 
+(defconst *fc-vertico--bookmark-keymap*
+  (fc-make-keymap
+   `(
+     ("M-d" fc-vertico--delete-bookmark))
+   :parent *fc-vertico--base-keymap*))
+
+(cl-defun fc-vertico--read (prompt collection &key (keymap *fc-vertico--base-keymap*))
+  (fc-with-keymap keymap
+    (completing-read prompt collection)))
+
 (cl-defun fc-vertico-bookmark ()
   (interactive)
 
-  (fc-bind-keys `(("M-d" fc-vertico--delete-bookmark))
-                vertico-map)
-
-  (when-let ((name (completing-read
+  (when-let ((name (fc-vertico--read
                     "Bookmarks"
-                    (-map #'car (bookmark-maybe-sort-alist)))))
+                    (-map #'car (bookmark-maybe-sort-alist))
+                    :keymap *fc-vertico--bookmark-keymap*)))
     (cond
      ((member name (bookmark-all-names))
       (bookmark-jump name))

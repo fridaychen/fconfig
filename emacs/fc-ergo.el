@@ -6,6 +6,7 @@
 ;;; Code:
 (require 'cl-lib)
 (require 'hi-lock)
+(require 'delsel)
 
 (defconst *fc--undef-key* '(lambda () (interactive)))
 (defconst *ergo-prefix-timeout* 1)
@@ -830,7 +831,7 @@ KEYMAP: keymap to run."
 (fc-bind-keys `(("M-1" fc-split-unsplit-window)
                 ("M-2" fc-split-window)
                 ("M-3" fc-show-hide-eshell)
-                ("M-4" fc-switch-buffer)
+                ("M-4" fc-switch-to-buffer)
                 ("M-5" toggle-frame-fullscreen)
 
                 ("M-6" fc-flycheck)
@@ -1532,7 +1533,7 @@ AUTO: auto select face."
                       :prefix #'split-window-horizontally))
    ("3" ,(fc-cond-key :normal (fc-head-key "ORG" '*ergo-gtd-map*)
                       :prefix #'split-window-vertically))
-   ("4" ,(fc-cond-key :normal #'fc-switch-buffer))
+   ("4" ,(fc-cond-key :normal #'switch-to-buffer))
    ("5" toggle-frame-fullscreen)
    ("6" ,(fc-cond-key :normal #'fc-toggle-window-maximize
                       :prefix #'balance-windows))
@@ -1809,13 +1810,10 @@ FUNC: new repeat func."
 
   (kill-buffer (current-buffer)))
 
-(cl-defun fc-switch-buffer ()
+(cl-defun fc-switch-to-buffer ()
   (interactive)
 
-  (when-let* ((buf (fc-user-select "Switch to buffer: "
-                                   (seq-map (lambda (x) (cons (buffer-name x) x))
-                                            (cdr (fc-list-buffer)))
-                                   :mouse t))
+  (when-let* ((buf (read-buffer-to-switch "Switch to buffer: "))
               (win (progn
                      (when (fc-side-window-p)
                        (select-window (or (window-child (window-main-window))

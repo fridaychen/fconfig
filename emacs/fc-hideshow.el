@@ -112,10 +112,10 @@
   (interactive)
   (cond
    ((fc-hs--is-outline)
-    (fc-outline))
+    (fc-funcall #'fc-outline))
 
    (t
-    (fc-imenu))))
+    (fc-funcall #'fc-imenu))))
 
 (provide 'fc-hideshow)
 

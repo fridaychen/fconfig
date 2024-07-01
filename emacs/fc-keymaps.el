@@ -103,6 +103,15 @@ MODE-FUNC: mode and function definitions."
              (fc-funcall func)
              (cl-return-from find-mode)))))))
 
+(cl-defmacro fc-with-keymap (keymap &rest rest)
+  (declare (indent 1))
+  (let ((exit-fn (make-symbol "exit-fn"))
+        (ret (make-symbol "ret")))
+    `(let ((,exit-fn (set-transient-map ,keymap t))
+           (,ret (progn ,@rest)))
+       (funcall ,exit-fn)
+       ,ret)))
+
 (defconst *fc-punctuation-map*
   (fc-make-keymap
    `(("`" ,(fc-manual (insert "·")))

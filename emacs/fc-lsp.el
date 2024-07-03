@@ -57,7 +57,8 @@
                 lsp-modeline-workspace-status-enable nil
                 lsp-headerline-breadcrumb-enable nil
                 lsp-progress-via-spinner nil
-                lsp-enable-on-type-formatting nil)
+                lsp-enable-on-type-formatting nil
+                lsp-completion-provider :none)
   :after (progn
            (require 'lsp)
            (require 'lsp-mode)

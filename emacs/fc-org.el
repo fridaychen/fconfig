@@ -1075,7 +1075,6 @@ CONTENT: content of new footnote."
      ("y" ,(fc-cond-key :normal 'fc--org-sparse-tree
                         :region 'fc--org-occur))
      ("A" org-archive-subtree)
-     ("B" org-roam-buffer-toggle)
      ("D" org-deadline)
      ("L" org-todo-list)
      ("S" org-schedule)
@@ -1085,7 +1084,7 @@ CONTENT: content of new footnote."
      ("SPC" fc-org-portal))
    "fc-org-map"
    *fc-func-mode-map*)
-  "KEYS b: emphasize  c: C-c C-c  d: de/en-crypt  i c: clip link  i d: drawer  i f: formula  i n: roam node  i q: quote  i t: timestamp  i u: uml  i N: note  i T: insert title  l: link  m: mark element  o: open  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  B: backlink  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
+  "KEYS b: emphasize  c: C-c C-c  d: de/en-crypt  i c: clip link  i d: drawer  i f: formula  i n: roam node  i q: quote  i t: timestamp  i u: uml  i N: note  i T: insert title  l: link  m: mark element  o: open  s: add src  t: todo  v t:  view tags  v T: view tags TODO  y: show todo tree  C i: clock in  C o: clock out  A: archive  D: deadline  S: schedule  T: set tag  -: C-c minus  ^: sort.")
 
 (cl-defun fc--org-mode-func ()
   "Mode func."

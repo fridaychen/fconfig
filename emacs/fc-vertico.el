@@ -1,4 +1,4 @@
-;;; fc-vertico.el --- DESCRIPTION -*- lexical-binding: t -*-
+;;; fc-vertico.el --- Vertico -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;
@@ -9,20 +9,21 @@
   (fc-make-keymap
    `(
      ("C-j" vertico-next)
-     ("C-k" vertico-previous)
-     )))
+     ("C-k" vertico-previous))
+   "fc vertico base"))
 
 (cl-defun fc-vertico--clear ()
   (interactive)
 
-  (beginning-of-line-text)
-  (kill-line)
-  (vertico--update))
+  (message "--%d "(current-column))
+  (when (not (zerop (current-column)))
+    (beginning-of-line-text)
+    (kill-line)
+    (vertico--update)))
 
 (fc-load 'vertico
   :after (progn
            (setf consult-project-function #'fc-proj-root
-                 vertico-count 20
                  vertico-sort-function nil)
 
            (vertico-mode 1)
@@ -51,6 +52,8 @@
            (add-hook '*fc-after-theme-hook* #'fc-vertico--posframe-theme-changed)
            (fc-vertico--posframe-theme-changed)
 
+           (setf vertico-count 20)
+
            (vertico-posframe-mode 1)))
 
 (fc-load 'consult
@@ -60,7 +63,10 @@
 
 (fc-load 'orderless
   :after (progn
-           (setq completion-styles '(orderless basic))))
+           (setq completion-styles '(orderless partial-completion)
+                 completion-category-defaults nil
+                 completion-category-overrides '((file (styles . (partial-completion))))))
+  )
 
 (defalias 'fc-bookmark 'fc-vertico-bookmark)
 (defalias 'fc-recentf 'recentf-open)
@@ -74,6 +80,7 @@
 (cl-defun fc-vertico--delete-bookmark ()
   (interactive)
 
+  (message "enter fc-delete-bookmark")
   (when-let* ((name (seq-elt vertico--candidates
                              vertico--index))
               (confirm (fc-user-confirm (format "Delete bookmark %s" name))))
@@ -87,19 +94,22 @@
   (fc-make-keymap
    `(
      ("M-d" fc-vertico--delete-bookmark))
-   :parent *fc-vertico--base-keymap*))
+   "fc vertico bookmap"
+   *fc-vertico--base-keymap*))
 
-(cl-defun fc-vertico--read (prompt collection &key (keymap *fc-vertico--base-keymap*))
+(cl-defun fc-vertico--read (prompt collection &key (keymap '*fc-vertico--base-keymap*))
   (fc-with-keymap keymap
     (completing-read prompt collection)))
 
 (cl-defun fc-vertico-bookmark ()
   (interactive)
 
+  (bookmark-maybe-load-default-file)
+
   (when-let ((name (fc-vertico--read
                     "Bookmarks"
                     (-map #'car (bookmark-maybe-sort-alist))
-                    :keymap *fc-vertico--bookmark-keymap*)))
+                    :keymap '*fc-vertico--bookmark-keymap*)))
     (cond
      ((member name (bookmark-all-names))
       (bookmark-jump name))

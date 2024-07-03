@@ -295,6 +295,8 @@ COLOR: background color."
                     :foreground "black")
        (fc-set-face 'hl-line nil
                     :background "MediumPurple4")
+       (fc-set-face 'highlight nil
+                    :background "gray")
        (fc-set-face 'default nil
                     :foreground "cornsilk"
                     :background "gray22"))

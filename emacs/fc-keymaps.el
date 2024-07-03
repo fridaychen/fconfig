@@ -105,12 +105,17 @@ MODE-FUNC: mode and function definitions."
 
 (cl-defmacro fc-with-keymap (keymap &rest rest)
   (declare (indent 1))
-  (let ((exit-fn (make-symbol "exit-fn"))
-        (ret (make-symbol "ret")))
-    `(let ((,exit-fn (set-transient-map ,keymap t))
-           (,ret (progn ,@rest)))
-       (funcall ,exit-fn)
-       ,ret)))
+  (let ((ret (make-symbol "ret")))
+    `(condition-case ex
+         (progn
+           (internal-push-keymap (symbol-value ,keymap)
+                                 'overriding-terminal-local-map)
+           (setq ,ret (progn ,@rest))
+           (internal-pop-keymap (symbol-value ,keymap)
+                                'overriding-terminal-local-map)
+           ,ret)
+       ('quit (internal-pop-keymap (symbol-value ,keymap)
+                                   'overriding-terminal-local-map)))))
 
 (defconst *fc-punctuation-map*
   (fc-make-keymap
@@ -134,7 +139,8 @@ MODE-FUNC: mode and function definitions."
    `(
      ("7" ,(fc-manual (fc-run-hook '*fc-common-fast-act-hook*)))
 
-     ("B" ,(fc-cond-key :region 'base64-encode-region
+     ("B" ,(fc-cond-key :normal 'fc--auto-bookmark
+                        :region 'base64-encode-region
                         :preregion 'base64-decode-region))
      ("H" ,(fc-cond-key :normal 'fc-string2hex
                         :region 'fc-hex2string))

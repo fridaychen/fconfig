@@ -116,7 +116,7 @@
 (global-auto-revert-mode t)
 
 (global-visual-line-mode -1)
-(global-eldoc-mode -1)
+(global-eldoc-mode 1)
 (add-hook 'prog-mode-hook #'eldoc-mode)
 
 (defun fc-highlight-comment-keywords ()

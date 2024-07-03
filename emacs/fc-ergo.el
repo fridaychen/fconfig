@@ -1453,7 +1453,7 @@ STEP: pixels."
     (bookmark-set (format "Proj %s: %s -- %s"
                           fc-proj-name
                           (file-relative-name buffer-file-name root)
-                          (which-function)))
+                          (or (which-function) "Unknown")))
     (cl-return-from fc--auto-bookmark))
 
   (message "Do nothing!"))
@@ -1533,7 +1533,7 @@ AUTO: auto select face."
                       :prefix #'split-window-horizontally))
    ("3" ,(fc-cond-key :normal (fc-head-key "ORG" '*ergo-gtd-map*)
                       :prefix #'split-window-vertically))
-   ("4" ,(fc-cond-key :normal #'switch-to-buffer))
+   ("4" ,(fc-cond-key :normal #'fc-switch-to-buffer))
    ("5" toggle-frame-fullscreen)
    ("6" ,(fc-cond-key :normal #'fc-toggle-window-maximize
                       :prefix #'balance-windows))

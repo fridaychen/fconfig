@@ -186,8 +186,13 @@
               #'(lambda ()
                   (global-flycheck-mode -1)))))
 
+(fc-load 'fc-corfu
+  :local t
+  :disable *fc-enable-company*)
+
 (fc-load 'fc-company
   :local t
+  :enable *fc-enable-company*
   :after (fc--company-enable))
 
 (fc-load 'fc-language

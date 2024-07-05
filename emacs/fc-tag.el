@@ -98,13 +98,15 @@
      (compile-json-file
       (when (derived-mode-p 'prog-mode)
         (fc--lsp-enable)
-        (add-to-list 'company-backends 'company-capf)))
+        (when *fc-enable-company*
+          (add-to-list 'company-backends 'company-capf))))
 
      (gtags-file
       (ggtags-mode t))
 
      (gtags-file
-      (add-to-list 'company-backends 'company-gtags)))))
+      (when *fc-enable-company*
+        (add-to-list 'company-backends 'company-gtags))))))
 
 (cl-defmethod fc-tag--list ((x fc-tag-global))
   (fc-funcall #'counsel-gtags-find-symbol))
@@ -133,7 +135,8 @@
 (cl-defmethod fc-tag--open-file ((x fc-tag-lsp))
   (when (derived-mode-p 'prog-mode)
     (fc--lsp-enable)
-    (add-to-list 'company-backends 'company-capf)))
+    (when *fc-enable-company*
+      (add-to-list 'company-backends 'company-capf))))
 
 (cl-defmethod fc-tag--list ((x fc-tag-lsp))
   (fc--lsp-list-tag))

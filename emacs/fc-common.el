@@ -89,7 +89,8 @@
                                  "terminator.mp3")))
 
 ;; completion
-(defvar *fc-completion* 'vertico)
+(defconst *fc-completion* 'vertico)
+(defconst *fc-enable-company* nil)
 
 ;; theme
 (setf *fc-light-theme* '(

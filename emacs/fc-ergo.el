@@ -59,38 +59,6 @@
        (delete-char -1))
      "”")))
 
-(cl-defun fc-file-info ()
-  "Create file info."
-  `(("Name" ,buffer-file-name)
-    ("Basic" ,(format "%s %d bytes, %d lines, %s, point %d, %d"
-                      major-mode
-                      (buffer-size)
-                      (fc-buffer-lines)
-                      buffer-file-coding-system
-                      (point)
-                      (point-max)))
-    ("VC" ,(fc-text
-            (list
-             (fc-vc-branch)
-             (fc-string (when buffer-file-name
-                          (vc-state buffer-file-name))))
-            :separator ", "))))
-
-(defun fc-buffer-info ()
-  "Create buffer info."
-  `(("Tag/Xref" ,(format "%s %s"
-                         (if (boundp 'fc-proj-tag) fc-proj-tag nil)
-                         xref-backend-functions))
-    ("Company" ,(s-join " "
-                        (--map
-                         (s-chop-prefix "company-" (symbol-name it))
-                         company-backends)))
-    ("Format" ,(format "IndentTab %S, Auto %S, Spacing %d, Scale %3.1f"
-                       indent-tabs-mode
-                       *fc-format-at-save*
-                       line-spacing
-                       text-scale-mode-amount))))
-
 (defun fc-match-paren ()
   "Jump to another bracket."
   (interactive)
@@ -603,59 +571,6 @@ N: number."
       (backward-delete-char n)
     (delete-char n)))
 
-(defun fc-sys-info ()
-  "Create sys info."
-  (let ((user (format "%s@%s" user-login-name (system-name))))
-    (if *is-gui*
-        `(
-          ("Emacs" ,(format "%s (%s), DPI %d, fringe %d"
-                            emacs-version
-                            (format-time-string "%Y-%m-%d" emacs-build-time)
-                            (fc-display-ppi) *fc-fringe-width*))
-          ("User" ,(format "%s, %s" user *fc-location*))
-          ("Font" ,(format "%s, %s, %d"
-                           *fc-default-font*
-                           *fc-font-weight-of-default*
-                           *fc-font-height*))
-          ("Theme" ,(format "%s, %s, fg %s, bg %s"
-                            *fc-current-theme*
-                            (if (fboundp 'fc-modeline-mode)
-                                "fc-modeline"
-                              (symbol-name powerline-default-separator))
-                            (fc-get-face 'default :foreground)
-                            *fc-common-light-theme-bg*)))
-      `(
-        ("Emacs" ,(format "%s, colorful %S" emacs-version *is-colorful*))
-        ("User" ,user)
-        ("Loc" ,*fc-location*)
-        ("Theme" ,*fc-current-theme*)))))
-
-(defun fc-process-info ()
-  "Return list of process info."
-  `(("Process"
-     ,(s-join ", "
-              (cl-loop for i in (and (fboundp 'process-list)
-                                     (process-list))
-                       for j from 1
-                       collect (format "[%d] %s" j (process-name i)))))))
-
-(defun fc-convert-info (info)
-  "Convert info to string.
-INFO: info obj."
-  (--reduce-from (concat acc
-                         "│"
-                         (fc-text (format "%11s" (cl-first it)) :face 'font-lock-keyword-face)
-                         (format " : %s\n" (fc-string (cl-second it))))
-                 ""
-                 info))
-
-(defun fc-show-info (&rest args)
-  "Show info.
-ARGS: list of infos."
-  (--reduce-from (concat acc (fc-convert-info it))
-                 ""
-                 args))
-
 (defun fc-open-my-index-org ()
   "Open index org file."
   (interactive)
@@ -1135,8 +1050,7 @@ KEYMAP: keymap to run."
    `(("SPC" fc-help-portal)
      ("`" ,(fc-manual (fc-play-sound 'cheerup)))
      ("a" apropos)
-     ("b" ,(fc-manual (fc-show-info (fc-file-info)
-                                    (fc-buffer-info))))
+     ("b" ,(fc-manual (fc-info-show *fc-info-buffer*)))
      ("c" describe-char)
      ("e" describe-function)
      ("f" ,(fc-mode-key
@@ -1153,8 +1067,7 @@ KEYMAP: keymap to run."
                 (fc-pop-buf buf :select t)
               (org-info))))
      ("r" ,(fc-manual (fc-pop-buf "*Help*")))
-     ("s" ,(fc-manual (fc-show-info (fc-sys-info)
-                                    (fc-process-info))))
+     ("s" ,(fc-manual (fc-info-show *fc-info-system*)))
      ("v" describe-variable)
      ("y" yas-describe-tables)
      ("F" describe-face)

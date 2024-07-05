@@ -143,6 +143,12 @@
 (autoload #'fc-ttl-mode "fc-ttl")
 (add-to-list 'auto-mode-alist '("\\.ttl" . fc-ttl-mode))
 
+;; info
+(defvar *fc-info-buffer* nil)
+(defvar *fc-info-system* nil)
+
+(autoload #'fc-info-show "fc-info")
+
 (provide 'fc-autoload)
 
 ;; Local Variables:

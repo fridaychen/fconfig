@@ -369,6 +369,15 @@ DIR: project path."
 
 (add-to-list 'compilation-finish-functions #'fc-proj--compilation-done)
 
+(fc-load 'project
+  :local t
+  :after (progn
+           (defun fc-proj--proj-root (dir)
+             (list 'vc 'Git (fc-proj-root dir)))
+
+           (setf project-find-functions
+                 (list #'fc-proj--proj-root))))
+
 (provide 'fc-proj)
 
 ;; Local Variables:

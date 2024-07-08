@@ -8,6 +8,7 @@
 
 (defvar *fc-lsp-enable* t)
 (defvar *fc-lsp-bridge-enable* nil)
+(defvar *fc-lsp-eglot-enable* nil)
 (defvar *fc-lsp-mode-enable* nil)
 
 (fc-load 'lsp-bridge
@@ -41,14 +42,18 @@
                    (remove #'company-ispell company-backends))
              (lsp-bridge-mode 1))))
 
-;; (fc-load 'eglot
-;;   :local t
-;;   :after (progn
-;;            (setf *fc-lsp-enable* nil)
+(fc-load 'eglot
+  :local t
+  :enable *fc-lsp-enable*
+  :after (progn
+           (message "Enabled eglot")
 
-;;            (defun fc--lsp-enable ()
-;;              (eglot--managed-mode))
-;;            ))
+           (setf *fc-lsp-enable* nil
+                 *fc-lsp-eglot-enable* t)
+
+           (eglot)
+           (defun fc--lsp-enable ()
+             )))
 
 (fc-load 'lsp-mode
   :enable *fc-lsp-enable*
@@ -136,13 +141,19 @@
     (fc-funcall #'lsp-ivy-workspace-symbol))))
 
 (cl-defun fc--lsp-active-p ()
-  (or (and *fc-lsp-bridge-enable* lsp-bridge-mode) lsp-mode))
+  (or (and *fc-lsp-bridge-enable* lsp-bridge-mode)
+      (and *fc-lsp-eglot-enable* (eglot-managed-p))
+      lsp-mode))
 
 (cl-defun fc--lsp-rename ()
   (cond
    ((and *fc-lsp-bridge-enable* lsp-bridge-mode)
     (fc-lsp-bridge-check)
     (lsp-bridge-rename)
+    t)
+
+   ((and *fc-lsp-eglot-enable* (eglot-managed-p))
+    (fc-funcall #'eglot-rename)
     t)
 
    (lsp-mode

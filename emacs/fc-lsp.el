@@ -51,7 +51,6 @@
            (setf *fc-lsp-enable* nil
                  *fc-lsp-eglot-enable* t)
 
-           (eglot)
            (defun fc--lsp-enable ()
              )))
 
@@ -163,6 +162,10 @@
         t)))
 
    (t)))
+
+(cl-defun fc--lsp-open-project (proj-dir)
+  (fc-funcall #'eglot)
+  )
 
 (provide 'fc-lsp)
 

@@ -130,7 +130,7 @@
   (fc--lsp-find-references))
 
 (cl-defmethod fc-tag--open-project ((x fc-tag-lsp) proj-dir src-dirs)
-  )
+  (fc--lsp-open-project proj-dir))
 
 (cl-defmethod fc-tag--open-file ((x fc-tag-lsp))
   (when (derived-mode-p 'prog-mode)

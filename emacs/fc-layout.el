@@ -193,6 +193,9 @@ REST: functions."
              ,@lower-param)))))
 
 (cl-defun fc-layout-simple-spotlight-around-advice (orig-fun &rest args)
+  "Simple layout advice.
+ORIG-FUN: original function.
+ARGS: arguments."
   (let ((old-conf (current-window-configuration))
         (old-win-list (cl-copy-list (window-list))))
     (apply orig-fun args)

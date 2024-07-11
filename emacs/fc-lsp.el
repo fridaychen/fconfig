@@ -52,7 +52,7 @@
                  *fc-lsp-eglot-enable* t)
 
            (defun fc--lsp-enable ()
-             )))
+             (eglot-ensure))))
 
 (fc-load 'lsp-mode
   :enable *fc-lsp-enable*
@@ -93,11 +93,13 @@
     (lsp-bridge-popup-documentation)
     t)
 
-   (lsp-mode
-    (lsp-ui-doc-show)
+   ((and *fc-lsp-eglot-enable* (eglot-managed-p))
+    (fc-funcall #'eldoc-box-help-at-point)
     t)
 
-   (t)))
+   ((*fc-lsp-mode-enable* lsp-mode)
+    (lsp-ui-doc-show)
+    t)))
 
 (cl-defun fc--lsp-find-definitions ()
   (cond
@@ -142,7 +144,7 @@
 (cl-defun fc--lsp-active-p ()
   (or (and *fc-lsp-bridge-enable* lsp-bridge-mode)
       (and *fc-lsp-eglot-enable* (eglot-managed-p))
-      lsp-mode))
+      (and *fc-lsp-mode-enable* lsp-mode)))
 
 (cl-defun fc--lsp-rename ()
   (cond
@@ -155,7 +157,7 @@
     (fc-funcall #'eglot-rename)
     t)
 
-   (lsp-mode
+   ((*fc-lsp-mode-enable* lsp-mode)
     (when (lsp--capability :renameProvider)
       (progn
         (call-interactively #'lsp-rename)
@@ -164,7 +166,6 @@
    (t)))
 
 (cl-defun fc--lsp-open-project (proj-dir)
-  (fc-funcall #'eglot)
   )
 
 (provide 'fc-lsp)

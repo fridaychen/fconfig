@@ -25,6 +25,10 @@
            ("M-l" corfu-scroll-up)
            ("TAB" corfu-insert))))
 
+(fc-load 'kind-icon
+  :after (progn
+           (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)))
+
 (provide 'fc-corfu)
 
 ;; Local Variables:

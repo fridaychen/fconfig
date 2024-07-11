@@ -116,8 +116,24 @@
 (global-auto-revert-mode t)
 
 (global-visual-line-mode -1)
-(global-eldoc-mode 1)
-(add-hook 'prog-mode-hook #'eldoc-mode)
+
+(fc-load 'eldoc
+  :after (progn
+           (defun fc-info--eldoc ()
+             "Return list of eldoc info."
+             (when eldoc-mode
+               `(("Eldoc" ,eldoc-documentation-functions))))
+
+           (add-to-list '*fc-info-buffer* #'fc-info--eldoc t)
+
+           (setf eldoc-idle-delay 0.2)
+
+           (global-eldoc-mode 1)
+           (add-hook 'prog-mode-hook #'eldoc-mode)))
+
+(fc-load 'eldoc-box
+  :after (progn
+           (add-hook '*fc-ergo-restore-hook* #'eldoc-box-quit-frame)))
 
 (defun fc-highlight-comment-keywords ()
   (highlight-phrase "\\(FIXME\\|ToDo\\|TODO\\|MEMO\\) ?:"))

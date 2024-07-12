@@ -194,11 +194,11 @@ FROM-BEGINNING: start from beginnning."
       (with-selected-window (active-minibuffer-window)
         (minibuffer-keyboard-quit))))
 
-   ((fc-val iedit-mode)
+   ((bound-and-true-p iedit-mode)
     (iedit-mode -1)
     (fc-modal-enable))
 
-   ((fc-val iedit-rectangle-mode)
+   ((bound-and-true-p iedit-rectangle-mode)
     (iedit-rectangle-mode -1)
     (fc-modal-enable))
 

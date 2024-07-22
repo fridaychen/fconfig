@@ -97,7 +97,7 @@
     (fc-funcall #'eldoc-box-help-at-point)
     t)
 
-   ((*fc-lsp-mode-enable* lsp-mode)
+   ((and *fc-lsp-mode-enable* lsp-mode)
     (lsp-ui-doc-show)
     t)))
 
@@ -157,7 +157,7 @@
     (fc-funcall #'eglot-rename)
     t)
 
-   ((*fc-lsp-mode-enable* lsp-mode)
+   ((and *fc-lsp-mode-enable* lsp-mode)
     (when (lsp--capability :renameProvider)
       (progn
         (call-interactively #'lsp-rename)

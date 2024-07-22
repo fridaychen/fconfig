@@ -153,7 +153,7 @@ OBJ: object"
     (gethash var set))))
 
 (cl-defmacro fc-val (s)
-  (and (boundp s) s))
+  `(and (boundp (quote ,s)) ,s))
 
 (provide 'fc-lang)
 

@@ -292,10 +292,12 @@ COLOR: background color."
                     :foreground "red")
        (fc-set-face 'font-lock-type-face nil
                     :slant 'italic)
+       (fc-set-face 'font-lock-comment-face nil
+                    :foreground "gray78")
        (fc-set-face 'mode-line-inactive nil
                     :foreground "black")
        (fc-set-face 'hl-line nil
-                    :background "MediumPurple4")
+                    :background "PaleVioletRed4")
        (fc-set-face 'highlight nil
                     :background "IndianRed4")
        (fc-set-face 'default nil

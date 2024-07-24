@@ -51,6 +51,11 @@
            (setf *fc-lsp-enable* nil
                  *fc-lsp-eglot-enable* t)
 
+           (defun fc--setup-eglot ()
+             (eglot-inlay-hints-mode -1))
+
+           (add-hook 'eglot-managed-mode-hook #'fc--setup-eglot)
+
            (defun fc--lsp-enable ()
              (eglot-ensure))))
 

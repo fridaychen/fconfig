@@ -61,6 +61,7 @@
             (cl-return-from -ttl-find-regex-table (cdr it))))))))
 
 (cl-defun fc-ttl-indent-line ()
+  "Indent current line."
   (interactive)
 
   (beginning-of-line)
@@ -79,8 +80,8 @@
         (last (cond
                ((looking-at "\\(endif\\|else\\)")
                 (-ttl-find-regex-table '(("if.+then$" . 0)
-                                         ("endif" . -4))
-                                       ".*\\(if.+then$\\|endif\\)"))
+                                         ("endif\\|endwhile\\|endutil\\|next" . -4))
+                                       ".*\\(if.+then$\\|endif\\|endwhile\\|endutil\\|next\\)"))
 
                ((looking-at "endwhile")
                 (-ttl-find-regex-table '(("while" . 0)

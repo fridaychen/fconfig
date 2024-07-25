@@ -20,6 +20,7 @@
 (defconst *fc-ttl-function-regex* "^:[^_].+")
 
 (cl-defun --ttl-find-previous-statement ()
+  "Find previous statement for calculating indentation."
   (beginning-of-line)
 
   (while (> (point) 1)
@@ -60,55 +61,62 @@
           (when (looking-at (car it))
             (cl-return-from -ttl-find-regex-table (cdr it))))))))
 
+(defun --indent-to (origin-pos col)
+  (goto-char origin-pos)
+
+  (if (and (zerop (current-column))
+           (looking-at-p "$"))
+      (indent-line-to col)
+    (save-excursion
+      (indent-line-to col))))
+
 (cl-defun fc-ttl-indent-line ()
   "Indent current line."
   (interactive)
 
-  (beginning-of-line)
-  (when (looking-at " *;;")
-    (indent-line-to 0)
-    (cl-return-from fc-ttl-indent-line))
-
-  (beginning-of-line-text)
-
-  (when (looking-at ":")
-    (indent-line-to 0)
-    (cl-return-from fc-ttl-indent-line))
-
-  (let ((indent 0)
-        (pos (point))
-        (last (cond
-               ((looking-at "\\(endif\\|else\\)")
-                (-ttl-find-regex-table '(("if.+then$" . 0)
-                                         ("endif\\|endwhile\\|endutil\\|next" . -4))
-                                       ".*\\(if.+then$\\|endif\\|endwhile\\|endutil\\|next\\)"))
-
-               ((looking-at "endwhile")
-                (-ttl-find-regex-table '(("while" . 0)
-                                         ("endwhile" . -4))))
-
-               ((looking-at "enduntil")
-                (-ttl-find-regex-table '(("until" . 0)
-                                         ("enduntil" . -4))))
-
-               ((looking-at "next")
-                (-ttl-find-regex-table '(("for" . 0)
-                                         ("next" . -4))))
-
-               (t
-                (--ttl-find-previous-statement)))))
-
-    (when (null last)
-      (goto-char pos)
-      (indent-line-to 0)
+  (let ((origin-pos (point)))
+    (beginning-of-line)
+    (when (looking-at " *;;")
+      (--indent-to origin-pos 0)
       (cl-return-from fc-ttl-indent-line))
 
-    (unless (looking-at " *;")
-      (beginning-of-line-text))
-    (setq indent (current-column))
+    (beginning-of-line-text)
 
-    (goto-char pos)
-    (indent-line-to (+ indent last))))
+    (when (looking-at ":")
+      (--indent-to origin-pos 0)
+      (cl-return-from fc-ttl-indent-line))
+
+    (let ((indent 0)
+          (last (cond
+                 ((looking-at "\\(endif\\|else\\)")
+                  (-ttl-find-regex-table '(("if.+then$" . 0)
+                                           ("endif\\|endwhile\\|endutil\\|next" . -4))
+                                         ".*\\(if.+then$\\|endif\\|endwhile\\|endutil\\|next\\)"))
+
+                 ((looking-at "endwhile")
+                  (-ttl-find-regex-table '(("while" . 0)
+                                           ("endwhile" . -4))))
+
+                 ((looking-at "enduntil")
+                  (-ttl-find-regex-table '(("until" . 0)
+                                           ("enduntil" . -4))))
+
+                 ((looking-at "next")
+                  (-ttl-find-regex-table '(("for" . 0)
+                                           ("next" . -4))))
+
+                 (t
+                  (--ttl-find-previous-statement)))))
+
+      (when (null last)
+        (--indent-to origin-pos 0)
+        (cl-return-from fc-ttl-indent-line))
+
+      (unless (looking-at " *;")
+        (beginning-of-line-text))
+      (setq indent (current-column))
+
+      (--indent-to origin-pos (+ indent last)))))
 
 (defun fc-ttl--beginning-of-defun ()
   (re-search-backward *fc-ttl-function-regex*))

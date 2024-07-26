@@ -240,7 +240,9 @@ INDENT-FUNC: function for indent."
 
    ;; only do company when <tab> at the end of the line
    ((looking-at ".?$")
-    (company-complete))))
+    (if *fc-enable-company*
+        (company-complete)
+      (fc-funcall indent-func)))))
 
 (cl-defun fc-basic-key ()
   "Basic key function."
@@ -586,12 +588,12 @@ N: number."
 (cl-defun fc-switch-to-recent-buffer ()
   (fc-select-buffer
    ""
-   (list :one t
-         :no-curr t
-         :filter
-         #'(lambda ()
-             (and (buffer-file-name)
-                  (null (get-buffer-window)))))))
+   (fc--buffer-pred
+    :no-current t
+    :one t
+    :filter #'(lambda ()
+                (and (buffer-file-name)
+                     (null (get-buffer-window)))))))
 
 (cl-defun fc-fast-switch-window ()
   "Fast switch window."
@@ -932,7 +934,8 @@ KEYMAP: keymap to run."
               (_ . end-of-buffer))))
      ("f" ,(fc-cond-key :normal (fc-manual (fc-select-buffer
                                             "Favorite buffer"
-                                            '(:no-curr t :var *fc-favorite-buffer*)))
+                                            (fc--buffer-pred :no-current t
+                                                             :var *fc-favorite-buffer*)))
                         :prefix (fc-manual
                                  (fc-toggle-var
                                   *fc-favorite-buffer*
@@ -941,8 +944,9 @@ KEYMAP: keymap to run."
      ("g" ,(fc-manual
             (bury-buffer)
             (fc-select-buffer ""
-                              (list :mode '(c-mode python-mode go-mode emacs-lisp-mode)
-                                    :one t))))
+                              (fc--buffer-pred
+                               :mode '(c-mode python-mode go-mode emacs-lisp-mode)
+                               :one t))))
 
      ("h" fc-goto-last-change)
 
@@ -959,14 +963,14 @@ KEYMAP: keymap to run."
      ("p" ,(fc-manual (goto-char (read-number "Point : "))))
      ("q" ,(fc-manual (fc-select-buffer
                        "Modified buffers"
-                       '(:modified t :no-curr t))))
+                       (fc--buffer-pred :modified t :no-current t))))
      ("r" fc-recentf)
      ("s" ace-swap-window)
      ("t" ,(fc-manual (fc-tag-list)))
      ("u" previous-buffer)
      ("x" ,(fc-manual (fc-select-buffer
                        "Select view"
-                       '(:no-curr t :var fc-viewer-minor-mode)
+                       (fc--buffer-pred :no-current t :var 'fc-viewer-minor-mode)
                        :error-msg "No viewer buffer found.")))
      ("w" fc-buffers-list)
 
@@ -1009,7 +1013,7 @@ KEYMAP: keymap to run."
      ("l" org-store-link)
      ("m" org-tags-view)
      ("t" org-todo-list)
-     ("w" ,(fc-manual (fc-select-buffer "Org roam" (list :filter #'org-roam-buffer-p))))
+     ("w" ,(fc-manual (fc-select-buffer "Org roam" (fc--buffer-pred :filter #'org-roam-buffer-p))))
      ("x" fc-org-study-agenda)
      )
    "ergo-gtd-map")
@@ -1535,7 +1539,7 @@ AUTO: auto select face."
                       :proj (fc-manual
                              (when-let ((root (fc-proj-root)))
                                (fc-select-buffer "Switch within project"
-                                                 (list :dir root :sort t :no-curr t)
+                                                 (fc--buffer-pred :dir root :sort t :no-current t)
                                                  :root root)))))
    ("x" ,(fc-cond-key :normal #'fc-delete-char
                       :region #'exchange-point-and-mark))

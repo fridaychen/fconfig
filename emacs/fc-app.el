@@ -839,12 +839,12 @@ BACKWARD: search direction."
   "Do run func on multi buffers which under dir.
 DIR: root dir.
 FUNC: function to be run."
-  (setf dir (concat (expand-file-name dir)
-                    (if (string-suffix-p "/" dir) "" "/")))
-
-  (--each (fc-list-buffer :dir dir)
-    (with-current-buffer it
-      (fc-funcall func))))
+  (cl-loop
+   with dir = (expand-file-name (concat dir "/"))
+   for x in (fc--list-buffer (fc--buffer-pred :dir dir))
+   do
+   (with-current-buffer x
+     (fc-funcall func))))
 
 (cl-defmacro fc-run-multi-buffer (operation &rest rest)
   "Exec operation over multi buffers.
@@ -859,9 +859,11 @@ REST: commands."
                                    (if (string-suffix-p "/" dir) "" "/")))
                  (user-ans (fc-user-confirm
                             (format "%s files under %s" (capitalize ,operation) dir))))
-       (--each (fc-list-buffer :dir dir)
-         (with-current-buffer it
-           ,@rest)))))
+       (cl-loop
+        for it in (fc--list-buffer (fc--buffer-pred :dir dir))
+        do
+        (with-current-buffer it
+          ,@rest)))))
 
 (defun fc-select-multi-buffer-func ()
   "Select multi buffer function."

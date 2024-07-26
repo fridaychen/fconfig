@@ -17,71 +17,72 @@ BUFNAME: to be tested."
   (when-let ((buf (get-buffer bufname)))
     (get-buffer-window buf)))
 
-(cl-defun fc-list-buffer (&key (buffers (buffer-list)) not-file dir regex file-regex sort modified filter mode var one no-curr)
-  "List BUFFERS accroding the arguments.
-NOT-FILE: buf is not normal file.
+(cl-defun fc--list-buffer (pred &optional (buffers (buffer-list)))
+  "List BUFFERS tested with pred.
+PRED: pred function.
+BUFFERS: candidates"
+  (cl-remove-if-not pred buffers))
+
+(cl-defun fc--buffer-pred (&key not-file dir regex file-regex modified filter mode var no-current one)
+  "NOT-FILE: buf is not normal file.
 DIR: buf is under this dir.
 REGEX: regex for match name of buffer.
 FILE-REGEX: regex for match file name of buffer.
-SORT: sort the result.
 MODIFIED: test buf modified state.
 FILTER: func for filter.
 MODE: specify target major-mode.
 VAR: test buffer local var.
-ONE: only need one.
-NO-CURR: not include current buffer in result."
-  (cl-loop with t-dir = (if dir (expand-file-name dir) nil)
-           for buf in buffers
-           while (or (not one) (not result))
-           if (and (or (and not-file
-                            (not dir)
-                            (not file-regex)
-                            (not modified))
-                       (buffer-file-name buf))
-                   (or (not not-file)
-                       (not (buffer-file-name buf)))
-                   (or (not dir)
-                       (string-prefix-p t-dir (buffer-file-name buf)))
-                   (or (not regex)
-                       (string-match regex (buffer-name buf)))
-                   (or (not file-regex)
-                       (string-match file-regex (buffer-file-name buf)))
-                   (or (not modified)
-                       (buffer-modified-p buf))
-                   (or (not mode)
-                       (fc-member (buffer-local-value 'major-mode buf) mode))
-                   (or (not var)
-                       (buffer-local-value var buf))
-                   (or (not no-curr)
-                       (not (eq buf (current-buffer))))
-                   (or (not filter)
-                       (with-current-buffer buf
-                         (fc-funcall filter))))
-           collect buf into result
-           finally return (progn
-                            (when sort
-                              (setq result
-                                    (--sort (string< (buffer-name it) (buffer-name other))
-                                            result)))
-                            result)))
+NO-CURRENT: not include current buffer in result.
+ONE: only request one buffer."
+  (when dir
+    (setf dir (expand-file-name dir)))
+
+  (lambda (buf)
+    (and (or (and not-file
+                  (not dir)
+                  (not file-regex)
+                  (not modified))
+             (buffer-file-name buf))
+         (or (not not-file)
+             (not (buffer-file-name buf)))
+         (or (not dir)
+             (string-prefix-p dir (buffer-file-name buf)))
+         (or (not regex)
+             (string-match regex (buffer-name buf)))
+         (or (not file-regex)
+             (string-match file-regex (buffer-file-name buf)))
+         (or (not modified)
+             (buffer-modified-p buf))
+         (or (not mode)
+             (fc-member (buffer-local-value 'major-mode buf) mode))
+         (or (not var)
+             (buffer-local-value var buf))
+         (or (not no-current)
+             (not (eq buf (current-buffer))))
+         (or (not filter)
+             (with-current-buffer buf
+               (fc-funcall filter))))))
+
+(cl-defmacro fc-list-buffer (&rest rest)
+  `(fc--list-buffer (fc--buffer-pred ,@rest)))
 
 (cl-defun fc-select-buffer (prompt
-                            args
-                            &key relative pop (error-msg "Buffer list is empty !!!")
-                            &allow-other-keys)
+                            pred
+                            &key relative pop (error-msg "Buffer list is empty !!!"))
   "Select a BUFFER to switch.
 PROMPT: prompt string.
-ARGS: arguments for list-buffer.
+PRED: arguments for list-buffer.
 RELATIVE: root directory for showing file path.
 POP: show the selected buffer side-by-side.
 ERROR-MSG: error message."
-  (let* ((bufs (apply #'fc-list-buffer args))
-         (candidates (--map (cons (if relative
-                                      (file-relative-name (buffer-file-name it)
-                                                          relative)
-                                    (buffer-name it))
-                                  it)
-                            bufs))
+  (let* ((bufs (fc--list-buffer pred))
+         (candidates (cl-loop
+                      for x in bufs
+                      collect (cons (if relative
+                                        (file-relative-name (buffer-file-name x)
+                                                            relative)
+                                      (buffer-name x))
+                                    x)))
          (buf (fc-user-select prompt candidates :mouse t)))
     (unless candidates
       (cl-return-from fc-select-buffer error-msg))

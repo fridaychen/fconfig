@@ -161,11 +161,11 @@ DIR: project path."
     (fc-conf-put conf nil :capture-tags)
     (fc-conf-put conf
                  (make-symbol
-                  (fc-user-select "Select tag system"
-                                  '("global"
-                                    "lsp"
-                                    "xref"
-                                    "none")))
+                  (fc-select "Select tag system"
+                             '("global"
+                               "lsp"
+                               "xref"
+                               "none")))
                  :tag)
 
     (fc-conf-save conf)
@@ -215,9 +215,9 @@ DIR: project path."
     (run-hooks '*fc-project-hook*)))
 
 (cl-defun fc-proj-switch ()
-  (fc--proj-set (fc-user-select "Projects"
-                                (--map (cons (fc-string it) it)
-                                       *fc-projects*))))
+  (fc--proj-set (fc-select "Projects"
+                           (--map (cons (fc-string it) it)
+                                  *fc-projects*))))
 
 (cl-defun fc-proj-edit-property (proj prop)
   (let* ((vstr (read-string (format "Edit [%s] : " prop)
@@ -233,30 +233,29 @@ DIR: project path."
      (fc-proj-edit-property *fc-project* ,tag)))
 
 (cl-defun fc-proj-select-property-to-edit ()
-  (fc-user-select-func
+  (fc-select-func
    "Project properties"
    `(
-     (":build-args"     .       ,(fc-edit-property-fn :build-args))
-     (":build-dir"      .       ,(fc-edit-property-fn :build-dir))
-     (":capture-tags"   .       ,(fc-edit-property-fn :capture-tags))
-     (":define"         .       ,(fc-edit-property-fn :define))
-     (":env"            .       ,(fc-edit-property-fn :env))
-     (":error-file"     .       ,(fc-edit-property-fn :error-file))
-     (":include"        .       ,(fc-edit-property-fn :include))
-     (":local"          .       ,(fc-edit-property-fn :local))
-     (":name"           .       ,(fc-edit-property-fn :name))
-     (":path"           .       ,(fc-edit-property-fn :path))
-     (":src"            .       ,(fc-edit-property-fn :src))
-     (":src-exclude"    .       ,(fc-edit-property-fn :src-exclude))
-     (":tag"            .       ,(fc-edit-property-fn :tag)))))
+     (":build-args"   . ,(fc-edit-property-fn :build-args))
+     (":build-dir"    . ,(fc-edit-property-fn :build-dir))
+     (":capture-tags" . ,(fc-edit-property-fn :capture-tags))
+     (":define"       . ,(fc-edit-property-fn :define))
+     (":env"          . ,(fc-edit-property-fn :env))
+     (":error-file"   . ,(fc-edit-property-fn :error-file))
+     (":include"      . ,(fc-edit-property-fn :include))
+     (":local"        . ,(fc-edit-property-fn :local))
+     (":name"         . ,(fc-edit-property-fn :name))
+     (":path"         . ,(fc-edit-property-fn :path))
+     (":src"          . ,(fc-edit-property-fn :src))
+     (":src-exclude"  . ,(fc-edit-property-fn :src-exclude))
+     (":tag"          . ,(fc-edit-property-fn :tag)))))
 
 (cl-defun fc-proj-build ()
   "Build current project."
 
-  (let ((target (read-string "Build target : " (oref *fc-project* last-target))))
-    (when target
-      (oset *fc-project* last-target target)
-      (fc-proj--build *fc-project* target))))
+  (when-let ((target (read-string "Build target : " (oref *fc-project* last-target))))
+    (oset *fc-project* last-target target)
+    (fc-proj--build *fc-project* target)))
 
 (cl-defun fc-proj-load-compilation-error ()
   (when-let* ((proj-dir (and *fc-project* (fc-proj--dir *fc-project*)))
@@ -271,10 +270,9 @@ DIR: project path."
 
 (defun fc-user-select-project ()
   "Allow user to select project."
-  (let ((proj (fc-user-select (format "Project <%s>" *fc-project-name*)
-                              (--map (cons (fc-proj--get it :name) it)
-                                     *fc-projects*)
-                              :mouse t)))
+  (let ((proj (fc-select (format "Project <%s>" *fc-project-name*)
+                         (--map (cons (fc-proj--get it :name) it)
+                                *fc-projects*))))
     (when proj
       (fc--proj-set proj))))
 
@@ -291,9 +289,9 @@ DIR: project path."
   (when-let* ((root (fc-proj-root))
               (files (--filter (string-prefix-p root it)
                                recentf-list)))
-    (find-file (fc-user-select "Project recentf"
-                               (--map (cons (file-relative-name it root) it)
-                                      files)))
+    (find-file (fc-select "Project recentf"
+                          (--map (cons (file-relative-name it root) it)
+                                 files)))
     (cl-return-from fc-proj-recentf))
 
   (message "No project or recent files !!!"))

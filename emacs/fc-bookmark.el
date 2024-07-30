@@ -108,7 +108,7 @@
                            it)
                      (fc-active-bookmark-list)))
          (ol (if all
-                 (fc-user-select "Select bookmark" all :fullscreen t)
+                 (fc-select "Select bookmark")
                nil)))
     (cond
      ((not all)

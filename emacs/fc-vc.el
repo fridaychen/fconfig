@@ -173,16 +173,16 @@
 (cl-defun fc-vc-select-branch (&optional remote)
   "Select git branch.
 REMOTE: select from local or remote branchs."
-  (fc-user-select (format "%s (current: %s)"
-                          (if remote "Remote branch" "Branch")
-                          (fc-git-current-branch))
-                  (split-string
-                   (with-temp-buffer
-                     (shell-command (format "git branch %s | sed -e \"/^\\*/d\" | cut -b 3-"
-                                            (if remote "-r" ""))
-                                    (current-buffer))
-                     (s-trim (buffer-string)))
-                   "\n")))
+  (fc-select (format "%s (current: %s)"
+                     (if remote "Remote branch" "Branch")
+                     (fc-git-current-branch))
+             (split-string
+              (with-temp-buffer
+                (shell-command (format "git branch %s | sed -e \"/^\\*/d\" | cut -b 3-"
+                                       (if remote "-r" ""))
+                               (current-buffer))
+                (s-trim (buffer-string)))
+              "\n")))
 
 (cl-defun fc-vc-switch-branch ()
   "Switch to other branch."

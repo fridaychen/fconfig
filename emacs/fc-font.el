@@ -103,9 +103,9 @@ FONT: to be tested."
 
 (defun fc-select-font-family ()
   "Select a font family from system."
-  (fc-user-select "Select font family : "
-                  (delete-dups
-                   (sort (font-family-list) #'string<))))
+  (fc-select "Select font family : "
+             (delete-dups
+              (sort (font-family-list) #'string<))))
 
 (cl-defun fc-config-font ()
   "Allow user config FONT."
@@ -115,7 +115,7 @@ FONT: to be tested."
         (height (string-to-number
                  (read-string "Height"
                               (fc-string *fc-font-height*))))
-        (weight (intern (fc-user-select
+        (weight (intern (fc-select
                          "Weight"
                          '("ultra-light"
                            "extra-light"
@@ -126,7 +126,7 @@ FONT: to be tested."
                            "bold"
                            "extra-bold"
                            "ultra-bold"))))
-        (width (intern (fc-user-select
+        (width (intern (fc-select
                         "Width"
                         '("extra-condensed"
                           "condensed"

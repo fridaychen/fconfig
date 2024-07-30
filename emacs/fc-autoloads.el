@@ -110,8 +110,8 @@
 (autoload #'yas-describe-tables "yasnippet")
 
 ;; user interface
-(autoload #'fc-user-select "fc-ui")
-(autoload #'fc-user-select-func "fc-ui")
+(autoload #'fc-select "fc-ui")
+(autoload #'fc-select-func "fc-ui")
 (autoload #'fc-user-confirm "fc-ui")
 (autoload #'fc-create-simple-pop-menu "fc-ui")
 (autoload #'fc-create-pop-menu "fc-ui")

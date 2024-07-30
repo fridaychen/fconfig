@@ -102,10 +102,10 @@ LANG: language."
           "author: " (or author (read-string "Author : ")) "\n"
           "date: " (or date (read-string "Date : ")) "\n"
           "language: " (or lang
-                           (fc-user-select "Language"
-                                           `("en-US"
-                                             "jp-JP"
-                                             "zh-CN")))
+                           (fc-select "Language"
+                                      `("en-US"
+                                        "jp-JP"
+                                        "zh-CN")))
           "\n"
           "---\n"))
 
@@ -204,15 +204,15 @@ REGEX: regex."
 
 (defun fc-md-portal ()
   "Show md portal."
-  (fc-user-select-func
+  (fc-select-func
    "Markdown"
    (append
     `(
-      ("Add header"                      .       fc-md-add-header)
-      ("Convert footnote"                .       fc-md-convert-footnote)
-      ("Convert Latex"                   .       fc-md-convert-latex)
-      ("Convert Latex footnote"          .       fc-md-convert-latex-footnote)
-      ("Fix headline spacing"            .       fc-md-fix-headline-spacing)
+      ("Add header"             . fc-md-add-header)
+      ("Convert footnote"       . fc-md-convert-footnote)
+      ("Convert Latex"          . fc-md-convert-latex)
+      ("Convert Latex footnote" . fc-md-convert-latex-footnote)
+      ("Fix headline spacing"   . fc-md-fix-headline-spacing)
       )
     *fc-book-func-list*)))
 

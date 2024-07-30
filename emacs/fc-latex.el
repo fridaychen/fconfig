@@ -115,14 +115,14 @@ END: end point."
 
 (defun fc-latex-portal ()
   "Show latex portal."
-  (fc-user-select-func
+  (fc-select-func
    "Latex"
    (append
-    `(("Chapter number zh to Arabic"     .       fc-chapter-zh-to-number)
-      ("Fix space in title"              .       fc-latex-fix-sectionname-space)
-      ("Fix single quote"                .       fc-fix-single-qoute)
-      ("Generate fake part"              .       fc-latex-generate-fake-part)
-      ("Generate fake chapter"           .       fc-latex-generate-chapters)
+    `(("Chapter number zh to Arabic" . fc-chapter-zh-to-number)
+      ("Fix space in title"          . fc-latex-fix-sectionname-space)
+      ("Fix single quote"            . fc-fix-single-qoute)
+      ("Generate fake part"          . fc-latex-generate-fake-part)
+      ("Generate fake chapter"       . fc-latex-generate-chapters)
       )
     *fc-book-func-list*)))
 

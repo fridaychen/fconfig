@@ -55,14 +55,14 @@
 
 (cl-defun fc--insert-note ()
   "Return note command."
-  (let* ((pos (fc-user-select "Note type" '("left" "over" "right")))
+  (let* ((pos (fc-select "Note type" '("left" "over" "right")))
          (arg (when (string= pos "over")
                 (concat " " (read-string "Actor/Participant")))))
     (concat pos arg)))
 
 (cl-defun fc--insert-component-note ()
   "Return note command."
-  (fc-user-select "Note type" '("top" "left" "right" "bottom")))
+  (fc-select "Note type" '("top" "left" "right" "bottom")))
 
 (fc-load 'ob-async
   :after

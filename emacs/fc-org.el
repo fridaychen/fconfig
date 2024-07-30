@@ -533,10 +533,10 @@ LANG: language."
    "#+author: " (or author (read-string "Author : ")) "\n"
    "#+date: " (or date (read-string "Date : ")) "\n"
    "#+language: " (or lang
-                      (fc-user-select "Language"
-                                      `("en-US"
-                                        "jp-JP"
-                                        "zh-CN")))
+                      (fc-select "Language"
+                                 `("en-US"
+                                   "jp-JP"
+                                   "zh-CN")))
    "\n\n"))
 
 (cl-defun fc--org-convert-from-latex ()
@@ -680,7 +680,7 @@ LANG: language."
 
 (cl-defun fc-org-portal ()
   "Show org portal."
-  (fc-user-select-func
+  (fc-select-func
    "Org portal"
    (append
     `(
@@ -689,7 +689,7 @@ LANG: language."
       ("Convert footnote (from inline)"	. ,(fc-manual (fc--org-add-footnote
                                                        (read-string
                                                         "Confirm"
-                                                        (fc-user-select
+                                                        (fc-select
                                                          "Footnote regex"
                                                          '("\\[fn:: \\([^\]]+\\)\\]"
                                                            "\\\\footnote{\\([^}]+\\)}"
@@ -697,7 +697,7 @@ LANG: language."
       ("Convert footnote (to inline)"	. ,(fc-manual (fc--org-convert-inline-fontnote
                                                        (read-string
                                                         "Confirm"
-                                                        (fc-user-select
+                                                        (fc-select
                                                          "Footnote regex"
                                                          '("\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
                                                            "[（(〔【<\[]\\(注?[0-9]+\\)[\]>】〕)）]"))))))
@@ -997,10 +997,10 @@ CONTENT: content of new footnote."
     (insert (format "\n[fn:%s] %s\n" label content))))
 
 (defun fc--org-insert-portal ()
-  (fc-user-select-func
+  (fc-select-func
    "Org insert"
    `(
-     ("deadline"  . org-deadline)
+     ("deadline" . org-deadline)
      ("schedule" . org-schedule)
      )))
 

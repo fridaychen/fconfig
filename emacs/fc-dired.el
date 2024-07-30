@@ -48,8 +48,8 @@
            (defun fc-dired-sort ()
              (interactive)
 
-             (dired-sort-other (pcase (fc-user-select "Sort by"
-                                                      '("date" "size" "name" "folder"))
+             (dired-sort-other (pcase (fc-select "Sort by"
+                                                 '("date" "size" "name" "folder"))
                                  ("name" "-aBhl ")
                                  ("date" "-aBhl -t")
                                  ("size" "-aBhl -S")

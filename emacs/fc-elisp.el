@@ -22,7 +22,7 @@
 
 (defun fc-elisp-portal ()
   "Show elisp portal."
-  (fc-user-select-func
+  (fc-select-func
    "Elisp"
    `(
      ("Add header and footer" . fc-add-elisp-header-footer)

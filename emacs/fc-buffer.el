@@ -17,13 +17,19 @@ BUFNAME: to be tested."
   (when-let ((buf (get-buffer bufname)))
     (get-buffer-window buf)))
 
-(cl-defun fc--list-buffer (pred &optional (buffers (buffer-list)))
+(cl-defun fc--list-buffer (pred &key (buffers (buffer-list)) one)
   "List BUFFERS tested with pred.
 PRED: pred function.
-BUFFERS: candidates"
-  (cl-remove-if-not pred buffers))
+BUFFERS: candidates.
+ONE: only request one buffer."
+  (cl-loop
+   for buf in buffers
+   while (or (not one) (not result))
+   if (funcall pred buf)
+   collect buf into result
+   finally return result))
 
-(cl-defun fc--buffer-pred (&key not-file dir regex file-regex modified filter mode var no-current one)
+(cl-defun fc--buffer-pred (&key not-file dir regex file-regex modified filter mode var no-current)
   "NOT-FILE: buf is not normal file.
 DIR: buf is under this dir.
 REGEX: regex for match name of buffer.
@@ -32,8 +38,7 @@ MODIFIED: test buf modified state.
 FILTER: func for filter.
 MODE: specify target major-mode.
 VAR: test buffer local var.
-NO-CURRENT: not include current buffer in result.
-ONE: only request one buffer."
+NO-CURRENT: not include current buffer in result."
   (when dir
     (setf dir (expand-file-name dir)))
 
@@ -68,14 +73,15 @@ ONE: only request one buffer."
 
 (cl-defun fc-select-buffer (prompt
                             pred
-                            &key relative pop (error-msg "Buffer list is empty !!!"))
+                            &key relative pop (error-msg "Buffer list is empty !!!") one)
   "Select a BUFFER to switch.
 PROMPT: prompt string.
 PRED: arguments for list-buffer.
 RELATIVE: root directory for showing file path.
 POP: show the selected buffer side-by-side.
+ONE: only request one buffer.
 ERROR-MSG: error message."
-  (let* ((bufs (fc--list-buffer pred))
+  (let* ((bufs (fc--list-buffer pred :one one))
          (candidates (cl-loop
                       for x in bufs
                       collect (cons (if relative
@@ -83,7 +89,7 @@ ERROR-MSG: error message."
                                                             relative)
                                       (buffer-name x))
                                     x)))
-         (buf (fc-user-select prompt candidates :mouse t)))
+         (buf (fc-select prompt candidates)))
     (unless candidates
       (cl-return-from fc-select-buffer error-msg))
 
@@ -94,7 +100,7 @@ ERROR-MSG: error message."
 ;; select buffers to show
 (defun -show-buffers (bufs)
   "Show BUFFERS.
-BUFS: buffer list."
+  BUFS: buffer list."
   (let* ((count (length bufs))
          (first-buf (cl-first bufs))
          (size (/ (frame-height) count)))
@@ -114,7 +120,7 @@ BUFS: buffer list."
 
 (defun fc-select-files-to-show (pattern)
   "Select BUFFERS to show.
-PATTERN: buffer name pattern."
+  PATTERN: buffer name pattern."
   (interactive "MFilename pattern : ")
 
   (let* ((bufs (fc-list-buffer :file-regex pattern))
@@ -125,9 +131,9 @@ PATTERN: buffer name pattern."
 
 (cl-defun fc-refresh-buffer-content (buffer-or-name del-win &rest rest)
   "Refresh buffer content.
-BUFFER-OR-NAME: buffer or name.
-DEL-WIN: delete the window of buffer.
-REST: new content."
+  BUFFER-OR-NAME: buffer or name.
+  DEL-WIN: delete the window of buffer.
+  REST: new content."
   (let* ((buf (if buffer-or-name
                   (get-buffer-create buffer-or-name)
                 (current-buffer)))
@@ -148,14 +154,14 @@ REST: new content."
 
 (cl-defun fc-pop-buf (buffer-or-name &key mode dir read-only highlight select escape local-vars)
   "Popup buf.
-BUFFER-OR-NAME: buffer or name.
-MODE: specify mode.
-DIR: default-directory.
-READ-ONLY: set buffer to read-only mode.
-HIGHLIGHT: highlight regex.
-SELECT: focus in new window.
-ESCAPE: decode ansi escape sequence.
-LOCAL-VARS: list of local-vars."
+  BUFFER-OR-NAME: buffer or name.
+  MODE: specify mode.
+  DIR: default-directory.
+  READ-ONLY: set buffer to read-only mode.
+  HIGHLIGHT: highlight regex.
+  SELECT: focus in new window.
+  ESCAPE: decode ansi escape sequence.
+  LOCAL-VARS: list of local-vars."
   (with-current-buffer buffer-or-name
     (when dir
       (setq-local default-directory dir))

@@ -249,6 +249,11 @@ COLOR: background color."
        (fc-set-face 'mode-line-inactive nil
                     :foreground "gray40"))
 
+      ('ayu-grey
+       (setf soothe-percent -30)
+       (fc-set-face 'highlight nil
+                    :background "IndianRed4"))
+
       ('classic
        (setf soothe-percent -2)
        (fc-set-face 'link nil

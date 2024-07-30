@@ -21,7 +21,7 @@
 (defconst *fc--repeat-orignal-func* #'fc-translate-word)
 
 (defvar *fc-theme-mode* 'dark)
-(defvar *fc--work-themes* '((dark gruvbox-dark-hard leuven-dark zenburn)
+(defvar *fc--work-themes* '((dark ayu-grey gruvbox-dark-hard leuven-dark zenburn)
                             (light leuven gruvbox-light-soft ef-cyprus)))
 (defvar *fc--work-deep-themes* '((dark jazz sanityinc-tomorrow-night)
                                  (light acme)))
@@ -590,10 +590,10 @@ N: number."
    ""
    (fc--buffer-pred
     :no-current t
-    :one t
     :filter #'(lambda ()
                 (and (buffer-file-name)
-                     (null (get-buffer-window)))))))
+                     (null (get-buffer-window)))))
+   :one t))
 
 (cl-defun fc-fast-switch-window ()
   "Fast switch window."
@@ -876,7 +876,7 @@ KEYMAP: keymap to run."
   "Run basic portal."
   (interactive)
 
-  (fc-user-select-func
+  (fc-select-func
    "Basic"
    `(
      ("Delete matching line" ,(fc-manual
@@ -890,8 +890,7 @@ KEYMAP: keymap to run."
      ("Dos2unix" dos2unix)
      ("Merge all lines" fc-merge-all-line)
      ("Unix2dos" unix2dos)
-     )
-   :mouse t))
+     )))
 
 (defconst *ergo-basic-map*
   (fc-make-keymap
@@ -945,8 +944,8 @@ KEYMAP: keymap to run."
             (bury-buffer)
             (fc-select-buffer ""
                               (fc--buffer-pred
-                               :mode '(c-mode python-mode go-mode emacs-lisp-mode)
-                               :one t))))
+                               :mode '(c-mode python-mode go-mode emacs-lisp-mode))
+                              :one t)))
 
      ("h" fc-goto-last-change)
 
@@ -995,10 +994,10 @@ KEYMAP: keymap to run."
   "Run gtd portal."
   (interactive)
 
-  (fc-user-select-func
+  (fc-select-func
    "GTD"
    `(
-     ("Org-roam sync"  . org-roam-db-sync)
+     ("Org-roam sync" . org-roam-db-sync)
      )))
 
 (defconst *ergo-gtd-map*
@@ -1236,20 +1235,20 @@ STEP: pixels."
      ("r" ,(fc-manual (when (fc-user-confirm "Restart Emacs")
                         (fc-save-desktop)
                         (restart-emacs))))
-     ("t" ,(fc-manual (fc-user-select-func
+     ("t" ,(fc-manual (fc-select-func
                        "Select theme style"
-                       `(("dark"  . (lambda () (fc-theme-auto-select *fc-dark-theme*)))
-                         ("deep dark" . (lambda () (fc-theme-auto-select *fc-deep-dark-theme*)))
-                         ("light" . (lambda () (fc-theme-auto-select *fc-light-theme*)))
-                         ("very light" . (lambda () (fc-theme-auto-select *fc-very-light-theme*)))
-                         ("work dark"  . (lambda () (fc-theme-auto-select
-                                                     (alist-get 'dark *fc--work-themes*))))
+                       `(("dark"            . (lambda () (fc-theme-auto-select *fc-dark-theme*)))
+                         ("deep dark"       . (lambda () (fc-theme-auto-select *fc-deep-dark-theme*)))
+                         ("light"           . (lambda () (fc-theme-auto-select *fc-light-theme*)))
+                         ("very light"      . (lambda () (fc-theme-auto-select *fc-very-light-theme*)))
+                         ("work dark"       . (lambda () (fc-theme-auto-select
+                                                          (alist-get 'dark *fc--work-themes*))))
                          ("work deep dark"  . (lambda () (fc-theme-auto-select
                                                           (alist-get 'dark *fc--work-deep-themes*))))
-                         ("work light"  . (lambda () (fc-theme-auto-select
-                                                      (alist-get 'light *fc--work-themes*))))
-                         ("work very light"  . (lambda () (fc-theme-auto-select
-                                                           (alist-get 'light *fc--work-themes*))))))))
+                         ("work light"      . (lambda () (fc-theme-auto-select
+                                                          (alist-get 'light *fc--work-themes*))))
+                         ("work very light" . (lambda () (fc-theme-auto-select
+                                                          (alist-get 'light *fc--work-themes*))))))))
      ("v" fc-tomato-customize)
      ("w" ,(fc-manual (fc-theme-auto-select
                        (alist-get *fc-theme-mode* *fc--work-themes*))))
@@ -1266,13 +1265,13 @@ STEP: pixels."
                        (alist-get *fc-theme-mode* *fc--work-deep-themes*))))
      )
    "ergo-prefix-quick-map")
-  "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: select theme  w: work theme  z: suspend  S: sleep  W: deep work theme.")
+  "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: select theme  w: work theme  z: suspend  S: sleep  W: deep work theme . ")
 
 (defun fc-vc-portal ()
   "Run vc portal."
   (interactive)
 
-  (fc-user-select-func
+  (fc-select-func
    "VC"
    `(
      ("Diff with other branch"              . fc-vc-diff-with-other-branch)
@@ -1282,8 +1281,7 @@ STEP: pixels."
      ("Rebase"                              . magit-rebase-branch)
      ("Switch branch"                       . ,(fc-manual (fc-vc-switch-branch)
                                                           (fc-vc-revert-repo)))
-     )
-   :mouse t))
+     )))
 
 (defconst *ergo-vc-map*
   (fc-make-keymap
@@ -1326,10 +1324,9 @@ STEP: pixels."
   "KEYS l: load  p: pop  q: push  s: save.")
 
 (cl-defun fc--select-bookmark (&key (prompt "Select bookmark"))
-  (fc-user-select
+  (fc-select
    prompt
-   (-map #'car (bookmark-maybe-sort-alist))
-   :mouse t))
+   (-map #'car (bookmark-maybe-sort-alist))))
 
 (cl-defun fc--add-bookmark ()
   (interactive)
@@ -1607,7 +1604,7 @@ AUTO: auto select face."
    ("X" zap-to-char)
    ("Y" ,(fc-cond-key :normal #'yank-rectangle
                       :region (fc-manual
-                               (let ((text (fc-user-select
+                               (let ((text (fc-select
                                             "Kill ring" kill-ring)))
                                  (call-interactively #'delete-region)
                                  (insert text)))))

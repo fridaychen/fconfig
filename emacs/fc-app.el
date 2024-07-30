@@ -22,7 +22,7 @@ NAME: target buffer name."
                       (fc--list-file (format "%s/site/template" *fc-home*)
                                      '(doc) :fullpath t)))
               (options (--map (cons (file-name-base it) it) files))
-              (template (fc-user-select
+              (template (fc-select
                          (format "Select template for %s" name)
                          options)))
     template))
@@ -292,7 +292,7 @@ PATTERN: target pattern."
                     "-w"
                     (fc-string *fc-column-limit*)
                     "-f"
-                    (fc-user-select
+                    (fc-select
                      "Select font"
                      (--map
                       (cons (file-name-base it)
@@ -418,7 +418,7 @@ PROMPT: prompt string.
 FILE-TYPES: target file types to be finded.
 SORT: sort files."
   (let ((files (fc--list-file dir file-types :sort sort)))
-    (fc-user-select prompt files)))
+    (fc-select prompt files)))
 
 ;; fc text retrieve
 (cl-defun fc--internal-ftr-rg (dir pattern file-types &key ignore-files)
@@ -597,8 +597,8 @@ ARGS: args for ff."
                     ()
                   (split-string (string-trim result) "\n")))
          (file
-          (fc-user-select prompt
-                          files)))
+          (fc-select prompt
+                     files)))
     file))
 
 (cl-defmacro ff-run (prompt args &rest rest)
@@ -867,10 +867,10 @@ REST: commands."
 
 (defun fc-select-multi-buffer-func ()
   "Select multi buffer function."
-  (fc-user-select-func
+  (fc-select-func
    "Multi buffer"
-   `(("close"  . ,(fc-run-multi-buffer "close" (kill-buffer)))
-     ("revert" . ,(fc-run-multi-buffer "revert" (fc-recover-revert-buffer)))
+   `(("close"   . ,(fc-run-multi-buffer "close" (kill-buffer)))
+     ("revert"  . ,(fc-run-multi-buffer "revert" (fc-recover-revert-buffer)))
      ("refresh" . ,(fc-run-multi-buffer "refresh" (vc-refresh-state))))))
 
 ;; git utilities
@@ -878,19 +878,19 @@ REST: commands."
   "Select git function."
   (interactive)
 
-  (fc-user-select-func
+  (fc-select-func
    "Git"
-   `(("amend"			.	fc-git-amend)
-     ("cancel last commit"	.	fc-git-cancel-last-commit)
-     ("search"			.	fc-git-search)
-     ("pull"			.	,(fc-manual (shell-command "git pull")))
-     ("push"			.	,(fc-manual (shell-command "git push"))))))
+   `(("amend"		   . fc-git-amend)
+     ("cancel last commit" . fc-git-cancel-last-commit)
+     ("search"		   . fc-git-search)
+     ("pull"		   . ,(fc-manual (shell-command "git pull")))
+     ("push"		   . ,(fc-manual (shell-command "git push"))))))
 
 ;; project utilities
 (defun fc-select-proj-func ()
   "Select proj function."
 
-  (fc-user-select-func
+  (fc-select-func
    "Project"
    `(
      ("auto format"	  . ,(lambda ()
@@ -900,12 +900,12 @@ REST: commands."
                                (fc-proj--save *fc-project*)))
      ("clang style"       . ,(lambda ()
                                (fc-proj--set *fc-project*
-                                             (fc-user-select "Clang style" '("LLVM"
-                                                                             "Google"
-                                                                             "Chromium"
-                                                                             "Mozilla"
-                                                                             "WebKit"
-                                                                             "Microsoft"))
+                                             (fc-select "Clang style" '("LLVM"
+                                                                        "Google"
+                                                                        "Chromium"
+                                                                        "Mozilla"
+                                                                        "WebKit"
+                                                                        "Microsoft"))
                                              :local nil 'fc-proj-clang-style)
                                (fc-proj--save *fc-project*)))
      ("close files"       . ,(lambda ()
@@ -987,17 +987,17 @@ REST: commands."
 (cl-defun fc-select-bg-color ()
   "Select background color."
   (setf *fc-common-light-theme-bg*
-        (fc-user-select-color "Background color"
-                              '(
-                                "beige"
-                                "bisque"
-                                "blanched almond"
-                                "cornsilk1"
-                                "cornsilk2"
-                                "cornsilk3"
-                                "darkslategrey"
-                                "linen"
-                                "#C1E6C6")))
+        (fc-select-color "Background color"
+                         '(
+                           "beige"
+                           "bisque"
+                           "blanched almond"
+                           "cornsilk1"
+                           "cornsilk2"
+                           "cornsilk3"
+                           "darkslategrey"
+                           "linen"
+                           "#C1E6C6")))
 
   (fc-reset-theme))
 
@@ -1006,29 +1006,29 @@ REST: commands."
   (fc-set-face
    'default nil
    :foreground
-   (fc-user-select-color "Foreground color"
-                         '("black"
-                           "cornsilk"
-                           "DarkSeaGreen1"
-                           "DarkSeaGreen3"
-                           "gray95"
-                           "gray90"
-                           "gray80"
-                           "gray70"
-                           "gray60"
-                           "LemonChiffon"
-                           "navajo white"
-                           "pale goldenrod"
-                           "pale green"
-                           "wheat"
-                           "white"))))
+   (fc-select-color "Foreground color"
+                    '("black"
+                      "cornsilk"
+                      "DarkSeaGreen1"
+                      "DarkSeaGreen3"
+                      "gray95"
+                      "gray90"
+                      "gray80"
+                      "gray70"
+                      "gray60"
+                      "LemonChiffon"
+                      "navajo white"
+                      "pale goldenrod"
+                      "pale green"
+                      "wheat"
+                      "white"))))
 
 ;; theme
 (cl-defun fc-select-theme ()
   "Allow user to select theme."
-  (fc-load-theme (fc-user-select "Themes"
-                                 (remove *fc-current-theme*
-                                         (custom-available-themes)))))
+  (fc-load-theme (fc-select "Themes"
+                            (remove *fc-current-theme*
+                                    (custom-available-themes)))))
 
 (defun fc-init-dir-locals ()
   "Copy default .dir-locals.el."
@@ -1140,7 +1140,7 @@ REST: commands."
 
 (defun fc-select-other-func ()
   "Select other function."
-  (fc-user-select-func
+  (fc-select-func
    "Other"
    `(
      ("2048"                    . 2048-game)
@@ -1171,7 +1171,7 @@ REST: commands."
 (defun fc-select-sys-func ()
   "Select system function."
   (let ((server-title (if server-mode "server stop" "server start")))
-    (fc-user-select-func
+    (fc-select-func
      "System"
      `(("location"	  . fc-update-location)
        ("sound sink"      . fc-app-select-sound-sink)
@@ -1182,7 +1182,7 @@ REST: commands."
 
 (defun fc-select-ui-func ()
   "Select system function."
-  (fc-user-select-func
+  (fc-select-func
    "UI"
    `(
      ("bg color"     . fc-select-bg-color)
@@ -1298,11 +1298,10 @@ END: end of region."
 ;; set sound sink
 (defun fc-app-select-sound-sink ()
   "Select sound sink."
-  (let ((sink (fc-user-select "Select sound sink"
-                              (split-string
-                               (fc-exec-command-to-string "fc-sound-sink")
-                               "\n" t)
-                              :mouse t)))
+  (let ((sink (fc-select "Select sound sink"
+                         (split-string
+                          (fc-exec-command-to-string "fc-sound-sink")
+                          "\n" t))))
     (when sink
       (fc-exec-command "pactl" "set-default-sink" sink))))
 
@@ -1311,24 +1310,23 @@ END: end of region."
   "Run app portal."
   (interactive)
 
-  (fc-user-select-func
+  (fc-select-func
    "App"
    `(
-     ("git"	.	fc-select-git-func)
-     ("multi"	.	fc-select-multi-buffer-func)
-     ("project" .	fc-select-proj-func)
-     ("other"   .	fc-select-other-func)
-     ("sys"	.	fc-select-sys-func)
-     ("ui"	.	fc-select-ui-func)
-     )
-   :default #'(lambda () (message "No app is selected !!!"))))
+     ("git"	. fc-select-git-func)
+     ("multi"	. fc-select-multi-buffer-func)
+     ("project" . fc-select-proj-func)
+     ("other"   . fc-select-other-func)
+     ("sys"	. fc-select-sys-func)
+     ("ui"	. fc-select-ui-func)
+     )))
 
 ;; help portal
 (defun fc-help-portal ()
   "Run help portal."
   (interactive)
 
-  (fc-user-select-func
+  (fc-select-func
    "Help"
    `(("ascii"  . fc-show-ascii-table)
      ("common" . fc-show-common-keys)

@@ -6,12 +6,12 @@
 ;;; Code:
 (defun fc-c-portal ()
   "Show c portal."
-  (fc-user-select-func
+  (fc-select-func
    "C"
    `(
      ("insert standard headers" . fc-c-insert-std-header)
-     ("insert unix headers" . fc-c-insert-unix-header)
-     ("mark ifdef" . mark-ifdef)
+     ("insert unix headers"     . fc-c-insert-unix-header)
+     ("mark ifdef"              . mark-ifdef)
      )))
 
 (defconst *fc-c-map*

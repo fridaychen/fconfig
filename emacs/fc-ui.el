@@ -23,10 +23,15 @@ CONV: convert items of collection into strings."
                               (cl-loop for it in collection
                                        collect (cons (funcall conv it) it))
                             collection))
+              (sample (cl-first candidates))
               (input (completing-read prompt candidates)))
-    (if (listp (car candidates))
-        (alist-get input candidates nil nil #'string-equal)
-      input)))
+    (cond ((listp sample)
+           (alist-get input candidates nil nil #'string-equal))
+
+          ((symbolp sample)
+           (make-symbol input))
+
+          (t input))))
 
 (cl-defun fc-select-func (prompt collection)
   "Select a function to run from collection.

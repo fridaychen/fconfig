@@ -63,6 +63,7 @@
 
 (add-hook 'find-file-hook #'fc--load-mode-config)
 
+(fc-require 'fc-buffer t)
 (fc-require 'fc-control)
 (fc-load 'fc-next-error
   :local t
@@ -78,8 +79,6 @@
   ('helm (fc-require 'fc-helm t))
   ('vertico (fc-require 'fc-vertico t))
   ('ivy (fc-require 'fc-ivy t)))
-
-(fc-require 'fc-buffer t)
 
 (fc-load 'ido
   :local t

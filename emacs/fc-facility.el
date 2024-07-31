@@ -292,6 +292,11 @@ FUNC: new function."
      (let ((it ,obj))
        (progn ,@body)))))
 
+(defun fc-mapcar (func collection)
+  (if func
+      (mapcar func collection)
+    collection))
+
 (provide 'fc-facility)
 
 ;; Local Variables:

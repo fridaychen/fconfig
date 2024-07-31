@@ -19,10 +19,7 @@ CONV: convert items of collection into strings."
                                     (car r)
                                   r))))
 
-  (when-let* ((candidates (if conv
-                              (cl-loop for it in collection
-                                       collect (cons (funcall conv it) it))
-                            collection))
+  (when-let* ((candidates (fc-mapcar conv collection))
               (sample (cl-first candidates))
               (input (completing-read prompt candidates)))
     (cond ((listp sample)
@@ -37,22 +34,20 @@ CONV: convert items of collection into strings."
   "Select a function to run from collection.
 PROMPT: user prompt.
 COLLECTION: cadidates collection."
-  (when-let ((func (fc-select prompt
-                              collection
-                              )))
+  (when-let ((func (fc-select prompt collection)))
     (fc-funcall func)))
 
 (cl-defun fc-select-color (prompt colors)
-  (when-let ((color (fc-select
-                     prompt
-                     colors
-                     :conv (lambda (x)
-                             (concat
-                              x
-                              " "
-                              (fc-text x :face `(:foreground "black" :background ,x))
-                              " "
-                              (fc-text x :face `(:foreground ,x :background "black")))))))
+  (when-let* ((color (fc-select
+                      prompt
+                      colors
+                      :conv (lambda (x)
+                              (concat
+                               x
+                               " "
+                               (fc-text x :face `(:foreground "black" :background ,x))
+                               " "
+                               (fc-text x :face `(:foreground ,x :background "black")))))))
     (when (color-defined-p color)
       color)))
 

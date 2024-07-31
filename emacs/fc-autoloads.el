@@ -112,6 +112,8 @@
 ;; user interface
 (autoload #'fc-select "fc-ui")
 (autoload #'fc-select-func "fc-ui")
+(autoload #'fc-select-buffer "fc-ui")
+(autoload #'fc-select-color "fc-ui")
 (autoload #'fc-user-confirm "fc-ui")
 (autoload #'fc-create-simple-pop-menu "fc-ui")
 (autoload #'fc-create-pop-menu "fc-ui")

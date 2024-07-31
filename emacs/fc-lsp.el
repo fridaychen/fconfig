@@ -51,8 +51,13 @@
            (setf *fc-lsp-enable* nil
                  *fc-lsp-eglot-enable* t)
 
+           (setf eglot-ignored-server-capabilities '(:documentFormattingProvider
+                                                     :documentRangeFormattingProvider
+                                                     :documentOnTypeFormattingProvider
+                                                     :inlayHintProvider))
+
            (defun fc--setup-eglot ()
-             (eglot-inlay-hints-mode -1))
+             )
 
            (add-hook 'eglot-managed-mode-hook #'fc--setup-eglot)
 

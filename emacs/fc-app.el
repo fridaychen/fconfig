@@ -23,8 +23,8 @@ NAME: target buffer name."
                                      '(doc) :fullpath t)))
               (options (--map (cons (file-name-base it) it) files))
               (template (fc-select
-                         (format "Select template for %s" name)
-                         options)))
+                            (format "Select template for %s" name)
+                            options)))
     template))
 
 (cl-defun fc-new-buffer-with-template (bufname template)
@@ -293,13 +293,13 @@ PATTERN: target pattern."
                     (fc-string *fc-column-limit*)
                     "-f"
                     (fc-select
-                     "Select font"
-                     (--map
-                      (cons (file-name-base it)
-                            (format "%s/extra/figlet/%s" *fc-home* it))
-                      (fc--list-file (format "%s/extra/figlet" *fc-home*)
-                                     nil
-                                     :sort t)))
+                        "Select font"
+                        (--map
+                         (cons (file-name-base it)
+                               (format "%s/extra/figlet/%s" *fc-home* it))
+                         (fc--list-file (format "%s/extra/figlet" *fc-home*)
+                                        nil
+                                        :sort t)))
                     (read-string "Text : "))))
 
 (cl-defun fc-insert-signature ()
@@ -579,7 +579,7 @@ ARGS: ls patterns."
 
   (if (not args)
       (shell-command-to-string "ls -d */ 2>/dev/null" )
-    (string-join (-map
+    (string-join (mapcar
                   (lambda (x)
                     (shell-command-to-string (format "ls -d \"%s\"/*/ 2>/dev/null" x)))
                   args)
@@ -597,8 +597,7 @@ ARGS: args for ff."
                     ()
                   (split-string (string-trim result) "\n")))
          (file
-          (fc-select prompt
-                     files)))
+          (fc-select prompt files)))
     file))
 
 (cl-defmacro ff-run (prompt args &rest rest)
@@ -916,10 +915,11 @@ REST: commands."
      ("open"              . fc-proj-open)
      ("property"          . fc-proj-select-property-to-edit)
      ("rename"            . fc-proj-query-rename)
-     ("refresh"           . ,(lambda () (fc--run-multi-buffer (fc-proj-root)
-                                                              (lambda ()
-                                                                (fc-funcall #'vc-refresh-state)
-                                                                (fc-funcall #'diff-hl-update)))))
+     ("refresh"           . ,(lambda () (fc--run-multi-buffer
+                                         (fc-proj-root)
+                                         (lambda ()
+                                           (fc-funcall #'vc-refresh-state)
+                                           (fc-funcall #'diff-hl-update)))))
      ("save"              . ,(lambda () (fc-proj--save *fc-project*)))
      ("switch"            . fc-proj-switch)
      ("tab indent mode"   . ,(lambda ()
@@ -1026,9 +1026,10 @@ REST: commands."
 ;; theme
 (cl-defun fc-select-theme ()
   "Allow user to select theme."
-  (fc-load-theme (fc-select "Themes"
-                            (remove *fc-current-theme*
-                                    (custom-available-themes)))))
+  (fc-load-theme (fc-select
+                     "Themes"
+                     (remove *fc-current-theme*
+                             (custom-available-themes)))))
 
 (defun fc-init-dir-locals ()
   "Copy default .dir-locals.el."
@@ -1299,9 +1300,9 @@ END: end of region."
 (defun fc-app-select-sound-sink ()
   "Select sound sink."
   (let ((sink (fc-select "Select sound sink"
-                         (split-string
-                          (fc-exec-command-to-string "fc-sound-sink")
-                          "\n" t))))
+                  (split-string
+                   (fc-exec-command-to-string "fc-sound-sink")
+                   "\n" t))))
     (when sink
       (fc-exec-command "pactl" "set-default-sink" sink))))
 

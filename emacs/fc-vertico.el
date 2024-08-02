@@ -108,7 +108,7 @@
 
   (when-let ((name (fc-vertico--read
                     "Bookmarks"
-                    (-map #'car (bookmark-maybe-sort-alist))
+                    (mapcar #'car (bookmark-maybe-sort-alist))
                     :keymap '*fc-vertico--bookmark-keymap*)))
     (cond
      ((member name (bookmark-all-names))

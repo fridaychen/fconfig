@@ -297,6 +297,11 @@ FUNC: new function."
       (mapcar func collection)
     collection))
 
+(defun fc-mapc (func collection)
+  (if func
+      (mapc func collection)
+    collection))
+
 (provide 'fc-facility)
 
 ;; Local Variables:

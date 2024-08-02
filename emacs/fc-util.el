@@ -525,7 +525,7 @@ ASK: prompt or (list prompt init-val)."
 (cl-defun fc-unicode-square-string (str)
   "Return the square latin version of str.
 STR: origin str."
-  (concat (-map
+  (concat (mapcar
            (lambda (c)
              (cond
               ((and (>= c ?a) (<= c ?z))

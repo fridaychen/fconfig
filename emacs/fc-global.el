@@ -25,8 +25,8 @@ PROJ-DIR: project path.
 SRC-DIRS: source code directories."
   (setenv "GTAGSLIBPATH"
           (s-join ":"
-                  (-map #'expand-file-name
-                        src-dirs)))
+                  (mapcar #'expand-file-name
+                          src-dirs)))
   (ggtags-visit-project-root proj-dir))
 
 (defun fc-global-update-tag ()

@@ -71,32 +71,6 @@ NO-CURRENT: not include current buffer in result."
 (cl-defmacro fc-list-buffer (&rest rest)
   `(fc--list-buffer (fc--buffer-pred ,@rest)))
 
-;; (cl-defun fc-select-buffer (prompt
-;;                             pred
-;;                             &key relative pop (error-msg "Buffer list is empty !!!") one)
-;;   "Select a BUFFER to switch.
-;; PROMPT: prompt string.
-;; PRED: arguments for list-buffer.
-;; RELATIVE: root directory for showing file path.
-;; POP: show the selected buffer side-by-side.
-;; ONE: only request one buffer.
-;; ERROR-MSG: error message."
-;;   (let* ((bufs (fc--list-buffer pred :one one))
-;;          (candidates (cl-loop
-;;                       for x in bufs
-;;                       collect (cons (if relative
-;;                                         (file-relative-name (buffer-file-name x)
-;;                                                             relative)
-;;                                       (buffer-name x))
-;;                                     x)))
-;;          (buf (fc-select prompt candidates)))
-;;     (unless candidates
-;;       (cl-return-from fc-select-buffer error-msg))
-
-;;     (if pop
-;;         (fc-pop-buf buf :select t)
-;;       (switch-to-buffer buf))))
-
 ;; select buffers to show
 (defun -show-buffers (bufs)
   "Show BUFFERS.
@@ -106,7 +80,7 @@ NO-CURRENT: not include current buffer in result."
          (size (/ (frame-height) count)))
     (when (or (<= count *fc-buffer-count-threshold*)
               (fc-user-confirm (concat (s-join " "
-                                               (-map #'buffer-name bufs))
+                                               (mapcar #'buffer-name bufs))
                                        " ")))
       (fc-layout-push)
 

@@ -6,12 +6,13 @@
 ;;; Code:
 
 ;; UI selector
-(cl-defun fc-select (prompt collection &key always conv)
+(cl-defun fc-select (prompt collection &key always conv (init ""))
   "Select a item from the collection.
 PROMPT: user prompt.
 COLLECTION: cadidates collection.
 ALWAYS: always ask use to select.
 CONV: convert items of collection into strings."
+  (declare (indent 2))
   (when (and (not always)
              (= (length collection) 1))
     (cl-return-from fc-select (let ((r (car collection)))
@@ -21,7 +22,7 @@ CONV: convert items of collection into strings."
 
   (when-let* ((candidates (fc-mapcar conv collection))
               (sample (cl-first candidates))
-              (input (completing-read prompt candidates)))
+              (input (completing-read prompt candidates nil nil init)))
     (cond ((listp sample)
            (alist-get input candidates nil nil #'string-equal))
 
@@ -39,15 +40,15 @@ COLLECTION: cadidates collection."
 
 (cl-defun fc-select-color (prompt colors)
   (when-let* ((color (fc-select
-                      prompt
-                      colors
-                      :conv (lambda (x)
-                              (concat
-                               x
-                               " "
-                               (fc-text x :face `(:foreground "black" :background ,x))
-                               " "
-                               (fc-text x :face `(:foreground ,x :background "black")))))))
+                         prompt
+                         colors
+                       :conv (lambda (x)
+                               (concat
+                                x
+                                " "
+                                (fc-text x :face `(:foreground "black" :background ,x))
+                                " "
+                                (fc-text x :face `(:foreground ,x :background "black")))))))
     (when (color-defined-p color)
       color)))
 
@@ -63,131 +64,15 @@ ONE: only request one buffer.
 ERROR-MSG: error message."
   (when-let* ((bufs (fc--list-buffer pred :one one))
               (buf (fc-select
-                    prompt bufs
-                    :conv (lambda (x)
-                            (if relative
-                                (file-relative-name (buffer-file-name x)
-                                                    relative)
-                              (buffer-name x))))))
+                       prompt bufs
+                     :conv (lambda (x)
+                             (if relative
+                                 (file-relative-name (buffer-file-name x)
+                                                     relative)
+                               (buffer-name x))))))
     (if pop
         (fc-pop-buf buf :select t)
       (switch-to-buffer buf))))
-
-;; Obsolete
-;; (defun fc--list-string-width (collection)
-;;   (cl-loop for x in collection sum (string-width x)))
-
-;; (cl-defun fc--user-select (prompt collection &key fullscreen mouse)
-;;   "Select a item from the collection.
-;; PROMPT: user prompt.
-;; COLLECTION: cadidates collection.
-;; FULLSCREEN: fullscreen ui mode.
-;; MOUSE: allow user to select with mouse."
-;;   (defvar helm-full-frame)
-
-;;   (cond
-;;    ((eq *fc-completion* 'vertico)
-;;     (if (and (not mouse)
-;;              (> 9 (length collection))
-;;              (> (- (frame-width) 20 (length prompt))
-;;                 (fc--list-string-width collection)))
-;;         (ido-completing-read (fc-prompt prompt) collection)
-;;       (completing-read prompt collection)))
-
-;;    (mouse
-;;     (ivy-read (fc-prompt prompt) collection :caller 'fc-ui-ivy))
-
-;;    ((and fullscreen (fboundp 'helm))
-;;     (let ((helm-full-frame t))
-;;       (helm :sources
-;;             (helm-build-sync-source prompt
-;;                                     :candidates collection))))
-
-;;    ((and (> 9 (length collection))
-;;          (> (- (frame-width) 20 (length prompt))
-;;             (fc--list-string-width collection)))
-;;     (ido-completing-read (fc-prompt prompt) collection))
-
-;;    (t
-;;     (ivy-read (fc-prompt prompt) collection))))
-
-;; (defun fc--gen-names (collection)
-;;   (cond ((listp (cl-first collection))
-;;          (fc--gen-names (-map 'car collection)))
-
-;;         ((stringp (cl-first collection))
-;;          collection)
-
-;;         (t
-;;          (-map 'fc-string collection))))
-
-;; (defun fc--gen-collection (collection)
-;;   (cond ((or (listp (cl-first collection))
-;;              (stringp (cl-first collection)))
-
-;;          collection)
-
-;;         (t
-;;          (--map (cons (fc-string it) it) collection))))
-
-;; (defun fc--get-result (collection name)
-;;   (if (listp (cl-first collection))
-;;       (cdr (--first (equal (car it) name)
-;;                     collection))
-;;     name))
-
-;; (cl-defun fc-user-select (prompt collection &key always fullscreen mouse to-string)
-;;   "Select a item from the collection.
-;; PROMPT: user prompt.
-;; COLLECTION: cadidates collection.
-;; ALWAYS: always ask use to select.
-;; FULLSCREEN: fullscreen ui mode.
-;; MOUSE: allow user to select with mouse.
-;; TO-STRING: convert items of collection into strings."
-;;   (cond ((not collection))
-;;         ((and (not always)
-;;               (= (length collection) 1))
-;;          (fc--get-result collection
-;;                          (cl-first (fc--gen-names collection))))
-
-;;         (t
-;;          (fc--get-result (fc--gen-collection collection)
-;;                          (fc--user-select prompt
-;;                                           (fc--gen-names collection)
-;;                                           :fullscreen fullscreen
-;;                                           :mouse mouse)))))
-
-;; (cl-defun fc-user-select-func (prompt collection &key fullscreen default mouse)
-;;   "Select a function to run from collection.
-;; PROMPT: user prompt.
-;; COLLECTION: cadidates collection.
-;; FULLSCREEN: fullscreen ui mode.
-;; DEFAULT: default function."
-;;   (fc-funcall (fc-user-select prompt
-;;                               collection
-;;                               :always t
-;;                               :fullscreen fullscreen
-;;                               :mouse mouse)
-;;               :default default))
-
-;; (cl-defun fc-user-select-color (prompt colors)
-;;   (let ((color (fc-user-select
-;;                 prompt
-;;                 (cl-loop for x in colors
-;;                          collect
-;;                          (cons
-;;                           (concat
-;;                            (fc-text
-;;                             x
-;;                             :face `(:foreground "black" :background ,x))
-;;                            " "
-;;                            (fc-text
-;;                             x
-;;                             :face `(:foreground ,x :background "black"))
-;;                            )
-;;                           x)))))
-;;     (when (color-defined-p color)
-;;       color)))
 
 ;; UI yes-or-no
 (cl-defun fc-user-confirm (prompt &optional (default-ans t))

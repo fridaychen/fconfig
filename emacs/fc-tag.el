@@ -87,8 +87,8 @@
 (cl-defmethod fc-tag--open-project ((x fc-tag-global) proj-dir src-dirs)
   (setenv "GTAGSLIBPATH"
           (s-join ":"
-                  (-map #'expand-file-name
-                        src-dirs)))
+                  (mapcar #'expand-file-name
+                          src-dirs)))
   (ggtags-visit-project-root proj-dir))
 
 (cl-defmethod fc-tag--open-file ((x fc-tag-global))

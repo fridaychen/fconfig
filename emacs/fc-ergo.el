@@ -1325,8 +1325,8 @@ STEP: pixels."
 
 (cl-defun fc--select-bookmark (&key (prompt "Select bookmark"))
   (fc-select
-   prompt
-   (-map #'car (bookmark-maybe-sort-alist))))
+      prompt
+      (mapcar #'car (bookmark-maybe-sort-alist))))
 
 (cl-defun fc--add-bookmark ()
   (interactive)
@@ -1604,8 +1604,7 @@ AUTO: auto select face."
    ("X" zap-to-char)
    ("Y" ,(fc-cond-key :normal #'yank-rectangle
                       :region (fc-manual
-                               (let ((text (fc-select
-                                            "Kill ring" kill-ring)))
+                               (let ((text (fc-select "Kill ring" kill-ring)))
                                  (call-interactively #'delete-region)
                                  (insert text)))))
    ("Z" neotree-toggle)

@@ -21,8 +21,7 @@
   (bound-and-true-p fc-proj-name))
 
 (defun fc-user-select-theme-mode ()
-  (let ((mode (fc-select (format "Theme mode")
-                         '(dark light))))
+  (let ((mode (fc-select "Theme mode" '(dark light))))
     (when mode
       (setf *fc-theme-mode* mode))))
 

@@ -49,7 +49,7 @@
              (interactive)
 
              (dired-sort-other (pcase (fc-select "Sort by"
-                                                 '("date" "size" "name" "folder"))
+                                          '("date" "size" "name" "folder"))
                                  ("name" "-aBhl ")
                                  ("date" "-aBhl -t")
                                  ("size" "-aBhl -S")

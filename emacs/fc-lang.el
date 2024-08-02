@@ -134,8 +134,9 @@ OBJ: object"
 
 (cl-defun fc-make-hash-table (data)
   (let ((table (make-hash-table)))
-    (--map (puthash (car it) (cdr it) table)
-           data)
+    (mapc (lambda (x)
+            (puthash (car x) (cdr x) table))
+          data)
     table))
 
 (cl-defun fc-member (var set)

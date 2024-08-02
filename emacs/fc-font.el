@@ -25,7 +25,7 @@
      fontset-name)))
 
 (cl-defun fc-setup-font-spec (fontset charset-specs)
-  (-map (lambda (n)
+  (mapc (lambda (n)
           (dolist (charset (car n))
             (set-fontset-font
              fontset
@@ -104,8 +104,8 @@ FONT: to be tested."
 (defun fc-select-font-family ()
   "Select a font family from system."
   (fc-select "Select font family : "
-             (delete-dups
-              (sort (font-family-list) #'string<))))
+      (delete-dups
+       (sort (font-family-list) #'string<))))
 
 (cl-defun fc-config-font ()
   "Allow user config FONT."
@@ -116,26 +116,26 @@ FONT: to be tested."
                  (read-string "Height"
                               (fc-string *fc-font-height*))))
         (weight (intern (fc-select
-                         "Weight"
-                         '("ultra-light"
-                           "extra-light"
-                           "light"
-                           "semi-light"
-                           "normal"
-                           "semi-bold"
-                           "bold"
-                           "extra-bold"
-                           "ultra-bold"))))
+                            "Weight"
+                            '("ultra-light"
+                              "extra-light"
+                              "light"
+                              "semi-light"
+                              "normal"
+                              "semi-bold"
+                              "bold"
+                              "extra-bold"
+                              "ultra-bold"))))
         (width (intern (fc-select
-                        "Width"
-                        '("extra-condensed"
-                          "condensed"
-                          "semi-condensed"
-                          "normal"
-                          "semi-expanded"
-                          "expanded"
-                          "extra-expanded"
-                          "ultra-expanded")))))
+                           "Width"
+                           '("extra-condensed"
+                             "condensed"
+                             "semi-condensed"
+                             "normal"
+                             "semi-expanded"
+                             "expanded"
+                             "extra-expanded"
+                             "ultra-expanded")))))
     (when (> 96 height)
       (message "Font height too small.")
       (cl-return-from fc-config-font))

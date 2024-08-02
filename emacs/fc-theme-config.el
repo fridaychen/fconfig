@@ -12,19 +12,18 @@
   "Reset color theme."
   (interactive)
 
-  (fc-run-hook '*fc-before-theme-hook*)
-
-  (load-theme *fc-current-theme* t)
-
-  (fc-run-hook '*fc-after-theme-hook*))
+  (fc--do-load-theme))
 
 (defun fc--do-load-theme ()
   "Load color theme."
-  (-map #'disable-theme custom-enabled-themes)
+  (mapc #'disable-theme custom-enabled-themes)
+
   (fc-run-hook '*fc-before-theme-hook*)
   (load-theme *fc-current-theme* t)
   (fc-run-hook '*fc-after-theme-hook*)
+
   (force-mode-line-update)
+
   (message "Load theme %s" *fc-current-theme*))
 
 (cl-defun fc-load-theme (theme)
@@ -35,15 +34,16 @@ THEME: new theme."
 
   (cond
    ((symbolp theme)
-    (setq *fc-current-theme* theme)
-    (fc--do-load-theme))
+    (setq *fc-current-theme* theme))
 
    ((consp theme)
-    (setq *fc-current-theme* (car theme))
-    (fc--do-load-theme))
+    (setq *fc-current-theme* (car theme)))
 
    (t
-    (message "Unknown theme type"))))
+    (message "Unknown theme type")
+    (cl-return-from fc-load-theme)))
+
+  (fc--do-load-theme))
 
 (defun fc-theme-auto-select (themes)
   "Auto select and load theme from THEMES.

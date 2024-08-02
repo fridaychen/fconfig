@@ -162,10 +162,10 @@ DIR: project path."
     (fc-conf-put conf
                  (make-symbol
                   (fc-select "Select tag system"
-                             '("global"
-                               "lsp"
-                               "xref"
-                               "none")))
+                      '("global"
+                        "lsp"
+                        "xref"
+                        "none")))
                  :tag)
 
     (fc-conf-save conf)
@@ -216,8 +216,8 @@ DIR: project path."
 
 (cl-defun fc-proj-switch ()
   (fc--proj-set (fc-select "Projects"
-                           (--map (cons (fc-string it) it)
-                                  *fc-projects*))))
+                    (--map (cons (fc-string it) it)
+                           *fc-projects*))))
 
 (cl-defun fc-proj-edit-property (proj prop)
   (let* ((vstr (read-string (format "Edit [%s] : " prop)
@@ -271,8 +271,8 @@ DIR: project path."
 (defun fc-user-select-project ()
   "Allow user to select project."
   (let ((proj (fc-select (format "Project <%s>" *fc-project-name*)
-                         (--map (cons (fc-proj--get it :name) it)
-                                *fc-projects*))))
+                  (--map (cons (fc-proj--get it :name) it)
+                         *fc-projects*))))
     (when proj
       (fc--proj-set proj))))
 
@@ -290,8 +290,8 @@ DIR: project path."
               (files (--filter (string-prefix-p root it)
                                recentf-list)))
     (find-file (fc-select "Project recentf"
-                          (--map (cons (file-relative-name it root) it)
-                                 files)))
+                   (--map (cons (file-relative-name it root) it)
+                          files)))
     (cl-return-from fc-proj-recentf))
 
   (message "No project or recent files !!!"))

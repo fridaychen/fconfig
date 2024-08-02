@@ -38,7 +38,7 @@ EVENT: mouse event."
 (defun fc-user-select-control-mode ()
   "Allow user to select control mode."
   (when-let ((mode (fc-select (format "Control mode <%s>" *fc-control-mode*)
-                              *fc-control-modes*)))
+                       *fc-control-modes*)))
     (setf *fc-control-mode* mode)))
 
 (provide 'fc-control)

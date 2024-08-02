@@ -160,22 +160,22 @@
   "Soothe theme.
 PERCENT: produce background color by darken this percent.
 COLOR: background color."
-  (--each '(font-lock-keyword-face
-            font-lock-function-name-face)
+  (fc-each '(font-lock-keyword-face
+             font-lock-function-name-face)
     (when (facep it)
       (fc-soothe-face it percent color)))
 
-  (--each '(font-lock-string-face
-            font-lock-doc-face
-            font-lock-type-face
-            font-lock-constant-face
-            font-lock-property-name-face
-            font-lock-variable-name-face
+  (fc-each '(font-lock-string-face
+             font-lock-doc-face
+             font-lock-type-face
+             font-lock-constant-face
+             font-lock-property-name-face
+             font-lock-variable-name-face
 
-            font-lock-preprocessor-face
-            font-lock-function-call-face
-            font-lock-variable-use-face
-            font-lock-property-use-face)
+             font-lock-preprocessor-face
+             font-lock-function-call-face
+             font-lock-variable-use-face
+             font-lock-property-use-face)
     (when (facep it)
       (fc-soothe-face it (* percent 0.7) color))))
 
@@ -185,8 +185,9 @@ COLOR: background color."
 (defvar *fc-soothe-light-percent* 8)
 
 (defconst *fc-soothe-color* (make-hash-table))
-(--each '((material "gray20")
-          (tango-dark "gray21"))
+
+(fc-each '((material "gray20")
+           (tango-dark "gray21"))
   (puthash (cl-first it) (cl-second it) *fc-soothe-color*))
 
 (defun fc-patch-theme-before-theme-changed ()
@@ -410,7 +411,7 @@ COLOR: background color."
                                       (*is-colorful* "#505050")
                                       (t "white")))))
 
-    (--each *fc-patch-modes*
+    (fc-each *fc-patch-modes*
       (fc-funcall it))
 
     (fc-soothe-theme soothe-percent

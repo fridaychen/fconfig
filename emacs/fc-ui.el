@@ -20,7 +20,10 @@ CONV: convert items of collection into strings."
                                     (car r)
                                   r))))
 
-  (when-let* ((candidates (fc-mapcar conv collection))
+  (when-let* ((candidates (if conv
+                              (mapcar (lambda (x) (cons (funcall conv x) x))
+                                      collection)
+                            collection))
               (sample (cl-first candidates))
               (input (completing-read prompt candidates nil nil init)))
     (cond ((listp sample)

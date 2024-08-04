@@ -24,8 +24,8 @@
 
 (cl-defun fc--eth-addr-eql (addr1 addr2)
   (equal
-   (--map (string-to-number it 16) (s-split ":" addr1))
-   (--map (string-to-number it 16) (s-split ":" addr2))))
+   (fc-map (s-split ":" addr1) (string-to-number it 16))
+   (fc-map (s-split ":" addr2) (string-to-number it 16))))
 
 (cl-defun fc-location-p (sym)
   (cond

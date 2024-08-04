@@ -21,7 +21,8 @@ NAME: target buffer name."
                                      '(doc) :fullpath t)
                       (fc--list-file (format "%s/site/template" *fc-home*)
                                      '(doc) :fullpath t)))
-              (options (--map (cons (file-name-base it) it) files))
+              (options (fc-map files
+                         (cons (file-name-base it) it)))
               (template (fc-select
                             (format "Select template for %s" name)
                             options)))
@@ -46,8 +47,8 @@ TEMPLATE: template file path."
 REST: words."
   (apply #'fc-exec-command
          "google-speak"
-         (--map (replace-regexp-in-string " " "+" it)
-                rest)))
+         (fc-map rest
+           (replace-regexp-in-string " " "+" it))))
 
 (fc-add-network-advice 'google-speak)
 

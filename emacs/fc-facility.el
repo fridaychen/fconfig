@@ -284,23 +284,17 @@ FUNC: new function."
   (declare (indent 1))
   `(cond
     ((and (not (stringp ,obj)) (seqp ,obj))
-     (seq-do (lambda (it)
-               ,@body)
-             ,obj))
+     (mapc (lambda (it)
+             ,@body)
+           ,obj))
 
     (t
      (let ((it ,obj))
        (progn ,@body)))))
 
-(defun fc-mapcar (func collection)
-  (if func
-      (mapcar func collection)
-    collection))
-
-(defun fc-mapc (func collection)
-  (if func
-      (mapc func collection)
-    collection))
+(cl-defmacro fc-map (collection &rest body)
+  (declare (indent 1))
+  `(mapcar (lambda (it) ,@body) ,collection))
 
 (provide 'fc-facility)
 

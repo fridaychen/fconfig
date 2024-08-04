@@ -17,7 +17,7 @@ CONV: convert items of collection into strings."
              (= (length collection) 1))
     (cl-return-from fc-select (let ((r (car collection)))
                                 (if (listp r)
-                                    (car r)
+                                    (cdr r)
                                   r))))
 
   (when-let* ((candidates (if conv
@@ -38,13 +38,14 @@ CONV: convert items of collection into strings."
   "Select a function to run from collection.
 PROMPT: user prompt.
 COLLECTION: cadidates collection."
-  (when-let ((func (fc-select prompt collection)))
+  (when-let ((func (fc-select prompt collection :always t)))
     (fc-funcall func)))
 
-(cl-defun fc-select-color (prompt colors)
+(cl-defun fc-select-color (prompt colors &key always)
   (when-let* ((color (fc-select
                          prompt
                          colors
+                       :always t
                        :conv (lambda (x)
                                (concat
                                 x
@@ -79,13 +80,9 @@ ERROR-MSG: error message."
 
 ;; UI yes-or-no
 (cl-defun fc-user-confirm (prompt &optional (default-ans t))
-  "Ask user 'y or n' question.
+  "Ask user y or n question.
 PROMPT: user prompt.
-DEFAULT-ANS: default answer.
-y -> t
-n -> nil
-Enter -> default-ans
-Escape -> nil"
+DEFAULT-ANS: default answer."
   (cl-loop
    with s = (format "%s ? (%s or %s)"
                     prompt

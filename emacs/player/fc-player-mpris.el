@@ -88,8 +88,8 @@
       (fc-exec-command exe))))
 
 (defun fc-player-auto-select ()
-  (let ((names (--filter (string-prefix-p "org.mpris.MediaPlayer2" it)
-                         (dbus-list-names :session))))
+  (let ((names (fc-filter (dbus-list-names :session)
+                 (string-prefix-p "org.mpris.MediaPlayer2" it))))
     (--first (when (member (concat "org.mpris.MediaPlayer2." it) names)
                (setf *fc-player* (fc-player-mpris :name it)))
              *fc-prefer-players*)))
@@ -97,8 +97,8 @@
 (defun fc-player--get-mpris-players ()
   (let ((names (--filter (string-prefix-p "org.mpris.MediaPlayer2." it)
                          (dbus-list-names :session))))
-    (--map (fc-player-mpris :name (s-chop-prefix "org.mpris.MediaPlayer2." it))
-           names)))
+    (fc-map names
+      (fc-player-mpris :name (s-chop-prefix "org.mpris.MediaPlayer2." it)))))
 
 (provide 'fc-player-mpris)
 

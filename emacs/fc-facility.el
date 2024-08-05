@@ -296,6 +296,18 @@ FUNC: new function."
   (declare (indent 1))
   `(mapcar (lambda (it) ,@body) ,collection))
 
+(cl-defmacro fc-filter (collection &rest body)
+  (declare (indent 1))
+  `(seq-filter (lambda (it) (progn ,@body))
+               ,collection))
+
+(cl-defmacro fc-first (collection &rest body)
+  (declare (indent 1))
+  `(cl-block fc-first-block
+     (fc-each ,collection
+       (when (progn ,@body)
+         (cl-return-from fc-first-block it)))))
+
 (provide 'fc-facility)
 
 ;; Local Variables:

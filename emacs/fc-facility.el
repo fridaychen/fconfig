@@ -261,7 +261,7 @@ FUNC: new function."
 (cl-defun fc-run-command-chain (chain &rest args)
   (cl-loop for x in chain
            do
-           (let ((r (apply x args)))
+           (let ((r (and r (apply x args))))
              (when r
                (cl-return r)))))
 

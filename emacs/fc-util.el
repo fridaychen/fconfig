@@ -106,24 +106,21 @@ PROMPT: prompt for user input."
   (when confirm
     (setf ask nil))
 
-  (let ((result (if (use-region-p)
-                    (buffer-substring (region-beginning)
-                                      (region-end))
-                  (thing-at-point (if ext 'symbol 'word)))))
+  (let* ((orig (if (use-region-p)
+                   (buffer-substring (region-beginning)
+                                     (region-end))
+                 (thing-at-point (if ext 'symbol 'word))))
+         (result (if (and regq orig)
+                     (regexp-quote orig)
+                   orig)))
 
     (when (and deactivate (use-region-p))
       (deactivate-mark))
 
     (if (or confirm
             (and ask (null result)))
-        (setf result (read-string prompt
-                                  (if (and regq result)
-                                      (regexp-quote result)
-                                    result)))
-      (when (and regq result)
-        (setf result (regexp-quote result))))
-
-    result))
+        (read-string prompt result)
+      result)))
 
 (defun fc-not-void-p (s)
   "Empty or not.

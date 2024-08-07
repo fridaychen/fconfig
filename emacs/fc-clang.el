@@ -93,7 +93,7 @@ END: end of region."
                                    (awk-mode . "awk")
                                    (other . "linux")))
 
-           (--each (list c-mode-map c++-mode-map objc-mode-map java-mode-map)
+           (fc-each (list c-mode-map c++-mode-map objc-mode-map java-mode-map)
              (fc-unbind-keys '("M-i" "M-j" "M-k" "M-l" "M-C-i" "M-C-j" "M-C-k" "M-C-l") it)
              (fc-bind-keys `(("TAB" ,(fc-manual (fc-tab-key #'c-indent-line-or-region)))) it))
 

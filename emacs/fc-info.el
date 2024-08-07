@@ -45,7 +45,8 @@ INFO-SEQ: list of infos."
                  (fc-vc-branch)
                  (fc-string (when buffer-file-name
                               (vc-state buffer-file-name))))
-                :separator ", ")
+                :separator ", "
+                :face 'highlight)
              "Untracked"))))
 
 (defun fc-info--buffer ()
@@ -53,8 +54,9 @@ INFO-SEQ: list of infos."
   `(("Tag/Xref" ,(format "%s %s"
                          (if (boundp 'fc-proj-tag) fc-proj-tag nil)
                          xref-backend-functions))
-    ("Format" ,(format "IndentTab %S, Auto %S, Spacing %d, Scale %3.1f"
+    ("Format" ,(format "IndentTab %S [%d], Auto %S, Spacing %d, Scale %3.1f"
                        indent-tabs-mode
+                       tab-width
                        *fc-format-at-save*
                        line-spacing
                        text-scale-mode-amount))))

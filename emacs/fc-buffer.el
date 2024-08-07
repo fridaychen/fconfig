@@ -87,7 +87,7 @@ NO-CURRENT: not include current buffer in result."
       (switch-to-buffer first-buf)
       (delete-other-windows)
 
-      (--each (cl-rest bufs)
+      (fc-each (cl-rest bufs)
         (split-window-vertically size)
         (other-window 1)
         (switch-to-buffer it)))))
@@ -116,7 +116,7 @@ NO-CURRENT: not include current buffer in result."
     (with-current-buffer buf
       (erase-buffer)
 
-      (--each rest
+      (fc-each rest
         (when it
           (insert it)))
       (setq buflen (buffer-size)))
@@ -144,7 +144,7 @@ NO-CURRENT: not include current buffer in result."
       (save-excursion
         (goto-char (point-min))
         (insert "-*- ")
-        (--each local-vars
+        (fc-each local-vars
           (let* ((v (cdr it))
                  (s (if (stringp v)
                         (format "\"%s\"" v)
@@ -165,7 +165,7 @@ NO-CURRENT: not include current buffer in result."
     (when read-only
       (read-only-mode))
 
-    (--each highlight
+    (fc-each highlight
       (highlight-regexp it)))
 
   (display-buffer buffer-or-name *fc-buffer-pop-display-action*)

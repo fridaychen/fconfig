@@ -45,7 +45,7 @@
 PAIRS: replacement list."
   (interactive)
 
-  (--each pairs
+  (fc-each pairs
     (fc-replace-string (cl-first it)
                        (cl-second it)
                        :from-start t)))

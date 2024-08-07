@@ -565,7 +565,8 @@ ARGS: args for fast jump."
   (cl-loop
    with dir = default-directory
    do
-   (when (--first (file-exists-p (concat dir it)) '(".cricket" "TOP" ".TOP"))
+   (when (fc-first '(".cricket" "TOP" ".TOP")
+           (file-exists-p (concat dir it)))
      (cd dir)
      (cl-return))
 
@@ -774,12 +775,12 @@ BACKWARD: search direction."
   (fc--search-set-target nil))
 
 ;; search engine
-(fc-load 'google-this
-  :autoload t
-  :bind '((nil
-           ("M-*" google-this))
-          (*fc-modal-keymap*
-           ("*" google-this))))
+;; (fc-load 'google-this
+;;   :autoload t
+;;   :bind '((nil
+;;            ("M-*" google-this))
+;;           (*fc-modal-keymap*
+;;            ("*" google-this))))
 
 ;; current dir tree
 (fc-load 'neotree
@@ -1262,7 +1263,7 @@ C: target char."
 ;; convert between string and hex
 (defun fc--string2hex (prefix suffix)
   "Convert string to hex and insert."
-  (--each (append (fc-current-thing :prompt "String") nil)
+  (fc-each (append (fc-current-thing :prompt "String") nil)
     (insert (format "%s%02x%s" prefix it suffix))))
 
 (defun fc-string2hex ()

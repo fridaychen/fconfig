@@ -36,7 +36,7 @@
   (fc-dbus--register-signal x
                             "PropertiesChanged"
                             #'(lambda (intf changes _)
-                                (--each changes
+                                (fc-each changes
                                   (apply #'fc-player-dbus-cb x it))))
   (oset x volume
         (round (* (fc-dbus--get x "Volume") 100)))
@@ -84,15 +84,16 @@
          (apps (list app)))
     (add-to-list 'apps (downcase app))
 
-    (let ((exe (--first (locate-file it exec-path) apps)))
+    (let ((exe (fc-first apps
+                 (locate-file it exec-path))))
       (fc-exec-command exe))))
 
 (defun fc-player-auto-select ()
   (let ((names (fc-filter (dbus-list-names :session)
                  (string-prefix-p "org.mpris.MediaPlayer2" it))))
-    (--first (when (member (concat "org.mpris.MediaPlayer2." it) names)
-               (setf *fc-player* (fc-player-mpris :name it)))
-             *fc-prefer-players*)))
+    (fc-first *fc-prefer-players*
+      (when (member (concat "org.mpris.MediaPlayer2." it) names)
+        (setf *fc-player* (fc-player-mpris :name it))))))
 
 (defun fc-player--get-mpris-players ()
   (let ((names (--filter (string-prefix-p "org.mpris.MediaPlayer2." it)

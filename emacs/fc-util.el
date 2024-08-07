@@ -26,7 +26,7 @@ FILENAME: file name.
 REST: contents."
   (unless (file-exists-p filename)
     (with-temp-file filename
-      (--each rest
+      (fc-each rest
         (cond
          ((or (stringp it) (symbolp it))
           (insert (fc-string it)))
@@ -348,7 +348,7 @@ MSG: text message."
   "Get value from ALIST.
 KEYS: path."
   (let ((al alist))
-    (--each keys
+    (fc-each keys
       (let ((l (assoc it al)))
         (if l
             (setf al l)
@@ -360,7 +360,7 @@ KEYS: path."
 VALUE: new value.
 KEYS: path."
   (let ((al alist))
-    (--each keys
+    (fc-each keys
       (let ((l (assoc it al)))
         (if l
             (setf al l)
@@ -467,13 +467,13 @@ NAME: name of environment."
 (cl-defun fc--full-prompt-p (prompt)
   "Test PROMPT is full PROMPT.
 PROMT: user prompt."
-  (--first (string-suffix-p it prompt)
-           '(": " "? " ") " "-x ")))
+  (fc-first '(": " "? " ") " "-x ")
+    (string-suffix-p it prompt)))
 
 (cl-defun fc-add-env-paths (paths)
   "Add multiple compoments to path style environment variable.
 PATHS: components."
-  (--each paths
+  (fc-each paths
     (apply #'fc-add-env-path it)))
 
 ;; make a prompt string
@@ -499,10 +499,10 @@ REST: args."
           (string-join lines "\n"))
     args))
 
-(--each '(read-directory-name
-          read-from-minibuffer
-          read-number
-          read-string)
+(fc-each '(read-directory-name
+           read-from-minibuffer
+           read-number
+           read-string)
   (advice-add it :filter-args #'fc--before-read-obj))
 
 (cl-defun fc-ask (ask)
@@ -612,7 +612,7 @@ DISPLAY: display property."
 AFTER-FUN: fun to call.
 REST: text to insert."
   (let ((start (point)))
-    (--each rest
+    (fc-each rest
       (insert it))
 
     (when after-fun
@@ -643,7 +643,8 @@ END: end of region."
   "Locate file in path.
 FILENAMES: filename list.
 DIR: target dir."
-  (if (--first (file-exists-p (concat dir it)) filenames)
+  (if (fc-first filenames
+        (file-exists-p (concat dir it)))
       dir
     (let ((parent-dir (file-name-directory (directory-file-name dir))))
       (if (= (length parent-dir) 1)
@@ -665,7 +666,7 @@ REST: text to be speak."
                                "-a" "40"
                                "-v" "us-mbrola-2"
                                "--stdin")))
-      (--each rest
+      (fc-each rest
         (process-send-string proc it)
         (process-send-string proc "\n"))
       (process-send-eof proc)))
@@ -705,9 +706,9 @@ POINT: target point."
 (cl-defmacro fc-first-window (form)
   "Find first window which form return non-nil.
 FORM: test form."
-  `(--first ,form
-            (mapcar (lambda (x) (cons x (window-buffer x)))
-                    (window-list))))
+  `(fc-first (mapcar (lambda (x) (cons x (window-buffer x)))
+                     (window-list))
+     ,form))
 
 ;; looking-at utilities
 (cl-defmacro fc-do-looking-at (regex &rest body &key line &allow-other-keys)

@@ -26,7 +26,7 @@ REST: all arguments."
     (apply 'set-face-attribute face frame (flatten-list rest))))
 
 (cl-defun fc-set-faces (faces &rest rest)
-  (--each faces
+  (fc-each faces
     (apply #'fc-set-face it nil rest)))
 
 (provide 'fc-face)

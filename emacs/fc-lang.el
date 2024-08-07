@@ -24,7 +24,7 @@ ARGS: argument for function."
     (apply func args))
 
    (t
-    (--each args
+    (fc-each args
       (eval-expression it))
     (eval-expression func))))
 
@@ -92,12 +92,12 @@ OBJ: object"
          (format "%S" obj))))
 
 (cl-defun fc-concat (&rest rest)
-  (let ((x (--first (not (null it)) rest)))
-    (when x
-      (pcase (type-of x)
-        ('string (apply #'concat rest))
-        ('cons (apply #'seq-concatenate 'list rest))
-        (_ (mapconcat #'fc-string rest ""))))))
+  (when-let ((x (fc-first rest
+                  (not (null it)))))
+    (pcase (type-of x)
+      ('string (apply #'concat rest))
+      ('cons (apply #'seq-concatenate 'list rest))
+      (_ (mapconcat #'fc-string rest "")))))
 
 (cl-defun fc--search (regex &key sub bound count begin (default ""))
   (when begin
@@ -117,11 +117,11 @@ OBJ: object"
                 :default default)))
 
 (cl-defun fc-add-to-list (name &rest rest)
-  (--each rest
+  (fc-each rest
     (add-to-list name it)))
 
 (cl-defun fc-add-to-hook (hook &rest rest)
-  (--each rest
+  (fc-each rest
     (add-hook hook it)))
 
 (cl-defun fc-bool (obj)

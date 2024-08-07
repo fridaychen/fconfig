@@ -14,9 +14,9 @@
 
   :after (progn
            (defun fc--latex-setup ()
-             (--each '("\\\\postil{[^{}]+}"
-                       "\\\\postil_[^{}]+{[^{}]+}"
-                       "\\\\footnote{[^{}]+}")
+             (fc-each '("\\\\postil{[^{}]+}"
+                        "\\\\postil_[^{}]+{[^{}]+}"
+                        "\\\\footnote{[^{}]+}")
                (highlight-regexp it 'font-lock-comment-face))
 
              (tex-fold-mode 1)

@@ -58,7 +58,7 @@
 (defun fc-modal-exclude-mode (&rest modes)
   "Exclude mode.
   MODES: modes to be excluded."
-  (--each modes
+  (fc-each modes
     (add-to-list '*fc-modal-exclude-modes* it)))
 
 (defun fc-modal-activate ()
@@ -110,7 +110,7 @@
   (fc-modal-set-cursor-color *fc-modal-command-cursor-color*)
   (fc-modal-set-cursor-shape *fc-modal-command-cursor-shape*)
 
-  (--each *fc-modal-fringe-faces*
+  (fc-each *fc-modal-fringe-faces*
     (when (facep it)
       (set-face-attribute it nil
                           :background
@@ -124,7 +124,7 @@
   (fc-modal-set-cursor-color *fc-modal-edit-cursor-color*)
   (fc-modal-set-cursor-shape *fc-modal-edit-cursor-shape*)
 
-  (--each *fc-modal-fringe-faces*
+  (fc-each *fc-modal-fringe-faces*
     (when (facep it)
       (set-face-attribute it nil
                           :background
@@ -160,7 +160,7 @@
 (defun fc-modal-keys (keydefs)
   "Bind keys.
 KEYDEFS: new key definitions for modal."
-  (--each keydefs
+  (fc-each keydefs
     (define-key *fc-modal-keymap*
                 (kbd (cl-first it))
                 (cl-second it))))
@@ -184,7 +184,7 @@ KEYDEFS: new key definitions for modal."
      for i from 0 to end by width
      initially (erase-buffer)
      do
-     (--each (cl-subseq items i (min (+ i width) end))
+     (fc-each (cl-subseq items i (min (+ i width) end))
        (let ((info (split-string it "→")))
          (insert
           (format "%4s"
@@ -271,7 +271,7 @@ AROUND: advice function."
 (cl-defun fc-modal-mark-repeat (&rest rest)
   "Mark function repeatable.
 REST: list of functions."
-  (--each rest
+  (fc-each rest
     (put it 'fc-repeat t)))
 
 (cl-defun fc-modal-run (&optional (timeout 2))

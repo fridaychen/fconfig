@@ -42,14 +42,14 @@
   (defvar *fc-location-gateway* nil)
 
   (setf *fc-location*
-        (car (--first (fc--eth-addr-eql *fc-gateway-mac* (cdr it))
-                      *fc-location-gateway*))))
+        (car (fc-first *fc-location-gateway*
+               (fc--eth-addr-eql *fc-gateway-mac* (cdr it))))))
 
 (defun fc-do-auto-config ()
   "Auto config implementation."
   (when *is-gui*
     (let* ((find-font (lambda (font-list)
-                        (--first (fc-font-exists-p it) font-list)))
+                        (fc-first font-list (fc-font-exists-p it))))
            (cjk-font (funcall find-font *fc-cjk-fonts*))
            (symbol-font (funcall find-font *fc-symbol-fonts*))
            (english-font (funcall find-font *fc-english-fonts*))

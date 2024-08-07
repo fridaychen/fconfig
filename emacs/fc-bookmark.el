@@ -82,7 +82,7 @@
     (with-current-buffer buf
       (erase-buffer)
       (insert "\n")
-      (--each all
+      (fc-each all
         (insert (propertize (format "%s:%d: %s\n"
                                     (buffer-file-name (overlay-buffer it))
                                     (overlay-start it)
@@ -282,7 +282,7 @@
 
 (defun fc-restore-bookmark ()
   (let* ((meta (assoc buffer-file-name *fc-bookmark-metadata*)))
-    (--each (cl-rest meta)
+    (fc-each (cl-rest meta)
       (fc--add-bookmark (cl-first it)
                         (cl-second it)
                         (cl-third it)

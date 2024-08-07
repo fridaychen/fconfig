@@ -57,7 +57,7 @@
       (when (looking-at regex)
         (beginning-of-line-text)
 
-        (--each table
+        (fc-each table
           (when (looking-at (car it))
             (cl-return-from -ttl-find-regex-table (cdr it))))))))
 

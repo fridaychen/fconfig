@@ -71,12 +71,12 @@ PREV: previous function."
    (when (gethash major-mode *fc--next-error-map*)
      (kill-buffer it))))
 
-(--each '(compilation-mode
-          ggtags-global-mode
-          ggtags-navigation-mode
-          grep-mode
-          occur-mode
-          xref--xref-buffer-mode)
+(fc-each '(compilation-mode
+           ggtags-global-mode
+           ggtags-navigation-mode
+           grep-mode
+           occur-mode
+           xref--xref-buffer-mode)
   (fc-add-next-error-mode it #'next-error #'previous-error))
 
 (provide 'fc-next-error)

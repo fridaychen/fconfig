@@ -19,7 +19,7 @@ KEYDEFS: default key bindings."
   "Bind keys.
 KEYDEFS: key binding maps.
 KEYMAP: keymap to operate with"
-  (--each keydefs
+  (fc-each keydefs
     (let* ((key (cl-first it))
            (func (cl-second it))
            (key-def (if (stringp key) (kbd key) key)))
@@ -29,7 +29,7 @@ KEYMAP: keymap to operate with"
   "Unbind keys.
 KEYDEFS: key list.
 KEYMAP: keymap to operate with"
-  (--each keydefs
+  (fc-each keydefs
     (if keymap
         (define-key keymap (kbd it) nil)
       (global-set-key (kbd it) nil))))
@@ -92,7 +92,7 @@ MODE-FUNC: mode and function definitions."
      (interactive)
 
      (cl-block find-mode
-       (--each ,mode-func
+       (fc-each ,mode-func
          (let ((mode (car it))
                (func (cdr it)))
            (when (or (and (cl-typep mode 'symbol)

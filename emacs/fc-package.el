@@ -99,7 +99,7 @@ REST: include :package :local :enable :bind :before :after :autoload :run"
              (eval ,after t))
 
            (when ,bind
-             (--each (eval ,bind t)
+             (fc-each (eval ,bind t)
                (fc-bind-keys (cl-rest it)
                              (symbol-value (car it))))))))))
 

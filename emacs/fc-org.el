@@ -137,7 +137,7 @@
   (fc-set-face 'org-level-2 nil :height 1.05)
   (fc-set-face 'org-level-3 nil :height 1.01)
 
-  (--each '(org-quote org-block)
+  (fc-each '(org-quote org-block)
     (let ((default-bg (fc-get-face 'default :background))
           (target-bg (fc-get-face it :background)))
       (when (or
@@ -262,7 +262,7 @@ open('%s', 'w').write( str(main()) )")
         (pixel-scroll-precision-mode 1))
 
       (setf indent-tabs-mode nil
-            tab-width 4)
+            tab-width 8)
 
       (electric-indent-local-mode -1)
 
@@ -324,10 +324,9 @@ open('%s', 'w').write( str(main()) )")
     (cl-defun fc--org-get-property (name)
       (when-let* ((keys (org-collect-keywords '("PROPERTY")))
                   (props (cdar keys))
-                  (pair (--first
-                         (when (cl-equalp name (car (split-string it)))
-                           t)
-                         props)))
+                  (pair (fc-first props
+                          (when (cl-equalp name (car (split-string it)))
+                            t))))
         (string-join (cdr (split-string pair)) " ")))
 
     (cl-defun fc--org-get-property (name)
@@ -534,9 +533,9 @@ LANG: language."
    "#+date: " (or date (read-string "Date : ")) "\n"
    "#+language: " (or lang
                       (fc-select "Language"
-                                 `("en-US"
-                                   "jp-JP"
-                                   "zh-CN")))
+                          `("en-US"
+                            "jp-JP"
+                            "zh-CN")))
    "\n\n"))
 
 (cl-defun fc--org-convert-from-latex ()
@@ -552,48 +551,48 @@ LANG: language."
        (fc--org-add-footnote "\\\\footnote{\\([^}]+\\)}"))
 
      (save-excursion
-       (--each (if (fc-search "\\\\part{" :begin t :sub 0 :bound 20480)
-                   '(("\\part{" "* ")
-                     ("\\chapter{" "** ")
-                     ("\\chapter*{" "** ")
-                     ("\\section{" "*** ")
-                     ("\\section*{" "*** ")
-                     ("\\subsection{" "**** "))
-                 '(("\\chapter{" "* ")
-                   ("\\chapter*{" "* ")
-                   ("\\section{" "** ")
-                   ("\\section*{" "** ")
-                   ("\\subsection{" "*** ")))
+       (fc-each (if (fc-search "\\\\part{" :begin t :sub 0 :bound 20480)
+                    '(("\\part{" "* ")
+                      ("\\chapter{" "** ")
+                      ("\\chapter*{" "** ")
+                      ("\\section{" "*** ")
+                      ("\\section*{" "*** ")
+                      ("\\subsection{" "**** "))
+                  '(("\\chapter{" "* ")
+                    ("\\chapter*{" "* ")
+                    ("\\section{" "** ")
+                    ("\\section*{" "** ")
+                    ("\\subsection{" "*** ")))
          (fc-replace-string (cl-first it) (cl-second it) :from-start t)))
 
      (save-excursion
-       (--each '(("^ +\\\\sopening{" "")
-                 ("^\\\\documentclass.+" "")
-                 ("^\\\\usepackage.+" "")
-                 ("^\\\\title.+" "")
-                 ("^\\\\author.+" "")
-                 ("^\\\\date.+" ""))
+       (fc-each '(("^ +\\\\sopening{" "")
+                  ("^\\\\documentclass.+" "")
+                  ("^\\\\usepackage.+" "")
+                  ("^\\\\title.+" "")
+                  ("^\\\\author.+" "")
+                  ("^\\\\date.+" ""))
          (fc-replace-regexp (cl-first it) (cl-second it) :from-start t)))
 
      (save-excursion
-       (--each '(("\\begin{document}" "")
-                 ("\\zhbook" "")
-                 ("\\end{document}" "")
-                 ("\\begin{sletter}" "#+BEGIN_QUOTE")
-                 ("\\end{sletter}" "#+END_QUOTE")
-                 ("\\begin{verse}" "#+BEGIN_VERSE")
-                 ("\\end{verse}" "#+END_VERSE")
-                 ("\\begin{zhverse}" "#+BEGIN_VERSE")
-                 ("\\end{zhverse}" "#+END_VERSE")
-                 ("\\begin{flushright}" "")
-                 ("\\end{flushright}" "")
-                 ("\\begin{flushleft}" "")
-                 ("\\end{flushleft}" "")
-                 ("\\end{document}" "")
-                 ("\\sclosing{" "")
-                 ("\\sps{" "")
-                 ("\\" "")
-                 ("}" ""))
+       (fc-each '(("\\begin{document}" "")
+                  ("\\zhbook" "")
+                  ("\\end{document}" "")
+                  ("\\begin{sletter}" "#+BEGIN_QUOTE")
+                  ("\\end{sletter}" "#+END_QUOTE")
+                  ("\\begin{verse}" "#+BEGIN_VERSE")
+                  ("\\end{verse}" "#+END_VERSE")
+                  ("\\begin{zhverse}" "#+BEGIN_VERSE")
+                  ("\\end{zhverse}" "#+END_VERSE")
+                  ("\\begin{flushright}" "")
+                  ("\\end{flushright}" "")
+                  ("\\begin{flushleft}" "")
+                  ("\\end{flushleft}" "")
+                  ("\\end{document}" "")
+                  ("\\sclosing{" "")
+                  ("\\sps{" "")
+                  ("\\" "")
+                  ("}" ""))
          (fc-replace-string (cl-first it) (cl-second it) :from-start t))))))
 
 (defun fc--org-convert-from-markdown ()
@@ -611,14 +610,14 @@ LANG: language."
      (fc-replace-regexp "^\\(\\[fn:[^
 ]+\\]\\): " "\\1 " :from-start t)
 
-     (--each '(("^#### " "**** ")
-               ("^### " "*** ")
-               ("^## " "** ")
-               ("^# " "* "))
+     (fc-each '(("^#### " "**** ")
+                ("^### " "*** ")
+                ("^## " "** ")
+                ("^# " "* "))
        (fc-replace-regexp (cl-first it) (cl-second it) :from-start t))
 
-     (--each '(("\n\n```" "\n\n#+BEGIN_QUOTE")
-               ("```\n\n" "#+END_QUOTE\n\n"))
+     (fc-each '(("\n\n```" "\n\n#+BEGIN_QUOTE")
+                ("```\n\n" "#+END_QUOTE\n\n"))
        (fc-replace-string (cl-first it) (cl-second it) :from-start t))
 
      (fc--org-convert-mk-verse))))
@@ -689,18 +688,16 @@ LANG: language."
       ("Convert footnote (from inline)"	. ,(fc-manual (fc--org-add-footnote
                                                        (read-string
                                                         "Confirm"
-                                                        (fc-select
-                                                         "Footnote regex"
-                                                         '("\\[fn:: \\([^\]]+\\)\\]"
-                                                           "\\\\footnote{\\([^}]+\\)}"
-                                                           "[〔【<\[]注?\\([^\]]+\\)[\]>】〕]"))))))
+                                                        (fc-select "Footnote regex"
+                                                            '("\\[fn:: \\([^\]]+\\)\\]"
+                                                              "\\\\footnote{\\([^}]+\\)}"
+                                                              "[〔【<\[]注?\\([^\]]+\\)[\]>】〕]"))))))
       ("Convert footnote (to inline)"	. ,(fc-manual (fc--org-convert-inline-fontnote
                                                        (read-string
                                                         "Confirm"
-                                                        (fc-select
-                                                         "Footnote regex"
-                                                         '("\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
-                                                           "[（(〔【<\[]\\(注?[0-9]+\\)[\]>】〕)）]"))))))
+                                                        (fc-select "Footnote regex"
+                                                            '("\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
+                                                              "[（(〔【<\[]\\(注?[0-9]+\\)[\]>】〕)）]"))))))
       ("Convert from latex"		. fc--org-convert-from-latex)
       ("Convert from markdown"		. fc--org-convert-from-markdown)
       ("Convert markdown verse"		. fc--org-convert-mk-verse)
@@ -1131,7 +1128,7 @@ TEMPLATE: fconfig format template."
 (cl-defun fc-org-add-capture-template (templates)
   "Add fconfig templates to org.
 TEMPLATES: fconfig templates."
-  (--each templates
+  (fc-each templates
     (add-to-list 'org-capture-templates (fc--org-gen-template it))))
 
 (cl-defun fc-org-autoconfig ()
@@ -1155,7 +1152,7 @@ TEMPLATES: fconfig templates."
   (fc-org-add-capture-template *fc-org-capture-template*)
   (fc-org-add-capture-template *fc-org-user-capture-templates*)
 
-  (--each *fc-org-capture-raw-templates*
+  (fc-each *fc-org-capture-raw-templates*
     (add-to-list 'org-capture-templates it)))
 
 (cl-defun fc--org-capture-p ()
@@ -1287,8 +1284,7 @@ LANG: language of babel."
      (list "-o" epub))))
 
 (fc-idle-delay
-  (--each
-      (file-expand-wildcards (concat *fc-home* "/org/*.olib"))
+  (fc-each (file-expand-wildcards (concat *fc-home* "/org/*.olib"))
     (org-babel-lob-ingest it)))
 
 (add-to-list 'auto-mode-alist '("\\.olib\\'" . org-mode))

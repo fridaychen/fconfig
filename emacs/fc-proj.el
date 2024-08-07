@@ -83,7 +83,7 @@ TARGET: make target."
   (let ((old-path (getenv "PATH")))
     (fc-add-env-paths (fc-proj--get x :path))
 
-    (--each (fc-proj--get x :env)
+    (fc-each (fc-proj--get x :env)
       (if (consp it)
           (setenv (car it) (cadr it))))
 
@@ -134,10 +134,10 @@ TARGET: make target."
         (add-dir-local-variable 'c-mode 'flycheck-clang-args build-args)
 
         ;; project specific local
-        (--each proj-arg
+        (fc-each proj-arg
           (let ((mode (cl-first it))
                 (vars (cl-rest it)))
-            (--each vars
+            (fc-each vars
               (add-dir-local-variable mode (car it) (cdr it)))))
         (save-buffer)))))
 
@@ -183,8 +183,8 @@ DIR: project path."
                          (read-directory-name "Project directory : "))))
       (cl-return-from fc-proj-open))
 
-    (let ((proj (--first (equal (oref it dir) proj-dir)
-                         *fc-projects*)))
+    (let ((proj (fc-first *fc-projects*
+                  (equal (oref it dir) proj-dir))))
       (when (and proj
                  (not (fc-user-confirm "Reopen project" nil)))
         (fc--proj-set proj)

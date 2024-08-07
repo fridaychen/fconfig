@@ -124,16 +124,17 @@ WINDOW: target window."
   (window-parameter window 'window-side))
 
 (cl-defun fc-side-window-exist-p ()
-  (--first (fc-side-window-p it) (window-list)))
+  (fc-first (window-list)
+    (fc-side-window-p it)))
 
 (cl-defun fc-close-all-side-window ()
-  (--each (window-list)
+  (fc-each (window-list)
     (when (fc-side-window-p it)
       (delete-window it))))
 
 (cl-defun fc-close-other-normal-window ()
   (let ((current-win (get-buffer-window)))
-    (--each (window-list)
+    (fc-each (window-list)
       (unless (or (eq it current-win)
                   (fc-side-window-p it)
                   (eq (window-main-window) (get-buffer-window)))
@@ -154,7 +155,7 @@ STYLE: new style."
   "Setup spotlight mode for functions.
 REST: functions."
   (when *fc-layout-spotlight-around-advice*
-    (--each rest
+    (fc-each rest
       (advice-add it :around *fc-layout-spotlight-around-advice*))))
 
 ;; Predefined Window Layout

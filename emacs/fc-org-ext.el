@@ -11,7 +11,7 @@
 
 (defvar *fc-mybook-homes* nil)
 
-(--each *fc-mybook-candidates*
+(fc-each *fc-mybook-candidates*
   (when (fc-dir-exists-p it)
     (add-to-list '*fc-mybook-homes* (expand-file-name it))))
 
@@ -59,7 +59,7 @@
   "Open file in mybook."
 
   (seq-let (path arg) (fc--mybook-parse link)
-    (--each *fc-mybook-homes*
+    (fc-each *fc-mybook-homes*
       (let* ((default-directory it)
              (filename (-find-book path))
              (ext (downcase (or (file-name-extension filename) "")))

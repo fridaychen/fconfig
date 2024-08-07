@@ -67,7 +67,7 @@ STR: chinese number string."
               (?万 . 10000)))
         (n 0)
         (ret 0))
-    (--each (append str nil)
+    (fc-each (append str nil)
       (let ((v (cdr (assoc it al))))
         (if (< v 10)
             (setf n (+ (* n 10) v))
@@ -86,8 +86,8 @@ STR: chinese number string."
 
 (defun fc-detect-has-wide-char (text)
   (let ((map (fc-detect-char-script text)))
-    (--first (gethash it map)
-             '(han kana emoji))))
+    (fc-first '(han kana emoji)
+      (gethash it map))))
 
 (cl-defun fc-detect-buf-has-wide-char (&optional (buf (current-buffer)) (max 512))
   (with-current-buffer buf

@@ -651,18 +651,17 @@ N: number."
       (set-visited-file-name new-name))))
 
 (defun fc-goto-last-change ()
-  (--first
-   (when it
-     (cond
-      ((and (consp it) (integerp (car it)) (integerp (cdr it)))
-       (goto-char (cdr it)))
+  (fc-first buffer-undo-list
+    (when it
+      (cond
+       ((and (consp it) (integerp (car it)) (integerp (cdr it)))
+        (goto-char (cdr it)))
 
-      ((and (consp it) (stringp (car it)))
-       (goto-char (abs (cdr it))))
+       ((and (consp it) (stringp (car it)))
+        (goto-char (abs (cdr it))))
 
-      ((integerp it)
-       (goto-char it))))
-   buffer-undo-list)
+       ((integerp it)
+        (goto-char it)))))
   "")
 
 ;; head key
@@ -1619,7 +1618,7 @@ AUTO: auto select face."
    ("^" ,(fc-manual (join-line 1)))
    ("&" ,(fc-cond-key :normal (fc-manual (fc-set-window-width 0.66))
                       :prefix (fc-manual (fc-set-window-width 0.33))))
-   ("*" google-this-search)
+   ;; ("*" google-this-search)
    ("(" ,(fc-cond-key :normal #'fc-previous-bookmark
                       :region (fc-decorate-region "(" ")")))
    (")" fc-next-bookmark)
@@ -1760,19 +1759,19 @@ FUNC: new repeat func."
              (cl-incf line-num)
              (move-to-column col t))))
 
-(--each '(rpn-calc)
+(fc-each '(rpn-calc)
   (advice-add it :before #'fc-modal-global-mode-off))
 
-(--each '(
-          fc-add-favorite-buffer
-          fc-edit-bookmark-annotation
-          fc-modal-head-key
-          fc-search-next
-          fc-set-key-seq
-          fc-toggle-bookmark
-          fc-toggle-hide-show-all
-          just-one-space
-          )
+(fc-each '(
+           fc-add-favorite-buffer
+           fc-edit-bookmark-annotation
+           fc-modal-head-key
+           fc-search-next
+           fc-set-key-seq
+           fc-toggle-bookmark
+           fc-toggle-hide-show-all
+           just-one-space
+           )
   (advice-add it :after #'fc-ergo-prefix-off))
 
 (fc-add-to-hook '*fc-ergo-restore-hook*
@@ -1804,9 +1803,9 @@ FUNC: new repeat func."
 (let ((install-theme (lambda (x)
                        (and (consp x)
                             (fc-install (cdr x))))))
-  (-each *fc-dark-theme* install-theme)
-  (-each *fc-deep-dark-theme* install-theme)
-  (-each *fc-light-theme* install-theme))
+  (mapc install-theme *fc-dark-theme*)
+  (mapc install-theme *fc-deep-dark-theme*)
+  (mapc install-theme *fc-light-theme*))
 
 (fc-theme-auto-select (alist-get *fc-theme-mode* *fc--work-themes*))
 

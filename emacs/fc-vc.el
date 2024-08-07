@@ -177,13 +177,13 @@ REMOTE: select from local or remote branchs."
       (format "%s (current: %s)"
               (if remote "Remote branch" "Branch")
               (fc-git-current-branch))
-    (split-string
-     (with-temp-buffer
-       (shell-command (format "git branch %s | sed -e \"/^\\*/d\" | cut -b 3-"
-                              (if remote "-r" ""))
-                      (current-buffer))
-       (s-trim (buffer-string)))
-     "\n")))
+      (split-string
+       (with-temp-buffer
+         (shell-command (format "git branch %s | sed -e \"/^\\*/d\" | cut -b 3-"
+                                (if remote "-r" ""))
+                        (current-buffer))
+         (s-trim (buffer-string)))
+       "\n")))
 
 (cl-defun fc-vc-switch-branch ()
   "Switch to other branch."
@@ -230,7 +230,7 @@ REMOTE: select from local or remote branchs."
 
 (fc-add-network-advice 'fc-git-pull 'fc-git-push)
 
-(--each '(fc-git-commit)
+(fc-each '(fc-git-commit)
   (advice-add it :after #'fc-vc-refresh-repo-state))
 
 (provide 'fc-vc)

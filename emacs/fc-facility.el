@@ -77,7 +77,7 @@ FUNC: the one to be deleted."
 
 (cl-defun fc-add-hook-func (hook &rest rest)
   (declare (indent 1))
-  (--each rest
+  (fc-each rest
     (when it
       (add-hook hook it))))
 
@@ -194,7 +194,7 @@ ARGS: original arguments."
 
 (defun fc-add-network-advice (&rest rest)
   "Add network advice to functions."
-  (--each rest
+  (fc-each rest
     (advice-add it :around 'fc-network-advice)))
 
 ;; redisplay hook
@@ -254,14 +254,14 @@ FUNC: new function."
        (progn ,@rest))))
 
 (cl-defmacro fc-with-each-buffer (&rest rest &key (buffers '(buffer-list)) &allow-other-keys)
-  `(--each ,buffers
+  `(fc-each ,buffers
      (with-current-buffer it
        ,@rest)))
 
 (cl-defun fc-run-command-chain (chain &rest args)
   (cl-loop for x in chain
            do
-           (let ((r (and r (apply x args))))
+           (let ((r (and x (apply x args))))
              (when r
                (cl-return r)))))
 
@@ -306,7 +306,8 @@ FUNC: new function."
   `(cl-block fc-first-block
      (fc-each ,collection
        (when (progn ,@body)
-         (cl-return-from fc-first-block it)))))
+         (cl-return-from fc-first-block it)))
+     nil))
 
 (provide 'fc-facility)
 

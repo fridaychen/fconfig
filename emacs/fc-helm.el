@@ -47,13 +47,13 @@
            (setf helm-boring-file-regexp-list *fc-ignore-file*)
 
            (require 'helm-files)
-           (--each (list helm-generic-files-map
-                         helm-find-files-map
-                         helm-read-file-map)
+           (fc-each (list helm-generic-files-map
+                          helm-find-files-map
+                          helm-read-file-map)
              (fc-unbind-keys '("M-i" "M-k" "M-j" "M-l" "C-i" "C-<backspace>") it))
 
            (require 'helm-buffers)
-           (--each (list helm-buffer-map)
+           (fc-each (list helm-buffer-map)
              (fc-unbind-keys '("M-i" "M-k" "M-j" "M-l" "C-i" "C-<backspace>") it)))
 
   :bind '((helm-map

@@ -28,7 +28,7 @@
   (insert "# allow " subdir "\n")
 
   (let ((path ""))
-    (--each (split-string subdir "/")
+    (fc-each (split-string subdir "/")
       (setq path (concat path "/" it))
       (insert (concat "!" path "\n")
               (concat path "/*\n"))))

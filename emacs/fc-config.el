@@ -26,7 +26,7 @@
 
   (let ((conf (fc-conf-new path)))
     (setf (fc-conf-data conf)
-          (car (fc-unserialize path)))
+          (fc-unserialize path))
     conf))
 
 (cl-defun fc-conf-get (conf &rest keys)

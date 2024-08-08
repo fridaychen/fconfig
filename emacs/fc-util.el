@@ -278,7 +278,10 @@ FILENAME: file to be read."
 FILENAME: file to be read.
 DEFAULT: default value."
   (if (file-exists-p filename)
-      (read-from-string (fc-file-to-string filename))
+      (with-temp-buffer
+        (save-excursion
+          (insert-file-contents filename))
+        (read (current-buffer)))
     default))
 
 (defun fc-serialize (filename obj)
@@ -286,8 +289,7 @@ DEFAULT: default value."
 FILENAME: target file.
 OBJ: object to be written."
   (with-temp-buffer
-    (insert (prin1-to-string obj))
-
+    (pp obj (current-buffer))
     (write-file filename)))
 
 (defun launch-separate-emacs-in-terminal ()

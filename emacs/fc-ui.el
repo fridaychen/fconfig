@@ -30,7 +30,7 @@ CONV: convert items of collection into strings."
            (alist-get input candidates nil nil #'string-equal))
 
           ((symbolp sample)
-           (make-symbol input))
+           (intern input))
 
           (t input))))
 

@@ -3,6 +3,8 @@
 alias gp='git pull'
 alias gq='git push'
 
+alias gpb='git pull origin $(git rev-parse --abbrev-ref HEAD)'
+
 function gb {
     if [[ ! $(gp | grep -i " up to date") ]]; then
         proj-build
@@ -30,7 +32,7 @@ function fit-current-branch {
 }
 
 function fit-count-changes {
-    git status --short 2>/dev/null |
+    git status --short 2> /dev/null |
         wc -l |
         sed -e "s/ //g"
 }
@@ -67,7 +69,7 @@ function fit-switch-branch {
 }
 
 function fit-in-work-tree {
-    [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) == "true" ]]
+    [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]]
 }
 
 function fit-root {

@@ -6,17 +6,16 @@
 ;;; Code:
 (require 'cl-lib)
 
-(fc-install 'yasnippet)
-
-(with-eval-after-load 'yasnippet
-  (add-to-list 'yas-snippet-dirs
-               (fc-home-path "fconfig/snippets"))
-
-  (fc-unbind-keys '("TAB" "<tab>") yas-minor-mode-map)
-
-  (yas-global-mode +1))
-
 (fc-install 'yasnippet-snippets)
+
+(fc-load 'yasnippet
+  :after (progn
+           (add-to-list 'yas-snippet-dirs
+                        (fc-home-path "fconfig/snippets"))
+
+           (fc-unbind-keys '("TAB" "<tab>") yas-minor-mode-map)
+
+           (yas-global-mode +1)))
 
 (defun fc-expand-snippet (name)
   (interactive)

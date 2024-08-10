@@ -1272,16 +1272,26 @@ LANG: language of babel."
     (org-publish-current-project)))
 
 (cl-defun fc--org-publish-epub()
-  (let ((file (buffer-file-name))
-        (img (read-file-name-default "Cover image"))
-        (epub (read-file-name-default "Epub file"))
-        )
-    (fc-exec-command
-     "pandoc"
-     file
-     (when img
-       (list "--epub-cover-image" img))
-     (list "-o" epub))))
+  (let* ((file (buffer-file-name))
+         (cover (or (expand-file-name (fc--org-get-file-property "COVER"))
+                    (expand-file-name (read-file-name "Cover image"))))
+         (title (car (plist-get (org-export-get-environment) :title)))
+         (epub (expand-file-name (read-file-name "Epub file" nil nil nil
+                                                 (format "%s.epub" title))))
+         (gz-file (string-suffix-p ".gz" file)))
+    (if gz-file
+        (progn
+          (shell-command
+           (format "gzip -d %s -c | pandoc --from org --to epub -o %s --epub-cover-image %s"
+                   (shell-quote-argument file)
+                   (shell-quote-argument epub)
+                   (shell-quote-argument cover))))
+      (fc-exec-command
+       "pandoc"
+       file
+       (when cover
+         (list "--epub-cover-image" cover))
+       (list "-o" epub)))))
 
 (fc-idle-delay
   (fc-each (file-expand-wildcards (concat *fc-home* "/org/*.olib"))

@@ -1273,25 +1273,36 @@ LANG: language of babel."
 
 (cl-defun fc--org-publish-epub()
   (let* ((file (buffer-file-name))
-         (cover (or (expand-file-name (fc--org-get-file-property "COVER"))
-                    (expand-file-name (read-file-name "Cover image"))))
          (title (car (plist-get (org-export-get-environment) :title)))
+         (cover (expand-file-name
+                 (or (fc--org-get-file-property "COVER")
+                     (fc-file-first-exists
+                      (list
+                       (concat title ".jpg")
+                       (concat "img/" title ".jpg")
+                       "cover.jpg"
+                       (concat "img/cover.jpg")))
+                     (read-file-name "Cover image"))))
          (epub (expand-file-name (read-file-name "Epub file" nil nil nil
                                                  (format "%s.epub" title))))
-         (gz-file (string-suffix-p ".gz" file)))
+         (gz-file (string-suffix-p ".gz" file))
+         l)
+    (when gz-file
+      (push (format "gzip -d %s -c |"
+                    (shell-quote-argument file))
+            l))
+
+    (push (format "pandoc --to epub -o %s --epub-cover-image %s"
+                  (shell-quote-argument epub)
+                  (shell-quote-argument cover))
+          l)
+
     (if gz-file
-        (progn
-          (shell-command
-           (format "gzip -d %s -c | pandoc --from org --to epub -o %s --epub-cover-image %s"
-                   (shell-quote-argument file)
-                   (shell-quote-argument epub)
-                   (shell-quote-argument cover))))
-      (fc-exec-command
-       "pandoc"
-       file
-       (when cover
-         (list "--epub-cover-image" cover))
-       (list "-o" epub)))))
+        (push "--from org" l)
+      (push (shell-quote-argument file) l))
+
+    (shell-command
+     (string-join (reverse l) " "))))
 
 (fc-idle-delay
   (fc-each (file-expand-wildcards (concat *fc-home* "/org/*.olib"))

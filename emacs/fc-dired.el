@@ -58,6 +58,7 @@
   :bind `((dired-mode-map
            ("4" ,(fc-cond-key :normal 'fc-switch-to-buffer))
            ("9" ,(fc-manual (kill-new (dired-get-filename))))
+           ("c" dired-do-compress)
            ("d" dired-do-delete)
            ("f" fc-basic-key)
            ("i" previous-line)

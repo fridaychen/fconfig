@@ -31,18 +31,18 @@
   (string-to-number (fc-exec-itune-cmd "sound volume as integer")))
 
 (cl-defmethod fc-player--get-play-status ((x fc-player-itunes))
-  (s-trim (fc-exec-itune-cmd "player state as string")))
+  (string-trim (fc-exec-itune-cmd "player state as string")))
 
 (cl-defmethod fc-player--set-volume ((x fc-player-itunes) vol)
   (fc-exec-itune-cmd (format "set sound volume to %d" vol)))
 
 (cl-defmethod fc-player--show-metadata ((x fc-player-itunes))
-  (let* ((meta (s-trim (fc-exec-itune-cmd "get {artist,album,name} of current track")))
-         (data (s-split "," meta t)))
+  (let* ((meta (string-trim (fc-exec-itune-cmd "get {artist,album,name} of current track")))
+         (data (string-split meta "," t)))
     (cl-call-next-method x
-                         (s-trim (cl-first data))
-                         (s-trim (cl-second data))
-                         (s-trim (cl-third data)))))
+                         (string-trim (cl-first data))
+                         (string-trim (cl-second data))
+                         (string-trim (cl-third data)))))
 
 (cl-defmethod fc-player--app ((x fc-player-itunes))
   (fc-exec-itune-cmd "activate"))

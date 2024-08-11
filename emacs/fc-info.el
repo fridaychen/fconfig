@@ -94,11 +94,11 @@ INFO-SEQ: list of infos."
 (defun fc-info--process ()
   "Return list of process info."
   `(("Process"
-     ,(s-join ", "
-              (cl-loop for i in (and (fboundp 'process-list)
-                                     (process-list))
-                       for j from 1
-                       collect (format "[%d] %s" j (process-name i)))))))
+     ,(string-join ", "
+                   (cl-loop for i in (and (fboundp 'process-list)
+                                          (process-list))
+                            for j from 1
+                            collect (format "[%d] %s" j (process-name i)))))))
 
 (add-to-list '*fc-info-buffer* #'fc-info--file t)
 (add-to-list '*fc-info-buffer* #'fc-info--buffer t)

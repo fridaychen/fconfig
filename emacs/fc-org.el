@@ -498,7 +498,7 @@ PRE-FORMAT: format the block content."
        (if (zerop (current-column))
            (goto-char end)
          (delete-region start end)
-         (insert "[fn:: " (s-trim (fc--org-find-oneline-footnote fn)) "]"))))))
+         (insert "[fn:: " (string-trim (fc--org-find-oneline-footnote fn)) "]"))))))
 
 ;; (cl-defun
 (cl-defun fc--org-add-options ()
@@ -1222,7 +1222,7 @@ LANG: language of babel."
       (org-roam-db-autosync-enable))))
 
 (defun fc--org-chapter-mark (level title)
-  (concat (s-repeat level "*")
+  (concat (make-string level ?*)
           " " title))
 
 (defun fc--org-run-src-block (name)
@@ -1235,7 +1235,7 @@ LANG: language of babel."
                                      (base-dir default-directory))
   (unless output-dir
     (when-let  ((not-index (not
-                            (s-suffix-p "/index.org" buffer-file-name)))
+                            (string-suffix-p "/index.org" buffer-file-name)))
                 (index-buf (get-file-buffer (format "%s/index.org"
                                                     default-directory))))
       (with-current-buffer index-buf

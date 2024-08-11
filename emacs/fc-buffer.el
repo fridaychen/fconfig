@@ -79,8 +79,8 @@ NO-CURRENT: not include current buffer in result."
          (first-buf (cl-first bufs))
          (size (/ (frame-height) count)))
     (when (or (<= count *fc-buffer-count-threshold*)
-              (fc-user-confirm (concat (s-join " "
-                                               (mapcar #'buffer-name bufs))
+              (fc-user-confirm (concat (string-join " "
+                                                    (mapcar #'buffer-name bufs))
                                        " ")))
       (fc-layout-push)
 

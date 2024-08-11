@@ -262,7 +262,7 @@ default-frame-alist
 -group-by
 
 ;; s
-(s-trim " hello ")
+(string-trim " hello ")
 (s-join "|" '("1" "2" "3"))
 (s-replace "[0-9]" "world" " -- h 1 h 2= =tom") ;; non-regexp
 (s-match "[0-9]+" "helo1293world12")

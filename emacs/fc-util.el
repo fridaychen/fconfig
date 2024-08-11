@@ -388,8 +388,8 @@ DIR: dir."
 
    (t
     (fc-exists-file-in-path filename
-                            (file-name-directory (s-chop-suffix "/"
-                                                                dir))))))
+                            (file-name-directory (string-remove-suffix "/"
+                                                                       dir))))))
 
 (cl-defun fc-root-window-p (&optional (window (get-buffer-window)))
   "Test if the window is a root window.
@@ -769,8 +769,8 @@ FORM: test form."
 
 (cl-defun fc-call-mode-func (suffix default &rest args)
   (let* ((sym (intern (format "fc--%s-%s"
-                              (s-chop-suffix "-mode"
-                                             (fc-string major-mode))
+                              (string-remove-suffix "-mode"
+                                                    (fc-string major-mode))
                               suffix))))
     (cond
      ((fboundp sym)
@@ -787,8 +787,8 @@ FORM: test form."
 
 (cl-defun fc-get-mode-var (suffix &optional default)
   (let* ((fsym (intern (format "*fc--%s-%s*"
-                               (s-chop-suffix "-mode"
-                                              (fc-string major-mode))
+                               (string-remove-suffix "-mode"
+                                                     (fc-string major-mode))
                                suffix))))
     (if (boundp fsym)
         (symbol-value fsym)

@@ -66,7 +66,7 @@
   (let ((raw (thing-at-point 'line t)))
     (when (< (length raw) 3)
       (cl-return-from fc--next-error-function))
-    (let* ((data (s-split ":" raw t))
+    (let* ((data (string-split raw ":" t))
            (file (cl-first data))
            (pos (cl-second data)))
 

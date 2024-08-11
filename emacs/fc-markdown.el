@@ -110,7 +110,7 @@ LANG: language."
           "---\n"))
 
 (defun fc--markdown-chapter-mark (level title)
-  (concat (s-repeat level "#")
+  (concat (make-string level ?#)
           " " title))
 
 (cl-defun fc-md-convert-latex ()

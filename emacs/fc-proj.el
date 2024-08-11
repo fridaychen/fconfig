@@ -69,7 +69,7 @@ PATH: path."
 ARGS: command arguments."
   (fc-with-dir (fc-proj--get x :path)
     (shell-command
-     (s-join "" args))))
+     (string-join "" args))))
 
 (cl-defmethod fc-proj--opentag ((x fc-project) &rest _args)
   (fc-tag-open-project

@@ -29,12 +29,12 @@
 (defun -find-book (filename)
   "Find book by filename."
   (car
-   (s-split "\n"
-            (s-trim
-             (fc-exec-command-to-string "ff"
-               (list
-                "-nocolor"
-                filename))))))
+   (string-split (string-trim
+                  (fc-exec-command-to-string "ff"
+                    (list
+                     "-nocolor"
+                     filename)))
+                 "\n")))
 
 (cl-defun fc--mybook-parse (link)
   (cond
@@ -65,7 +65,7 @@
              (ext (downcase (or (file-name-extension filename) "")))
              (full-path (format "%s/%s" it filename)))
         (cond
-         ((s-blank? filename))
+         ((string-blank-p filename))
 
          ((and ext (member ext '("md" "org" "txt")))
           (find-file full-path)

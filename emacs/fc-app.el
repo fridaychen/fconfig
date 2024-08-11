@@ -194,7 +194,7 @@ REGEX: regex."
             (concat root "/*"))
           l)
 
-    (grep (s-join " " (reverse l)))))
+    (grep (string-join " " (reverse l)))))
 
 (defun fc--ergo-grep-root (root)
   "Get root directory for grep.

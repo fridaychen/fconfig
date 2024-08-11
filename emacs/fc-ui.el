@@ -150,8 +150,8 @@ MENU: menu."
            rest)))
 
 (defun fc--popup-tip (text)
-  (let ((lines (s-count-matches "\n" text)))
-    (unless (s-suffix? "\n" text)
+  (let ((lines (seq-count (lambda (x) (eq x ?\n)) text)))
+    (unless (string-suffix-p "\n" text)
       (cl-incf lines))
 
     (popup-tip text :height lines)))

@@ -135,7 +135,7 @@ TRACK: current track name."
 
   (defun fc-mpris-show-metadata (data)
     (--music-show-metadata
-     (s-join  " & " (cl-first (cl-second (assoc "xesam:artist" data))))
+     (string-join  " & " (cl-first (cl-second (assoc "xesam:artist" data))))
      (cl-first (cl-second (assoc "xesam:album" data)))
      (cl-first (cl-second (assoc "xesam:title" data)))))
 
@@ -187,19 +187,19 @@ TRACK: current track name."
     (fc-music-show-metadata))
 
   (defun fc-itune-get-status ()
-    (s-trim (shell-command-to-string "osascript -e 'tell application \"iTunes\" to player state as string'")))
+    (string-trim (shell-command-to-string "osascript -e 'tell application \"iTunes\" to player state as string'")))
 
   (defun fc-itune-get-metadata ()
-    (s-trim (shell-command-to-string "osascript -e 'tell application \"iTunes\" to get {artist,album,name} of current track'")))
+    (string-trim (shell-command-to-string "osascript -e 'tell application \"iTunes\" to get {artist,album,name} of current track'")))
 
   (defun fc-music-show-metadata ()
     (interactive)
 
     (let* ((meta (fc-itune-get-metadata))
-           (data (s-split "," meta t)))
-      (--music-show-metadata (s-trim (cl-first data))
-                             (s-trim (cl-second data))
-                             (s-trim (cl-third data))))))
+           (data (string-split meta "," t)))
+      (--music-show-metadata (string-trim (cl-first data))
+                             (string-trim (cl-second data))
+                             (string-trim (cl-third data))))))
 
 (when *is-cygwin*
   (defconst *fc-win-music-app* (fc-file-first-exists

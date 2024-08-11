@@ -740,7 +740,7 @@ KEYMAP: keymap to run."
     (interactive)
 
     (fc-bind-keys (symbol-value (cl-first function-keys)))
-    (message "Set functions to %s" (s-trim (get (cl-first function-keys) 'variable-documentation)))
+    (message "Set functions to %s" (string-trim (get (cl-first function-keys) 'variable-documentation)))
 
     (setf function-keys (-rotate 1 function-keys))))
 

@@ -167,7 +167,7 @@
 
 (cl-defun fc-git-current-branch ()
   "Return current git branch name."
-  (s-trim
+  (string-trim
    (fc-exec-command-to-string "git" "rev-parse" "--abbrev-ref" "HEAD")))
 
 (cl-defun fc-vc-select-branch (&optional remote)
@@ -182,7 +182,7 @@ REMOTE: select from local or remote branchs."
          (shell-command (format "git branch %s | sed -e \"/^\\*/d\" | cut -b 3-"
                                 (if remote "-r" ""))
                         (current-buffer))
-         (s-trim (buffer-string)))
+         (string-trim (buffer-string)))
        "\n")))
 
 (cl-defun fc-vc-switch-branch ()

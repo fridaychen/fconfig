@@ -232,7 +232,7 @@
                          0)))))
 
 (cl-defun fc--ttl-find-ref-in-proj (symbol)
-  (when-let* ((func (if (s-suffix? "_ENTRY" symbol)
+  (when-let* ((func (if (string-suffix-p "_ENTRY" symbol)
                         (cl-subseq symbol 0 -6)
                       symbol))
               (buf (fc--text-retrieve :pattern (format "include %s$" func)

@@ -81,14 +81,14 @@
 
   :after (progn
            (setf counsel-find-file-ignore-regexp
-                 (s-chop-suffix "\\|"
-                                (concat
-                                 (--reduce-from (concat acc it "\\|")
-                                                ""
-                                                *fc-ignore-file*)
-                                 (--reduce-from (concat acc it "/\\|")
-                                                ""
-                                                *fc-ignore-dir*))))))
+                 (string-remove-suffix "\\|"
+                                       (concat
+                                        (--reduce-from (concat acc it "\\|")
+                                                       ""
+                                                       *fc-ignore-file*)
+                                        (--reduce-from (concat acc it "/\\|")
+                                                       ""
+                                                       *fc-ignore-dir*))))))
 
 (fc-load 'counsel-gtags
   :autoload t

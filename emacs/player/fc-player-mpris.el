@@ -99,7 +99,7 @@
   (let ((names (--filter (string-prefix-p "org.mpris.MediaPlayer2." it)
                          (dbus-list-names :session))))
     (fc-map names
-      (fc-player-mpris :name (s-chop-prefix "org.mpris.MediaPlayer2." it)))))
+      (fc-player-mpris :name (string-remove-prefix "org.mpris.MediaPlayer2." it)))))
 
 (provide 'fc-player-mpris)
 

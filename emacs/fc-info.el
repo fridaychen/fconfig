@@ -25,7 +25,7 @@ INFO-SEQ: list of infos."
                                  (fc-info--convert
                                   (funcall x))))
               'string))
-(type-of (project-current))
+
 (cl-defun fc-info--file ()
   "Create file info."
   `(("Name" ,buffer-file-name)
@@ -94,11 +94,11 @@ INFO-SEQ: list of infos."
 (defun fc-info--process ()
   "Return list of process info."
   `(("Process"
-     ,(string-join ", "
-                   (cl-loop for i in (and (fboundp 'process-list)
+     ,(string-join (cl-loop for i in (and (fboundp 'process-list)
                                           (process-list))
                             for j from 1
-                            collect (format "[%d] %s" j (process-name i)))))))
+                            collect (format "[%d] %s" j (process-name i)))
+                   ", "))))
 
 (add-to-list '*fc-info-buffer* #'fc-info--file t)
 (add-to-list '*fc-info-buffer* #'fc-info--buffer t)

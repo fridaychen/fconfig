@@ -20,10 +20,10 @@
            (defun fc-info--company ()
              "Create buffer info."
              (when (and *fc-enable-company* company-mode)
-               `("Company" ,(string-join " "
-                                         (--map
+               `("Company" ,(string-join (--map
                                           (string-remove-prefix "company-" (symbol-name it))
-                                          company-backends)))))
+                                          company-backends)
+                                         " "))))
 
            (add-to-list '*fc-info-buffer* #'fc-info--company t)
 

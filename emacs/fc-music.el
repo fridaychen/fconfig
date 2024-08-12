@@ -135,7 +135,7 @@ TRACK: current track name."
 
   (defun fc-mpris-show-metadata (data)
     (--music-show-metadata
-     (string-join  " & " (cl-first (cl-second (assoc "xesam:artist" data))))
+     (string-join (cl-first (cl-second (assoc "xesam:artist" data))) " & ")
      (cl-first (cl-second (assoc "xesam:album" data)))
      (cl-first (cl-second (assoc "xesam:title" data)))))
 

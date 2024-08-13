@@ -74,6 +74,10 @@
      :author (car (plist-get info :author))
      :date (car (plist-get info :date)))))
 
+(defun fc--org-book-cover()
+  (message "get book cover for org")
+  (fc--org-get-file-property "COVER"))
+
 (cl-defun fc--org-before-theme-changed ()
   (when (facep 'org-superstar-header-bullet)
     (fc-set-face 'org-superstar-header-bullet nil
@@ -710,7 +714,6 @@ LANG: language."
       ("Publish"                        . fc--org-publish)
       ("Publish to html"		. org-html-export-to-html)
       ("Publish to markdown"		. org-md-export-to-markdown)
-      ("Publish to epub"                . fc--org-publish-epub)
       ("Redisplay inline image"		. org-redisplay-inline-images)
       ("Update dblock"			. org-update-all-dblocks)
       ("Update source block"		. org-babel-execute-buffer)
@@ -1270,39 +1273,6 @@ LANG: language of babel."
             ("org" :components ("org-notes" "org-static"))))
 
     (org-publish-current-project)))
-
-(cl-defun fc--org-publish-epub()
-  (let* ((file (buffer-file-name))
-         (title (car (plist-get (org-export-get-environment) :title)))
-         (cover (expand-file-name
-                 (or (fc--org-get-file-property "COVER")
-                     (fc-file-first-exists
-                      (list
-                       (concat title ".jpg")
-                       (concat "img/" title ".jpg")
-                       "cover.jpg"
-                       (concat "img/cover.jpg")))
-                     (read-file-name "Cover image"))))
-         (epub (expand-file-name (read-file-name "Epub file" nil nil nil
-                                                 (format "%s.epub" title))))
-         (gz-file (string-suffix-p ".gz" file))
-         l)
-    (when gz-file
-      (push (format "gzip -d %s -c |"
-                    (shell-quote-argument file))
-            l))
-
-    (push (format "pandoc --to epub -o %s --epub-cover-image %s"
-                  (shell-quote-argument epub)
-                  (shell-quote-argument cover))
-          l)
-
-    (if gz-file
-        (push "--from org" l)
-      (push (shell-quote-argument file) l))
-
-    (shell-command
-     (string-join (reverse l) " "))))
 
 (fc-idle-delay
   (fc-each (file-expand-wildcards (concat *fc-home* "/org/*.olib"))

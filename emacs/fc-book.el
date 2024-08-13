@@ -73,6 +73,11 @@ PAIRS: replacement list."
       (plist-get meta :author)
       meta))))
 
+(cl-defun fc--book-title ()
+  (when-let ((meta (fc-call-mode-func "book-info" nil)))
+    (cl-return-from fc--book-title (plist-get meta :title)))
+  "")
+
 (defun fc--book-setup ()
   "Setup current buffer for book."
   (when (fc--book-p)
@@ -330,6 +335,47 @@ LEVEL: chapter level."
      (lambda (title)
        (fc-call-mode-func "chapter-mark" nil level title)))))
 
+(cl-defun fc--book-cover (title)
+  (expand-file-name
+   (or (fc-call-mode-func "book-cover" nil)
+       (fc-file-first-exists
+        (list
+         (concat title ".jpg")
+         (concat title ".jpeg")
+         (concat "img/" title ".jpg")
+         (concat "img/" title ".jpeg")
+         "cover.jpg"
+         "cover.jpeg"
+         (concat "img/cover.jpg")
+         (concat "img/cover.jpeg")))
+       (read-file-name "Cover image"))))
+
+(cl-defun fc-book-publish-epub()
+  (let* ((file (buffer-file-name))
+         (title (fc--book-title))
+         (cover (fc--book-cover title))
+         (epub (expand-file-name (read-file-name "Epub file" nil nil nil
+                                                 (format "%s.epub" title))))
+         (gz-file (string-suffix-p ".gz" file))
+         l)
+    (when gz-file
+      (push (format "gzip -d %s -c |"
+                    (shell-quote-argument file))
+            l))
+
+    (push (format "pandoc --to epub -o %s --epub-cover-image %s"
+                  (shell-quote-argument epub)
+                  (shell-quote-argument cover))
+          l)
+
+    (if gz-file
+        (let ((format (string-remove-suffix "-mode" (symbol-name major-mode))))
+          (push (concat "--from " format) l))
+      (push (shell-quote-argument file) l))
+
+    (shell-command
+     (string-join (reverse l) " "))))
+
 (defconst *fc-book-func-list*
   `(
     ("Book: Chapter number zh to Arabic"  . fc-book-chapter-zh-to-number)
@@ -339,6 +385,7 @@ LEVEL: chapter level."
     ("Book: Mark chapter"                 . fc-book-mark-chapter)
     ("Book: Mark section"                 . fc-book-mark-section)
     ("Book: Merge lines"                  . fc-merge-short-line)
+    ("Book: publish epub"                 . fc-book-publish-epub)
     ("Book: Recheck"                      . fc-recheck-book)
     ("Book: Replace with zh double quote" . fc-book-replace-zh-double-quote)
     ("Book: Replace with zh single quote" . fc-book-replace-zh-single-quote)

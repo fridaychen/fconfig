@@ -23,6 +23,7 @@
            ("M-k" corfu-next)
            ("M-j" corfu-scroll-down)
            ("M-l" corfu-scroll-up)
+           ("RET" corfu-quit)
            ("TAB" corfu-insert))))
 
 (fc-load 'kind-icon

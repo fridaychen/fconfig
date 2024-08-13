@@ -22,6 +22,7 @@
 (defvar *fc-proj-repo-path* (fc-file-first-exists
                              '("~/REPOS/"
                                "~/Projects/REPOS")))
+(defvar *fc-proj-list* (make-hash-table))
 
 (cl-defun fc--proj-replace-var (proj path)
   "Replace path variables.
@@ -43,10 +44,10 @@ PATH: path."
       ret)
 
      ((listp ret)
-      (--map (if (stringp it)
-                 (fc--proj-replace-var x it)
-               it)
-             ret))
+      (fc-map ret
+        (if (stringp it)
+            (fc--proj-replace-var x it)
+          it)))
 
      ((stringp ret)
       (fc--proj-replace-var x ret))
@@ -104,9 +105,9 @@ TARGET: make target."
       (delete-file var-filename)
 
       (with-current-buffer (get-buffer-create (find-file var-filename))
-        (--map (insert "-D" it "\n") define)
-        (--map (insert it "\n") build-args)
-        (--map (insert "-I" it "\n") include)
+        (fc-map define (insert "-D" it "\n"))
+        (fc-map build-args (insert it "\n"))
+        (fc-map include (insert "-I" it "\n"))
         (save-buffer)))
 
     ;; .dir-locals.el
@@ -119,9 +120,9 @@ TARGET: make target."
         (add-dir-local-variable nil 'fc-capture-tags (fc-proj--get x :capture-tags))
 
         ;; company-clang
-        (let ((clang-args (append (--map (concat "-D" it) define)
+        (let ((clang-args (append (fc-map define (concat "-D" it))
                                   build-args
-                                  (--map (concat "-I" it) include))))
+                                  (fc-map include (concat "-I" it)))))
           (add-dir-local-variable 'c-mode
                                   'company-clang-arguments
                                   clang-args))
@@ -216,8 +217,8 @@ DIR: project path."
 
 (cl-defun fc-proj-switch ()
   (fc--proj-set (fc-select "Projects"
-                    (--map (cons (fc-string it) it)
-                           *fc-projects*))))
+                    (fc-map *fc-projects*
+                      (cons (fc-string it) it)))))
 
 (cl-defun fc-proj-edit-property (proj prop)
   (let* ((vstr (read-string (format "Edit [%s] : " prop)
@@ -271,8 +272,8 @@ DIR: project path."
 (defun fc-user-select-project ()
   "Allow user to select project."
   (let ((proj (fc-select (format "Project <%s>" *fc-project-name*)
-                  (--map (cons (fc-proj--get it :name) it)
-                         *fc-projects*))))
+                  (fc-map *fc-projects*
+                    (cons (fc-proj--get it :name) it)))))
     (when proj
       (fc--proj-set proj))))
 
@@ -287,11 +288,11 @@ DIR: project path."
 ;; project utils
 (cl-defun fc-proj-recentf ()
   (when-let* ((root (fc-proj-root))
-              (files (--filter (string-prefix-p root it)
-                               recentf-list)))
+              (files (fc-filter recentf-list
+                       (string-prefix-p root it))))
     (find-file (fc-select "Project recentf"
-                   (--map (cons (file-relative-name it root) it)
-                          files)))
+                   (fc-map files
+                     (cons (file-relative-name it root) it))))
     (cl-return-from fc-proj-recentf))
 
   (message "No project or recent files !!!"))

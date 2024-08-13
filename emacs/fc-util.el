@@ -11,7 +11,7 @@
 (cl-defun fc-file-first-exists (files)
   "Find first existing file.
 FILES: file list to be tested."
-  (-first #'file-exists-p files))
+  (fc-first files (file-exists-p it)))
 
 (cl-defun fc-dir-exists-p (dir)
   "Test dir exists or not.
@@ -68,7 +68,7 @@ ARGS: arguments for command."
     (with-output-to-string
       (with-current-buffer
           standard-output
-        (apply #'call-process command nil t nil (-flatten args))))))
+        (apply #'call-process command nil t nil (flatten-list args))))))
 
 (cl-defun fc-exec-command-to-buffer (bufname command &rest args)
   "Run specific command and save output to specified buffer.
@@ -81,7 +81,7 @@ ARGS: arguments for command."
       (read-only-mode -1)
       (erase-buffer)
 
-      (apply #'call-process command nil buf nil (-flatten args))
+      (apply #'call-process command nil buf nil (flatten-list args))
 
       buf)))
 
@@ -238,7 +238,7 @@ BODY: form body."
      (save-excursion
        ,@body)))
 
-(cl-defmacro fc-decorate-region (prefix suffix &key (mark #'er/mark-symbol))
+(cl-defmacro fc-decorate-region (prefix suffix &key (mark #'fc-mark-symbol))
   "Decorate region.
 PREFIX: region prefix.
 SUFFIX: region suffix.

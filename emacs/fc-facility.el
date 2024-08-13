@@ -304,9 +304,17 @@ FUNC: new function."
 (cl-defmacro fc-first (collection &rest body)
   (declare (indent 1))
   `(cl-block fc-first-block
-     (fc-each ,collection
-       (when (progn ,@body)
-         (cl-return-from fc-first-block it)))
+     (cond
+      ((hash-table-p ,collection)
+       (maphash (lambda (it v)
+                  (when (progn ,@body)
+                    (cl-return-from fc-first-block it)))
+                ,collection))
+
+      (t
+       (fc-each ,collection
+         (when (progn ,@body)
+           (cl-return-from fc-first-block it)))))
      nil))
 
 (provide 'fc-facility)

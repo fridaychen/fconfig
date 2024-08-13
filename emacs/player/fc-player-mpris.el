@@ -96,8 +96,8 @@
         (setf *fc-player* (fc-player-mpris :name it))))))
 
 (defun fc-player--get-mpris-players ()
-  (let ((names (--filter (string-prefix-p "org.mpris.MediaPlayer2." it)
-                         (dbus-list-names :session))))
+  (let ((names (fc-filter (dbus-list-names :session)
+                 (string-prefix-p "org.mpris.MediaPlayer2." it))))
     (fc-map names
       (fc-player-mpris :name (string-remove-prefix "org.mpris.MediaPlayer2." it)))))
 

@@ -212,15 +212,14 @@ END: end of region."
 
 (fc-load 'c-ts-mode
   :local t
-  :after
-  (progn
-    (defun fc--c-ts-setup ()
-      (setq c-ts-mode-indent-offset 4
-            tab-width 4))
+  :after (progn
+           (defun fc--c-ts-setup ()
+             (setq c-ts-mode-indent-offset 4
+                   tab-width 4))
 
-    (add-hook 'c-ts-mode-hook #'fc--c-ts-setup)
+           (add-hook 'c-ts-mode-hook #'fc--c-ts-setup)
 
-    (fc-add-fmt 'c-ts-mode #'fc-generate-clang-cmd nil)))
+           (fc-add-fmt 'c-ts-mode #'fc-generate-clang-cmd nil)))
 
 (provide 'fc-clang)
 

@@ -65,11 +65,10 @@
   (fc-select "Note type" '("top" "left" "right" "bottom")))
 
 (fc-load 'ob-async
-  :after
-  (add-hook 'ob-async-pre-execute-src-block-hook
-            `(lambda ()
-               (require 'ob-plantuml)
-               (setq org-plantuml-jar-path ,org-plantuml-jar-path))))
+  :after (add-hook 'ob-async-pre-execute-src-block-hook
+                   `(lambda ()
+                      (require 'ob-plantuml)
+                      (setq org-plantuml-jar-path ,org-plantuml-jar-path))))
 
 (provide 'fc-plantuml)
 

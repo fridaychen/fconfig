@@ -173,66 +173,65 @@
     (visual-line-mode 1)))
 
 (fc-load 'org
-  :after
-  (progn
-    (setf org-hide-emphasis-markers t
-          org-log-done t
-          org-log-into-drawer "LOGBOOK"
-          org-export-with-sub-superscripts nil
-          org-src-ask-before-returning-to-edit-buffer nil
-          org-image-actual-width nil
-          org-preview-latex-image-directory "output/"
-          org-startup-indented nil
-          org-fontify-emphasized-text t
-          org-fontify-quote-and-verse-blocks t
-          org-fontify-whole-heading-line t
-          org-superstar-headline-bullets-list '(?⏹ ?● ?○ ?▶ ?▷)
-          org-imenu-depth 4
-          )
+  :after (progn
+           (setf org-hide-emphasis-markers t
+                 org-log-done t
+                 org-log-into-drawer "LOGBOOK"
+                 org-export-with-sub-superscripts nil
+                 org-src-ask-before-returning-to-edit-buffer nil
+                 org-image-actual-width nil
+                 org-preview-latex-image-directory "output/"
+                 org-startup-indented nil
+                 org-fontify-emphasized-text t
+                 org-fontify-quote-and-verse-blocks t
+                 org-fontify-whole-heading-line t
+                 org-superstar-headline-bullets-list '(?⏹ ?● ?○ ?▶ ?▷)
+                 org-imenu-depth 4
+                 )
 
-    (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
-    (plist-put org-format-latex-options :foreground (fc-get-face 'font-lock-keyword-face :foreground))
+           (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
+           (plist-put org-format-latex-options :foreground (fc-get-face 'font-lock-keyword-face :foreground))
 
-    (fc--org-theme-changed)
+           (fc--org-theme-changed)
 
-    (fc-add-fmt 'org-mode nil 'fc--format-org)
+           (fc-add-fmt 'org-mode nil 'fc--format-org)
 
-    (defun create-image-with-background-color (args)
-      "Specify background color of Org-mode inline image through modify `ARGS'."
-      (let* ((file (car args))
-             (type (cadr args))
-             (data-p (caddr args))
-             (props (cdddr args)))
-        ;; Get this return result style from `create-image'.
-        (append (list file type data-p)
-                (when (eq major-mode 'org-mode)
-                  (list :background (or *fc-org-image-background*
-                                        (face-background 'default))))
-                props)))
+           (defun create-image-with-background-color (args)
+             "Specify background color of Org-mode inline image through modify `ARGS'."
+             (let* ((file (car args))
+                    (type (cadr args))
+                    (data-p (caddr args))
+                    (props (cdddr args)))
+               ;; Get this return result style from `create-image'.
+               (append (list file type data-p)
+                       (when (eq major-mode 'org-mode)
+                         (list :background (or *fc-org-image-background*
+                                               (face-background 'default))))
+                       props)))
 
-    (advice-add 'create-image :filter-args
-                #'create-image-with-background-color)
+           (advice-add 'create-image :filter-args
+                       #'create-image-with-background-color)
 
-    (require 'org-agenda)
-    (require 'org-capture)
-    (require 'ob-blockdiag)
-    (require 'ob-plantuml)
-    (require 'ob-gnuplot)
-    (require 'ob-octave)
-    (require 'ob-python)
-    (require 'ob-shell)
-    (require 'ol-man)
-    (require 'ox-publish)
+           (require 'org-agenda)
+           (require 'org-capture)
+           (require 'ob-blockdiag)
+           (require 'ob-plantuml)
+           (require 'ob-gnuplot)
+           (require 'ob-octave)
+           (require 'ob-python)
+           (require 'ob-shell)
+           (require 'ol-man)
+           (require 'ox-publish)
 
-    (require 'fc-org-ext)
+           (require 'fc-org-ext)
 
-    (require 'org-clock)
+           (require 'org-clock)
 
-    (setf org-clock-clocked-in-display 'frame-title
-          org-babel-python-command "python3")
+           (setf org-clock-clocked-in-display 'frame-title
+                 org-babel-python-command "python3")
 
-    (defconst org-babel-python-wrapper-method
-      "
+           (defconst org-babel-python-wrapper-method
+             "
 import math as m
 import numpy as np
 
@@ -241,141 +240,141 @@ def main():
 
 open('%s', 'w').write( str(main()) )")
 
-    (add-to-list 'org-babel-default-header-args:plantuml
-                 (cons :java "-Djava.awt.headless=true"))
+           (add-to-list 'org-babel-default-header-args:plantuml
+                        (cons :java "-Djava.awt.headless=true"))
 
-    (cl-defun fc--org-hide-all ()
-      (org-content)
-      (org-hide-drawer-all)
-      (org-hide-block-all)
-      (org-block-map (lambda ()
-                       (when (looking-at-p "#\\+BEGIN_\\(EXAMPLE\\|QUOTE\\|VERSE\\)")
-                         (forward-char 1)
-                         (org-cycle)))))
+           (cl-defun fc--org-hide-all ()
+             (org-content)
+             (org-hide-drawer-all)
+             (org-hide-block-all)
+             (org-block-map (lambda ()
+                              (when (looking-at-p "#\\+BEGIN_\\(EXAMPLE\\|QUOTE\\|VERSE\\)")
+                                (forward-char 1)
+                                (org-cycle)))))
 
-    (cl-defun -fc-org-write ()
-      (org-hide-drawer-all)
-      (org-hide-block-all)
-      (unless (or (fc-big-buffer-p)
-                  (fc--book-p))
-        (org-update-statistics-cookies t)))
+           (cl-defun -fc-org-write ()
+             (org-hide-drawer-all)
+             (org-hide-block-all)
+             (unless (or (fc-big-buffer-p)
+                         (fc--book-p))
+               (org-update-statistics-cookies t)))
 
-    (cl-defun fc--org-setup ()
-      (when (and *is-gui*
-                 (fboundp #'pixel-scroll-precision-mode))
-        (pixel-scroll-precision-mode 1))
+           (cl-defun fc--org-setup ()
+             (when (and *is-gui*
+                        (fboundp #'pixel-scroll-precision-mode))
+               (pixel-scroll-precision-mode 1))
 
-      (setf indent-tabs-mode nil
-            tab-width 8)
+             (setf indent-tabs-mode nil
+                   tab-width 8)
 
-      (electric-indent-local-mode -1)
+             (electric-indent-local-mode -1)
 
-      (org-superstar-mode 1)
+             (org-superstar-mode 1)
 
-      (when-let* ((face *fc-reading-face*)
-                  (force-mono (not (fc-bool (fc--org-get-file-property "MONO-FONT")))))
-        (setf buffer-face-mode-face *fc-reading-face*)
-        (buffer-face-mode 1))
+             (when-let* ((face *fc-reading-face*)
+                         (force-mono (not (fc-bool (fc--org-get-file-property "MONO-FONT")))))
+               (setf buffer-face-mode-face *fc-reading-face*)
+               (buffer-face-mode 1))
 
-      (fc-idle-delay-task (lambda ()
-                            (when (and (not (fc--org-capture-p)) *fc-auto-hide*)
-                              (fc--org-hide-all)
-                              (unless (zerop (fc-line-num))
-                                (fc-hs-toggle))))
-                          0.2)
+             (fc-idle-delay-task (lambda ()
+                                   (when (and (not (fc--org-capture-p)) *fc-auto-hide*)
+                                     (fc--org-hide-all)
+                                     (unless (zerop (fc-line-num))
+                                       (fc-hs-toggle))))
+                                 0.2)
 
-      (setq prettify-symbols-alist '((":PROPERTIES:" . "»")
-                                     (":LOGBOOK:" . "›")
-                                     (":END:" . "›")
-                                     ("[ ]" . ?☐)
-                                     ("[X]" . ?☑ )
-                                     ("[-]" . ?☒ )))
-      (prettify-symbols-mode)
+             (setq prettify-symbols-alist '((":PROPERTIES:" . "»")
+                                            (":LOGBOOK:" . "›")
+                                            (":END:" . "›")
+                                            ("[ ]" . ?☐)
+                                            ("[X]" . ?☑ )
+                                            ("[-]" . ?☒ )))
+             (prettify-symbols-mode)
 
-      (fc-dwell-enable #'fc--org-dwell)
-      (add-hook 'pre-command-hook #'fc--org-hide-footnote)
+             (fc-dwell-enable #'fc--org-dwell)
+             (add-hook 'pre-command-hook #'fc--org-hide-footnote)
 
-      (add-hook 'write-contents-functions #'-fc-org-write nil t))
+             (add-hook 'write-contents-functions #'-fc-org-write nil t))
 
-    (cl-defun fc--capture-copy-region ()
-      (save-excursion
-        (let ((data nil))
-          (with-current-buffer (plist-get org-capture-plist :original-buffer)
-            (when (region-active-p)
-              (setf data (buffer-substring (region-beginning)
-                                           (region-end)))
-              (deactivate-mark)))
-          (when data
-            (goto-char (point-max))
-            (when (/= (current-column) 0)
-              (insert "\n"))
-            (insert data)))))
+           (cl-defun fc--capture-copy-region ()
+             (save-excursion
+               (let ((data nil))
+                 (with-current-buffer (plist-get org-capture-plist :original-buffer)
+                   (when (region-active-p)
+                     (setf data (buffer-substring (region-beginning)
+                                                  (region-end)))
+                     (deactivate-mark)))
+                 (when data
+                   (goto-char (point-max))
+                   (when (/= (current-column) 0)
+                     (insert "\n"))
+                   (insert data)))))
 
-    (cl-defun fc--capture-tag ()
-      (when (or (org-roam-capture-p)
-                (member (plist-get org-capture-plist :description)
-                        *fc-org-no-tag-captures*))
-        (cl-return-from fc--capture-tag))
+           (cl-defun fc--capture-tag ()
+             (when (or (org-roam-capture-p)
+                       (member (plist-get org-capture-plist :description)
+                               *fc-org-no-tag-captures*))
+               (cl-return-from fc--capture-tag))
 
-      (when-let* ((buf (plist-get org-capture-plist :original-buffer))
-                  (tags (with-current-buffer buf
-                          (bound-and-true-p fc-capture-tags))))
-        (org-set-tags (fc-string tags))))
+             (when-let* ((buf (plist-get org-capture-plist :original-buffer))
+                         (tags (with-current-buffer buf
+                                 (bound-and-true-p fc-capture-tags))))
+               (org-set-tags (fc-string tags))))
 
-    (cl-defun fc--capture-edit ()
-      (fc-modal-disable))
+           (cl-defun fc--capture-edit ()
+             (fc-modal-disable))
 
-    (cl-defun fc--org-get-property (name)
-      (when-let* ((keys (org-collect-keywords '("PROPERTY")))
-                  (props (cdar keys))
-                  (pair (fc-first props
-                          (when (cl-equalp name (car (split-string it)))
-                            t))))
-        (string-join (cdr (split-string pair)) " ")))
+           (cl-defun fc--org-get-property (name)
+             (when-let* ((keys (org-collect-keywords '("PROPERTY")))
+                         (props (cdar keys))
+                         (pair (fc-first props
+                                 (when (cl-equalp name (car (split-string it)))
+                                   t))))
+               (string-join (cdr (split-string pair)) " ")))
 
-    (cl-defun fc--org-get-property (name)
-      (cdr (assoc name (org-entry-properties))))
+           (cl-defun fc--org-get-property (name)
+             (cdr (assoc name (org-entry-properties))))
 
-    (cl-defun fc--org-get-file-property (name)
-      (save-excursion
-        (save-restriction
-          (widen)
-          (goto-char (point-min))
-          (fc--org-get-property name))))
+           (cl-defun fc--org-get-file-property (name)
+             (save-excursion
+               (save-restriction
+                 (widen)
+                 (goto-char (point-min))
+                 (fc--org-get-property name))))
 
-    (cl-defun fc--org-auto-ingest ()
-      (when-let* ((correct-mode (eq major-mode 'org-mode))
-                  (flag (fc-bool (fc--org-get-file-property "AUTOINGEST"))))
-        (org-babel-lob-ingest buffer-file-name)))
+           (cl-defun fc--org-auto-ingest ()
+             (when-let* ((correct-mode (eq major-mode 'org-mode))
+                         (flag (fc-bool (fc--org-get-file-property "AUTOINGEST"))))
+               (org-babel-lob-ingest buffer-file-name)))
 
-    (defun fc--org-babel-execute-src-block (&optional orig-fun arg info &rest params)
-      (when-let ((path (cdr (assoc :file (nth 2 (or info (org-babel-get-src-block-info)))))))
-        (when (and (or (string-prefix-p "output/" path)
-                       (string-prefix-p "./output/" path))
-                   (not (fc-dir-exists-p "output")))
-          (mkdir "output")))
+           (defun fc--org-babel-execute-src-block (&optional orig-fun arg info &rest params)
+             (when-let ((path (cdr (assoc :file (nth 2 (or info (org-babel-get-src-block-info)))))))
+               (when (and (or (string-prefix-p "output/" path)
+                              (string-prefix-p "./output/" path))
+                          (not (fc-dir-exists-p "output")))
+                 (mkdir "output")))
 
-      (apply orig-fun arg info params))
+             (apply orig-fun arg info params))
 
-    (advice-add 'org-babel-execute-src-block
-                :around 'fc--org-babel-execute-src-block)
+           (advice-add 'org-babel-execute-src-block
+                       :around 'fc--org-babel-execute-src-block)
 
-    (add-hook 'org-capture-mode-hook #'fc--capture-edit)
-    (add-hook 'org-capture-mode-hook #'fc--capture-copy-region)
-    (add-hook 'org-capture-mode-hook #'fc--capture-tag)
+           (add-hook 'org-capture-mode-hook #'fc--capture-edit)
+           (add-hook 'org-capture-mode-hook #'fc--capture-copy-region)
+           (add-hook 'org-capture-mode-hook #'fc--capture-tag)
 
-    (add-hook 'org-capture-after-finalize-hook #'org-align-tags)
-    (add-hook 'org-capture-after-finalize-hook #'fc-modal-enable)
+           (add-hook 'org-capture-after-finalize-hook #'org-align-tags)
+           (add-hook 'org-capture-after-finalize-hook #'fc-modal-enable)
 
-    (add-hook 'org-babel-after-execute-hook #'org-redisplay-inline-images)
+           (add-hook 'org-babel-after-execute-hook #'org-redisplay-inline-images)
 
-    (add-hook 'org-mode-hook #'fc--book-setup)
-    (add-hook 'org-mode-hook #'fc--org-setup)
-    (when (and *fc-enable-valign* *is-gui*)
-      (add-hook 'org-mode-hook #'valign-mode))
+           (add-hook 'org-mode-hook #'fc--book-setup)
+           (add-hook 'org-mode-hook #'fc--org-setup)
+           (when (and *fc-enable-valign* *is-gui*)
+             (add-hook 'org-mode-hook #'valign-mode))
 
-    (add-hook 'after-save-hook #'fc--org-auto-ingest)
-    (add-hook 'after-save-hook #'check-parens nil t)))
+           (add-hook 'after-save-hook #'fc--org-auto-ingest)
+           (add-hook 'after-save-hook #'check-parens nil t)))
 
 (cl-defun fc--org-insert-title ()
   "Insert title."
@@ -1020,7 +1019,7 @@ CONTENT: content of new footnote."
      ("a" fc--org-beginning)
      ("b" ,(fc-manual
             (unless (region-active-p)
-              (er/mark-symbol))
+              (fc-mark-symbol))
             (fc-funcall #'org-emphasize)))
      ("c" fc--org-ctrl-c-ctrl-c)
      ("d" ,(fc-manual
@@ -1216,13 +1215,13 @@ LANG: language of babel."
   (not (member lang *fc-org-trust-babel-modes*)))
 
 (fc-load 'org-roam
-  :before (setf org-roam-v2-ack t)
-  :after
-  (progn
-    (setf org-roam-directory "~/org/roam"
-          org-roam-database-connector 'sqlite-builtin)
-    (ignore-errors
-      (org-roam-db-autosync-enable))))
+  :before (setf org-roam-v2-ack t
+                org-roam-directory "~/org/roam"
+                ;;org-roam-database-connector 'sqlite-builtin
+                )
+  :after (progn
+           (ignore-errors
+             (org-roam-db-autosync-enable))))
 
 (defun fc--org-chapter-mark (level title)
   (concat (make-string level ?*)

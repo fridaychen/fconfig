@@ -155,9 +155,11 @@ S: note string."
   c: to specific character
   e: to end of the line
   l: whole line
+  n: number
   p: paragraph
   q: quotation
-  w: current word
+  s: symbol
+  w: word
   f: semantic function
 
   ^: to beginning of buffer
@@ -293,14 +295,12 @@ PATTERN: target pattern."
                     "-w"
                     (fc-string *fc-column-limit*)
                     "-f"
-                    (fc-select
-                        "Select font"
-                        (--map
-                         (cons (file-name-base it)
-                               (format "%s/extra/figlet/%s" *fc-home* it))
-                         (fc--list-file (format "%s/extra/figlet" *fc-home*)
-                                        nil
-                                        :sort t)))
+                    (format "%s/extra/figlet/%s"
+                            *fc-home*
+                            (fc-select "Select font"
+                                (fc--list-file (format "%s/extra/figlet" *fc-home*)
+                                               nil
+                                               :sort t)))
                     (read-string "Text : "))))
 
 (cl-defun fc-insert-signature ()
@@ -341,27 +341,27 @@ IGNORE-FILES: ignore file glob."
 FILE-TYPES: fc style file types."
   (apply #'seq-concatenate
          'list
-         (--map (pcase it
-                  ('code '("-t" "awk"
-                           "-t" "c" "-t" "cpp" "-t" "elisp" "-t" "fish" "-t" "go"
-                           "-t" "py" "-t" "ruby" "-t" "rust" "-t" "sh"
-                           "-t" "vim" "-t" "protobuf"
-                           "--type-add" "ttl:*.ttl" "-t" "ttl"
-                           ))
-                  ('doc '("-t" "markdown" "-t" "org" "-t" "tex" "-t" "txt"
-                          "--type-add" "orglib:*.olib" "-t" "orglib"
-                          "--type-add" "uml:*.{puml,pu}" "-t" "uml"
-                          "--type-add" "gzdoc:*.{org.gz,md.gz}" "-t" "gzdoc"
-                          ))
-                  ('conf '("-t" "cmake" "-t" "make" "-t" "config"
-                           "--type-add" "scons:[Ss][Cc]ons,[Ss][Cc]onstruct}" "-t" "scons"
-                           "-t" "json" "-t" "yaml"
-                           ))
-                  ('web '("-t" "html" "-t" "css" "-t" "js"
-                          ))
-                  ('xml '("-t" "xml"
-                          )))
-                file-types)))
+         (fc-map file-types
+           (pcase it
+             ('code '("-t" "awk"
+                      "-t" "c" "-t" "cpp" "-t" "elisp" "-t" "fish" "-t" "go"
+                      "-t" "py" "-t" "ruby" "-t" "rust" "-t" "sh"
+                      "-t" "vim" "-t" "protobuf"
+                      "--type-add" "ttl:*.ttl" "-t" "ttl"
+                      ))
+             ('doc '("-t" "markdown" "-t" "org" "-t" "tex" "-t" "txt"
+                     "--type-add" "orglib:*.olib" "-t" "orglib"
+                     "--type-add" "uml:*.{puml,pu}" "-t" "uml"
+                     "--type-add" "gzdoc:*.{org.gz,md.gz}" "-t" "gzdoc"
+                     ))
+             ('conf '("-t" "cmake" "-t" "make" "-t" "config"
+                      "--type-add" "scons:[Ss][Cc]ons,[Ss][Cc]onstruct}" "-t" "scons"
+                      "-t" "json" "-t" "yaml"
+                      ))
+             ('web '("-t" "html" "-t" "css" "-t" "js"
+                     ))
+             ('xml '("-t" "xml"
+                     ))))))
 
 (cl-defun fc--list-file-rg (dir file-types)
   "List files.
@@ -386,7 +386,7 @@ FILE-TYPES: target file types to be finded."
 DIR: under this dir performing finding file.
 FILE-TYPES: target file types to be finded."
   (let* ((default-directory dir)
-         (arg-type (--map (format "-%s" it) file-types)))
+         (arg-type (fc-map file-types (format "-%s" it))))
     (let* ((result (apply #'fc-exec-command-to-string
                           "ff"
                           "-nocolor"
@@ -405,7 +405,7 @@ FULLPATH: fullpath results."
 
   (let ((files (fc--list-file-rg dir file-types)))
     (when fullpath
-      (setf files (--map (format "%s/%s" dir it) files)))
+      (setf files (fc-map files (format "%s/%s" dir it))))
 
     (when sort
       (setf files (sort files #'string<)))
@@ -463,11 +463,11 @@ FILE-TYPES: target file types to be searched."
    dir
    pattern))
 
-(cl-defun fc--text-retrieve (&key (dir default-directory) ignore-files pattern (file-types '(code conf doc xml)))
+(cl-defun fc--text-retrieve (&key (dir default-directory) buffer-or-name ignore-files pattern (file-types '(code conf doc xml)))
   "Text retrieve.
 DIR: dir to search."
-  (let* ((bufname (format "*search %s*" pattern))
-         (buf (get-buffer-create bufname)))
+  (let* ((buf (or buffer-or-name
+                  (get-buffer-create (format "*search %s*" pattern)))))
     (save-excursion
       (with-current-buffer buf
         (fc--internal-ftr-rg dir pattern file-types :ignore-files ignore-files)
@@ -499,7 +499,7 @@ DIR: dir to search."
 (setenv "_FASD_FUZZY" "16")
 
 (defun fc-eshell-dirtrim (path n full-prefix short-prefix)
-  (let* ((parts (-filter #'fc-not-void-p (split-string path "/"))))
+  (let* ((parts (fc-filter (split-string path "/") #'fc-not-void-p)))
     (if (<= (length parts) n)
         (concat full-prefix path)
       (concat short-prefix

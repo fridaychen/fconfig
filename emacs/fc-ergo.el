@@ -410,23 +410,27 @@ INDENT-FUNC: function for indent."
      (backward-sentence)
      (mark-end-of-sentence 1))))
 
+(defun fc-mark-regex (regex)
+  (when (thing-at-point-looking-at regex 1024)
+    (set-mark (match-beginning 0))
+    (goto-char (match-end 0))))
+
 (defun fc-mark-quote ()
   "Mark quoteation."
   (interactive)
 
-  (let ((start (line-beginning-position))
-        (end (line-end-position)))
-    (save-excursion
-      (when (re-search-backward "[“”\"'‘’（）()]" start t)
-        (setf start (point))))
+  (fc-mark-regex "[“”\"'‘’（）()][^“”\"'‘’（）()]*[“”\"'‘’（）()]"))
 
-    (save-excursion
-      (when (re-search-forward "[“”\"'‘’（）()]" end t)
-        (setf end (point))))
+(defun fc-mark-number ()
+  "Mark number."
+  (interactive)
 
-    (set-mark start)
-    (goto-char end)
-    (exchange-point-and-mark)))
+  (fc-mark-regex "0x[[:xdigit:]]+\\|[[:xdigit:]]+"))
+
+(defun fc-mark-symbol()
+  (when (thing-at-point 'symbol)
+    (set-mark (match-beginning 0))
+    (goto-char (match-end 0))))
 
 ;; dictionary
 (defun fc-translate-word ()
@@ -605,8 +609,8 @@ N: number."
 
    ;; two or three windows
    ((< (length
-        (--remove (fc-side-window-p it)
-                  (window-list)))
+        (fc-filter (window-list)
+          (not (fc-side-window-p it))))
        4)
     (other-window 1))
 
@@ -821,8 +825,10 @@ KEYMAP: keymap to run."
      ("e" ,(fc-change-key 'fc-mark-point-to-end-of-line))
      ("f" ,(fc-change-key 'fc-mark-func))
      ("l" ,(fc-change-key 'fc-mark-line))
+     ("n" ,(fc-change-key 'fc-mark-numder))
      ("p" ,(fc-change-key 'mark-paragraph))
      ("q" ,(fc-change-key 'fc-mark-quote))
+     ("s" ,(fc-change-key 'fc-mark-symbol))
      ("w" ,(fc-change-key 'fc-mark-word))
 
      ("A" ,(fc-change-key 'fc-mark-point-to-beginning-of-line t))
@@ -831,8 +837,10 @@ KEYMAP: keymap to run."
      ("E" ,(fc-change-key 'fc-mark-point-to-end-of-line t))
      ("F" ,(fc-change-key 'fc-mark-func t))
      ("L" ,(fc-change-key 'fc-mark-line t))
+     ("N" ,(fc-change-key 'fc-mark-numder t))
      ("P" ,(fc-change-key 'mark-paragraph t))
      ("Q" ,(fc-change-key 'fc-mark-quote t))
+     ("S" ,(fc-change-key 'fc-mark-symbol t))
      ("W" ,(fc-change-key 'fc-mark-word t))
 
      ("^" ,(fc-change-key 'fc-mark-point-to-beginning-of-buffer))
@@ -850,8 +858,10 @@ KEYMAP: keymap to run."
      ("e" kill-line)
      ("f" ,(fc-delete-key 'fc-mark-func))
      ("l" ,(fc-delete-key 'fc-mark-line))
+     ("n" ,(fc-delete-key 'fc-mark-number))
      ("p" ,(fc-delete-key 'mark-paragraph))
      ("q" ,(fc-delete-key 'fc-mark-quote))
+     ("s" ,(fc-delete-key 'fc-mark-symbol))
      ("w" ,(fc-delete-key 'fc-mark-word))
 
      ("A" ,(fc-delete-key 'fc-mark-point-to-beginning-of-line t))
@@ -861,8 +871,10 @@ KEYMAP: keymap to run."
      ("E" ,(fc-delete-key 'fc-mark-point-to-end-of-line t))
      ("F" ,(fc-delete-key 'fc-mark-func t))
      ("L" ,(fc-delete-key 'fc-mark-line t))
+     ("N" ,(fc-delete-key 'fc-mark-number t))
      ("P" ,(fc-delete-key 'mark-paragraph t))
      ("Q" ,(fc-delete-key 'fc-mark-quote t))
+     ("S" ,(fc-delete-key 'fc-mark-symbol t))
      ("W" ,(fc-delete-key 'fc-mark-word t))
 
      ("^" ,(fc-delete-key 'fc-mark-point-to-beginning-of-buffer))
@@ -1085,9 +1097,11 @@ KEYMAP: keymap to run."
      ("e" fc-mark-point-to-end-of-line)
      ("f" fc-mark-func)
      ("l" fc-mark-line)
-     ("m" er/mark-symbol)
+     ("m" fc-mark-symbol)
+     ("n" fc-mark-number)
      ("p" mark-paragraph)
      ("q" fc-mark-quote)
+     ("s" fc-mark-symbol)
      ("w" fc-mark-word)
 
      ("^" fc-mark-point-to-beginning-of-buffer)
@@ -1219,10 +1233,7 @@ STEP: pixels."
      ("d" ,(fc-manual (fc-load-desktop)))
      ("e" fc-new-buffer-with-template)
 
-     ("f" ,(fc-manual (fc--find-file
-                       default-directory
-                       (format "Find file under [%s]" default-directory)
-                       '(conf code doc xml) :sort t)))
+     ("f" fc-find-files)
      ("i" fc--fast-enlarge-v)
      ("j" fc--fast-reduce-h)
      ("k" fc--fast-reduce-v)
@@ -1528,7 +1539,7 @@ AUTO: auto select face."
    ("u" fc-mode-func-key)
    ("v" ,(fc-cond-key :normal #'set-mark-command
                       :region (fc-manual (er/expand-region 1))))
-   ("C-v" ,(fc-cond-key :normal #'er/mark-symbol
+   ("C-v" ,(fc-cond-key :normal #'fc-mark-symbol
                         :region (fc-manual (er/expand-region -1))))
    ("w" ,(fc-cond-key :normal #'fc-buffers-list
                       :region #'delete-region

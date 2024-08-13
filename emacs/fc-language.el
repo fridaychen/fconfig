@@ -10,11 +10,10 @@
 (defvar *fc-input-methods* nil "Enabled input methods list.")
 
 (fc-load 'rime
-  :after
-  (progn
-    (setf rime-show-candidate 'posframe)
+  :after (progn
+           (setf rime-show-candidate 'posframe)
 
-    (add-to-list '*fc-input-methods* 'rime)))
+           (add-to-list '*fc-input-methods* 'rime)))
 
 (fc-load 'mozc
   :enable (executable-find "mozc_emacs_helper")

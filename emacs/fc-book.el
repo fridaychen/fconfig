@@ -63,18 +63,21 @@ PAIRS: replacement list."
 
 (defvar *fc-book-size-thold* 32768)
 
+(defun fc--book-meta ()
+  (fc-call-mode-func "book-info" nil))
+
 (defun fc--book-p ()
   "Return t if this file is book."
   (and
    (> (buffer-size) (fc-call-mode-func "book-size-thold" '*fc-book-size-thold*))
-   (when-let ((meta (fc-call-mode-func "book-info" nil)))
+   (when-let ((meta (fc--book-meta)))
      (and
       (plist-get meta :title)
       (plist-get meta :author)
       meta))))
 
 (cl-defun fc--book-title ()
-  (when-let ((meta (fc-call-mode-func "book-info" nil)))
+  (when-let ((meta (fc--book-meta)))
     (cl-return-from fc--book-title (plist-get meta :title)))
   "")
 
@@ -385,7 +388,7 @@ LEVEL: chapter level."
     ("Book: Mark chapter"                 . fc-book-mark-chapter)
     ("Book: Mark section"                 . fc-book-mark-section)
     ("Book: Merge lines"                  . fc-merge-short-line)
-    ("Book: publish epub"                 . fc-book-publish-epub)
+    ("Book: Publish epub"                 . fc-book-publish-epub)
     ("Book: Recheck"                      . fc-recheck-book)
     ("Book: Replace with zh double quote" . fc-book-replace-zh-double-quote)
     ("Book: Replace with zh single quote" . fc-book-replace-zh-single-quote)

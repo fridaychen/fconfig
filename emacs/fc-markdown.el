@@ -26,56 +26,55 @@
 (add-hook '*fc-after-theme-hook* #'fc--markdown-theme-changed)
 
 (fc-load 'markdown-mode
-  :after
-  (progn
-    (fc-add-mode-name 'markdown-mode
-      (fc-visible (fc-nerd-icon ?\xf48a :foreground "red3") "Ⓜ️"))
+  :after (progn
+           (fc-add-mode-name 'markdown-mode
+             (fc-visible (fc-nerd-icon ?\xf48a :foreground "red3") "Ⓜ️"))
 
-    (setf markdown-hr-strings
-          '("-----"))
+           (setf markdown-hr-strings
+                 '("-----"))
 
-    (defun fc--markdown-setup ()
-      (when (and *is-gui* (not (fc-big-buffer-p)))
-        (markdown-display-inline-images))
+           (defun fc--markdown-setup ()
+             (when (and *is-gui* (not (fc-big-buffer-p)))
+               (markdown-display-inline-images))
 
-      (setq prettify-symbols-alist '(("#" . ?⏹)
-                                     ("##" . ?●)
-                                     ("###" . ?○)
-                                     ("####" . ?▶)
-                                     ("#####" . ?▷)
-                                     ("[ ]" . ?☐)
-                                     ("[X]" . ?☑ )
-                                     ("[-]" . ?☒ )))
-      (prettify-symbols-mode)
+             (setq prettify-symbols-alist '(("#" . ?⏹)
+                                            ("##" . ?●)
+                                            ("###" . ?○)
+                                            ("####" . ?▶)
+                                            ("#####" . ?▷)
+                                            ("[ ]" . ?☐)
+                                            ("[X]" . ?☑ )
+                                            ("[-]" . ?☒ )))
+             (prettify-symbols-mode)
 
-      (fc-idle-delay-task (lambda ()
-                            (when *fc-auto-hide*
-                              (outline-hide-sublevels 3)
-                              (unless (zerop (fc-line-num))
-                                (fc-hs-toggle))))
-                          0.2)
+             (fc-idle-delay-task (lambda ()
+                                   (when *fc-auto-hide*
+                                     (outline-hide-sublevels 3)
+                                     (unless (zerop (fc-line-num))
+                                       (fc-hs-toggle))))
+                                 0.2)
 
-      (eldoc-mode -1))
+             (eldoc-mode -1))
 
-    (defun markdown-fontify-hrs (_last)
-      )
+           (defun markdown-fontify-hrs (_last)
+             )
 
-    (defun fc--md-toggle-viewer ()
-      (when (derived-mode-p 'markdown-mode)
-        (markdown-toggle-markup-hiding (if fc-viewer-minor-mode 1 -1)))
+           (defun fc--md-toggle-viewer ()
+             (when (derived-mode-p 'markdown-mode)
+               (markdown-toggle-markup-hiding (if fc-viewer-minor-mode 1 -1)))
 
-      (when (and fc-viewer-minor-mode
-                 (equal (fc--md-lang) "en-US"))
-        (fc-modal-visual-feedback)))
+             (when (and fc-viewer-minor-mode
+                        (equal (fc--md-lang) "en-US"))
+               (fc-modal-visual-feedback)))
 
-    (when (eq (fc-get-face 'markdown-header-delimiter-face :foreground)
-              'unspecified)
-      (fc-set-face 'markdown-header-delimiter-face nil
-                   :foreground (fc-get-face 'font-lock-keyword-face :foregound)))
+           (when (eq (fc-get-face 'markdown-header-delimiter-face :foreground)
+                     'unspecified)
+             (fc-set-face 'markdown-header-delimiter-face nil
+                          :foreground (fc-get-face 'font-lock-keyword-face :foregound)))
 
-    (add-hook '*fc-viewer-hook* #'fc--md-toggle-viewer)
-    (add-hook 'markdown-mode-hook #'fc--book-setup)
-    (add-hook 'markdown-mode-hook #'fc--markdown-setup)))
+           (add-hook '*fc-viewer-hook* #'fc--md-toggle-viewer)
+           (add-hook 'markdown-mode-hook #'fc--book-setup)
+           (add-hook 'markdown-mode-hook #'fc--markdown-setup)))
 
 (fc-load 'markdown-changelog)
 

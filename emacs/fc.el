@@ -72,18 +72,16 @@
 
 (fc-load 'fc-screen
   :local t
-  :after
-  (progn
-    (when *is-gui*
-      (add-hook '*fc-after-theme-hook* #'fc--setup-fringe))
-    (add-hook '*fc-project-hook* #'fc--setup-window-title)))
+  :after (progn
+           (when *is-gui*
+             (add-hook '*fc-after-theme-hook* #'fc--setup-fringe))
+           (add-hook '*fc-project-hook* #'fc--setup-window-title)))
 
 (fc-require 'fc-xpm)
 (fc-load 'fc-modeline
   :local t
-  :after
-  (progn
-    (add-to-list '*fc-after-theme-hook* #'fc-modeline-mode)))
+  :after (progn
+           (add-to-list '*fc-after-theme-hook* #'fc-modeline-mode)))
 (fc-modal-enable)
 
 (fc-add-hook-func '*fc-before-theme-hook*

@@ -463,7 +463,11 @@ FILE-TYPES: target file types to be searched."
    dir
    pattern))
 
-(cl-defun fc--text-retrieve (&key (dir default-directory) buffer-or-name ignore-files pattern (file-types '(code conf doc xml)))
+(cl-defun fc--text-retrieve (&key (dir default-directory)
+                                  buffer-or-name
+                                  ignore-files
+                                  pattern
+                                  (file-types '(code conf doc xml)))
   "Text retrieve.
 DIR: dir to search."
   (let* ((buf (or buffer-or-name
@@ -990,16 +994,16 @@ REST: commands."
   "Select background color."
   (setf *fc-common-light-theme-bg*
         (fc-select-color "Background color"
-                         '(
-                           "beige"
-                           "bisque"
-                           "blanched almond"
-                           "cornsilk1"
-                           "cornsilk2"
-                           "cornsilk3"
-                           "darkslategrey"
-                           "linen"
-                           "#C1E6C6")))
+                         :colors '(
+                                   "beige"
+                                   "bisque"
+                                   "blanched almond"
+                                   "cornsilk1"
+                                   "cornsilk2"
+                                   "cornsilk3"
+                                   "darkslategrey"
+                                   "linen"
+                                   "#C1E6C6")))
 
   (fc-reset-theme))
 
@@ -1007,23 +1011,22 @@ REST: commands."
   "Select foreground color."
   (fc-set-face
    'default nil
-   :foreground
-   (fc-select-color "Foreground color"
-                    '("black"
-                      "cornsilk"
-                      "DarkSeaGreen1"
-                      "DarkSeaGreen3"
-                      "gray95"
-                      "gray90"
-                      "gray80"
-                      "gray70"
-                      "gray60"
-                      "LemonChiffon"
-                      "navajo white"
-                      "pale goldenrod"
-                      "pale green"
-                      "wheat"
-                      "white"))))
+   :foreground (fc-select-color "Foreground color"
+                                :colors '("black"
+                                          "cornsilk"
+                                          "DarkSeaGreen1"
+                                          "DarkSeaGreen3"
+                                          "gray95"
+                                          "gray90"
+                                          "gray80"
+                                          "gray70"
+                                          "gray60"
+                                          "LemonChiffon"
+                                          "navajo white"
+                                          "pale goldenrod"
+                                          "pale green"
+                                          "wheat"
+                                          "white"))))
 
 ;; theme
 (cl-defun fc-select-theme ()

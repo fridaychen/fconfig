@@ -28,12 +28,11 @@
 
 (fc-load 'fc-org
   :local t
-  :after
-  (progn
-    (add-hook '*fc-after-theme-hook* #'fc--org-theme-changed)
-    (fc-org-autoconfig)
-    (add-hook '*fc-common-fast-act-hook* #'fc--org-toggle-special-edit)
-    (fc-require 'fc-plantuml)))
+  :after (progn
+           (add-hook '*fc-after-theme-hook* #'fc--org-theme-changed)
+           (fc-org-autoconfig)
+           (add-hook '*fc-common-fast-act-hook* #'fc--org-toggle-special-edit)
+           (fc-require 'fc-plantuml)))
 
 (defvar *fc--mode-config-map* (fc-make-hash-table
                                '(
@@ -72,8 +71,7 @@
 (fc-require 'fc-ergo-seg)
 (fc-load 'fc-edit
   :local t
-  :after
-  (fc-add-hook-func '*fc-after-theme-hook* #'fc--setup-line-spacing))
+  :after (fc-add-hook-func '*fc-after-theme-hook* #'fc--setup-line-spacing))
 
 (pcase *fc-completion*
   ('helm (fc-require 'fc-helm t))
@@ -140,9 +138,8 @@
 
 (fc-load 'fc-app
   :local t
-  :after
-  (progn
-    (add-hook '*fc-after-theme-hook* #'fc--setup-eshell-after-theme-changed)))
+  :after (progn
+           (add-hook '*fc-after-theme-hook* #'fc--setup-eshell-after-theme-changed)))
 
 (fc-require 'fc-book t)
 
@@ -177,13 +174,12 @@
 
 (fc-load 'fc-flycheck
   :local t
-  :after
-  (progn
-    (add-hook '*fc-enable-dev-hook*
-              #'global-flycheck-mode)
-    (add-hook '*fc-disable-dev-hook*
-              #'(lambda ()
-                  (global-flycheck-mode -1)))))
+  :after (progn
+           (add-hook '*fc-enable-dev-hook*
+                     #'global-flycheck-mode)
+           (add-hook '*fc-disable-dev-hook*
+                     #'(lambda ()
+                         (global-flycheck-mode -1)))))
 
 (fc-load 'fc-corfu
   :local t

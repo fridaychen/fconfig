@@ -250,11 +250,10 @@ INDENT-FUNC: function for indent."
 
   (fc-modal-head-key
    "Basic" '*ergo-basic-map*
-   :around
-   (lambda (func)
-     (when (> (point) (mark))
-       (exchange-point-and-mark))
-     (fc-funcall func))))
+   :around (lambda (func)
+             (when (> (point) (mark))
+               (exchange-point-and-mark))
+             (fc-funcall func))))
 
 (cl-defun fc-ctrl-enter-key ()
   "Ctrl-Enter key function."

@@ -6,11 +6,10 @@
 ;;; Code:
 
 (fc-load '2048-game
-  :after
-  (progn
-    (advice-add #'2048-init :after #'(lambda () (text-scale-set 3)))
-    (fc-add-mode-name '2048-mode "🎮")
-    (fc-modal-exclude-mode '2048-mode))
+  :after (progn
+           (advice-add #'2048-init :after #'(lambda () (text-scale-set 3)))
+           (fc-add-mode-name '2048-mode "🎮")
+           (fc-modal-exclude-mode '2048-mode))
   :bind '((2048-mode-map
            ("i" 2048-up)
            ("j" 2048-left)

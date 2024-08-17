@@ -42,10 +42,9 @@
   :after (progn
            (cl-defun fc-vertico--posframe-theme-changed ()
              (fc-set-face 'vertico-posframe-border nil
-                          :background
-                          (if (fc-dark-theme-p)
-                              "#FEBA07"
-                            "SkyBlue3"))
+                          :background (if (fc-dark-theme-p)
+                                          "#FEBA07"
+                                        "SkyBlue3"))
 
              (setq-default vertico-posframe-border-width 6))
 

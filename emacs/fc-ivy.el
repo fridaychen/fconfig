@@ -36,10 +36,9 @@
   :after (progn
            (cl-defun fc--posframe-theme-changed ()
              (fc-set-face 'ivy-posframe-border nil
-                          :background
-                          (if (fc-dark-theme-p)
-                              "#FEBA07"
-                            "SkyBlue3")))
+                          :background (if (fc-dark-theme-p)
+                                          "#FEBA07"
+                                        "SkyBlue3")))
 
            (defun fc--posframe-get-size ()
              "Return posframe size."

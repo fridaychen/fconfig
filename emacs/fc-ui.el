@@ -16,11 +16,9 @@ CONV: convert items of collection into strings."
   (when (and (not always)
              (= (if (hash-table-p collection)
                     (hash-table-count collection)
-                  (length collection)) 1))
-    (cl-return-from fc-select (let ((r (car collection)))
-                                (if (listp r)
-                                    (cdr r)
-                                  r))))
+                  (length collection))
+                1))
+    (cl-return-from fc-select (fc-first collection t)))
 
   (when-let* ((candidates (if conv
                               (mapcar (lambda (x) (cons (funcall conv x) x))
@@ -43,10 +41,8 @@ COLLECTION: cadidates collection."
   (when-let ((func (fc-select prompt collection :always t)))
     (fc-funcall func)))
 
-(cl-defun fc-select-color (prompt colors &key always)
-  (when-let* ((color (fc-select
-                         prompt
-                         colors
+(cl-defun fc-select-color (prompt &key always (colors (defined-colors)))
+  (when-let* ((color (fc-select prompt colors
                        :always t
                        :conv (lambda (x)
                                (concat
@@ -54,9 +50,9 @@ COLLECTION: cadidates collection."
                                 " "
                                 (fc-text x :face `(:foreground "black" :background ,x))
                                 " "
-                                (fc-text x :face `(:foreground ,x :background "black")))))))
-    (when (color-defined-p color)
-      color)))
+                                (fc-text x :face `(:foreground ,x :background "black"))))))
+              (defined (color-defined-p color)))
+    color))
 
 (cl-defun fc-select-buffer (prompt
                             pred
@@ -69,8 +65,7 @@ POP: show the selected buffer side-by-side.
 ONE: only request one buffer.
 ERROR-MSG: error message."
   (when-let* ((bufs (fc--list-buffer pred :one one))
-              (buf (fc-select
-                       prompt bufs
+              (buf (fc-select prompt bufs
                      :conv (lambda (x)
                              (if relative
                                  (file-relative-name (buffer-file-name x)

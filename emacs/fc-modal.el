@@ -113,11 +113,9 @@
   (fc-each *fc-modal-fringe-faces*
     (when (facep it)
       (set-face-attribute it nil
-                          :background
-                          *fc-modal-cur-fringe-color*
-                          :foreground
-                          (apply #'color-rgb-to-hex
-                                 (color-complement *fc-modal-cur-fringe-color*))))))
+                          :background *fc-modal-cur-fringe-color*
+                          :foreground (apply #'color-rgb-to-hex
+                                             (color-complement *fc-modal-cur-fringe-color*))))))
 
 (defun fc--modal-global-visual-feedback-leave ()
   "Leave modal mode."
@@ -127,10 +125,8 @@
   (fc-each *fc-modal-fringe-faces*
     (when (facep it)
       (set-face-attribute it nil
-                          :background
-                          (face-attribute 'default :background)
-                          :foreground
-                          (face-attribute 'font-lock-keyword-face :foreground)))))
+                          :background (face-attribute 'default :background)
+                          :foreground (face-attribute 'font-lock-keyword-face :foreground)))))
 
 (defun fc-modal-visual-feedback ()
   "Setup modal mode ui on GUI."

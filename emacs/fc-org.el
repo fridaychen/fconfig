@@ -88,8 +88,7 @@
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
   (fc-set-face 'org-block nil
-               :family
-               (fc-get-face 'default :family))
+               :family (fc-get-face 'default :family))
 
   (when (and *is-gui* *fc-enable-font-to-align-table*)
     (let* ((family *fc-enable-font-to-align-table*)
@@ -148,10 +147,9 @@
              (equal target-bg default-bg)
              (> (fc-color-difference target-bg default-bg) 8000))
         (fc-set-face it nil
-                     :background
-                     (color-darken-name
-                      default-bg
-                      (if (fc-dark-theme-p) -5 5))))))
+                     :background (color-darken-name
+                                  default-bg
+                                  (if (fc-dark-theme-p) -5 5))))))
 
   (fc-set-face 'org-footnote
                nil
@@ -163,8 +161,7 @@
 
   (plist-put org-format-latex-options :background "Transparent")
   (plist-put org-format-latex-options
-             :foreground
-             (fc-get-face 'font-lock-keyword-face :foreground)))
+             :foreground (fc-get-face 'font-lock-keyword-face :foreground)))
 
 (defun fc--org-set-visual-line-mode ()
   (fc--set-visual-line-mode)

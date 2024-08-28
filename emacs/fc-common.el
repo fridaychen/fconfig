@@ -252,6 +252,8 @@ COLOR: background color."
 
       ('ayu-grey
        (setf soothe-percent -30)
+       (fc-set-face 'org-verse nil
+                    :foreground "beige")
        (fc-set-face 'highlight nil
                     :background "IndianRed4"))
 

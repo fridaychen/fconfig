@@ -40,7 +40,7 @@ class FProcessBar:
 class ui:
     @staticmethod
     def edit_obj(obj, filename):
-        """ edit obj in external editor """
+        """edit obj in external editor"""
         with open(filename, "w") as f:
             f.write(
                 json.dumps(obj, sort_keys=True, indent=4, ensure_ascii=False)
@@ -65,7 +65,7 @@ class ui:
 
     @staticmethod
     def verbose_yesno_p(prompt, default=True):
-        """ ask ui to confirm under verbose mode """
+        """ask ui to confirm under verbose mode"""
         if not verbose:
             return default
 
@@ -73,7 +73,7 @@ class ui:
 
     @staticmethod
     def yesno_p(prompt, default=True):
-        """ ask ui to confirm """
+        """ask ui to confirm"""
         while True:
             v = input("%s ? [%s] : " % (prompt, "Y|n" if default else "y|N"))
 
@@ -87,7 +87,7 @@ class ui:
 
     @staticmethod
     def confirm(prompt, old_value):
-        """ confirm the string value """
+        """confirm the string value"""
         r = input("%s [%s] : " % (prompt, old_value))
         if len(r) == 0:
             return old_value
@@ -112,7 +112,7 @@ class ui:
         prompt=None,
         autoselect=True,
     ):
-        """ allow user to select from list """
+        """allow user to select from list"""
         if options is None or len(options) == 0:
             return None, None
 

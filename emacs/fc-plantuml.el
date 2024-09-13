@@ -41,7 +41,11 @@
 
            (cl-defun fc--plantuml-setup ()
              (setq indent-tabs-mode nil
-                   plantuml-indent-level 4))
+                   plantuml-indent-level 4)
+
+             (font-lock-add-keywords
+              nil
+              '(("^\s*\\(title\\|participant\\|actor\\|alt\\|else\\|note left\\|note right\\|note over\\|note across\\|end note\\|box\\|end box\\|end\\)\\>" 1 font-lock-keyword-face))))
 
            (add-hook 'plantuml-mode-hook #'fc--plantuml-setup)
            (fc-add-fmt 'plantuml-mode nil #'fc--default-fmt-with-indent)

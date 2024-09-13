@@ -254,6 +254,8 @@ COLOR: background color."
        (setf soothe-percent -30)
        (fc-set-face 'org-verse nil
                     :foreground "beige")
+       (fc-set-face 'whitespace-trailing nil
+                    :background "red4")
        (fc-set-face 'highlight nil
                     :background "IndianRed4"))
 
@@ -310,7 +312,7 @@ COLOR: background color."
                     :background "IndianRed4")
        (fc-set-face 'default nil
                     :foreground "cornsilk"
-                    :background "gray22"))
+                    :background "gray20"))
 
       ('material
        (fc-set-face 'font-lock-type-face nil
@@ -386,6 +388,8 @@ COLOR: background color."
        (fc-set-face 'mode-line nil
                     :foreground "black"
                     :background "cornsilk4")
+       (fc-set-face 'highlight nil
+                    :background "khaki")
        (fc-set-face 'hl-line nil
                     :foreground "pale goldenrod"
                     :background "gray30"))

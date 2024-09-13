@@ -1544,9 +1544,10 @@ AUTO: auto select face."
                       :region #'delete-region
                       :proj (fc-manual
                              (when-let ((root (fc-proj-root)))
-                               (fc-select-buffer "Switch within project"
-                                                 (fc--buffer-pred :dir root :sort t :no-current t)
-                                                 :root root)))))
+                               (fc-select-buffer
+                                "Switch within project"
+                                (fc--buffer-pred :dir root :no-current t)
+                                :relative root)))))
    ("x" ,(fc-cond-key :normal #'fc-delete-char
                       :region #'exchange-point-and-mark))
    ("y" ,(fc-cond-key :normal #'yank
@@ -1628,7 +1629,7 @@ AUTO: auto select face."
    ("^" ,(fc-manual (join-line 1)))
    ("&" ,(fc-cond-key :normal (fc-manual (fc-set-window-width 0.66))
                       :prefix (fc-manual (fc-set-window-width 0.33))))
-   ;; ("*" google-this-search)
+   ("*" google-this-search)
    ("(" ,(fc-cond-key :normal #'fc-previous-bookmark
                       :region (fc-decorate-region "(" ")")))
    (")" fc-next-bookmark)

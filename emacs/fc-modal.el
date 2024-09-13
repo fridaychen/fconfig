@@ -13,7 +13,7 @@
 
 (defvar *fc-modal-edit-cursor-color* (if *is-colorful* "#3de1ad" "#ffffff"))
 (defvar *fc-modal-edit-cursor-shape* (if *is-colorful* 'box 'bar))
-(defvar *fc-modal-edit-fringe-color* "#8DD4E8")
+(defvar *fc-modal-edit-fringe-color* "DarkOliveGreen") ;; "#8DD4E8"
 
 (defvar *fc-modal-cur-fringe-color* *fc-modal-command-fringe-color*)
 
@@ -125,7 +125,7 @@
   (fc-each *fc-modal-fringe-faces*
     (when (facep it)
       (set-face-attribute it nil
-                          :background (face-attribute 'default :background)
+                          :background *fc-modal-edit-fringe-color*
                           :foreground (face-attribute 'font-lock-keyword-face :foreground)))))
 
 (defun fc-modal-visual-feedback ()

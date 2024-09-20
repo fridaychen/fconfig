@@ -676,15 +676,6 @@ REST: text to be speak."
    (*is-mac*
     (apply #'osx-lib-say rest))))
 
-(defun fc-color-difference (colora colorb)
-  "Calculate color difference between two colors.
-COLORA: the one color.
-COLORB: another color."
-  (cl-loop for i in (color-values colora)
-           for j in (color-values colorb)
-           sum (expt (- i j) 2) into x
-           finally return (sqrt x)))
-
 (defun fc-line-num (&optional point)
   "Get current line number.
 POINT: point of buffer."

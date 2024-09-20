@@ -274,6 +274,9 @@ COLOR: background color."
                     :background "coral"))
 
       ('deeper-blue
+       (setf soothe-percent -85)
+       (fc-set-face 'default nil
+                    :foreground "beige")
        (fc-set-face 'mode-line nil
                     :background "gray61"))
 
@@ -377,19 +380,23 @@ COLOR: background color."
                     :background "#303030"))
 
       ('srcery
+       (setf soothe-percent -85)
        (fc-set-face 'default nil
-                    :background "#303030")
-       (fc-set-face 'ivy-current-match nil
-                    :background "#404040"))
+                    :foreground "beige")
+       (fc-set-face 'whitespace-trailing nil
+                    :background "red4"))
 
       ('tango-dark
+       (setf soothe-percent -26)
+
        (fc-set-face 'default nil
-                    :foreground "wheat")
+                    :foreground "cornsilk")
        (fc-set-face 'mode-line nil
                     :foreground "black"
                     :background "cornsilk4")
        (fc-set-face 'highlight nil
-                    :background "khaki")
+                    :foreground "white"
+                    :background "IndianRed4")
        (fc-set-face 'hl-line nil
                     :foreground "pale goldenrod"
                     :background "gray30"))

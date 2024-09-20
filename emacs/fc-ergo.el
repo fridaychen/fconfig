@@ -1736,7 +1736,8 @@ FUNC: new repeat func."
 (cl-defun fc-switch-to-buffer ()
   (interactive)
 
-  (when-let* ((buf (read-buffer-to-switch "Switch to buffer: "))
+  (when-let* ((buf-name (read-buffer-to-switch "Switch to buffer: "))
+              (buf (get-buffer buf-name))
               (win (progn
                      (when (fc-side-window-p)
                        (select-window (or (window-child (window-main-window))

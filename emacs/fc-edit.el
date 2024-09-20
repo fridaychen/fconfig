@@ -17,6 +17,8 @@
 (defvar *fc-prog-line-spacing* 1)
 (defvar *fc-text-line-spacing* 4)
 
+(defvar *fc-eldoc-enable* t)
+
 (setf mouse-autoselect-window nil
       make-pointer-invisible t)
 
@@ -117,6 +119,7 @@
 (global-visual-line-mode -1)
 
 (fc-load 'eldoc
+  :enable *fc-eldoc-enable*
   :after (progn
            (defun fc-info--eldoc ()
              "Return list of eldoc info."
@@ -131,6 +134,7 @@
            (add-hook 'prog-mode-hook #'eldoc-mode)))
 
 (fc-load 'eldoc-box
+  :enable *fc-eldoc-enable*
   :after (progn
            (add-hook '*fc-ergo-restore-hook* #'eldoc-box-quit-frame)))
 

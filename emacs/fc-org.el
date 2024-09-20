@@ -145,7 +145,7 @@
           (target-bg (fc-get-face it :background)))
       (when (or
              (equal target-bg default-bg)
-             (> (fc-color-difference target-bg default-bg) 8000))
+             (> (color-distance target-bg default-bg) 8000))
         (fc-set-face it nil
                      :background (color-darken-name
                                   default-bg

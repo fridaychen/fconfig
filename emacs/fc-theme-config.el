@@ -71,8 +71,8 @@ THEMES: list of themes."
   "Test if the current theme is deep dark."
   (and (fc-dark-theme-p)
        (> threshold
-          (fc-color-difference (fc-get-face 'default :foreground)
-                               (fc-get-face 'default :background)))))
+          (color-distance (fc-get-face 'default :foreground)
+                          (fc-get-face 'default :background)))))
 
 (when *is-mac*
   (setf ns-use-srgb-colorspace nil))

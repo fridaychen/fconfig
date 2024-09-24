@@ -8,11 +8,20 @@
 (defface *fc-ttl-function-name-face*
   '((t :inherit font-lock-function-name-face
        :weight bold
-       :underline t
+       :overline t
        ))
   "TTL function name face.")
 
 (defvar *fc-ttl-function-name-face* '*fc-ttl-function-name-face*)
+
+(defface *fc-ttl-function-exit-face*
+  '((t :inherit font-lock-function-name-face
+       :weight bold
+       :overline nil
+       ))
+  "TTL function exit face.")
+
+(defvar *fc-ttl-function-exit-face* '*fc-ttl-function-exit-face*)
 
 (defconst *ttl-imenu-generic-expression*
   (list (list "Subroutine" "^:\\([^_][^ \t\n]+\\)$" 1)))
@@ -156,7 +165,7 @@
                                           'words)
                              . font-lock-keyword-face)
                             (,(regexp-opt '("end" "exit" "return") 'words)
-                             . font-lock-function-name-face)
+                             . ,*fc-ttl-function-exit-face*)
                             (,*fc-ttl-function-regex* . ,*fc-ttl-function-name-face*)
                             ("^:[_].+" . font-lock-function-name-face)))
 

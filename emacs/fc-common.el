@@ -233,9 +233,22 @@ COLOR: background color."
                 :overline 'unspecified
                 :slant 'unspecified))
 
+(defun fc--patch-theme-disable-underline ()
+  (fc-set-faces '(highlight hl-line)
+                :underline 'unspecified))
+
+(defun fc--patch-theme-type ()
+  (fc-set-face 'font-lock-type-face nil :slant 'italic))
+
+(defun fc--patch-theme-func-name ()
+  (fc-set-face 'font-lock-function-name-face nil :overline t))
+
 (defvar *fc-patch-modes* (list #'fc--markdown-patch-theme
                                #'fc--org-patch-theme
                                #'fc--soothe-theme
+                               #'fc--patch-theme-disable-underline
+                               #'fc--patch-theme-type
+                               #'fc--patch-theme-func-name
                                ))
 
 (defun fc-patch-theme ()
@@ -310,8 +323,6 @@ COLOR: background color."
      (fc-set-face 'aw-leading-char-face nil
                   :height (* *fc-font-height* 2)
                   :foreground "red")
-     (fc-set-face 'font-lock-type-face nil
-                  :slant 'italic)
      (fc-set-face 'font-lock-comment-face nil
                   :foreground "gray78")
      (fc-set-face 'mode-line-inactive nil
@@ -325,8 +336,6 @@ COLOR: background color."
                   :background "gray20"))
 
     ('material
-     (fc-set-face 'font-lock-type-face nil
-                  :slant 'italic)
      (fc-set-face 'fringe nil
                   :background "#ff9800")
      (fc-set-face 'default nil
@@ -399,8 +408,6 @@ COLOR: background color."
                   :background "gray30"))
 
     ('zenburn
-     (fc-set-face 'font-lock-type-face nil
-                  :slant 'italic)
      (fc-set-face 'mode-line nil
                   :box 'unspecified)
      (fc-set-face 'mode-line-inactive nil

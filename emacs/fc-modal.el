@@ -141,10 +141,9 @@
               (and (facep 'fringe)
                    (face-attribute 'fringe :background))
               (fc-get-face 'highlight :foreground)))
-         (fringe-bg (if (> (color-distance default-bg bg) 3000)
+         (fringe-bg (if (> (color-distance default-bg bg) 10000)
                         bg
                       *fc-modal-command-fringe-color*)))
-    (message "distance %d" (color-distance default-bg bg))
     (setf *fc-modal-cur-fringe-color* fringe-bg))
 
   (fc-modal-visual-feedback))

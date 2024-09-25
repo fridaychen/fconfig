@@ -160,7 +160,7 @@
            (recentf-mode 1)
            (fc-add-idle-hook #'recentf-save-list)))
 
-(fc-install 'csv-mode)
+(fc-install 'csv-mode 'subed)
 
 (fc-load 'highlight-indentation
   :autoload t

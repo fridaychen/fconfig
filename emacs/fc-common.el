@@ -301,25 +301,17 @@ COLOR: background color."
     ('classic
      (fc-set-face 'link nil
                   :foreground "cyan2")
-     (fc-set-face 'ivy-current-match nil
-                  :background "gray60")
      (fc-set-face 'default nil
                   :foreground "wheat"
                   :background (color-darken-name
                                (fc-get-face 'default :background)
-                               6))
-     (fc-set-face 'fringe nil
-                  :background "coral"))
+                               6)))
 
     ('deeper-blue
      (fc-set-face 'default nil
                   :foreground "beige")
      (fc-set-face 'mode-line nil
                   :background "gray61"))
-
-    ('fantom
-     (fc-set-face 'fringe nil
-                  :background "#F2A4AC"))
 
     ('leuven
      (fc-set-face 'show-paren-match nil
@@ -342,12 +334,8 @@ COLOR: background color."
                   :background "gray20"))
 
     ('material
-     (fc-set-face 'fringe nil
-                  :background "#ff9800")
      (fc-set-face 'default nil
-                  :foreground "wheat")
-     (fc-set-face 'ivy-current-match nil
-                  :background "gray50"))
+                  :foreground "wheat"))
 
     ('material-light
      (fc-set-face 'default nil
@@ -355,8 +343,6 @@ COLOR: background color."
 
     ('monokai
      (when *is-gui*
-       (fc-set-face 'fringe nil
-                    :background monokai-orange)
        (fc-set-face 'default nil
                     :background "#282a3a")))
 
@@ -384,12 +370,6 @@ COLOR: background color."
                                (fc-get-face 'default :background)
                                8)))
 
-    ('sanityinc-tomorrow-eighties
-     (fc-set-face 'ivy-current-match nil
-                  :background "gray35")
-     (fc-set-face 'fringe nil
-                  :background "#de935f"))
-
     ('sanityinc-tomorrow-night
      (fc-set-face 'default nil
                   :background "#303030"))
@@ -412,8 +392,6 @@ COLOR: background color."
                   :background "gray30"))
 
     ('zenburn
-     (fc-set-face 'fringe nil
-                  :background "#ff9800")
      (fc-set-face 'default nil
                   :background "#263238"
                   :foreground "beige")

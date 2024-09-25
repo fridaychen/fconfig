@@ -59,11 +59,14 @@ THEMES: list of themes."
                 finally return theme)))
     (fc-load-theme theme)))
 
-(defun fc-dark-theme-p ()
-  "Test if the current theme is dark."
+(defun fc-dark-face-p (face)
   (color-dark-p
    (color-name-to-rgb
-    (face-attribute 'default :background))))
+    (face-attribute face :background))))
+
+(defun fc-dark-theme-p ()
+  "Test if the current theme is dark."
+  (fc-dark-face-p 'default))
 
 (defvar *fc-theme-deep-dark-diff-threshold* 65000)
 

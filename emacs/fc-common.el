@@ -243,12 +243,30 @@ COLOR: background color."
 (defun fc--patch-theme-func-name ()
   (fc-set-face 'font-lock-function-name-face nil :overline t))
 
+(defun fc--patch-theme-mode-line ()
+  (fc-set-faces '(mode-line mode-line-active mode-line-inactive)
+                :box 'unspecified)
+  (fc-set-face 'mode-line-inactive nil
+               :foreground (if (fc-dark-face-p 'mode-line-inactive)
+                               "cornsilk"
+                             "black")))
+
+(defun fc--patch-theme-whitespace-trailing ()
+  (cl-loop with bg = (fc-get-face 'whitespace-trailing :background)
+           with default-bg = (fc-get-face 'default :background)
+           while (> (color-distance bg default-bg) 40000)
+           do (setf bg (color-darken-name bg 30))
+           finally do
+           (fc-set-face 'whitespace-trailing nil :background bg)))
+
 (defvar *fc-patch-modes* (list #'fc--markdown-patch-theme
                                #'fc--org-patch-theme
                                #'fc--soothe-theme
                                #'fc--patch-theme-disable-underline
                                #'fc--patch-theme-type
                                #'fc--patch-theme-func-name
+                               #'fc--patch-theme-mode-line
+                               #'fc--patch-theme-whitespace-trailing
                                ))
 
 (defun fc-patch-theme ()
@@ -267,26 +285,16 @@ COLOR: background color."
     ('adwaita
      (fc-set-face 'default nil
                   :foreground "black")
-     (fc-set-face 'fringe nil
-                  :background "#ee9800")
      (fc-set-face 'font-lock-constant-face nil
                   :foreground "#C52A2A")
      (fc-set-face 'font-lock-string-face nil
                   :foreground "dark green")
-     (fc-set-face 'whitespace-trailing nil
-                  :background "red4")
      (fc-set-face 'mode-line nil
-                  :background "cornsilk3")
-     (fc-set-face 'mode-line-inactive nil
-                  :background "cornsilk3")
-     (fc-set-face 'mode-line-inactive nil
-                  :foreground "gray40"))
+                  :background "cornsilk3"))
 
     ('ayu-grey
      (fc-set-face 'org-verse nil
                   :foreground "beige")
-     (fc-set-face 'whitespace-trailing nil
-                  :background "red4")
      (fc-set-face 'highlight nil
                   :background "IndianRed4"))
 
@@ -325,8 +333,6 @@ COLOR: background color."
                   :foreground "red")
      (fc-set-face 'font-lock-comment-face nil
                   :foreground "gray78")
-     (fc-set-face 'mode-line-inactive nil
-                  :foreground "black")
      (fc-set-face 'hl-line nil
                   :background "PaleVioletRed4")
      (fc-set-face 'highlight nil
@@ -390,9 +396,7 @@ COLOR: background color."
 
     ('srcery
      (fc-set-face 'default nil
-                  :foreground "beige")
-     (fc-set-face 'whitespace-trailing nil
-                  :background "red4"))
+                  :foreground "beige"))
 
     ('tango-dark
      (fc-set-face 'default nil
@@ -408,11 +412,6 @@ COLOR: background color."
                   :background "gray30"))
 
     ('zenburn
-     (fc-set-face 'mode-line nil
-                  :box 'unspecified)
-     (fc-set-face 'mode-line-inactive nil
-                  :foreground "coral"
-                  :box 'unspecified)
      (fc-set-face 'fringe nil
                   :background "#ff9800")
      (fc-set-face 'default nil

@@ -5,6 +5,7 @@
 ;;; Code:
 
 (require 'cl-lib)
+(require 'whitespace)
 
 ;; fonts
 (defconst *fc-cjk-fonts*
@@ -307,11 +308,11 @@ COLOR: background color."
                                (fc-get-face 'default :background)
                                6)))
 
-    ('deeper-blue
-     (fc-set-face 'default nil
-                  :foreground "beige")
-     (fc-set-face 'mode-line nil
-                  :background "gray61"))
+    ;; ('deeper-blue
+    ;;  (fc-set-face 'default nil
+    ;;               :foreground "beige")
+    ;;  (fc-set-face 'mode-line nil
+    ;;               :background "gray61"))
 
     ('leuven
      (fc-set-face 'show-paren-match nil

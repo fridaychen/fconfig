@@ -241,7 +241,7 @@ open('%s', 'w').write( str(main()) )")
                         (cons :java "-Djava.awt.headless=true"))
 
            (cl-defun fc--org-hide-all ()
-             (org-content)
+             (org-content (string-to-number (or (fc--org-get-file-property "TOC-LEVEL") "4")))
              (org-hide-drawer-all)
              (org-hide-block-all)
              (org-block-map (lambda ()

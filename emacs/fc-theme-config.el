@@ -77,6 +77,20 @@ THEMES: list of themes."
           (color-distance (fc-get-face 'default :foreground)
                           (fc-get-face 'default :background)))))
 
+(defun fc--adjust-face-contrast (face distance)
+  (cl-loop with bg = (fc-get-face face :background)
+           with fg = (fc-get-face face :foreground)
+           with step = (*
+                        (if (>= (color-distance fg bg) distance) 10 -10)
+                        (if (fc-dark-face-p face) 1 -1))
+           while (if (> step 0)
+                     (> (color-distance fg bg) distance)
+                   (< (color-distance fg bg) distance))
+
+           do (setq fg (color-darken-name fg step))
+
+           finally do (fc-set-face face nil :foreground fg)))
+
 (when *is-mac*
   (setf ns-use-srgb-colorspace nil))
 

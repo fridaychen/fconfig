@@ -265,6 +265,12 @@ FUNC: new function."
              (when r
                (cl-return r)))))
 
+(cl-defun fc-apply-chain (chain &rest args)
+  (cl-loop for x in chain
+           do
+           (setq args (apply x args))
+           finally return args))
+
 (defun fc-main-thread-p ()
   "Return t if current thread is main thread."
   (eq (current-thread) main-thread))

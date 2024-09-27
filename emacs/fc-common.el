@@ -253,12 +253,7 @@ COLOR: background color."
                              "black")))
 
 (defun fc--patch-theme-whitespace-trailing ()
-  (cl-loop with bg = (fc-get-face 'whitespace-trailing :background)
-           with default-bg = (fc-get-face 'default :background)
-           while (> (color-distance bg default-bg) 40000)
-           do (setf bg (color-darken-name bg 30))
-           finally do
-           (fc-set-face 'whitespace-trailing nil :background bg)))
+  (fc--set-face-bg-light 'whitespace-trailing 0.5))
 
 (defvar *fc-patch-modes* (list #'fc--markdown-patch-theme
                                #'fc--org-patch-theme

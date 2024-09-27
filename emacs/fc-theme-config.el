@@ -77,12 +77,32 @@ THEMES: list of themes."
           (color-distance (fc-get-face 'default :foreground)
                           (fc-get-face 'default :background)))))
 
+(cl-defun fc--set-color-light (color-name light)
+  (apply #'fc-apply-chain
+         (list #'color-rgb-to-hsl
+               #'(lambda (h s _) (list h s light ))
+               #'color-hsl-to-rgb
+               #'color-rgb-to-hex
+               )
+         (color-name-to-rgb color-name)))
+
+(cl-defun fc--set-face-fg-light (face light)
+  (fc-set-face face nil
+               :foreground
+               (fc--set-color-light (fc-get-face face :foreground) light)))
+
+(cl-defun fc--set-face-bg-light (face light)
+  (fc-set-face face nil
+               :background
+               (fc--set-color-light (fc-get-face face :background) light)))
+
 (defun fc--adjust-face-contrast (face distance)
   (cl-loop with bg = (fc-get-face face :background)
            with fg = (fc-get-face face :foreground)
            with step = (*
                         (if (>= (color-distance fg bg) distance) 10 -10)
                         (if (fc-dark-face-p face) 1 -1))
+
            while (if (> step 0)
                      (> (color-distance fg bg) distance)
                    (< (color-distance fg bg) distance))

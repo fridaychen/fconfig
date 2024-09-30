@@ -156,17 +156,6 @@
 
 (defconst *fc-soothe-color* (make-hash-table))
 
-(defun fc--soothe-face (face light)
-  (when (> light 1)
-    (error "light biger than 1"))
-
-  (let ((color  (fc-get-face face :background)))
-    (fc-set-face face nil
-                 :background (fc--set-color-light
-                              color
-                              (+ light
-                                 (fc--get-color-light color))))))
-
 (defun fc--soothe-theme ()
   "Soothe theme.
 PERCENT: produce background color by darken this percent.
@@ -174,7 +163,7 @@ COLOR: background color."
   (fc-each '(font-lock-keyword-face
              font-lock-function-name-face)
     (when (facep it)
-      (fc--soothe-face it 0.12)))
+      (fc--adjust-face-bg-light it (if (fc-dark-theme-p) 0.12 -0.12))))
 
   (fc-each '(font-lock-string-face
              font-lock-doc-face
@@ -188,7 +177,7 @@ COLOR: background color."
              font-lock-variable-use-face
              font-lock-property-use-face)
     (when (facep it)
-      (fc--soothe-face it 0.08))))
+      (fc--adjust-face-bg-light it (if (fc-dark-theme-p) 0.08 -0.08)))))
 
 (defvar *fc-common-light-theme-bg* "cornsilk2")
 
@@ -216,7 +205,8 @@ COLOR: background color."
 
 (defun fc--patch-face-hl-line ()
   (fc-set-faces '(highlight hl-line)
-                :underline 'unspecified))
+                :underline 'unspecified)
+  )
 
 (defun fc--patch-face-type ()
   (fc-set-face 'font-lock-type-face nil :slant 'italic))
@@ -232,6 +222,16 @@ COLOR: background color."
                                "cornsilk"
                              "black")))
 
+(defun fc--patch-face-default ()
+  (fc--set-face-bg-light 'default
+                         (if (fc-dark-theme-p)
+                             0.2
+                           0.8))
+  (fc--set-face-fg-light 'default
+                         (if (fc-dark-theme-p)
+                             0.9
+                           0.1)))
+
 (defun fc--patch-theme-whitespace-trailing ()
   (fc--set-face-bg-light 'whitespace-trailing 0.5))
 
@@ -243,6 +243,7 @@ COLOR: background color."
                                #'fc--patch-face-func-name
                                #'fc--patch-face-mode-line
                                #'fc--patch-theme-whitespace-trailing
+                               #'fc--patch-face-default
                                ))
 
 (defun fc-patch-theme ()
@@ -259,8 +260,6 @@ COLOR: background color."
 
   (pcase *fc-current-theme*
     ('adwaita
-     (fc-set-face 'default nil
-                  :foreground "black")
      (fc-set-face 'font-lock-constant-face nil
                   :foreground "#C52A2A")
      (fc-set-face 'font-lock-string-face nil
@@ -276,24 +275,11 @@ COLOR: background color."
 
     ('classic
      (fc-set-face 'link nil
-                  :foreground "cyan2")
-     (fc-set-face 'default nil
-                  :foreground "wheat"
-                  :background (color-darken-name
-                               (fc-get-face 'default :background)
-                               6)))
-
-    ;; ('deeper-blue
-    ;;  (fc-set-face 'default nil
-    ;;               :foreground "beige")
-    ;;  (fc-set-face 'mode-line nil
-    ;;               :background "gray61"))
+                  :foreground "cyan2"))
 
     ('leuven
      (fc-set-face 'show-paren-match nil
-                  :background "pink")
-     (fc-set-face 'default nil
-                  :foreground "black"))
+                  :background "pink"))
 
     ('leuven-dark
      (fc-set-face 'aw-leading-char-face nil
@@ -304,59 +290,9 @@ COLOR: background color."
      (fc-set-face 'hl-line nil
                   :background "PaleVioletRed4")
      (fc-set-face 'highlight nil
-                  :background "IndianRed4")
-     (fc-set-face 'default nil
-                  :foreground "cornsilk"
-                  :background "gray20"))
-
-    ('material
-     (fc-set-face 'default nil
-                  :foreground "wheat"))
-
-    ('material-light
-     (fc-set-face 'default nil
-                  :background (color-darken-name "honeydew" 2)))
-
-    ('monokai
-     (when *is-gui*
-       (fc-set-face 'default nil
-                    :background "#282a3a")))
-
-    ('monokai-pro
-     (fc-set-face 'minibuffer-prompt nil
-                  :foreground (fc-get-face
-                               'font-lock-keyword-face
-                               :foreground))
-     (fc-set-face 'vertical-border nil
-                  :foreground "gray50"))
-
-    ('monokai-pro-octagon
-     (fc-set-face 'minibuffer-prompt nil
-                  :foreground (fc-get-face
-                               'font-lock-keyword-face
-                               :foreground))
-     (fc-set-face 'font-lock-comment-face nil
-                  :foreground "gray80")
-     (fc-set-face 'font-lock-doc-face nil
-                  :foreground "gray80"))
-
-    ('plan9
-     (fc-set-face 'default nil
-                  :background (color-darken-name
-                               (fc-get-face 'default :background)
-                               8)))
-
-    ('sanityinc-tomorrow-night
-     (fc-set-face 'default nil
-                  :background "#303030"))
-
-    ('srcery
-     (fc-set-face 'default nil
-                  :foreground "beige"))
+                  :background "IndianRed4"))
 
     ('tango-dark
-     (fc-set-face 'default nil
-                  :foreground "cornsilk")
      (fc-set-face 'mode-line nil
                   :foreground "black"
                   :background "cornsilk4")

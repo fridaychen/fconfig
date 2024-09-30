@@ -1003,8 +1003,8 @@ CONTENT: content of new footnote."
 (defconst *fc-org-map*
   (fc-make-keymap
    `(
-     ("9" org-promote)
-     ("0" org-demote)
+     ("9" org-promote-subtree)
+     ("0" org-demote-subtree)
 
      ("1" ,(fc-decorate-region "* " "" :mark #'fc-mark-line))
      ("2" ,(fc-decorate-region "** " "" :mark #'fc-mark-line))

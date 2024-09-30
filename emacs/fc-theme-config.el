@@ -62,7 +62,7 @@ THEMES: list of themes."
 (defun fc-dark-face-p (face)
   (color-dark-p
    (color-name-to-rgb
-    (face-attribute face :background))))
+    (fc-get-face face :background))))
 
 (defun fc-dark-theme-p ()
   "Test if the current theme is dark."
@@ -100,6 +100,64 @@ THEMES: list of themes."
   (fc-set-face face nil
                :background
                (fc--set-color-light (fc-get-face face :background) light)))
+
+(defun fc--adjust-face-fg-light (face delta)
+  (let* ((color (fc-get-face face :foreground))
+         (light (fc--get-color-light color))
+         (new-light (+ light delta)))
+
+    (when (> new-light 1)
+      (error "light biger than 1"))
+
+    (fc-set-face face nil
+                 :foreground (fc--set-color-light
+                              color
+                              new-light))))
+
+(defun fc--adjust-face-bg-light (face delta)
+  (let* ((color (fc-get-face face :background))
+         (light (fc--get-color-light color))
+         (new-light (+ light delta)))
+
+    (when (> new-light 1)
+      (error "light biger than 1"))
+
+    (fc-set-face face nil
+                 :background (fc--set-color-light
+                              color
+                              new-light))))
+
+(cl-defun fc--get-face-contrast (face)
+  (let* ((bg (fc-get-face face :background))
+         (fg (fc-get-face face :foreground)))
+    (abs (-
+          (fc--get-color-light fg)
+          (fc--get-color-light bg)))))
+
+(cl-defun fc--set-face-contrast (face contrast &optional (adjust-fg t))
+  (let* ((current-contrast (fc--get-face-contrast face)))
+    (if adjust-fg
+        (fc--adjust-face-fg-light face
+                                  (* (abs (- contrast current-contrast))
+                                     (if (fc-dark-face-p face)
+                                         1
+                                       -1)))
+      (fc--adjust-face-bg-light face
+                                (* (abs (- contrast current-contrast))
+                                   (if (fc-dark-face-p face)
+                                       -1
+                                     1))))))
+
+(cl-defun fc--adjust-face-contrast (face contrast)
+  (let* ((current-contrast (fc--get-face-contrast face)))
+    (when (> current-contrast contrast)
+      (cl-return-from fc--adjust-face-contrast))
+
+    (fc--adjust-face-fg-light face
+                              (* (abs (- contrast current-contrast))
+                                 (if (fc-dark-face-p face)
+                                     -1
+                                   1)))))
 
 (when *is-mac*
   (setf ns-use-srgb-colorspace nil))

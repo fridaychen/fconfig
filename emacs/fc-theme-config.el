@@ -106,8 +106,8 @@ THEMES: list of themes."
          (light (fc--get-color-light color))
          (new-light (+ light delta)))
 
-    (when (> new-light 1)
-      (error "light biger than 1"))
+    (unless (>= 1 new-light 0)
+      (error "Wrong light"))
 
     (fc-set-face face nil
                  :foreground (fc--set-color-light
@@ -119,8 +119,8 @@ THEMES: list of themes."
          (light (fc--get-color-light color))
          (new-light (+ light delta)))
 
-    (when (> new-light 1)
-      (error "light biger than 1"))
+    (unless (>= 1 new-light 0)
+      (error "Wrong light"))
 
     (fc-set-face face nil
                  :background (fc--set-color-light
@@ -156,8 +156,8 @@ THEMES: list of themes."
     (fc--adjust-face-fg-light face
                               (* (abs (- contrast current-contrast))
                                  (if (fc-dark-face-p face)
-                                     -1
-                                   1)))))
+                                     1
+                                   -1)))))
 
 (when *is-mac*
   (setf ns-use-srgb-colorspace nil))

@@ -154,8 +154,6 @@
 (defvar *fc-soothe-light-percent* 8)
 (defvar *fc-soothe-distance-threshold* 3500)
 
-(defconst *fc-soothe-color* (make-hash-table))
-
 (defun fc--soothe-theme ()
   "Soothe theme.
 PERCENT: produce background color by darken this percent.
@@ -181,20 +179,21 @@ COLOR: background color."
 
 (defvar *fc-common-light-theme-bg* "cornsilk2")
 
-(fc-each '((material "gray20")
-           (tango-dark "gray21"))
-  (puthash (cl-first it) (cl-second it) *fc-soothe-color*))
-
 (defun fc-patch-theme-before-theme-changed ()
   (fc-set-faces '(font-lock-keyword-face
-                  font-lock-string-face
-                  font-lock-type-face
-                  font-lock-function-call-face
                   font-lock-function-name-face
+
+                  font-lock-string-face
+                  font-lock-doc-face
+                  font-lock-type-face
                   font-lock-constant-face
-                  font-lock-variable-name-face
-                  font-lock-variable-use-face
                   font-lock-property-name-face
+                  font-lock-variable-name-face
+
+                  font-lock-comment-face
+                  font-lock-preprocessor-face
+                  font-lock-function-call-face
+                  font-lock-variable-use-face
                   font-lock-property-use-face)
                 :foreground 'unspecified
                 :background 'unspecified

@@ -1,1 +1,3 @@
-((:local (c-mode (c-basic-offset . 4) (tab-width . 4))) (:path) (:env) (:build-args) (:define) (:include) (:src) (:name . "fconfig") (:tag . lsp) (:src-exclude) (:capture-tags . :fconfig:))
+((:local (c-mode (c-basic-offset . 4) (tab-width . 4))) (:path) (:env)
+ (:build-args) (:define) (:include) (:src) (:name . "fconfig")
+ (:tag . lsp) (:src-exclude) (:capture-tags . :fconfig:))

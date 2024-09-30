@@ -156,40 +156,25 @@
 
 (defconst *fc-soothe-color* (make-hash-table))
 
-(defun fc-soothe-face (face percent color)
-  (let* ((new-bg (or color
-                     (color-darken-name
-                      (fc-get-face face :background)
-                      percent))))
-    (fc-set-face face nil :background new-bg)))
+(defun fc--soothe-face (face light)
+  (when (> light 1)
+    (error "light biger than 1"))
 
-(defun fc--cal-soothe-percent ()
-  (cl-loop with default-bg = (fc-get-face 'default :background)
-           with orig-keyword-bg = (fc-get-face 'font-lock-keyword-face :background)
-           with keyword-bg = orig-keyword-bg
-           with percent = (if (fc-dark-theme-p)
-                              *fc-soothe-dark-percent*
-                            *fc-soothe-light-percent*)
-           with step = (if (fc-dark-theme-p)
-                           -3
-                         3)
-           while (< (color-distance default-bg keyword-bg) *fc-soothe-distance-threshold*)
+  (let ((color  (fc-get-face face :background)))
+    (fc-set-face face nil
+                 :background (fc--set-color-light
+                              color
+                              (+ light
+                                 (fc--get-color-light color))))))
 
-           do (progn
-                (cl-incf percent step)
-                (setf keyword-bg
-                      (color-darken-name orig-keyword-bg percent))
-                )
-           finally return percent))
-
-(defun fc-soothe-theme (percent color)
+(defun fc--soothe-theme ()
   "Soothe theme.
 PERCENT: produce background color by darken this percent.
 COLOR: background color."
   (fc-each '(font-lock-keyword-face
              font-lock-function-name-face)
     (when (facep it)
-      (fc-soothe-face it percent color)))
+      (fc--soothe-face it 0.12)))
 
   (fc-each '(font-lock-string-face
              font-lock-doc-face
@@ -203,12 +188,7 @@ COLOR: background color."
              font-lock-variable-use-face
              font-lock-property-use-face)
     (when (facep it)
-      (fc-soothe-face it (* percent 0.7) color))))
-
-(defun fc--soothe-theme ()
-  (fc-soothe-theme (fc--cal-soothe-percent)
-                   (gethash *fc-current-theme*
-                            *fc-soothe-color*)))
+      (fc--soothe-face it 0.08))))
 
 (defvar *fc-common-light-theme-bg* "cornsilk2")
 
@@ -234,17 +214,17 @@ COLOR: background color."
                 :overline 'unspecified
                 :slant 'unspecified))
 
-(defun fc--patch-theme-disable-underline ()
+(defun fc--patch-face-hl-line ()
   (fc-set-faces '(highlight hl-line)
                 :underline 'unspecified))
 
-(defun fc--patch-theme-type ()
+(defun fc--patch-face-type ()
   (fc-set-face 'font-lock-type-face nil :slant 'italic))
 
-(defun fc--patch-theme-func-name ()
+(defun fc--patch-face-func-name ()
   (fc-set-face 'font-lock-function-name-face nil :overline t))
 
-(defun fc--patch-theme-mode-line ()
+(defun fc--patch-face-mode-line ()
   (fc-set-faces '(mode-line mode-line-active mode-line-inactive)
                 :box 'unspecified)
   (fc-set-face 'mode-line-inactive nil
@@ -258,10 +238,10 @@ COLOR: background color."
 (defvar *fc-patch-modes* (list #'fc--markdown-patch-theme
                                #'fc--org-patch-theme
                                #'fc--soothe-theme
-                               #'fc--patch-theme-disable-underline
-                               #'fc--patch-theme-type
-                               #'fc--patch-theme-func-name
-                               #'fc--patch-theme-mode-line
+                               #'fc--patch-face-hl-line
+                               #'fc--patch-face-type
+                               #'fc--patch-face-func-name
+                               #'fc--patch-face-mode-line
                                #'fc--patch-theme-whitespace-trailing
                                ))
 

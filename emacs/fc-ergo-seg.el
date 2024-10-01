@@ -22,14 +22,7 @@
 
 (defun fc-user-select-theme-mode ()
   (when-let ((mode (fc-select "Theme mode" '(dark deep-dark light))))
-    (setf *fc-theme-mode* mode)
-
-    (pcase *fc-theme-mode*
-      ('dark
-       (setf *fc-default-face-fg-light* (list 0.9 0.1)))
-
-      ('deep-dark
-       (setf *fc-default-face-fg-light* (list 0.7 0.1))))))
+    (setf *fc-theme-mode* mode)))
 
 (defconst *fc-menu*
   (fc-create-pop-menu

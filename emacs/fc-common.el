@@ -224,15 +224,19 @@ COLOR: background color."
 (defun fc--patch-theme-whitespace-trailing ()
   (fc--set-face-bg-light 'whitespace-trailing 0.5))
 
-(defvar *fc-default-face-bg-light* (list 0.2 0.8))
-(defvar *fc-default-face-fg-light* (list 0.9 0.1))
+(defvar *fc-default-face-bg-light* '((dark 0.2 0.8)
+                                     (deep-dark 0.2 0.8)))
+(defvar *fc-default-face-fg-light* '((dark 0.9 0.1)
+                                     (deep-dark 0.7 0.1)))
 
 (defun fc--patch-face-default ()
   (let ((index (if (fc-dark-theme-p) 0 1)))
     (fc--set-face-bg-light 'default
-                           (seq-elt *fc-default-face-bg-light* index))
+                           (seq-elt (alist-get *fc-theme-mode* *fc-default-face-bg-light*)
+                                    index))
     (fc--set-face-fg-light 'default
-                           (seq-elt *fc-default-face-fg-light* index))))
+                           (seq-elt (alist-get *fc-theme-mode* *fc-default-face-fg-light*)
+                                    index))))
 
 (defun fc--patch-face-comment ()
   (fc--set-face-contrast 'font-lock-comment-face 0.5))

@@ -74,7 +74,7 @@ NO-CURRENT: not include current buffer in result."
 ;; select buffers to show
 (defun -show-buffers (bufs)
   "Show BUFFERS.
-  BUFS: buffer list."
+BUFS: buffer list."
   (let* ((count (length bufs))
          (first-buf (cl-first bufs))
          (size (/ (frame-height) count)))
@@ -105,9 +105,9 @@ NO-CURRENT: not include current buffer in result."
 
 (cl-defun fc-refresh-buffer-content (buffer-or-name del-win &rest rest)
   "Refresh buffer content.
-  BUFFER-OR-NAME: buffer or name.
-  DEL-WIN: delete the window of buffer.
-  REST: new content."
+BUFFER-OR-NAME: buffer or name.
+DEL-WIN: delete the window of buffer.
+REST: new content."
   (let* ((buf (if buffer-or-name
                   (get-buffer-create buffer-or-name)
                 (current-buffer)))
@@ -128,14 +128,14 @@ NO-CURRENT: not include current buffer in result."
 
 (cl-defun fc-pop-buf (buffer-or-name &key mode dir read-only highlight select escape local-vars)
   "Popup buf.
-  BUFFER-OR-NAME: buffer or name.
-  MODE: specify mode.
-  DIR: default-directory.
-  READ-ONLY: set buffer to read-only mode.
-  HIGHLIGHT: highlight regex.
-  SELECT: focus in new window.
-  ESCAPE: decode ansi escape sequence.
-  LOCAL-VARS: list of local-vars."
+BUFFER-OR-NAME: buffer or name.
+MODE: specify mode.
+DIR: default-directory.
+READ-ONLY: set buffer to read-only mode.
+HIGHLIGHT: highlight regex.
+SELECT: focus in new window.
+ESCAPE: decode ansi escape sequence.
+LOCAL-VARS: list of local-vars."
   (with-current-buffer buffer-or-name
     (when dir
       (setq-local default-directory dir))

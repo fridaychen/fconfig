@@ -150,9 +150,7 @@
 
 (require 'classic-theme)
 
-(defvar *fc-soothe-dark-percent* -4)
-(defvar *fc-soothe-light-percent* 8)
-(defvar *fc-soothe-distance-threshold* 3500)
+(defvar *fc-soothe-light-deltas* (list 0.11 0.07))
 
 (defun fc--soothe-theme ()
   "Soothe theme.
@@ -161,7 +159,8 @@ COLOR: background color."
   (fc-each '(font-lock-keyword-face
              font-lock-function-name-face)
     (when (facep it)
-      (fc--adjust-face-bg-light it (if (fc-dark-theme-p) 0.12 -0.12))))
+      (fc--adjust-face-bg-light it (* (seq-elt *fc-soothe-light-deltas* 0)
+                                      (if (fc-dark-theme-p) 1 -1)))))
 
   (fc-each '(font-lock-string-face
              font-lock-doc-face
@@ -175,7 +174,8 @@ COLOR: background color."
              font-lock-variable-use-face
              font-lock-property-use-face)
     (when (facep it)
-      (fc--adjust-face-bg-light it (if (fc-dark-theme-p) 0.08 -0.08)))))
+      (fc--adjust-face-bg-light it (* (seq-elt *fc-soothe-light-deltas* 1)
+                                      (if (fc-dark-theme-p) 1 -1))))))
 
 (defvar *fc-common-light-theme-bg* "cornsilk2")
 
@@ -221,18 +221,26 @@ COLOR: background color."
                                "cornsilk"
                              "black")))
 
-(defun fc--patch-face-default ()
-  (fc--set-face-bg-light 'default
-                         (if (fc-dark-theme-p)
-                             0.2
-                           0.8))
-  (fc--set-face-fg-light 'default
-                         (if (fc-dark-theme-p)
-                             0.9
-                           0.1)))
-
 (defun fc--patch-theme-whitespace-trailing ()
   (fc--set-face-bg-light 'whitespace-trailing 0.5))
+
+(defvar *fc-default-face-bg-light* (list 0.2 0.8))
+(defvar *fc-default-face-fg-light* (list 0.9 0.1))
+
+(defun fc--patch-face-default ()
+  (let ((index (if (fc-dark-theme-p) 0 1)))
+    (fc--set-face-bg-light 'default
+                           (seq-elt *fc-default-face-bg-light* index))
+    (fc--set-face-fg-light 'default
+                           (seq-elt *fc-default-face-fg-light* index))))
+
+(defun fc--patch-face-comment ()
+  (fc--set-face-contrast 'font-lock-comment-face 0.5))
+
+(defun fc--patch-face-aw-leading ()
+  (fc-set-face 'aw-leading-char-face nil
+               :height (* *fc-font-height* 2)
+               :foreground "red"))
 
 (defvar *fc-patch-modes* (list #'fc--markdown-patch-theme
                                #'fc--org-patch-theme
@@ -243,6 +251,8 @@ COLOR: background color."
                                #'fc--patch-face-mode-line
                                #'fc--patch-theme-whitespace-trailing
                                #'fc--patch-face-default
+                               #'fc--patch-face-comment
+                               #'fc--patch-face-aw-leading
                                ))
 
 (defun fc-patch-theme ()
@@ -258,14 +268,6 @@ COLOR: background color."
                  :background *fc-common-light-theme-bg*))
 
   (pcase *fc-current-theme*
-    ('adwaita
-     (fc-set-face 'font-lock-constant-face nil
-                  :foreground "#C52A2A")
-     (fc-set-face 'font-lock-string-face nil
-                  :foreground "dark green")
-     (fc-set-face 'mode-line nil
-                  :background "cornsilk3"))
-
     ('ayu-grey
      (fc-set-face 'org-verse nil
                   :foreground "beige")
@@ -281,11 +283,6 @@ COLOR: background color."
                   :background "pink"))
 
     ('leuven-dark
-     (fc-set-face 'aw-leading-char-face nil
-                  :height (* *fc-font-height* 2)
-                  :foreground "red")
-     (fc-set-face 'font-lock-comment-face nil
-                  :foreground "gray78")
      (fc-set-face 'hl-line nil
                   :background "PaleVioletRed4")
      (fc-set-face 'highlight nil
@@ -304,11 +301,7 @@ COLOR: background color."
 
     ('zenburn
      (fc-set-face 'default nil
-                  :background "#263238"
-                  :foreground "beige")
-     (fc-set-face 'aw-leading-char-face nil
-                  :height (* *fc-font-height* 2)
-                  :foreground "red")
+                  :background "#263238")
      (fc-set-face 'hl-line nil
                   :background (cond (*is-gui* "#505050")
                                     (*is-colorful* "#505050")

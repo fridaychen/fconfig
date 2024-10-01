@@ -22,9 +22,8 @@
 
 (defvar *fc-theme-mode* 'dark)
 (defvar *fc--work-themes* '((dark ayu-grey leuven-dark zenburn)
-                            (light leuven gruvbox-light-soft ef-cyprus)))
-(defvar *fc--work-deep-themes* '((dark jazz sanityinc-tomorrow-night)
-                                 (light acme)))
+                            (light leuven gruvbox-light-soft ef-cyprus)
+                            (deep-dark sanityinc-tomorrow-night)))
 
 (defvar *fc--ignore-files* '("compile_commands.json"))
 
@@ -1246,18 +1245,26 @@ STEP: pixels."
                         (restart-emacs))))
      ("t" ,(fc-manual (fc-select-func
                        "Select theme style"
-                       `(("dark"            . (lambda () (fc-theme-auto-select *fc-dark-theme*)))
-                         ("deep dark"       . (lambda () (fc-theme-auto-select *fc-deep-dark-theme*)))
-                         ("light"           . (lambda () (fc-theme-auto-select *fc-light-theme*)))
-                         ("very light"      . (lambda () (fc-theme-auto-select *fc-very-light-theme*)))
-                         ("work dark"       . (lambda () (fc-theme-auto-select
-                                                          (alist-get 'dark *fc--work-themes*))))
-                         ("work deep dark"  . (lambda () (fc-theme-auto-select
-                                                          (alist-get 'dark *fc--work-deep-themes*))))
-                         ("work light"      . (lambda () (fc-theme-auto-select
-                                                          (alist-get 'light *fc--work-themes*))))
-                         ("work very light" . (lambda () (fc-theme-auto-select
-                                                          (alist-get 'light *fc--work-themes*))))))))
+                       `(("dark"            . (lambda ()
+                                                (fc-theme-auto-select *fc-dark-theme*)))
+                         ("deep dark"       . (lambda ()
+                                                (fc-theme-auto-select *fc-deep-dark-theme*)))
+                         ("light"           . (lambda ()
+                                                (fc-theme-auto-select *fc-light-theme*)))
+                         ("very light"      . (lambda ()
+                                                (fc-theme-auto-select *fc-very-light-theme*)))
+                         ("work dark"       . (lambda ()
+                                                (fc-theme-auto-select
+                                                 (alist-get 'dark *fc--work-themes*))))
+                         ("work deep dark"  . (lambda ()
+                                                (fc-theme-auto-select
+                                                 (alist-get 'deep-dark *fc--work-themes*))))
+                         ("work light"      . (lambda ()
+                                                (fc-theme-auto-select
+                                                 (alist-get 'light *fc--work-themes*))))
+                         ("work very light" . (lambda ()
+                                                (fc-theme-auto-select
+                                                 (alist-get 'light *fc--work-themes*))))))))
      ("v" fc-tomato-customize)
      ("w" ,(fc-manual (fc-theme-auto-select
                        (alist-get *fc-theme-mode* *fc--work-themes*))))
@@ -1269,9 +1276,6 @@ STEP: pixels."
      ("L" fc--enlarge-h)
 
      ("S" ,(fc-manual (fc-assist-cmd "--pmsleep")))
-
-     ("W" ,(fc-manual (fc-theme-auto-select
-                       (alist-get *fc-theme-mode* *fc--work-deep-themes*))))
      )
    "ergo-prefix-quick-map")
   "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: select theme  w: work theme  z: suspend  S: sleep  W: deep work theme . ")

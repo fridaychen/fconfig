@@ -48,16 +48,15 @@ THEME: new theme."
 (defun fc-theme-auto-select (themes)
   "Auto select and load theme from THEMES.
 THEMES: list of themes."
-  (let ((theme (cl-loop
-                with theme = nil
-                do
-                (setf theme (seq-random-elt themes))
-                while (and (> (length themes) 1)
-                           (if (consp theme)
-                               (eq (car theme) *fc-current-theme*)
-                             (eq theme *fc-current-theme*)))
-                finally return theme)))
-    (fc-load-theme theme)))
+  (cl-loop
+   with theme = nil
+   do
+   (setf theme (seq-random-elt themes))
+   while (and (> (length themes) 1)
+              (if (consp theme)
+                  (eq (car theme) *fc-current-theme*)
+                (eq theme *fc-current-theme*)))
+   finally do (fc-load-theme theme)))
 
 (defun fc-dark-face-p (face)
   (color-dark-p
@@ -138,12 +137,12 @@ THEMES: list of themes."
   (let* ((current-contrast (fc--get-face-contrast face)))
     (if adjust-fg
         (fc--adjust-face-fg-light face
-                                  (* (abs (- contrast current-contrast))
+                                  (* (- contrast current-contrast)
                                      (if (fc-dark-face-p face)
                                          1
                                        -1)))
       (fc--adjust-face-bg-light face
-                                (* (abs (- contrast current-contrast))
+                                (* (- contrast current-contrast)
                                    (if (fc-dark-face-p face)
                                        -1
                                      1))))))

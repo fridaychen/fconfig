@@ -139,9 +139,9 @@
   (let* ((default-bg (face-attribute 'default :background))
          (bg (or
               (and (facep 'fringe)
-                   (face-attribute 'fringe :background))
+                   (fc-get-face 'fringe :background))
               (fc-get-face 'highlight :foreground)))
-         (fringe-bg (if (> (color-distance default-bg bg) 10000)
+         (fringe-bg (if (> (color-distance default-bg bg) 50000)
                         bg
                       *fc-modal-command-fringe-color*)))
     (setf *fc-modal-cur-fringe-color* fringe-bg))

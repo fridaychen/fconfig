@@ -93,7 +93,8 @@ BACKWARD: backward direction.
 FROM-BEGINNING: start from beginnning."
   (let* ((from-str (fc-current-thing :regq t :prompt "Regex Query replace from"))
          (to-str (read-string (format "Regex Query replace from %s to : "
-                                      from-str))))
+                                      from-str)
+                              from-str)))
     (cond
      (from-beginning
       (goto-char (point-min)))

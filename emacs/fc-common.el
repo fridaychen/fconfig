@@ -150,32 +150,35 @@
 
 (require 'classic-theme)
 
-(defvar *fc-soothe-light-deltas* (list 0.11 0.07))
+(defvar *fc-soothe-light-deltas* '((light -0.08 -0.05)
+                                   (dark 0.08 0.05)
+                                   (deep-dark 0.08 0.05)))
 
 (defun fc--soothe-theme ()
   "Soothe theme.
 PERCENT: produce background color by darken this percent.
 COLOR: background color."
-  (fc-each '(font-lock-keyword-face
-             font-lock-function-name-face)
-    (when (facep it)
-      (fc--adjust-face-bg-light it (* (seq-elt *fc-soothe-light-deltas* 0)
-                                      (if (fc-dark-theme-p) 1 -1)))))
+  (let* ((deltas (alist-get *fc-theme-mode* *fc-soothe-light-deltas*))
+         (level-1 (seq-elt deltas 0))
+         (level-2 (seq-elt deltas 1)))
+    (fc-each '(font-lock-keyword-face
+               font-lock-function-name-face)
+      (when (facep it)
+        (fc--adjust-face-bg-light it level-1)))
 
-  (fc-each '(font-lock-string-face
-             font-lock-doc-face
-             font-lock-type-face
-             font-lock-constant-face
-             font-lock-property-name-face
-             font-lock-variable-name-face
+    (fc-each '(font-lock-string-face
+               font-lock-doc-face
+               font-lock-type-face
+               font-lock-constant-face
+               font-lock-property-name-face
+               font-lock-variable-name-face
 
-             font-lock-preprocessor-face
-             font-lock-function-call-face
-             font-lock-variable-use-face
-             font-lock-property-use-face)
-    (when (facep it)
-      (fc--adjust-face-bg-light it (* (seq-elt *fc-soothe-light-deltas* 1)
-                                      (if (fc-dark-theme-p) 1 -1))))))
+               font-lock-preprocessor-face
+               font-lock-function-call-face
+               font-lock-variable-use-face
+               font-lock-property-use-face)
+      (when (facep it)
+        (fc--adjust-face-bg-light it level-2)))))
 
 (defvar *fc-common-light-theme-bg* "cornsilk2")
 
@@ -224,19 +227,18 @@ COLOR: background color."
 (defun fc--patch-theme-whitespace-trailing ()
   (fc--set-face-bg-light 'whitespace-trailing 0.5))
 
-(defvar *fc-default-face-bg-light* '((dark 0.2 0.8)
-                                     (deep-dark 0.2 0.8)))
-(defvar *fc-default-face-fg-light* '((dark 0.9 0.1)
-                                     (deep-dark 0.7 0.1)))
+(defvar *fc-default-face-bg-light* '((light 0.8)
+                                     (dark 0.2)
+                                     (deep-dark 0.2)))
+(defvar *fc-default-face-fg-light* '((light 0.1)
+                                     (dark 0.9)
+                                     (deep-dark 0.7)))
 
 (defun fc--patch-face-default ()
-  (let ((index (if (fc-dark-theme-p) 0 1)))
-    (fc--set-face-bg-light 'default
-                           (seq-elt (alist-get *fc-theme-mode* *fc-default-face-bg-light*)
-                                    index))
-    (fc--set-face-fg-light 'default
-                           (seq-elt (alist-get *fc-theme-mode* *fc-default-face-fg-light*)
-                                    index))))
+  (fc--set-face-bg-light 'default
+                         (car (alist-get *fc-theme-mode* *fc-default-face-bg-light*)))
+  (fc--set-face-fg-light 'default
+                         (car (alist-get *fc-theme-mode* *fc-default-face-fg-light*))))
 
 (defun fc--patch-face-comment ()
   (fc--set-face-contrast 'font-lock-comment-face 0.5))

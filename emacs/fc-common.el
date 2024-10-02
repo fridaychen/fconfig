@@ -173,6 +173,8 @@ COLOR: background color."
                font-lock-property-name-face
                font-lock-variable-name-face
 
+               font-lock-builtin-face
+               font-lock-comment-face
                font-lock-preprocessor-face
                font-lock-function-call-face
                font-lock-variable-use-face
@@ -193,6 +195,7 @@ COLOR: background color."
                   font-lock-property-name-face
                   font-lock-variable-name-face
 
+                  font-lock-builtin-face
                   font-lock-comment-face
                   font-lock-preprocessor-face
                   font-lock-function-call-face

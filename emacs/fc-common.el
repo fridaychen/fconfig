@@ -248,7 +248,6 @@ COLOR: background color."
 
 (defvar *fc-patch-modes* (list #'fc--markdown-patch-theme
                                #'fc--org-patch-theme
-                               #'fc--soothe-theme
                                #'fc--patch-face-hl-line
                                #'fc--patch-face-type
                                #'fc--patch-face-func-name
@@ -257,6 +256,7 @@ COLOR: background color."
                                #'fc--patch-face-default
                                #'fc--patch-face-comment
                                #'fc--patch-face-aw-leading
+                               #'fc--soothe-theme
                                ))
 
 (defun fc-patch-theme ()
@@ -306,6 +306,9 @@ COLOR: background color."
     ('zenburn
      (fc-set-face 'default nil
                   :background "#263238")
+     (fc-set-face 'vertico-current nil
+                  :background "IndianRed4"
+                  :underline nil)
      (fc-set-face 'hl-line nil
                   :background (cond (*is-gui* "#505050")
                                     (*is-colorful* "#505050")

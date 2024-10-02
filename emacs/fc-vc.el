@@ -118,6 +118,18 @@
 
     (fc-pop-buf buf :read-only t :escape t :mode 'diff-mode)))
 
+(cl-defun fc-git-rename-branch ()
+  (interactive)
+
+  (when-let ((name (read-string "New name for current branch")))
+    (magit-branch-rename (fc-vc-branch) name)))
+
+(cl-defun fc-git-delete-branch ()
+  (interactive)
+
+  (when-let ((branch (fc-vc-select-branch)))
+    (magit-branch-delete (list branch))))
+
 (fc-load 'diff-hl
   :after (progn
            (setf diff-hl-update-async t)

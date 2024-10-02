@@ -150,37 +150,40 @@
 
 (require 'classic-theme)
 
-(defvar *fc-soothe-light-deltas* '((light -0.08 -0.05)
-                                   (dark 0.08 0.05)
-                                   (deep-dark 0.08 0.05)))
+(defvar *fc-soothe-light-deltas* '((light -0.08 -0.05 -0.04)
+                                   (dark 0.06 0.03 0.02)
+                                   (deep-dark 0.08 0.05 0.03)))
 
 (defun fc--soothe-theme ()
   "Soothe theme.
 PERCENT: produce background color by darken this percent.
 COLOR: background color."
-  (let* ((deltas (alist-get *fc-theme-mode* *fc-soothe-light-deltas*))
-         (level-1 (seq-elt deltas 0))
-         (level-2 (seq-elt deltas 1)))
+  (cl-multiple-value-bind (level-1 level-2 level-3)
+      (alist-get *fc-theme-mode* *fc-soothe-light-deltas*)
+
     (fc-each '(font-lock-keyword-face
                font-lock-function-name-face)
       (when (facep it)
         (fc--adjust-face-bg-light it level-1)))
 
     (fc-each '(font-lock-string-face
-               font-lock-doc-face
                font-lock-type-face
                font-lock-constant-face
                font-lock-property-name-face
                font-lock-variable-name-face
 
-               font-lock-builtin-face
-               font-lock-comment-face
                font-lock-preprocessor-face
                font-lock-function-call-face
                font-lock-variable-use-face
                font-lock-property-use-face)
       (when (facep it)
-        (fc--adjust-face-bg-light it level-2)))))
+        (fc--adjust-face-bg-light it level-2)))
+
+    (fc-each '(font-lock-builtin-face
+               font-lock-doc-face
+               font-lock-comment-face)
+      (when (facep it)
+        (fc--adjust-face-bg-light it level-3)))))
 
 (defvar *fc-common-light-theme-bg* "cornsilk2")
 

@@ -180,8 +180,7 @@ COLOR: background color."
         (fc--adjust-face-bg-light it level-2)))
 
     (fc-each '(font-lock-builtin-face
-               font-lock-doc-face
-               font-lock-comment-face)
+               font-lock-doc-face)
       (when (facep it)
         (fc--adjust-face-bg-light it level-3)))))
 
@@ -237,7 +236,7 @@ COLOR: background color."
                                      (dark 0.2)
                                      (deep-dark 0.2)))
 (defvar *fc-default-face-fg-light* '((light 0.1)
-                                     (dark 0.9)
+                                     (dark 0.95)
                                      (deep-dark 0.7)))
 
 (defun fc--patch-face-default ()
@@ -254,31 +253,18 @@ COLOR: background color."
                :height (* *fc-font-height* 2)
                :foreground "red"))
 
-(defvar *fc-patch-modes* (list #'fc--markdown-patch-theme
-                               #'fc--org-patch-theme
-                               #'fc--patch-face-hl-line
-                               #'fc--patch-face-type
-                               #'fc--patch-face-func-name
-                               #'fc--patch-face-mode-line
-                               #'fc--patch-theme-whitespace-trailing
-                               #'fc--patch-face-default
-                               #'fc--patch-face-comment
-                               #'fc--patch-face-aw-leading
-                               #'fc--soothe-theme
-                               ))
+(defvar *fc-patch-theme-hook* (list #'fc--patch-face-hl-line
+                                    #'fc--patch-face-type
+                                    #'fc--patch-face-func-name
+                                    #'fc--patch-face-mode-line
+                                    #'fc--patch-theme-whitespace-trailing
+                                    #'fc--patch-face-default
+                                    #'fc--patch-face-comment
+                                    #'fc--patch-face-aw-leading
+                                    #'fc--soothe-theme
+                                    ))
 
-(defun fc-patch-theme ()
-  "Patch theme."
-  (when (member *fc-current-theme* '(adwaita
-                                     ef-cyprus
-                                     ef-deuteranopia-light
-                                     ef-tritanopia-light
-                                     faff
-                                     leuven
-                                     modus-operandi))
-    (fc-set-face 'default nil
-                 :background *fc-common-light-theme-bg*))
-
+(defun fc--patch-specific-theme ()
   (pcase *fc-current-theme*
     ('ayu-grey
      (fc-set-face 'org-verse nil
@@ -289,6 +275,10 @@ COLOR: background color."
     ('classic
      (fc-set-face 'link nil
                   :foreground "cyan2"))
+
+    ('ef-cyprus
+     (fc-set-face 'default nil
+                  :background "#C1E6C6"))
 
     ('leuven
      (fc-set-face 'show-paren-match nil
@@ -320,46 +310,13 @@ COLOR: background color."
      (fc-set-face 'hl-line nil
                   :background (cond (*is-gui* "#505050")
                                     (*is-colorful* "#505050")
-                                    (t "white")))))
+                                    (t "white"))))))
 
-  (fc-each *fc-patch-modes*
-    (fc-funcall it)))
+(defun fc-patch-theme ()
+  "Patch theme."
+  (fc--patch-specific-theme)
 
-(defun fc--org-patch-theme ()
-  (fc-set-face 'org-agenda-structure nil
-               :height 1.1)
-  (fc-set-face 'org-agenda-date nil
-               :height 1.1)
-  (fc-set-face 'org-agenda-date-today nil
-               :height 1.2)
-  (fc-set-face 'org-agenda-date-weekend nil
-               :height 1.1)
-
-  (pcase *fc-current-theme*
-    ('leuven-dark
-     (fc-set-face 'org-todo nil
-                  :foreground "pale green"))
-
-    ('zenburn
-     (fc-set-face 'org-superstar-header-bullet nil
-                  :foreground "tomato"))
-    ))
-
-(defun fc--markdown-patch-theme ()
-  (pcase *fc-current-theme*
-    ('material
-     (fc-set-face 'markdown-header-face-1 nil
-                  :height 1.2)
-     )
-
-    ('modus-operandi
-     (fc-set-face 'markdown-code-face nil :background "gray90")
-     )
-
-    ('zenburn
-     (fc-set-face 'markdown-header-delimiter-face nil
-                  :foreground "tomato"))
-    ))
+  (run-hooks '*fc-patch-theme-hook*))
 
 ;; players
 (cl-defun fc-init-user-player ()

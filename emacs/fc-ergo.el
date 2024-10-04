@@ -1058,6 +1058,9 @@ KEYMAP: keymap to run."
   (fc-show-hide-buffer "*info*"
                        #'info))
 
+(cl-defun fc-ergo-load-theme ()
+  (fc-theme-auto-select (alist-get *fc-theme-mode* *fc--work-themes*)))
+
 (defconst *ergo-help-map*
   (fc-make-keymap
    `(("SPC" fc-help-portal)
@@ -1828,8 +1831,6 @@ FUNC: new repeat func."
   (mapc install-theme *fc-dark-theme*)
   (mapc install-theme *fc-deep-dark-theme*)
   (mapc install-theme *fc-light-theme*))
-
-(fc-theme-auto-select (alist-get *fc-theme-mode* *fc--work-themes*))
 
 (provide 'fc-ergo)
 

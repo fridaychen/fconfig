@@ -14,6 +14,13 @@
         :date (fc-search "date: \\(.+\\)" :begin t :sub 1 :bound 128)))
 
 (cl-defun fc--markdown-theme-changed ()
+  (fc-set-face 'markdown-header-face-1 nil :height 1.2)
+  (fc-set-face 'markdown-header-face-2 nil :height 1.1)
+  (fc-set-face 'markdown-header-face-3 nil :height 1.1)
+  (fc-set-face 'markdown-header-face-4 nil :height 1.0)
+  (fc-set-face 'markdown-header-face-5 nil :height 1.0)
+  (fc-set-face 'markdown-header-face-6 nil :height 1.0)
+
   (when-let ((has-face (facep 'markdown-header-delimiter-face))
              (no-color (not (color-defined-p (face-attribute
                                               'markdown-header-delimiter-face
@@ -22,8 +29,6 @@
                               :foreground)))
     (fc-set-face 'markdown-header-delimiter-face nil
                  :foreground fg)))
-
-(add-hook '*fc-after-theme-hook* #'fc--markdown-theme-changed)
 
 (fc-load 'markdown-mode
   :after (progn

@@ -22,7 +22,9 @@
 
 (defun fc-user-select-theme-mode ()
   (when-let ((mode (fc-select "Theme mode" '(dark deep-dark light))))
-    (setf *fc-theme-mode* mode)))
+    (setf *fc-theme-mode* mode)
+
+    (fc-ergo-load-theme)))
 
 (defconst *fc-menu*
   (fc-create-pop-menu

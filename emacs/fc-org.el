@@ -87,6 +87,15 @@
 
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
+  (fc-set-face 'org-agenda-structure nil
+               :height 1.1)
+  (fc-set-face 'org-agenda-date nil
+               :height 1.1)
+  (fc-set-face 'org-agenda-date-today nil
+               :height 1.2)
+  (fc-set-face 'org-agenda-date-weekend nil
+               :height 1.1)
+
   (fc-set-face 'org-block nil
                :family (fc-get-face 'default :family))
 
@@ -1003,8 +1012,10 @@ CONTENT: content of new footnote."
 (defconst *fc-org-map*
   (fc-make-keymap
    `(
-     ("9" org-promote-subtree)
-     ("0" org-demote-subtree)
+     ("9" ,(fc-cond-key :normal #'org-promote-subtree
+                        :prefix #'org-promote))
+     ("0" ,(fc-cond-key :normal #'org-demote-subtree
+                        :prefix #'org-demote))
 
      ("1" ,(fc-decorate-region "* " "" :mark #'fc-mark-line))
      ("2" ,(fc-decorate-region "** " "" :mark #'fc-mark-line))

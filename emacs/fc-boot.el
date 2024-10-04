@@ -73,6 +73,8 @@
   :local t
   :after (fc-add-hook-func '*fc-after-theme-hook* #'fc--setup-line-spacing))
 
+(fc-ergo-load-theme)
+
 (pcase *fc-completion*
   ('helm (fc-require 'fc-helm t))
   ('vertico (fc-require 'fc-vertico t))
@@ -197,6 +199,9 @@
 
 (setf *fc-booting* nil
       gc-cons-threshold (* 20 1024 1024))
+
+(with-eval-after-load 'fc-markdown
+  (add-hook '*fc-after-theme-hook* #'fc--markdown-theme-changed))
 
 (provide 'fc-boot)
 

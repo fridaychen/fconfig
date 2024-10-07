@@ -94,46 +94,18 @@
 (defconst *fc-enable-company* nil)
 
 ;; theme
-(setf *fc-light-theme* '(
-                         (ef-cyprus . ef-themes)
-                         (faff . faff-theme)
-                         (gruvbox-light-hard . gruvbox-theme)
-                         (plan9 . plan9-theme)
-                         )
-      *fc-very-light-theme* '(
-                              (acme . acme-theme)
-                              (leuven . leuven-theme)
-                              (material-light . material-theme)
-                              (modus-operandi . modus-themes)
-                              )
-      *fc-dark-theme* (if *is-gui*
-                          '(
-                            (fantom . fantom-theme)
-                            (gruvbox-dark-hard . gruvbox-theme)
-                            (material . material-theme)
-                            (nord . nord-theme)
-                            (sanityinc-tomorrow-eighties . color-theme-sanityinc-tomorrow)
-                            (srcery . srcery-theme)
-                            )
-                        '(
-                          (gruvbox-dark-soft . gruvbox-theme)
-                          (nord . nord-theme)
-                          (sanityinc-tomorrow-eighties . color-theme-sanityinc-tomorrow)
-                          )
-                        )
-      *fc-deep-dark-theme* (if *is-gui*
-                               '(
-                                 (deeper-blue)
-                                 (gotham . gotham-theme)
-                                 (hybrid-reverse . hybrid-reverse-theme)
-                                 (jazz . jazz-theme)
-                                 (sanityinc-tomorrow-night . color-theme-sanityinc-tomorrow)
-                                 )
-                             '(
-                               (deeper-blue)
-                               (jazz . jazz-theme)
-                               (sanityinc-tomorrow-night . color-theme-sanityinc-tomorrow)
-                               ))
+(setf *fc--work-themes* '((dark
+                           (ayu-grey . ayu-theme)
+                           leuven-dark
+                           zenburn)
+                          (light
+                           leuven
+                           (gruvbox-light-soft . gruvbox-theme)
+                           (ef-cyprus . ef-themes))
+                          (deep-dark
+                           modus-vivendi-deuteranopia
+                           (sanityinc-tomorrow-night . color-theme-sanityinc-tomorrow)))
+
       ;; fringe width 2.5mm for laptop, otherwise 3mm
       *fc-fringe-width* (if *is-gui*
                             (truncate (* (fc-display-ppi)

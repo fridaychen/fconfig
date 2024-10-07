@@ -21,9 +21,9 @@
 (defconst *fc--repeat-orignal-func* #'fc-translate-word)
 
 (defvar *fc-theme-mode* 'dark)
-(defvar *fc--work-themes* '((dark ayu-grey leuven-dark zenburn)
-                            (light leuven gruvbox-light-soft ef-cyprus)
-                            (deep-dark sanityinc-tomorrow-night)))
+(defvar *fc--work-themes* '((dark leuven-dark)
+                            (light leuven)
+                            (deep-dark modus-vivendi-deuteranopia)))
 
 (defvar *fc--ignore-files* '("compile_commands.json"))
 
@@ -1823,14 +1823,6 @@ FUNC: new repeat func."
  #'magit-diff-working-tree
  #'magit-log-all
  #'man)
-
-;; install theme packages
-(let ((install-theme (lambda (x)
-                       (and (consp x)
-                            (fc-install (cdr x))))))
-  (mapc install-theme *fc-dark-theme*)
-  (mapc install-theme *fc-deep-dark-theme*)
-  (mapc install-theme *fc-light-theme*))
 
 (provide 'fc-ergo)
 

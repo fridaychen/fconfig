@@ -15,7 +15,6 @@
 (cl-defun fc-vertico--clear ()
   (interactive)
 
-  (message "--%d "(current-column))
   (when (not (zerop (current-column)))
     (beginning-of-line-text)
     (kill-line)
@@ -78,7 +77,6 @@
 (cl-defun fc-vertico--delete-bookmark ()
   (interactive)
 
-  (message "enter fc-delete-bookmark")
   (when-let* ((name (seq-elt vertico--candidates
                              vertico--index))
               (confirm (fc-user-confirm (format "Delete bookmark %s" name))))

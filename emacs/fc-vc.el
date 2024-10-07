@@ -133,8 +133,8 @@
 (fc-load 'diff-hl
   :after (progn
            (setf diff-hl-update-async t)
-           (add-to-list 'diff-hl-global-modes 'org-mode)
-           (add-to-list 'diff-hl-global-modes 'markdown-mode)
+           (add-to-list 'diff-hl-global-modes 'org-mode t)
+           (add-to-list 'diff-hl-global-modes 'markdown-mode t)
 
            (global-diff-hl-mode 1)
            (diff-hl-flydiff-mode 1)

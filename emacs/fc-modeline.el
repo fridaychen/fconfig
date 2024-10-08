@@ -320,7 +320,7 @@
    current-input-method-title
    (fc--flycheck-seg)
    (fc--compilation-seg)
-   (fc-vc-branch)
+   (fc-funcall #'fc-vc-branch)
    " "))
 
 (defvar *fc-modeline-most-right-string* nil)

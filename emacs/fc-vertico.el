@@ -47,7 +47,6 @@
 
              (setq-default vertico-posframe-border-width 6))
 
-           (add-hook '*fc-after-theme-hook* #'fc-vertico--posframe-theme-changed)
            (fc-vertico--posframe-theme-changed)
 
            (setf vertico-count 20)

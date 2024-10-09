@@ -45,8 +45,6 @@
 (defvar *fc-enable-dev-hook* nil)
 (defvar *fc-disable-dev-hook* nil)
 
-(load-theme 'leuven t)
-
 (require 'fc-facility)
 (require 'fc-package)
 (fc-require 'fc-autoloads)
@@ -84,13 +82,12 @@
            (add-to-list '*fc-after-theme-hook* #'fc-modeline-mode)))
 (fc-modal-enable)
 
-(fc-add-hook-func '*fc-before-theme-hook*
-  #'fc--org-before-theme-changed
-  #'fc-patch-theme-before-theme-changed)
+(add-hook '*fc-before-theme-hook* #'fc-beautify-theme-before)
 
 (fc-add-hook-func '*fc-after-theme-hook*
   #'fc-modal-after-theme-change
-  #'fc-patch-theme)
+  #'fc-beautify-theme
+  )
 
 (cl-defun fc-after-restart ()
   "After restart, load desktop."

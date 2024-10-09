@@ -30,6 +30,8 @@
   :local t
   :after (progn
            (add-hook '*fc-after-theme-hook* #'fc--org-theme-changed)
+           (add-hook '*fc-before-theme-hook* #'fc--org-before-theme-changed)
+
            (fc-org-autoconfig)
            (add-hook '*fc-common-fast-act-hook* #'fc--org-toggle-special-edit)
            (fc-require 'fc-plantuml)))
@@ -202,6 +204,9 @@
 
 (with-eval-after-load 'fc-markdown
   (add-hook '*fc-after-theme-hook* #'fc--markdown-theme-changed))
+
+(with-eval-after-load 'fc-vertico
+  (add-hook '*fc-after-theme-hook* #'fc-vertico--posframe-theme-changed))
 
 (provide 'fc-boot)
 

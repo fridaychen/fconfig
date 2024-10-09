@@ -73,6 +73,10 @@
 (autoload #'fc-theme-auto-select "fc-theme-config")
 (autoload #'fc-dark-theme-p "fc-theme-config")
 
+;; theme beautify
+(autoload #'fc-beautify-theme "fc-theme-beautify")
+(autoload #'fc-beautify-theme-before "fc-theme-beautify")
+
 ;; util
 (autoload #'fc-has-battery "fc-util")
 (autoload #'fc-color-complement "fc-util")

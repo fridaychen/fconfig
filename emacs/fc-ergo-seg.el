@@ -53,7 +53,8 @@
 
 (defun fc--tomato-seg ()
   "Return the tomate status."
-  (when (and (fc--wide-window-p) (fc--right-bottom-window-p))
+  (when (and (boundp '*fc-tomato-bar*)
+             (fc--wide-window-p) (fc--right-bottom-window-p))
     *fc-tomato-bar*))
 
 (add-to-list 'global-mode-string '(t (:eval (fc--tomato-seg))))

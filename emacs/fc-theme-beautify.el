@@ -13,7 +13,7 @@
                                      (deep-dark 0.2)))
 (defvar *fc-default-face-fg-light* '((light 0.1)
                                      (dark 0.95)
-                                     (deep-dark 0.7)))
+                                     (deep-dark 0.75)))
 
 (defun fc--beautify-soothe-theme ()
   "Soothe theme.

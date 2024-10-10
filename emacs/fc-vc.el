@@ -141,12 +141,10 @@
 
            (unless *is-gui*
              (setq diff-hl-side 'left)
-             (diff-hl-margin-mode 1))
-
-           (fc-bind-keys
-            '(("[" diff-hl-previous-hunk)
-              ("]" diff-hl-next-hunk))
-            *ergo-vc-map*)))
+             (diff-hl-margin-mode 1)))
+  :bind '((*ergo-vc-map*
+           ("[" diff-hl-previous-hunk)
+           ("]" diff-hl-next-hunk))))
 
 (cl-defun fc-vc-rename-file ()
   (interactive)

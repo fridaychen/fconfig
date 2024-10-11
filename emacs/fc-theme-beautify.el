@@ -15,12 +15,23 @@
                                      (dark 0.95)
                                      (deep-dark 0.75)))
 
+(cl-defun fc--theme-mode ()
+  (when (or (and (eq *fc-theme-mode* 'light)
+                 (not (fc-dark-theme-p)))
+            (xor (eq *fc-theme-mode* 'light)
+                 (fc-dark-theme-p)))
+    (cl-return-from fc--theme-mode *fc-theme-mode*))
+
+  (if (fc-dark-theme-p)
+      'dark
+    'light))
+
 (defun fc--beautify-soothe-theme ()
   "Soothe theme.
 PERCENT: produce background color by darken this percent.
 COLOR: background color."
   (cl-multiple-value-bind (level-1 level-2 level-3)
-      (alist-get *fc-theme-mode* *fc-soothe-light-deltas*)
+      (alist-get (fc--theme-mode) *fc-soothe-light-deltas*)
 
     (fc-each '(font-lock-keyword-face
                font-lock-function-name-face)
@@ -92,9 +103,9 @@ COLOR: background color."
 
 (defun fc--beautify-face-default ()
   (fc--set-face-bg-light 'default
-                         (car (alist-get *fc-theme-mode* *fc-default-face-bg-light*)))
+                         (car (alist-get (fc--theme-mode) *fc-default-face-bg-light*)))
   (fc--set-face-fg-light 'default
-                         (car (alist-get *fc-theme-mode* *fc-default-face-fg-light*))))
+                         (car (alist-get (fc--theme-mode) *fc-default-face-fg-light*))))
 
 (defun fc--beautify-face-comment ()
   (fc--set-face-contrast 'font-lock-comment-face 0.5))

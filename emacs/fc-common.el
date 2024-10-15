@@ -97,6 +97,7 @@
 (setf *fc--work-themes* '((dark
                            (ayu-grey . ayu-theme)
                            leuven-dark
+                           tango-dark
                            zenburn)
                           (light
                            leuven

@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(defvar *fc-soothe-light-deltas* '((light -0.08 -0.05 -0.04)
+(defvar *fc-soothe-light-deltas* '((light -0.08 -0.05 -0.02)
                                    (dark 0.06 0.03 0.02)
                                    (deep-dark 0.08 0.05 0.03)))
 (defvar *fc-default-face-bg-light* '((light 0.8)

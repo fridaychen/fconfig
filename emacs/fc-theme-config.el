@@ -91,14 +91,16 @@ THEMES: list of themes."
          (color-name-to-rgb color-name)))
 
 (cl-defun fc--set-face-fg-light (face light)
-  (fc-set-face face nil
-               :foreground
-               (fc--set-color-light (fc-get-face face :foreground) light)))
+  (when light
+    (fc-set-face face nil
+                 :foreground
+                 (fc--set-color-light (fc-get-face face :foreground) light))))
 
 (cl-defun fc--set-face-bg-light (face light)
-  (fc-set-face face nil
-               :background
-               (fc--set-color-light (fc-get-face face :background) light)))
+  (when light
+    (fc-set-face face nil
+                 :background
+                 (fc--set-color-light (fc-get-face face :background) light))))
 
 (defun fc--adjust-face-fg-light (face delta)
   (let* ((color (fc-get-face face :foreground))

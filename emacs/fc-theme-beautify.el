@@ -8,10 +8,10 @@
 (defvar *fc-soothe-light-deltas* '((light -0.08 -0.05 -0.02)
                                    (dark 0.06 0.03 0.02)
                                    (deep-dark 0.08 0.05 0.03)))
-(defvar *fc-default-face-bg-light* '((light 0.8)
+(defvar *fc-default-face-bg-light* '((light 0.9)
                                      (dark 0.2)
                                      (deep-dark 0.2)))
-(defvar *fc-default-face-fg-light* '((light 0.1)
+(defvar *fc-default-face-fg-light* '((light 0.05)
                                      (dark 0.95)
                                      (deep-dark 0.75)))
 

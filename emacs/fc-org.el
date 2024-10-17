@@ -99,6 +99,8 @@
   (fc-set-face 'org-block nil
                :family (fc-get-face 'default :family))
 
+  (fc--set-face-contrast 'org-table 0.7)
+
   (when (and *is-gui* *fc-enable-font-to-align-table*)
     (let* ((family *fc-enable-font-to-align-table*)
            (fontset (fc-create-fontset "orgalign" family "spacing=m")))

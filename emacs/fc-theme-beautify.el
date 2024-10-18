@@ -103,12 +103,34 @@ COLOR: background color."
 
 (defun fc--beautify-face-default ()
   (fc--set-face-bg-light 'default
-                         (car (alist-get (fc--theme-mode) *fc-default-face-bg-light*)))
+                         (car (alist-get (fc--theme-mode)
+                                         *fc-default-face-bg-light*)))
   (fc--set-face-fg-light 'default
-                         (car (alist-get (fc--theme-mode) *fc-default-face-fg-light*))))
+                         (car (alist-get (fc--theme-mode)
+                                         *fc-default-face-fg-light*))))
 
-(defun fc--beautify-face-comment ()
-  (fc--set-face-contrast 'font-lock-comment-face 0.5))
+(defun fc--beautify-enhance-contrast ()
+  (fc-each '(font-lock-keyword-face
+             font-lock-function-name-face
+
+             font-lock-string-face
+             font-lock-type-face
+             font-lock-constant-face
+             font-lock-property-name-face
+             font-lock-variable-name-face
+
+             font-lock-builtin-face
+             font-lock-preprocessor-face
+             font-lock-function-call-face
+             font-lock-variable-use-face
+             font-lock-property-use-face)
+    (when (< (fc--get-face-contrast it) 0.6)
+      (fc--set-face-contrast it 0.6)))
+
+  (fc-each '(font-lock-doc-face
+             font-lock-comment-face)
+    (when (< (fc--get-face-contrast it) 0.5)
+      (fc--set-face-contrast it 0.5))))
 
 (defun fc--beautify-face-aw-leading ()
   (fc-set-face 'aw-leading-char-face nil
@@ -121,9 +143,9 @@ COLOR: background color."
                                        #'fc--beautify-face-mode-line
                                        #'fc--beautify-theme-whitespace-trailing
                                        #'fc--beautify-face-default
-                                       #'fc--beautify-face-comment
                                        #'fc--beautify-face-aw-leading
                                        #'fc--beautify-soothe-theme
+                                       #'fc--beautify-enhance-contrast
                                        ))
 
 (defun fc-beautify-theme ()

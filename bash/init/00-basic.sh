@@ -22,7 +22,7 @@ case $(uname) in
         if [[ "$TERM" != "linux" ]]; then
             xcape_cnt=$(ps ax | grep -c xcape)
 
-            if [[ $DISPLAY != "" && $xcape_cnt == 1 ]]; then
+            if [[ $DISPLAY != "" && $xcape_cnt == 1 && $(which xcape 2> /dev/null) ]]; then
                 xcape -e 'Control_L=Escape'
             fi
         fi

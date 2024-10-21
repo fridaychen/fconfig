@@ -84,6 +84,8 @@ Project starts $start_date
 '/
 
 !procedure $init_seq()
+!pragma teoz true
+
 hide footbox
 hide unlinked
 

@@ -15,6 +15,8 @@
                                      (dark 0.95)
                                      (deep-dark 0.75)))
 
+(defvar *fc-face-contrast-lower-limit* '(0.6 0.56 0.52))
+
 (cl-defun fc--theme-mode ()
   (when (or (and (eq *fc-theme-mode* 'light)
                  (not (fc-dark-theme-p)))
@@ -109,28 +111,35 @@ COLOR: background color."
                          (car (alist-get (fc--theme-mode)
                                          *fc-default-face-fg-light*))))
 
+(defun fc--do-enhance-contrast (faces threshold)
+  (fc-each faces
+    (when (< (fc--get-face-contrast it) threshold)
+      (fc--set-face-contrast it threshold))))
+
 (defun fc--beautify-enhance-contrast ()
-  (fc-each '(font-lock-keyword-face
-             font-lock-function-name-face
+  (cl-multiple-value-bind (level-1 level-2 level-3)
+      *fc-face-contrast-lower-limit*
 
-             font-lock-string-face
-             font-lock-type-face
-             font-lock-constant-face
-             font-lock-property-name-face
-             font-lock-variable-name-face
+    (fc--do-enhance-contrast '(font-lock-keyword-face
+                               font-lock-function-name-face
+                               font-lock-builtin-face)
+                             level-1)
 
-             font-lock-builtin-face
-             font-lock-preprocessor-face
-             font-lock-function-call-face
-             font-lock-variable-use-face
-             font-lock-property-use-face)
-    (when (< (fc--get-face-contrast it) 0.6)
-      (fc--set-face-contrast it 0.6)))
+    (fc--do-enhance-contrast '(font-lock-preprocessor-face
+                               font-lock-function-call-face
+                               font-lock-variable-use-face
+                               font-lock-property-use-face
 
-  (fc-each '(font-lock-doc-face
-             font-lock-comment-face)
-    (when (< (fc--get-face-contrast it) 0.5)
-      (fc--set-face-contrast it 0.5))))
+                               font-lock-string-face
+                               font-lock-type-face
+                               font-lock-constant-face
+                               font-lock-property-name-face
+                               font-lock-variable-name-face)
+                             level-2)
+
+    (fc--do-enhance-contrast '(font-lock-doc-face
+                               font-lock-comment-face)
+                             level-3)))
 
 (defun fc--beautify-face-aw-leading ()
   (fc-set-face 'aw-leading-char-face nil

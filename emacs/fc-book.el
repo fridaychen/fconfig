@@ -91,8 +91,10 @@ PAIRS: replacement list."
 
     (text-scale-set *fc-book-scale*)
 
-    (fc-delay
-      (fc-viewer-toggle))))
+    (let ((buf (current-buffer)))
+      (fc-delay
+        (with-current-buffer buf
+          (fc-viewer-toggle))))))
 
 (cl-defun fc-book-fix-zh-single-qoute ()
   "Fix chinese apostrophe punctuation."

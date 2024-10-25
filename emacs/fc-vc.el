@@ -121,20 +121,20 @@
 (cl-defun fc-git-rename-branch ()
   (interactive)
 
-  (when-let ((name (read-string "New name for current branch")))
+  (when-let* ((name (read-string "New name for current branch")))
     (magit-branch-rename (fc-vc-branch) name)))
 
 (cl-defun fc-git-delete-branch ()
   (interactive)
 
-  (when-let ((branch (fc-vc-select-branch)))
+  (when-let* ((branch (fc-vc-select-branch)))
     (magit-branch-delete (list branch))))
 
 (fc-load 'diff-hl
   :after (progn
-           (setf diff-hl-update-async t)
-           (add-to-list 'diff-hl-global-modes 'org-mode t)
-           (add-to-list 'diff-hl-global-modes 'markdown-mode t)
+           (setf diff-hl-update-async nil)
+           ;; (add-to-list 'diff-hl-global-modes 'org-mode t)
+           ;; (add-to-list 'diff-hl-global-modes 'markdown-mode t)
 
            (global-diff-hl-mode 1)
            (diff-hl-flydiff-mode 1)
@@ -201,7 +201,7 @@ REMOTE: select from local or remote branchs."
 
 (cl-defun fc-vc-switch-branch ()
   "Switch to other branch."
-  (when-let ((branch (fc-vc-select-branch)))
+  (when-let* ((branch (fc-vc-select-branch)))
     (shell-command (format "git checkout %s" branch))))
 
 (cl-defun fc-vc-diff-with-other-branch ()

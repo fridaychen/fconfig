@@ -38,7 +38,7 @@ CONV: convert items of collection into strings."
   "Select a function to run from collection.
 PROMPT: user prompt.
 COLLECTION: cadidates collection."
-  (when-let ((func (fc-select prompt collection :always t)))
+  (when-let* ((func (fc-select prompt collection :always t)))
     (fc-funcall func)))
 
 (cl-defun fc-select-color (prompt &key always (colors (defined-colors)))

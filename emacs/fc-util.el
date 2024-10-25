@@ -788,10 +788,10 @@ FORM: test form."
 (cl-defun fc-color-complement (o)
   "Get complement color.
 O: color or face."
-  (when-let ((color (if (facep o)
-                        (fc-get-face
-                         o :background :default nil)
-                      o)))
+  (when-let* ((color (if (facep o)
+                         (fc-get-face
+                          o :background :default nil)
+                       o)))
     (apply #'color-rgb-to-hex
            (color-complement color))))
 

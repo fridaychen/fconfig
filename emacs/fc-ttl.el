@@ -207,10 +207,10 @@
                         0))))))
 
 (cl-defun fc--ttl-find-def-in-proj (symbol)
-  (when-let ((buf (fc--text-retrieve :pattern (format "^:%s_ENTRY$" symbol)
-                                     :file-types '(code)))
-             (regex "^\\([^:]+\\):\\([0-9]+\\):")
-             (bound (point-max)))
+  (when-let* ((buf (fc--text-retrieve :pattern (format "^:%s_ENTRY$" symbol)
+                                      :file-types '(code)))
+              (regex "^\\([^:]+\\):\\([0-9]+\\):")
+              (bound (point-max)))
     (with-current-buffer buf
       (cl-loop
        while (re-search-forward regex bound t)

@@ -21,12 +21,12 @@
   (fc-set-face 'markdown-header-face-5 nil :height 1.0)
   (fc-set-face 'markdown-header-face-6 nil :height 1.0)
 
-  (when-let ((has-face (facep 'markdown-header-delimiter-face))
-             (no-color (not (color-defined-p (face-attribute
-                                              'markdown-header-delimiter-face
-                                              :foreground))))
-             (fg (fc-get-face 'font-lock-keyword-face
-                              :foreground)))
+  (when-let* ((has-face (facep 'markdown-header-delimiter-face))
+              (no-color (not (color-defined-p (face-attribute
+                                               'markdown-header-delimiter-face
+                                               :foreground))))
+              (fg (fc-get-face 'font-lock-keyword-face
+                               :foreground)))
     (fc-set-face 'markdown-header-delimiter-face nil
                  :foreground fg)))
 

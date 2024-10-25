@@ -254,7 +254,7 @@ DIR: project path."
 (cl-defun fc-proj-build ()
   "Build current project."
 
-  (when-let ((target (read-string "Build target : " (oref *fc-project* last-target))))
+  (when-let* ((target (read-string "Build target : " (oref *fc-project* last-target))))
     (oset *fc-project* last-target target)
     (fc-proj--build *fc-project* target)))
 
@@ -308,7 +308,7 @@ DIR: project path."
 (cl-defun fc-proj-name (&optional dir)
   "Find the project name under root.
 DIR: project path."
-  (if-let ((root (fc-proj-root dir)))
+  (if-let* ((root (fc-proj-root dir)))
       (if (boundp 'fc-proj-name)
           fc-proj-name
         (file-name-nondirectory (directory-file-name root)))

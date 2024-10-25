@@ -12,16 +12,16 @@
   "Select program to run."
   (interactive)
 
-  (when-let ((prog (fc-select "Programs"
-                       (mapcar
-                        (lambda (x)
-                          (cons (capitalize
-                                 (replace-regexp-in-string
-                                  "-"
-                                  " "
-                                  (file-name-sans-extension x)))
-                                x))
-                        (directory-files *fc-program-path* nil "el$")))))
+  (when-let* ((prog (fc-select "Programs"
+                        (mapcar
+                         (lambda (x)
+                           (cons (capitalize
+                                  (replace-regexp-in-string
+                                   "-"
+                                   " "
+                                   (file-name-sans-extension x)))
+                                 x))
+                         (directory-files *fc-program-path* nil "el$")))))
     (load-file (concat *fc-program-path* prog))))
 
 (provide 'fc-program)

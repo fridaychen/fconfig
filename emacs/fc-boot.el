@@ -54,7 +54,7 @@
 
 (cl-defun fc--load-mode-config ()
   "Load config for current mode."
-  (when-let ((name (gethash major-mode *fc--mode-config-map*)))
+  (when-let* ((name (gethash major-mode *fc--mode-config-map*)))
     (unless (featurep name)
       (fc-load name
         :local t

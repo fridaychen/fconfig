@@ -1079,7 +1079,7 @@ KEYMAP: keymap to run."
      ("k" describe-key)
      ("m" man)
      ("o" ,(fc-manual
-            (if-let ((buf (get-buffer "*info*")))
+            (if-let* ((buf (get-buffer "*info*")))
                 (fc-pop-buf buf :select t)
               (org-info))))
      ("r" ,(fc-manual (fc-pop-buf "*Help*")))
@@ -1292,7 +1292,7 @@ STEP: pixels."
    "VC"
    `(
      ("Branch: create"                      . ,(fc-manual
-                                                (when-let ((name (read-string "New branch")))
+                                                (when-let* ((name (read-string "New branch")))
                                                   (vc-create-branch (fc-proj-root) name))))
      ("Branch: delete"                      . fc-git-delete-branch)
      ("Branch: rename"                      . fc-git-rename-branch)
@@ -1353,15 +1353,15 @@ STEP: pixels."
 (cl-defun fc--add-bookmark ()
   (interactive)
 
-  (when-let ((meta (fc--book-p)))
+  (when-let* ((meta (fc--book-p)))
     (bookmark-set (read-string "Add bookmark "
                                (format "Book: <<%s>> "
                                        (plist-get meta :title)
                                        (which-function))))
     (cl-return-from fc--auto-bookmark))
 
-  (when-let ((root (fc-proj-root))
-             (has-name (boundp 'fc-proj-name)))
+  (when-let* ((root (fc-proj-root))
+              (has-name (boundp 'fc-proj-name)))
     (bookmark-set (read-string "Add bookmark "
                                (format "Proj %s: %s %s"
                                        fc-proj-name
@@ -1380,12 +1380,12 @@ STEP: pixels."
 (cl-defun fc--auto-bookmark ()
   (interactive)
 
-  (when-let ((meta (fc--book-p)))
+  (when-let* ((meta (fc--book-p)))
     (bookmark-set (format "Book: <<%s>> furthest read position" (plist-get meta :title)))
     (cl-return-from fc--auto-bookmark))
 
-  (when-let ((root (fc-proj-root))
-             (has-name (boundp 'fc-proj-name)))
+  (when-let* ((root (fc-proj-root))
+              (has-name (boundp 'fc-proj-name)))
     (bookmark-set (format "Proj %s: %s -- %s"
                           fc-proj-name
                           (file-relative-name buffer-file-name root)
@@ -1556,7 +1556,7 @@ AUTO: auto select face."
    ("w" ,(fc-cond-key :normal #'fc-buffers-list
                       :region #'delete-region
                       :proj (fc-manual
-                             (when-let ((root (fc-proj-root)))
+                             (when-let* ((root (fc-proj-root)))
                                (fc-select-buffer
                                 "Switch within project"
                                 (fc--buffer-pred :dir root :no-current t)

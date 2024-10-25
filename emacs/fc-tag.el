@@ -191,7 +191,7 @@
   (fc-tag--open-project (fc-find-tag) proj-dir src-dirs))
 
 (defun fc-tag-open-file ()
-  (when-let ((tag (fc-find-tag)))
+  (when-let* ((tag (fc-find-tag)))
     (fc-tag--open-file tag)))
 
 (defun fc-tag-list ()

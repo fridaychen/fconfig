@@ -14,7 +14,7 @@
 (cl-defun fc-buffer-visible-p (&optional (bufname (current-buffer)))
   "Test if a buffer is visible.
 BUFNAME: to be tested."
-  (when-let ((buf (get-buffer bufname)))
+  (when-let* ((buf (get-buffer bufname)))
     (get-buffer-window buf)))
 
 (cl-defun fc--list-buffer (pred &key (buffers (buffer-list)) one)

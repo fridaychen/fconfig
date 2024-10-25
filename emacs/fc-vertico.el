@@ -101,10 +101,10 @@
 
   (bookmark-maybe-load-default-file)
 
-  (when-let ((name (fc-vertico--read
-                    "Bookmarks"
-                    (mapcar #'car (bookmark-maybe-sort-alist))
-                    :keymap '*fc-vertico--bookmark-keymap*)))
+  (when-let* ((name (fc-vertico--read
+                     "Bookmarks"
+                     (mapcar #'car (bookmark-maybe-sort-alist))
+                     :keymap '*fc-vertico--bookmark-keymap*)))
     (cond
      ((member name (bookmark-all-names))
       (bookmark-jump name))

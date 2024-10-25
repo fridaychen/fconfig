@@ -115,12 +115,12 @@
                    :family family
                    :fontset fontset)))
 
-  (when-let ((has-face (facep 'org-superstar-header-bullet))
-             (no-color (not (color-defined-p (face-attribute
-                                              'org-superstar-header-bullet
-                                              :foreground))))
-             (fg (fc-get-face 'font-lock-keyword-face
-                              :foreground)))
+  (when-let* ((has-face (facep 'org-superstar-header-bullet))
+              (no-color (not (color-defined-p (face-attribute
+                                               'org-superstar-header-bullet
+                                               :foreground))))
+              (fg (fc-get-face 'font-lock-keyword-face
+                               :foreground)))
     (fc-set-face 'org-superstar-header-bullet nil
                  :foreground fg)
     (fc-set-face 'org-superstar-leading nil
@@ -356,7 +356,7 @@ open('%s', 'w').write( str(main()) )")
                (org-babel-lob-ingest buffer-file-name)))
 
            (defun fc--org-babel-execute-src-block (&optional orig-fun arg info &rest params)
-             (when-let ((path (cdr (assoc :file (nth 2 (or info (org-babel-get-src-block-info)))))))
+             (when-let* ((path (cdr (assoc :file (nth 2 (or info (org-babel-get-src-block-info)))))))
                (when (and (or (string-prefix-p "output/" path)
                               (string-prefix-p "./output/" path))
                           (not (fc-dir-exists-p "output")))
@@ -796,10 +796,10 @@ BODY: usually a pcase block."
   (org-in-regexp "^#\\+include: .+"))
 
 (cl-defun fc--org-show-footnote ()
-  (when-let ((fn (org-footnote-at-reference-p))
-             (fn-def (and (car fn)
-                          (org-footnote-get-definition (car fn))))
-             (text (nth 3 fn-def)))
+  (when-let* ((fn (org-footnote-at-reference-p))
+              (fn-def (and (car fn)
+                           (org-footnote-get-definition (car fn))))
+              (text (nth 3 fn-def)))
     (setf *fc-org-pop-footnote* t)
     (fc-popup-tip text)))
 
@@ -1246,10 +1246,10 @@ LANG: language of babel."
 (cl-defun fc--org-publish (&optional (output-dir (fc--org-get-file-property "PUBLISH"))
                                      (base-dir default-directory))
   (unless output-dir
-    (when-let  ((not-index (not
-                            (string-suffix-p "/index.org" buffer-file-name)))
-                (index-buf (get-file-buffer (format "%s/index.org"
-                                                    default-directory))))
+    (when-let*  ((not-index (not
+                             (string-suffix-p "/index.org" buffer-file-name)))
+                 (index-buf (get-file-buffer (format "%s/index.org"
+                                                     default-directory))))
       (with-current-buffer index-buf
         (fc--org-publish))
 

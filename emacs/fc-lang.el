@@ -92,8 +92,8 @@ OBJ: object"
          (format "%S" obj))))
 
 (cl-defun fc-concat (&rest rest)
-  (when-let ((x (fc-first rest
-                  (not (null it)))))
+  (when-let* ((x (fc-first rest
+                   (not (null it)))))
     (pcase (type-of x)
       ('string (apply #'concat rest))
       ('cons (apply #'seq-concatenate 'list rest))

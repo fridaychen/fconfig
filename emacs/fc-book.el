@@ -70,14 +70,14 @@ PAIRS: replacement list."
   "Return t if this file is book."
   (and
    (> (buffer-size) (fc-call-mode-func "book-size-thold" '*fc-book-size-thold*))
-   (when-let ((meta (fc--book-meta)))
+   (when-let* ((meta (fc--book-meta)))
      (and
       (plist-get meta :title)
       (plist-get meta :author)
       meta))))
 
 (cl-defun fc--book-title ()
-  (when-let ((meta (fc--book-meta)))
+  (when-let* ((meta (fc--book-meta)))
     (cl-return-from fc--book-title (plist-get meta :title)))
   "")
 
@@ -250,12 +250,12 @@ PAIRS: replacement list."
   (fc-replace-regexp
    regex
    #'(lambda ()
-       (if-let ((start (match-beginning 0))
-                (end (match-end 0))
-                (text (match-string 0))
-                (ft-text (fc--search (concat "^" text "\\([^\n]+\\)")
-                                     :sub 1
-                                     :bound 20480)))
+       (if-let* ((start (match-beginning 0))
+                 (end (match-end 0))
+                 (text (match-string 0))
+                 (ft-text (fc--search (concat "^" text "\\([^\n]+\\)")
+                                      :sub 1
+                                      :bound 20480)))
            (progn
              (fc-replace-region start
                                 end

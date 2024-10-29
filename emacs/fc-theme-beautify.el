@@ -70,6 +70,7 @@ COLOR: background color."
                   font-lock-variable-name-face
 
                   font-lock-builtin-face
+                  font-lock-warning-face
                   font-lock-comment-face
                   font-lock-preprocessor-face
                   font-lock-function-call-face
@@ -101,7 +102,7 @@ COLOR: background color."
                              "black")))
 
 (defun fc--beautify-theme-whitespace-trailing ()
-  (fc--set-face-bg-light 'whitespace-trailing 0.5))
+  (fc--set-face-bg-light 'whitespace-trailing 0.37))
 
 (defun fc--beautify-face-default ()
   (fc--set-face-bg-light 'default
@@ -113,8 +114,7 @@ COLOR: background color."
 
 (defun fc--do-enhance-contrast (faces threshold)
   (fc-each faces
-    (when (< (fc--get-face-contrast it) threshold)
-      (fc--set-face-contrast it threshold))))
+    (fc--enhance-face-contrast it threshold)))
 
 (defun fc--beautify-enhance-contrast ()
   (cl-multiple-value-bind (level-1 level-2 level-3)
@@ -122,6 +122,7 @@ COLOR: background color."
 
     (fc--do-enhance-contrast '(font-lock-keyword-face
                                font-lock-function-name-face
+                               font-lock-warning-face
                                font-lock-builtin-face)
                              level-1)
 
@@ -164,6 +165,12 @@ COLOR: background color."
   (run-hooks '*fc-beautify-theme-hook*))
 
 (defun fc-beautify-theme-before ()
+  (fc-set-face 'vertico-current nil
+               :foreground 'unspecified
+               :background 'unspecified
+               :inherit 'highlight
+               :extend t)
+
   (fc-set-faces '(font-lock-keyword-face
                   font-lock-function-name-face
 

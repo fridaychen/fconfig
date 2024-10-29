@@ -200,6 +200,13 @@ OS: os level or app level."
 
 (add-hook '*fc-ergo-restore-hook* #'fc--popup-hide-info)
 
+;; Overlay
+(cl-defun fc-make-overlay (beginning end &rest properties)
+  (let ((x (make-overlay beginning end nil t t)))
+    (fc-each properties
+      (apply #'overlay-put x it))
+    x))
+
 (provide 'fc-ui)
 
 ;; Local Variables:

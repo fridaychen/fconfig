@@ -129,45 +129,16 @@
      (fc-set-face 'highlight nil
                   :background "IndianRed4"))
 
-    ('classic
-     (fc-set-face 'link nil
-                  :foreground "cyan2"))
-
     ('ef-cyprus
      (fc-set-face 'default nil
                   :background "#C1E6C6"))
-
-    ('leuven
-     (fc-set-face 'show-paren-match nil
-                  :background "pink"))
-
-    ('leuven-dark
-     (fc-set-face 'hl-line nil
-                  :background "PaleVioletRed4")
-     (fc-set-face 'highlight nil
-                  :background "IndianRed4"))
-
-    ('tango-dark
-     (fc-set-face 'mode-line nil
-                  :foreground "black"
-                  :background "cornsilk4")
-     (fc-set-face 'highlight nil
-                  :foreground "white"
-                  :background "IndianRed4")
-     (fc-set-face 'hl-line nil
-                  :foreground "pale goldenrod"
-                  :background "gray30"))
 
     ('zenburn
      (fc-set-face 'default nil
                   :background "#263238")
      (fc-set-face 'vertico-current nil
                   :background "IndianRed4"
-                  :underline nil)
-     (fc-set-face 'hl-line nil
-                  :background (cond (*is-gui* "#505050")
-                                    (*is-colorful* "#505050")
-                                    (t "white"))))))
+                  :underline nil))))
 
 ;; players
 (cl-defun fc-init-user-player ()

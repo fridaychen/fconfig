@@ -99,7 +99,9 @@
   (fc-set-face 'org-block nil
                :family (fc-get-face 'default :family))
 
-  (fc--set-face-contrast 'org-table 0.7)
+  (fc--enhance-face-contrast 'org-table 0.6)
+  (fc--enhance-face-contrast 'org-link 0.6)
+  (fc--enhance-face-contrast 'org-todo 0.6)
 
   (when (and *is-gui* *fc-enable-font-to-align-table*)
     (let* ((family *fc-enable-font-to-align-table*)

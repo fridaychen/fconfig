@@ -73,6 +73,7 @@
 (autoload #'fc-theme-auto-select "fc-theme-config")
 (autoload #'fc-dark-theme-p "fc-theme-config")
 (autoload #'fc--set-face-contrast "fc-theme-config")
+(autoload #'fc--enhance-face-contrast "fc-theme-config")
 
 ;; theme beautify
 (autoload #'fc-beautify-theme "fc-theme-beautify")

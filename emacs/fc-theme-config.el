@@ -160,6 +160,10 @@ THEMES: list of themes."
                                      1
                                    -1)))))
 
+(defun fc--enhance-face-contrast (face threshold)
+  (when (< (fc--get-face-contrast face) threshold)
+    (fc--set-face-contrast face threshold)))
+
 (when *is-mac*
   (setf ns-use-srgb-colorspace nil))
 

@@ -710,7 +710,8 @@ LANG: language."
                                                         "Confirm"
                                                         (fc-select "Footnote regex"
                                                             '("\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
-                                                              "[（(〔【<\[]\\(注?[0-9]+\\)[\]>】〕)）]"))))))
+                                                              "[（(〔【<\[]\\(注?[0-9]+\\)[\]>】〕)）]"
+                                                              "\\([0-9]+\\)"))))))
       ("Convert from latex"		. fc--org-convert-from-latex)
       ("Convert from markdown"		. fc--org-convert-from-markdown)
       ("Convert markdown verse"		. fc--org-convert-mk-verse)

@@ -13,7 +13,7 @@
 
 (fc-each *fc-mybook-candidates*
   (when (fc-dir-exists-p it)
-    (add-to-list '*fc-mybook-homes* (expand-file-name it))))
+    (add-to-list '*fc-mybook-homes* (expand-file-name it) t)))
 
 (org-link-set-parameters "music"
                          :follow #'fc--music-open)

@@ -1,0 +1,11 @@
+beautifulsoup4
+file-magic
+fuzzywuzzy
+imdbpy
+jsoncomment
+mutagen
+nwdiag
+pretty-errors
+python-Levenshtein
+wikipedia
+yt_dlp

@@ -65,6 +65,16 @@ mindmapDiagram {
     node {
         Padding 7
         Margin 10
+        BackgroundColor beige/azure
+    }
+    rootNode {
+        FontStyle bold
+        BackgroundColor yellow/gold
+    }
+    leafNode{
+        Padding 7
+        Margin 7
+        BackgroundColor pink/lightpink
     }
     boxless {
         FontColor darkgreen

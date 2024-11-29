@@ -37,6 +37,7 @@ class YoutubeUtil:
             "progress_hooks": [hook],
             "outtmpl": output + "/%(title)s.%(ext)s",
             "ignoreerrors": True,
+            "noprogress": True,
             "quiet": quiet,
         }
 
@@ -47,6 +48,7 @@ class YoutubeUtil:
             "progress_hooks": [hook],
             "outtmpl": output + "/%(title)s.%(ext)s",
             "ignoreerrors": True,
+            "noprogress": True,
             "quiet": quiet,
         }
 

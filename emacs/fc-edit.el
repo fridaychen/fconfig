@@ -176,16 +176,8 @@
 (autoload 'iedit-mode "iedit")
 (autoload 'iedit-rectangle-mode "iedit-rect")
 
-;; alt key as meta, leave esc alone
-(setf x-alt-keysym (if *is-mac* 'meta 'super))
-
-;; make super/command equal meta
-(cond
- (*is-mac*
-  (setf ns-command-modifier 'meta))
-
- (*is-linux*
-  (setq x-super-keysym 'meta)))
+(setf x-alt-keysym nil
+      x-super-keysym 'super)
 
 (fc-load 'saveplace
   :local t

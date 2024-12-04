@@ -4,10 +4,14 @@
 # $1 : URL of the audio
 function fc-play-audio {
     if [[ $(which mpv) ]]; then
-        mpv --no-video --audio-display=no --really-quiet "$@" 1</dev/null
+        mpv --no-video --audio-display=no --really-quiet "$@" 1< /dev/null
     else
-        mplayer -nolirc -really-quiet "$@" 1</dev/null
+        mplayer -nolirc -really-quiet "$@" 1< /dev/null
     fi
+}
+
+function fc-play-album {
+    ls | sort -n | $XARGS -I{} mpv --really-quiet "{}"
 }
 
 function fj-info {

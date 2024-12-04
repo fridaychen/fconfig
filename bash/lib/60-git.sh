@@ -1,6 +1,6 @@
 # -*- mode: sh; sh-shell: bash; -*-
 
-alias gp='git pull'
+alias gp='git pull --rebase --autostash'
 alias gq='git push'
 
 alias gpb='git pull origin $(git rev-parse --abbrev-ref HEAD)'

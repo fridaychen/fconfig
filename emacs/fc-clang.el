@@ -14,6 +14,19 @@
      ("mark ifdef"              . mark-ifdef)
      )))
 
+(cl-defun fc-c-add-ifdef ()
+  (interactive)
+
+  (when-let ((_ (region-active-p))
+             (ifdef (read-string "ifdef condiction" "#ifdef ")))
+    (when (< (point) (mark))
+      (exchange-point-and-mark))
+
+    (goto-char (region-end))
+    (insert "#endif\n")
+    (goto-char (region-beginning))
+    (insert ifdef "\n")))
+
 (defconst *fc-c-map*
   (fc-make-keymap
    `(
@@ -24,6 +37,7 @@
      ("i i" ,(fc-manual (fc-expand-snippet "if")))
      ("i s" ,(fc-manual (fc-expand-snippet "switch")))
      ("i w" ,(fc-manual (fc-expand-snippet "while")))
+     ("i I" fc-c-add-ifdef)
      ("j" c-backward-conditional)
      ("k" c-forward-conditional)
      ("C" fc--clang-format-off-region)

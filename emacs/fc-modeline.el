@@ -94,8 +94,8 @@
                (not (fc--extreme-narrow-window-p)))
     (cl-return-from fc--state-seg))
 
-  (let* ((state (concat (if buffer-read-only "%%" "-")
-                        (if (buffer-modified-p)  "*" "-"))))
+  (let* ((state (concat (if buffer-read-only "%%" "–")
+                        (if (buffer-modified-p)  "*" "–"))))
     (when (fboundp 'fc-modeline-extra-state)
       (setf state (fc-modeline-extra-state state)))
 

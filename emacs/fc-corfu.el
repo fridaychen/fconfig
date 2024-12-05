@@ -17,6 +17,8 @@
 
            (global-corfu-mode 1))
   :bind '((corfu-map
+           ("s-j" corfu-next)
+           ("s-k" corfu-previous)
            ("C-j" corfu-next)
            ("C-k" corfu-previous)
            ("M-i" corfu-previous)

@@ -693,10 +693,10 @@ KEYMAP: keymap to run."
 (fc-bind-keys `(("RET" newline-and-indent)
                 ("<escape>" fc-escape-key)
                 ("TAB" fc-tab-key)
-                ("M-c" ,(fc-head-key "VC" '*ergo-vc-map*))
-                ("M-f" fc-basic-key)
-                ("M-p" ,(fc-manual (fc-player-func)))
-                ("M-q" ,(fc-head-key "Prefix Quick" '*ergo-prefix-quick-map*))
+                ("s-c" ,(fc-head-key "VC" '*ergo-vc-map*))
+                ("s-f" fc-basic-key)
+                ("s-p" ,(fc-manual (fc-player-func)))
+                ("s-q" ,(fc-head-key "Prefix Quick" '*ergo-prefix-quick-map*))
                 ("M-x" fc-M-x)
                 ("C-<return>" fc-ctrl-enter-key)
                 ("C-@" fc-escape-key)
@@ -1574,7 +1574,7 @@ AUTO: auto select face."
 
    ("A" fc-begin-of-semantic)
    ("B" ,(fc-cond-key :normal (fc-head-key "Bookmark" '*ergo-bookmark-map*)))
-   ("M-b" fc-bookmark)
+   ("s-b" fc-bookmark)
 
    ;; C := VC
    ("C" ,(fc-head-key "VC" '*ergo-vc-map*))

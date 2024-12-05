@@ -8,6 +8,8 @@
 (defconst *fc-vertico--base-keymap*
   (fc-make-keymap
    `(
+     ("s-j" vertico-next)
+     ("s-k" vertico-previous)
      ("C-j" vertico-next)
      ("C-k" vertico-previous))
    "fc vertico base"))
@@ -30,6 +32,8 @@
 
   :bind '((vertico-map
            ("M-d" fc-vertico--clear)
+           ("s-j" vertico-next)
+           ("s-k" vertico-previous)
            ("C-j" vertico-next)
            ("C-k" vertico-previous)
            ("M-i" vertico-previous)

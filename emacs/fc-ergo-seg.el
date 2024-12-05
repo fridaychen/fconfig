@@ -10,9 +10,9 @@
 (defun fc-modeline-extra-state (state)
   "Mode-line info func."
   (when buffer-file-name
-    (concat (if fc-modal-mode *fc--modal-mark* "-")
-            (if *fc-ergo-prefix* "P" "-")
-            (if *fc-dev-mode* "D" "-")
+    (concat (if fc-modal-mode *fc--modal-mark* "–")
+            (if *fc-ergo-prefix* "P" "–")
+            (if *fc-dev-mode* "D" "–")
             state
             (when *fc-layout-current*
               (upcase *fc-layout-current*)))))

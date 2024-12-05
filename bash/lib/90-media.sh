@@ -11,7 +11,7 @@ function fc-play-audio {
 }
 
 function fc-play-album {
-    ls | sort -n | $XARGS -I{} mpv --really-quiet "{}"
+    ls | sort -n | $XARGS -I{} mpv --no-video --audio-display=no --really-quiet "{}"
 }
 
 function fj-info {

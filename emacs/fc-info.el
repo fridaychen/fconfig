@@ -80,7 +80,7 @@ INFO-SEQ: list of infos."
                             "fc-modeline"
                           (symbol-name powerline-default-separator))
                         (fc-get-face 'default :foreground)
-                        *fc-common-light-theme-bg*)))))
+                        (fc-get-face 'default :background))))))
 
 (defun fc-info--sys-txt ()
   "Create sys info."

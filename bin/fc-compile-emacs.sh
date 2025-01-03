@@ -20,7 +20,6 @@ function compile {
             ./configure \
                 --with-ns \
                 --with-native-compilation \
-                --with-xwidgets \
                 --with-mailutils \
                 --with-json \
                 --without-dbus \
@@ -32,8 +31,7 @@ function compile {
                 --with-native-compilation \
                 --with-json \
                 --with-pgtk \
-                --with-tree-sitter \
-                --with-xwidgets
+                --with-tree-sitter
             ;;
     esac
     time make -j$CPUS

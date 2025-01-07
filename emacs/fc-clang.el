@@ -17,8 +17,8 @@
 (cl-defun fc-c-add-ifdef ()
   (interactive)
 
-  (when-let ((_ (region-active-p))
-             (ifdef (read-string "ifdef condiction" "#ifdef ")))
+  (when-let* ((_ (region-active-p))
+              (ifdef (read-string "ifdef condiction" "#ifdef ")))
     (when (< (point) (mark))
       (exchange-point-and-mark))
 

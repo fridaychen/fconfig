@@ -26,6 +26,7 @@
        '(ace-window
          aggressive-indent
          auctex
+         ayu-theme
          beacon
          cmake-mode
          csv-mode

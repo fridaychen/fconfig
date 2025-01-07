@@ -36,6 +36,14 @@
            (add-hook '*fc-common-fast-act-hook* #'fc--org-toggle-special-edit)
            (fc-require 'fc-plantuml)))
 
+(fc-require 'fc-yasnippet t)
+(fc-require 'fc-global)
+(fc-load 'fc-lsp
+  :local t
+  :after (when *fc-lsp-mode-enable*
+           (add-hook '*fc-ergo-restore-hook* #'lsp-ui-doc-hide)))
+(fc-require 'fc-tag)
+
 (defvar *fc--mode-config-map* (fc-make-hash-table
                                '(
                                  (c-mode . fc-clang)
@@ -51,6 +59,14 @@
                                  (plantuml-mode . fc-plantuml)
                                  (python-mode . fc-python)
                                  (python-ts-mode . fc-python))))
+
+(with-eval-after-load 'fc-python
+  (fc-add-tag 'python-mode *fc-tag-lsp*)
+  (fc-add-tag 'python-ts-mode *fc-tag-lsp*))
+
+(with-eval-after-load 'fc-golang
+  (fc-add-tag 'go-mode *fc-tag-lsp*)
+  (fc-add-tag 'go-ts-mode *fc-tag-lsp*))
 
 (cl-defun fc--load-mode-config ()
   "Load config for current mode."
@@ -165,14 +181,6 @@
 
 (fc-require 'fc-proj t)
 (fc-require 'fc-dired t)
-
-(fc-require 'fc-yasnippet t)
-(fc-require 'fc-global)
-(fc-load 'fc-lsp
-  :local t
-  :after (when *fc-lsp-mode-enable*
-           (add-hook '*fc-ergo-restore-hook* #'lsp-ui-doc-hide)))
-(fc-require 'fc-tag)
 
 (fc-require 'fc-math t)
 

@@ -240,15 +240,17 @@
            (setf org-clock-clocked-in-display 'frame-title
                  org-babel-python-command "python3")
 
-           (defconst org-babel-python-wrapper-method
-             "
+           (let ((import-str "
 import math as m
 import numpy as np
+"))
+             (when (boundp 'org-babel-python-wrapper-method)
+               (defconst org-babel-python-wrapper-method
+                 (concat import-str org-babel-python-wrapper-method)))
 
-def main():
-%s
-
-open('%s', 'w').write( str(main()) )")
+             (when (boundp 'org-babel-python--def-format-value)
+               (defconst org-babel-python--def-format-value
+                 (concat import-str org-babel-python--def-format-value))))
 
            (add-to-list 'org-babel-default-header-args:plantuml
                         (cons :java "-Djava.awt.headless=true"))

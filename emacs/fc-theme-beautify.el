@@ -102,7 +102,7 @@ COLOR: background color."
                              "black")))
 
 (defun fc--beautify-theme-whitespace-trailing ()
-  (fc--set-face-bg-light 'whitespace-trailing 0.37))
+  (fc--set-face-bg-light 'whitespace-trailing 0.25))
 
 (defun fc--beautify-face-default ()
   (fc--set-face-bg-light 'default

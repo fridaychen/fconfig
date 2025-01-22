@@ -90,3 +90,13 @@ function fj-set-snd-sink {
 function fc-media-convert {
     ffmpeg -y -i "$1" "${1%.*}.$2"
 }
+
+function fc-media-convert-speech {
+    out=$(basename "$1")
+    ffmpeg -y -hide_banner -loglevel error -i "$1" -ab 32k "${out%.*}.opus"
+}
+
+function fc-media-convert-music {
+    out=$(basename "$1")
+    ffmpeg -y -hide_banner -loglevel error -i "$1" -ab 128k "${out%.*}.opus"
+}

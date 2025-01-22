@@ -2,28 +2,32 @@
 
 source $FCHOME/bash/lib.sh
 
-TO_FMT=""
+cmd=""
 
 function arg-set {
     case $1 in
-        t)
-            TO_FMT=$2
+        s)
+            export -f fc-media-convert-speech
+            cmd='fc-media-convert-speech "{}"'
+            ;;
+        m)
+            export -f fc-media-convert-music
+            cmd='fc-media-convert-music "{}"'
             ;;
     esac
 }
 
 USAGE="Usage: audio-convert.sh [OPTION] [FILE]\n\n
-  -t to format
+  -s speech
+  -m music
 "
-ARGUMENTS="ht:"
+
+ARGUMENTS="hsm"
 source $FCHOME/bash/lib/argparser.sh
 
-if [[ -z $TO_FMT ]]; then
-    echo -e "\nNO Target format!!!\n"
+if [[ -z $cmd ]]; then
+    echo -e "\nNO format!!!\n"
     exit -1
 fi
 
-export -f fc-media-convert
-export TO_FMT
-
-printf '%s\0' "$@" | xargs -0 -I{} -n1 -P$(nproc) bash -c 'fc-media-convert "{}" "$TO_FMT"'
+printf '%s\0' "$@" | xargs -0 -I{} -n1 -P$(nproc) bash -c "$cmd"

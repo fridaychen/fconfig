@@ -10,7 +10,7 @@
 #+call: plot(output="test-plot-sin-cos.png", xdi="[-3.14/2,  3.14/2, 0.01]", ftbl=tbl-funcs)
 
 #+RESULTS:
-[[file:test-plot-sin-cos.png]]
+[[file:]]
 
 #+name: city-pop
 | city     | 2020 population |
@@ -88,7 +88,7 @@
 #+END_SRC
 
 #+RESULTS:
-[[file:test-subplot2.png]]
+[[file:]]
 
 #+begin_table
 #+name: city-pops

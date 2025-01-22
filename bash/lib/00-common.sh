@@ -7,6 +7,7 @@ function fc-include {
 }
 
 function fc-run-drop-in {
+    local current=$(pwd)
     local dir=$1
     local pattern=$2
 
@@ -16,7 +17,7 @@ function fc-run-drop-in {
         [[ -r $x ]] && source "$x"
     done
 
-    cd $OLDPWD
+    cd "$current"
 }
 
 # enable interpretation alias

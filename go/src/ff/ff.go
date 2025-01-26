@@ -65,6 +65,7 @@ var (
 	lowerSizeArg = flag.String("lsize", "0", "find files bigger than this lower size")
 	upperSizeArg = flag.String("usize", "0", "find files smaller than this upper size")
 
+	print0Arg = flag.Bool("0", false, "print0")
 	verboseArg = flag.Bool("v", false, "verbose flag")
 )
 
@@ -148,9 +149,9 @@ func getLongFormatStr() string {
 
 func getShortFormatStr() string {
 	if *lightArg {
-		return "\x1b[31m%s\x1b[0m\x1b[30m%s\x1b[0m\n"
+		return "\x1b[31m%s\x1b[0m\x1b[30m%s\x1b[0m"
 	}
-	return "\x1b[33m%s\x1b[0m\x1b[37m%s\x1b[0m\n"
+	return "\x1b[33m%s\x1b[0m\x1b[37m%s\x1b[0m"
 }
 
 func printOut(b *bufio.Writer, dir *string, fi os.FileInfo) {
@@ -164,7 +165,7 @@ func printOut(b *bufio.Writer, dir *string, fi os.FileInfo) {
 	case *longArg && *noColorArg:
 		fmt.Fprintf(
 			b,
-			"%v %s %s%s\n",
+			"%v %s %s%s",
 			fi.Mode(),
 			fc.GenHumanSize(fi.Size()),
 			ndir,
@@ -180,10 +181,16 @@ func printOut(b *bufio.Writer, dir *string, fi os.FileInfo) {
 			fi.Name())
 
 	case *noColorArg:
-		fmt.Fprintf(b, "%s%s\n", ndir, fi.Name())
+		fmt.Fprintf(b, "%s%s", ndir, fi.Name())
 
 	default:
 		fmt.Fprintf(b, getShortFormatStr(), ndir, fi.Name())
+	}
+
+	if *print0Arg {
+		fmt.Fprintf(b, "\x00")
+	} else {
+		fmt.Fprintf(b, "\n")
 	}
 }
 

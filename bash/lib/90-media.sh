@@ -92,11 +92,25 @@ function fc-media-convert {
 }
 
 function fc-media-convert-speech {
-    out=$(basename "$1")
+    local out
+
+    if [[ $# == 1 ]]; then
+        out=$(basename "$1")
+    else
+        out=$2
+    fi
+
     ffmpeg -y -hide_banner -loglevel error -i "$1" -ab 32k "${out%.*}.opus"
 }
 
 function fc-media-convert-music {
-    out=$(basename "$1")
+    local out
+
+    if [[ $# == 1 ]]; then
+        out=$(basename "$1")
+    else
+        out=$2
+    fi
+
     ffmpeg -y -hide_banner -loglevel error -i "$1" -ab 128k "${out%.*}.opus"
 }

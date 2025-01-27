@@ -45,6 +45,3 @@ function mv-audio-files {
 
 mv-audio-files
 ff -rp audio-orig -audio -nc -0 | xargs -0 -I{} -n1 -P$(nproc) bash -c "$cmd"
-
-# ff -audio -nc -0 | xargs -0 -I{} -n1 -P$(nproc) bash -c "$mv_cmd"
-# printf '%s\0' "$@" | xargs -0 -I{} -n1 -P$(nproc) bash -c "$cmd"

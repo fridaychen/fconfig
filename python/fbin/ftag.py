@@ -59,11 +59,12 @@ def split_artists(mt):
     for x in mt["%a"]:
         artists.extend(x.split(";"))
 
-    mt["%a"] = artists
+    if artists != mt["%a"]:
+        mt["%a"] = artists
 
-    log(f"split artists {mt["%a"]} to: {artists}")
+        log(f"split artists {mt["%a"]} to: {artists}")
 
-    mt.save()
+        mt.save()
 
 
 def set_tag(mt, meta):

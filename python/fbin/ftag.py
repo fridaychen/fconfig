@@ -53,6 +53,19 @@ def generate_filename(mt, pattern):
         log("done")
 
 
+def split_artists(mt):
+    artists = []
+
+    for x in mt["%a"]:
+        artists.extend(x.split(";"))
+
+    mt["%a"] = artists
+
+    log(f"split artists {mt["%a"]} to: {artists}")
+
+    mt.save()
+
+
 def set_tag(mt, meta):
     for k in meta.keys():
         if meta[k] is None:
@@ -95,6 +108,12 @@ def main():
     parser.add_argument(
         "--pname", dest="pname", help="parse tag from filename"
     )
+    parser.add_argument(
+        "--split-artists",
+        dest="split_artists",
+        action="store_true",
+        help="Split artists",
+    )
 
     parser.add_argument(
         "otherthings", default=[], nargs="*", help="media files"
@@ -124,6 +143,8 @@ def main():
         process(lambda x: parse_tag_from_filename(x, args.pname))
     elif args.cname:
         process(lambda x: generate_filename(x, args.cname))
+    elif args.split_artists:
+        process(lambda x: split_artists(x))
     elif args.archive:
         process(lambda x: archive(x))
 

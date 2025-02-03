@@ -449,10 +449,10 @@ PRE-FORMAT: format the block content."
 (cl-defun fc--org-fix-headline-spacing ()
   "Fix headline spacing."
   (save-excursion
-    (fc-replace-regexp "\\([^\n]\\)\n+\\*"
+    (fc-replace-regexp "\\([^\n]\\)\n\\*"
                        "\\1\n\n*" :from-start t)
 
-    (fc-replace-regexp "^\\*\\([^\n]+\\)\n+\\([^*\n]\\)"
+    (fc-replace-regexp "^\\*\\([^\n]+\\)\n\\([^*\n]\\)"
                        "*\\1\n\n\\2" :from-start t)
 
     (fc-replace-regexp "^\\*\\([^\n]+\\)\n+\\([[:alpha:]]+:\\|:PROPERTIES\\|[[:space:]]*CLOSED:\\)"
@@ -492,10 +492,10 @@ PRE-FORMAT: format the block content."
 
 (cl-defun fc--format-org ()
   "Format org buffer."
-  ;; (fc--org-fix-headline-spacing)
-  (fc--org-fmt-verse)
+  (fc--default-fmt)
 
-  (fc--default-fmt))
+  (fc--org-fix-headline-spacing)
+  (fc--org-fmt-verse))
 
 (defun fc--org-find-oneline-footnote (fn)
   (save-excursion

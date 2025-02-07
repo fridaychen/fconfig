@@ -133,6 +133,11 @@
      (fc-set-face 'default nil
                   :background "#C1E6C6"))
 
+    ('tango-dark
+     (fc-set-face 'highlight nil
+                  :foreground "gray90"
+                  :background "IndianRed4"))
+
     ('zenburn
      (fc-set-face 'default nil
                   :background "#263238")

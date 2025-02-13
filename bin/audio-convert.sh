@@ -40,8 +40,8 @@ function mv-audio-files {
     mkdir -p audio-orig
 
     export -f mv-one-file
-    ff -audio -nc -0 | xargs -0 -I{} -n1 -P$(nproc) bash -c 'mv-one-file "{}"'
+    ff -audio -nc -0 | $XARGS -0 -I{} -n1 -P$(nproc) bash -c 'mv-one-file "{}"'
 }
 
 mv-audio-files
-ff -rp audio-orig -audio -nc -0 | xargs -0 -I{} -n1 -P$(nproc) bash -c "$cmd"
+ff -rp audio-orig -audio -nc -0 | $XARGS -0 -I{} -n1 -P$(nproc) bash -c "$cmd"

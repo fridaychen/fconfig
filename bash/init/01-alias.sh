@@ -56,10 +56,10 @@ alias lss="ll -rS"
 
 function lsd {
     if [[ -z $1 ]]; then
-        ls -d */ 2>/dev/null
+        ls -d */ 2> /dev/null
     else
         for x; do
-            ls -d "$x"/*/ 2>/dev/null
+            ls -d "$x"/*/ 2> /dev/null
         done
     fi
 }
@@ -68,6 +68,16 @@ alias cd..='cd ..'
 alias cd-='cd -'
 alias cdt='cd "`find . -maxdepth 1 -type d | sed -e 1d | fzf`"'
 alias cdtr='cd "`find . -type d | sed -e 1d | fzf`"'
+
+function cdf {
+    local file=$(ff -nc $* | head -1)
+
+    if [[ ! -z $file ]]; then
+        cd $(dirname $file)
+    else
+        echo "No file was found!"
+    fi
+}
 
 alias tree="tree -N"
 

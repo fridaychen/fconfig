@@ -44,4 +44,7 @@ function mv-audio-files {
 }
 
 mv-audio-files
+
 ff -rp audio-orig -audio -nc -0 | $XARGS -0 -I{} -n1 -P$(nproc) bash -c "$cmd"
+
+ff -x audio-orig -nc -audio -0 | xargs -n1 -0 -I{} -P$(nproc) ftag --split-artists "{}"

@@ -126,6 +126,8 @@
     ('ayu-grey
      (fc-set-face 'org-verse nil
                   :foreground "beige")
+     (fc-set-face 'org-table nil
+                  :foreground "LawnGreen")
      (fc-set-face 'highlight nil
                   :background "IndianRed4"))
 
@@ -134,9 +136,12 @@
                   :background "#C1E6C6"))
 
     ('tango-dark
-     (fc-set-face 'highlight nil
+     (fc-set-face 'mode-line nil
                   :foreground "gray90"
-                  :background "IndianRed4"))
+                  :background "gray15")
+     (fc-set-face 'highlight nil
+                  :foreground "black"
+                  :background "bisque3"))
 
     ('zenburn
      (fc-set-face 'default nil

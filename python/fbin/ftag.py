@@ -54,6 +54,9 @@ def generate_filename(mt, pattern):
 
 
 def split_artists(mt):
+    if mt["%a"] is None:
+        return
+
     artists = []
 
     for x in mt["%a"]:

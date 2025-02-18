@@ -92,7 +92,7 @@ function fc-media-convert {
 }
 
 function fc-media-convert-speech {
-    local out
+    local out ext_name
 
     if [[ $# == 1 ]]; then
         out=$(basename "$1")
@@ -100,11 +100,19 @@ function fc-media-convert-speech {
         out="$2"
     fi
 
-    ffmpeg -y -hide_banner -loglevel error -i "$1" -ab 32k "${out%.*}.opus"
+    ext_name=$3
+
+    if [[ -z $MEDIA_BITRATE ]]; then
+        bitrate=32k
+    else
+        bitrate=$MEDIA_BITRATE
+    fi
+
+    ffmpeg -y -hide_banner -loglevel error -i "$1" -ab $bitrate "${out%.*}.${ext_name}"
 }
 
 function fc-media-convert-music {
-    local out
+    local out ext_name bitrate
 
     if [[ $# == 1 ]]; then
         out=$(basename "$1")
@@ -112,5 +120,13 @@ function fc-media-convert-music {
         out="$2"
     fi
 
-    ffmpeg -y -hide_banner -loglevel error -i "$1" -ab 128k "file:${out%.*}.opus"
+    ext_name=$3
+
+    if [[ -z $MEDIA_BITRATE ]]; then
+        bitrate=128k
+    else
+        bitrate=$MEDIA_BITRATE
+    fi
+
+    ffmpeg -y -hide_banner -loglevel error -i "$1" -ab $bitrate "file:${out%.*}.${ext_name}"
 }

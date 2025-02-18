@@ -2,17 +2,35 @@
 
 source $FCHOME/bash/lib.sh
 
+music_mode=TRUE
 cmd=""
+ext_name="opus"
 
 function arg-set {
     case $1 in
         s)
             export -f fc-media-convert-speech
-            cmd='fc-media-convert-speech audio-orig/"{}" "{}"'
+            cmd='fc-media-convert-speech audio-orig/"{}" "{}" ${ext_name}'
+            music_mode=FALSE
             ;;
         m)
             export -f fc-media-convert-music
-            cmd='fc-media-convert-music audio-orig/"{}" "{}"'
+            cmd='fc-media-convert-music audio-orig/"{}" "{}" ${ext_name}'
+            music_mode=TRUE
+            ;;
+        A)
+            export ext_name
+            ext_name="m4a"
+            if [[ $music_mode == TRUE ]]; then
+                export MEDIA_BITRATE=192k
+            fi
+            ;;
+        M)
+            export ext_name
+            ext_name="mp3"
+            if [[ $music_mode == TRUE ]]; then
+                export MEDIA_BITRATE=256k
+            fi
             ;;
     esac
 }
@@ -20,9 +38,11 @@ function arg-set {
 USAGE="Usage: audio-convert.sh [OPTION] [FILE]\n\n
   -s speech
   -m music
+  -A aac
+  -M mp3
 "
 
-ARGUMENTS="hsm"
+ARGUMENTS="hsmAM"
 source $FCHOME/bash/lib/argparser.sh
 
 if [[ -z $cmd ]]; then

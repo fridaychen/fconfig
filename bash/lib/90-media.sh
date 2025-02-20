@@ -87,46 +87,19 @@ function fj-set-snd-sink {
         xargs pactl set-default-sink
 }
 
+# Using ffmpeg to convert format
+# Args:
+#  $1: input file
+#  $2: output file
+#  $3: new extennsion name
+#  $4: audio bitrate
 function fc-media-convert {
-    ffmpeg -y -i "$1" "${1%.*}.$2"
-}
+    local input out ext_name bitrate
 
-function fc-media-convert-speech {
-    local out ext_name
-
-    if [[ $# == 1 ]]; then
-        out=$(basename "$1")
-    else
-        out="$2"
-    fi
-
+    input="$1"
+    out="$2"
     ext_name=$3
+    bitrate=$4
 
-    if [[ -z $MEDIA_BITRATE ]]; then
-        bitrate=32k
-    else
-        bitrate=$MEDIA_BITRATE
-    fi
-
-    ffmpeg -y -hide_banner -loglevel error -i "$1" -ab $bitrate "${out%.*}.${ext_name}"
-}
-
-function fc-media-convert-music {
-    local out ext_name bitrate
-
-    if [[ $# == 1 ]]; then
-        out=$(basename "$1")
-    else
-        out="$2"
-    fi
-
-    ext_name=$3
-
-    if [[ -z $MEDIA_BITRATE ]]; then
-        bitrate=128k
-    else
-        bitrate=$MEDIA_BITRATE
-    fi
-
-    ffmpeg -y -hide_banner -loglevel error -i "$1" -ab $bitrate "file:${out%.*}.${ext_name}"
+    ffmpeg -y -hide_banner -loglevel error -i "$input" -ab $bitrate "${out%.*}.${ext_name}"
 }

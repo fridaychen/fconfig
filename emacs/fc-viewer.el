@@ -54,6 +54,7 @@
   (interactive)
 
   (setf fc-viewer-minor-mode t
+        *fc-modal-command-cursor-shape* (cons 'hbar 16)
         *fc-enable-state-seg* nil
         *fc-enable-major-mode-seg* nil
         *fc-buffer-title-seg* #'fc--viewer-seg)
@@ -62,6 +63,8 @@
 
   (hl-line-mode -1)
   (read-only-mode 1)
+
+  (fc-modal-visual-feedback)
 
   (setf line-spacing *fc-reading-line-spacing*)
 
@@ -80,6 +83,7 @@
   (interactive)
 
   (setf fc-viewer-minor-mode nil
+        *fc-modal-command-cursor-shape* 'box
         *fc-enable-state-seg* t
         *fc-enable-major-mode-seg* t
         *fc-buffer-title-seg* nil)

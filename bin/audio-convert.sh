@@ -3,34 +3,34 @@
 source $FCHOME/bash/lib.sh
 
 music_mode=TRUE
-cmd=""
+hifi=FALSE
 ext_name="opus"
+
+declare -A audio_bitrate_def
+
+audio_bitrate_def["opus_music"]="128k"
+audio_bitrate_def["opus_music_hifi"]="192k"
+audio_bitrate_def["opus_speech"]="32k"
+audio_bitrate_def["opus_speech_hifi"]="48k"
+
+audio_bitrate_def["m4a_music"]="128k"
+audio_bitrate_def["m4a_music_hifi"]="192k"
+audio_bitrate_def["m4a_speech"]="32k"
+audio_bitrate_def["m4a_speech_hifi"]="48k"
 
 function arg-set {
     case $1 in
         s)
-            export -f fc-media-convert-speech
-            cmd='fc-media-convert-speech audio-orig/"{}" "{}" ${ext_name}'
             music_mode=FALSE
             ;;
         m)
-            export -f fc-media-convert-music
-            cmd='fc-media-convert-music audio-orig/"{}" "{}" ${ext_name}'
             music_mode=TRUE
             ;;
-        A)
-            export ext_name
-            ext_name="m4a"
-            if [[ $music_mode == TRUE ]]; then
-                export MEDIA_BITRATE=192k
-            fi
+        H)
+            hifi=TRUE
             ;;
         M)
-            export ext_name
-            ext_name="mp3"
-            if [[ $music_mode == TRUE ]]; then
-                export MEDIA_BITRATE=256k
-            fi
+            ext_name="m4a"
             ;;
     esac
 }
@@ -38,17 +38,25 @@ function arg-set {
 USAGE="Usage: audio-convert.sh [OPTION] [FILE]\n\n
   -s speech
   -m music
-  -A aac
-  -M mp3
+  -H Hi-Fi
+  -M m4a
 "
 
-ARGUMENTS="hsmAM"
+ARGUMENTS="hsmHM"
 source $FCHOME/bash/lib/argparser.sh
 
-if [[ -z $cmd ]]; then
-    echo -e "\nNO format!!!\n"
-    exit -1
+if [[ $music_mode == TRUE ]]; then
+    ab_name="${ext_name}_music"
+else
+    ab_name="${ext_name}_speech"
 fi
+
+if [[ $hifi == TRUE ]]; then
+    ab_name="${ab_name}_hifi"
+fi
+
+export -f fc-media-convert
+cmd="fc-media-convert audio-orig/\"{}\" \"{}\" ${ext_name} ${audio_bitrate_def[$ab_name]}"
 
 function mv-one-file {
     local dir=$(dirname "$1")

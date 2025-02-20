@@ -8,7 +8,7 @@
 (require 'color)
 
 (defvar *fc-modal-command-cursor-color* "#ff71b5")
-(defvar *fc-modal-command-cursor-shape* 'box)
+(defvar-local *fc-modal-command-cursor-shape* 'box)
 (defvar *fc-modal-command-fringe-color* "#df8a76")
 
 (defvar *fc-modal-edit-cursor-color* (if *is-colorful* "#3de1ad" "#ffffff"))

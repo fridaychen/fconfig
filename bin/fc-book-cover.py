@@ -4,41 +4,56 @@ import argparse
 import cairocffi as cairo
 
 
+def char_width(c, font_size):
+    if ord(c) > 255:
+        return font_size
+    else:
+        return font_size / 2
+
+
+def text_width(text, font_size):
+    return sum([char_width(x, font_size) for x in text])
+
+
 def split_text(text, font_size, width):
     cur_width = 0
 
     result = ""
 
     for x in text:
-        if ord(x) > 255:
-            char_width = font_size
-        else:
-            char_width = font_size / 2
-
-        cur_width += char_width
+        last_char_width = char_width(x, font_size)
+        cur_width += last_char_width
 
         if cur_width >= width:
-            yield result
-            result = x if x != " " else ""
-            cur_width = char_width
+            if ord(x) > 255:
+                yield result.strip()
+                result = x if x != " " else ""
+                cur_width = last_char_width
+            else:
+                reserve = ""
+                while ord(result[-1]) < 255 and result[-1] != " ":
+                    reserve = result[-1] + reserve
+                    result = result[:-1]
+                yield result.strip()
+                result = reserve + x
+                cur_width = text_width(result, font_size)
         else:
             result += x
 
     if result != "":
-        yield result
+        yield result.strip()
 
 
-def draw_text(context, font_size, texts, left, top, width):
+def draw_text(context, font_size, texts, margin, top, width):
     context.set_font_size(font_size)
 
     for x in texts:
-        context.move_to(left, top)
-
-        for y in split_text(x, font_size, width - left):
+        for y in split_text(x, font_size, width - margin * 2):
+            left = int((width - text_width(y, font_size)) / 2)
+            context.move_to(left, top)
             context.show_text(y)
 
             top += font_size + 2
-            context.move_to(left, top)
 
     return top
 
@@ -59,18 +74,20 @@ def generate_book_cover(titles, subtitles, authors, output):
     context.select_font_face("Noto Sans Mono CJK SC")
     context.set_source_rgb(1, 1, 1)
 
-    left = 20
+    margin = 20
     top = 140
 
-    top = draw_text(context, 20, titles, left, top, cover_width) + 15
-    top = draw_text(context, 17, subtitles, left + 20, top, cover_width)
+    top = draw_text(context, 24, titles, margin, top, cover_width) + 15
+    top = draw_text(context, 16, subtitles, margin, top, cover_width)
+
+    top = int(cover_height * 3 / 4)
 
     draw_text(
         context,
-        17,
+        16,
         authors,
-        int(cover_width * 2 / 3),
-        int(cover_height * 2 / 3),
+        int(cover_width * 1 / 3),
+        top,
         cover_width,
     )
 

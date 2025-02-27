@@ -20,7 +20,7 @@
   "Look up word by goldendict.
 WORD: target word."
   (save-excursion
-    (call-process "goldendict" nil nil nil word)))
+    (call-process "goldendict" nil nil nil "-m" word)))
 
 (cl-defun fc-dict-lookup (word)
   "Look up in dictionary.

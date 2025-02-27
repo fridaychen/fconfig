@@ -51,9 +51,9 @@
   (if fc-modal-mode
       (progn
         (hl-line-mode -1)
-        (blink-cursor-mode -1))
+        (blink-cursor-mode 1))
     (hl-line-mode 1)
-    (blink-cursor-mode 1)))
+    (blink-cursor-mode -1)))
 
 (defun fc-modal-exclude-mode (&rest modes)
   "Exclude mode.

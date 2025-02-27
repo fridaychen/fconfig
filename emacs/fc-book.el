@@ -76,10 +76,10 @@ PAIRS: replacement list."
       (plist-get meta :author)
       meta))))
 
-(cl-defun fc--book-title ()
-  (when-let* ((meta (fc--book-meta)))
-    (cl-return-from fc--book-title (plist-get meta :title)))
-  "")
+(defun fc--book-title ()
+  (if-let ((meta (fc--book-meta)))
+      (plist-get meta :title)
+    ""))
 
 (defun fc--book-setup ()
   "Setup current buffer for book."
@@ -341,24 +341,47 @@ LEVEL: chapter level."
        (fc-call-mode-func "chapter-mark" nil level title)))))
 
 (cl-defun fc--book-cover (title)
-  (expand-file-name
-   (or (fc-call-mode-func "book-cover" nil)
-       (fc-file-first-exists
-        (list
-         (concat title ".jpg")
-         (concat title ".jpeg")
-         (concat "img/" title ".jpg")
-         (concat "img/" title ".jpeg")
-         "cover.jpg"
-         "cover.jpeg"
-         (concat "img/cover.jpg")
-         (concat "img/cover.jpeg")))
-       (read-file-name "Cover image"))))
+  (when-let* ((cover (or (fc-call-mode-func "book-cover" nil)
+                         (fc-file-first-exists
+                          (list
+                           (concat title ".jpg")
+                           (concat title ".jpeg")
+                           (concat "img/" title ".jpg")
+                           (concat "img/" title ".jpeg")
+                           "cover.jpg"
+                           "cover.jpeg"
+                           (concat "img/cover.jpg")
+                           (concat "img/cover.jpeg"))))))
+    (expand-file-name cover)))
 
-(cl-defun fc-book-publish-epub()
+(cl-defun fc--book-gen-cover ()
+  (let* ((meta (fc--book-meta))
+         (title (plist-get meta :title))
+         (author (plist-get meta :author))
+         (output (expand-file-name "~/tmp/ebook-cover.png"))
+         l)
+    (push "-t" l)
+
+    (fc-each (object-intervals title)
+      (push (substring-no-properties title (car it) (cadr it)) l))
+
+    (push "-a" l)
+    (fc-each (object-intervals author)
+      (push (substring-no-properties author (car it) (cadr it)) l))
+
+    (push "-o" l)
+    (push output l)
+
+    (fc-exec-command "fc-book-cover.py" (reverse l))
+
+    output))
+
+(cl-defun fc-book-publish-epub ()
   (let* ((file (buffer-file-name))
          (title (fc--book-title))
-         (cover (fc--book-cover title))
+         (cover (or
+                 (fc--book-cover title)
+                 (fc--book-gen-cover)))
          (epub (expand-file-name (read-file-name "Epub file" nil nil nil
                                                  (format "%s.epub" title))))
          (gz-file (string-suffix-p ".gz" file))
@@ -368,7 +391,7 @@ LEVEL: chapter level."
                     (shell-quote-argument file))
             l))
 
-    (push (format "pandoc --to epub -o %s --epub-cover-image %s"
+    (push (format "pandoc --to epub3 --webtex -o %s --epub-cover-image %s"
                   (shell-quote-argument epub)
                   (shell-quote-argument cover))
           l)

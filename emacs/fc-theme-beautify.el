@@ -171,7 +171,8 @@ COLOR: background color."
                :inherit 'highlight
                :extend t)
 
-  (fc-set-faces '(font-lock-keyword-face
+  (fc-set-faces '(hl-line
+                  font-lock-keyword-face
                   font-lock-function-name-face
 
                   font-lock-string-face

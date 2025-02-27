@@ -75,7 +75,6 @@
      :date (car (plist-get info :date)))))
 
 (defun fc--org-book-cover()
-  (message "get book cover for org")
   (fc--org-get-file-property "COVER"))
 
 (cl-defun fc--org-before-theme-changed ()

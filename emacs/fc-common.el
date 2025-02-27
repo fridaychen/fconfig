@@ -137,7 +137,6 @@
 
     ('leuven-dark
      (fc-set-face 'hl-line nil
-                  :foreground "gray96"
                   :background "gray25")
      (fc-set-face 'highlight nil
                   :foreground "gray96"
@@ -148,7 +147,6 @@
                   :foreground "gray90"
                   :background "gray15")
      (fc-set-face 'highlight nil
-                  :foreground "black"
                   :background "bisque3"))
 
     ('zenburn

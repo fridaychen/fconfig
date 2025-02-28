@@ -71,7 +71,12 @@ def generate_book_cover(titles, subtitles, authors, output):
         context.set_source_rgb(0.3, 0, 0)
         context.paint()
 
-    context.select_font_face("Noto Sans Mono CJK SC")
+    context.select_font_face(
+        "Noto Sans Mono CJK SC",
+        cairo.FONT_SLANT_NORMAL,
+        cairo.FONT_WEIGHT_BOLD,
+    )
+    context.set_antialias(cairo.ANTIALIAS_SUBPIXEL)
     context.set_source_rgb(1, 1, 1)
 
     margin = 20

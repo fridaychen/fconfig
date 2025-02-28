@@ -77,8 +77,12 @@ PAIRS: replacement list."
       meta))))
 
 (defun fc--book-title ()
-  (if-let ((meta (fc--book-meta)))
-      (plist-get meta :title)
+  (if-let* ((meta (fc--book-meta)))
+      (string-join
+       (list
+        (string-join (plist-get meta :title) " ")
+        (string-join (plist-get meta :subtitle) " "))
+       " ")
     ""))
 
 (defun fc--book-setup ()
@@ -357,17 +361,24 @@ LEVEL: chapter level."
 (cl-defun fc--book-gen-cover ()
   (let* ((meta (fc--book-meta))
          (title (plist-get meta :title))
+         (subtitle (plist-get meta :subtitle))
          (author (plist-get meta :author))
          (output (expand-file-name "~/tmp/ebook-cover.png"))
          l)
     (push "-t" l)
 
-    (fc-each (object-intervals title)
-      (push (substring-no-properties title (car it) (cadr it)) l))
+    (fc-each title
+      (push it l))
+
+    (when subtitle
+      (push "-s" l)
+
+      (fc-each subtitle
+        (push it l)))
 
     (push "-a" l)
-    (fc-each (object-intervals author)
-      (push (substring-no-properties author (car it) (cadr it)) l))
+    (fc-each author
+      (push it l))
 
     (push "-o" l)
     (push output l)

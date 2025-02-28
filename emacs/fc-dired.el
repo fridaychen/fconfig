@@ -80,6 +80,29 @@
 
 (require 'dired-x)
 
+(defun fc-file-no-zh-to-number ()
+  (interactive)
+
+  (fc-replace-regexp
+   "\\([零一二两三四五六七八九十百千万]+\\)\\. "
+   #'(lambda ()
+       (replace-match
+        (concat
+         (number-to-string
+          (fc-zh-to-number (match-string 1)))
+         ". ")))
+   :from-start t))
+
+(defconst *fc-wdired-map*
+  (fc-make-keymap
+   `(
+     ("f" fc-file-no-zh-to-number)
+     )))
+
+(cl-defun fc--wdired-mode-func ()
+  "Mode func."
+  (fc-modal-head-key "Wdired" '*fc-wdired-map*))
+
 (fc-load 'wdired
   :autoload t
   :bind '((wdired-mode-map

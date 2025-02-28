@@ -65,14 +65,29 @@
 
 (defvar fc--org-book-size-thold 4096)
 
-(defun fc--org-book-info()
+(defun fc--org-book-info ()
   "Return org book meta info."
 
-  (let ((info (org-export-get-environment)))
-    (list
-     :title (car (plist-get info :title))
-     :author (car (plist-get info :author))
-     :date (car (plist-get info :date)))))
+  (let ((parsed (org-element-parse-buffer))
+        titles
+        subtitles
+        authors
+        date)
+    (org-element-map parsed 'keyword
+      (lambda (keyword)
+        (pcase (org-element-property :key keyword)
+          ("TITLE" (push (org-element-property :value keyword)
+                         titles))
+          ("SUBTITLE" (push (org-element-property :value keyword)
+                            subtitles))
+          ("AUTHOR" (push (org-element-property :value keyword)
+                          authors))
+          ("DATE" (setq date (org-element-property :value keyword))))))
+
+    (list :title (reverse titles)
+          :subtitle (reverse subtitles)
+          :author (reverse authors)
+          :date date)))
 
 (defun fc--org-book-cover()
   (fc--org-get-file-property "COVER"))

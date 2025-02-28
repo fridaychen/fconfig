@@ -82,8 +82,8 @@ def generate_book_cover(titles, subtitles, authors, output):
     margin = 20
     top = 140
 
-    top = draw_text(context, 24, titles, margin, top, cover_width) + 15
-    top = draw_text(context, 16, subtitles, margin, top, cover_width)
+    top = draw_text(context, 26, titles, margin, top, cover_width) + 15
+    top = draw_text(context, 18, subtitles, margin, top, cover_width)
 
     top = int(cover_height * 3 / 4)
 

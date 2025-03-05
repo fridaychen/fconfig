@@ -348,14 +348,15 @@ LEVEL: chapter level."
   (when-let* ((cover (or (fc-call-mode-func "book-cover" nil)
                          (fc-file-first-exists
                           (list
+                           (concat title ".webp")
+                           (concat "img/" title ".webp")
+                           (concat "img/cover.webp")
+                           "cover.webp"
+
                            (concat title ".jpg")
-                           (concat title ".jpeg")
                            (concat "img/" title ".jpg")
-                           (concat "img/" title ".jpeg")
-                           "cover.jpg"
-                           "cover.jpeg"
                            (concat "img/cover.jpg")
-                           (concat "img/cover.jpeg"))))))
+                           "cover.jpg")))))
     (expand-file-name cover)))
 
 (cl-defun fc--book-gen-cover ()
@@ -402,7 +403,7 @@ LEVEL: chapter level."
                     (shell-quote-argument file))
             l))
 
-    (push (format "pandoc --to epub3 --webtex -o %s --epub-cover-image %s"
+    (push (format "pandoc --to epub3 --mathml -o %s --epub-cover-image %s"
                   (shell-quote-argument epub)
                   (shell-quote-argument cover))
           l)

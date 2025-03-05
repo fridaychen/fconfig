@@ -467,10 +467,39 @@ PRE-FORMAT: format the block content."
                        "\\1\n\n*" :from-start t)
 
     (fc-replace-regexp "^\\*\\([^\n]+\\)\n\\([^*\n]\\)"
+
                        "*\\1\n\n\\2" :from-start t)
 
     (fc-replace-regexp "^\\*\\([^\n]+\\)\n+\\([[:alpha:]]+:\\|:PROPERTIES\\|[[:space:]]*CLOSED:\\)"
                        "*\\1\n\\2" :from-start t)))
+
+(cl-defun fc--org-fix-math ()
+  "Fix math."
+  (interactive)
+  (save-excursion
+    (let ((l nil))
+      (org-element-map (org-element-parse-buffer) 'latex-fragment
+        (lambda (elt)
+          (push (list (org-element-property :value elt)
+                      (org-element-property :begin elt)
+                      (org-element-property :end elt))
+                l)))
+
+      (fc-each l
+        (cl-multiple-value-bind (value start end)
+            it
+          (unless (string-suffix-p " " value)
+            (insert " "))
+
+          (goto-char  end)
+          (unless (string-suffix-p " " ()
+                                   "[ \n\\.]" 1)
+            (insert " "))
+
+          ;; (goto-char start)
+          ;; (unless (looking-back "[ \n]" 1)
+          ;;   (insert " "))
+          )))))
 
 (cl-defun fc--org-convert-mk-verse ()
   "Convert markdown verse."
@@ -509,7 +538,9 @@ PRE-FORMAT: format the block content."
   (fc--default-fmt)
 
   (fc--org-fix-headline-spacing)
-  (fc--org-fmt-verse))
+  (fc--org-fmt-verse)
+  ;; (fc--org-fix-math)
+  )
 
 (defun fc--org-find-oneline-footnote (fn)
   (save-excursion

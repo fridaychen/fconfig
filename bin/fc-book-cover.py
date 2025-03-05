@@ -60,7 +60,7 @@ def draw_text(context, font_size, texts, margin, top, width):
 
 def generate_book_cover(titles, subtitles, authors, output):
     cover_width = 600
-    cover_height = 800
+    cover_height = 900
 
     surface = cairo.ImageSurface(
         cairo.FORMAT_ARGB32, cover_width, cover_height
@@ -79,19 +79,19 @@ def generate_book_cover(titles, subtitles, authors, output):
     context.set_antialias(cairo.ANTIALIAS_SUBPIXEL)
     context.set_source_rgb(1, 1, 1)
 
-    margin = 20
-    top = 140
+    margin = 16
+    top = 240
 
-    top = draw_text(context, 26, titles, margin, top, cover_width) + 15
-    top = draw_text(context, 18, subtitles, margin, top, cover_width)
+    top = draw_text(context, 42, titles, margin, top, cover_width) + 15
+    top = draw_text(context, 24, subtitles, margin, top, cover_width)
 
     top = int(cover_height * 3 / 4)
 
     draw_text(
         context,
-        16,
+        26,
         authors,
-        int(cover_width * 1 / 3),
+        margin,
         top,
         cover_width,
     )

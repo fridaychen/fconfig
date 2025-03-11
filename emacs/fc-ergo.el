@@ -1795,7 +1795,6 @@ FUNC: new repeat func."
            fc-set-key-seq
            fc-toggle-bookmark
            fc-toggle-hide-show-all
-           just-one-space
            )
   (advice-add it :after #'fc-ergo-prefix-off))
 

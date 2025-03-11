@@ -65,24 +65,30 @@
 
 (defvar fc--org-book-size-thold 4096)
 
+(cl-defmacro fc--org-parse (types &rest rest)
+  (declare (indent 1))
+
+  `(org-element-map
+       (org-element-parse-buffer)
+       ,types
+     (lambda (elt) ,@rest)))
+
 (defun fc--org-book-info ()
   "Return org book meta info."
 
-  (let ((parsed (org-element-parse-buffer))
-        titles
+  (let (titles
         subtitles
         authors
         date)
-    (org-element-map parsed 'keyword
-      (lambda (keyword)
-        (pcase (org-element-property :key keyword)
-          ("TITLE" (push (org-element-property :value keyword)
-                         titles))
-          ("SUBTITLE" (push (org-element-property :value keyword)
-                            subtitles))
-          ("AUTHOR" (push (org-element-property :value keyword)
-                          authors))
-          ("DATE" (setq date (org-element-property :value keyword))))))
+    (fc--org-parse 'keyword
+      (pcase (org-element-property :key elt)
+        ("TITLE" (push (org-element-property :value elt)
+                       titles))
+        ("SUBTITLE" (push (org-element-property :value elt)
+                          subtitles))
+        ("AUTHOR" (push (org-element-property :value elt)
+                        authors))
+        ("DATE" (setq date (org-element-property :value elt)))))
 
     (list :title (reverse titles)
           :subtitle (reverse subtitles)
@@ -478,28 +484,24 @@ PRE-FORMAT: format the block content."
   (interactive)
   (save-excursion
     (let ((l nil))
-      (org-element-map (org-element-parse-buffer) 'latex-fragment
-        (lambda (elt)
-          (push (list (org-element-property :value elt)
-                      (org-element-property :begin elt)
-                      (org-element-property :end elt))
-                l)))
+      (fc--org-parse 'latex-fragment
+        (push (list (org-element-property :value elt)
+                    (org-element-property :begin elt)
+                    (org-element-property :end elt))
+              l))
 
       (fc-each l
         (cl-multiple-value-bind (value start end)
             it
-          (unless (string-suffix-p " " value)
+          (goto-char (+ start (length value)))
+          (if (looking-at-p "[ \n]")
+              (just-one-space)
             (insert " "))
 
-          (goto-char  end)
-          (unless (string-suffix-p " " ()
-                                   "[ \n\\.]" 1)
-            (insert " "))
-
-          ;; (goto-char start)
-          ;; (unless (looking-back "[ \n]" 1)
-          ;;   (insert " "))
-          )))))
+          (goto-char start)
+          (if (looking-back "[ \n]" 1)
+              (just-one-space)
+            (insert " ")))))))
 
 (cl-defun fc--org-convert-mk-verse ()
   "Convert markdown verse."
@@ -985,13 +987,18 @@ BODY: usually a pcase block."
 
 (defun fc--org-insert-formula ()
   "Insert latex formula."
-  (let (last-point
-        (displayed (zerop (current-column))))
-    (unless (looking-back " " 1)
-      (insert " "))
-    (insert (if displayed "\\[" "$"))
-    (setq last-point (point))
-    (insert (if displayed "\\] " "$ "))
+  (let (last-point)
+    (if (zerop (current-column))
+        (progn
+          (insert "\\[")
+          (setq last-point (point))
+          (insert "\\]"))
+      (just-one-space)
+      (insert "$")
+      (setq last-point (point))
+      (insert "$ ")
+      (just-one-space))
+
     (goto-char last-point)
     (fc-modal-disable)))
 

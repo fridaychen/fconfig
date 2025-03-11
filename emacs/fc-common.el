@@ -146,8 +146,10 @@
      (fc-set-face 'mode-line nil
                   :foreground "gray90"
                   :background "gray15")
+     (fc-set-face 'vertico-current nil
+                  :background "cornsilk4")
      (fc-set-face 'highlight nil
-                  :background "bisque3"))
+                  :background "DarkSeaGreen"))
 
     ('zenburn
      (fc-set-face 'default nil

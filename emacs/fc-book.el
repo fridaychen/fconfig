@@ -78,11 +78,12 @@ PAIRS: replacement list."
 
 (defun fc--book-title ()
   (if-let* ((meta (fc--book-meta)))
-      (string-join
-       (list
-        (string-join (plist-get meta :title) " ")
-        (string-join (plist-get meta :subtitle) " "))
-       " ")
+      (string-trim
+       (string-join
+        (list
+         (string-join (plist-get meta :title) " ")
+         (string-join (plist-get meta :subtitle) " "))
+        " "))
     ""))
 
 (defun fc--book-setup ()

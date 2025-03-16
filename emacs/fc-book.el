@@ -283,7 +283,10 @@ PAIRS: replacement list."
 (defun fc-book-chapter-zh-to-number ()
   "Convert Chinese chapter number to arabic number."
   (fc-replace-regexp
-   "第\\([零一二两三四五六七八九十百千万]+\\)\\([章节回幕]\\)"
+   ;; "第\\([零一二两三四五六七八九十百千万]+\\)\\([章节回幕]\\)"
+   (rx "第"
+       (group (+ (any "零一二两三四五六七八九十百千万")))
+       (group (any "章节回幕")))
    #'(lambda ()
        (replace-match (concat "第"
                               (number-to-string (fc-zh-to-number (match-string 1)))
@@ -291,17 +294,25 @@ PAIRS: replacement list."
 
 (cl-defun fc-book-replace-zh-double-quote ()
   (save-excursion
-    (goto-char (point-min))
-    (query-replace-regexp "\"\\([^\n\"]+\\)\""
-                          "“\\1”")
-    (goto-char (point-min))
-    (query-replace-regexp "^\"" "“")))
+    ;; "\"\\([^\n\"]+\\)\""
+    (fc-replace-regexp
+     (rx ?\" (group
+              (+
+               (not (any "\n" "\""))))
+         ?\")
+     "“\\1”"
+     :from-start t)
+
+    (fc-replace-regexp "^\"" "“" :from-start t)))
 
 (cl-defun fc-book-replace-zh-single-quote ()
   (save-excursion
-    (goto-char (point-min))
-    (query-replace-regexp "\\([^a-zA-Z]\\)'\\([^\n]+\\)'\\([^a-zA-Z]\\)"
-                          "\\1‘\\2’\\3")))
+    ;; "\\([^a-zA-Z]\\)'\\([^\n]+\\)'\\([^a-zA-Z]\\)"
+    (fc-replace-regexp (rx (group (not alpha))
+                           ?\' (group (+ not-newline)) ?\'
+                           (group (not alpha)))
+                       "\\1‘\\2’\\3"
+                       :from-start t)))
 
 (cl-defmacro fc--book-replace-chinese-toc-regexp (regex func)
   "Rexexp replacing in TOC.
@@ -330,7 +341,13 @@ LEVEL: chapter level."
 
   (save-excursion
     (fc--book-replace-chinese-toc-regexp
-     "^ *\\([第章]\\) *\\([0-9零一二三四五六七八九十两百千]\\{1,8\\}\\) *\\([章节回幕]\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
+     ;; "^ *\\([第章]\\) *\\([0-9零一二三四五六七八九十两百千]\\{1,8\\}\\) *\\([章节回幕]\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
+     (rx bol
+         (* " ") (group (any "第章"))
+         (* " ") (group (** 1 8 (any "0-9零一二三四五六七八九十两百千")))
+         (* " ") (group (? (any "章节回幕")))
+         (* " ") (group (** 0 40 (not (any "。\n"))))
+         eol)
      (lambda (title)
        (fc-call-mode-func "chapter-mark" nil level title)))))
 
@@ -341,7 +358,14 @@ LEVEL: chapter level."
 
   (save-excursion
     (fc--book-replace-chinese-toc-regexp
-     "^\\(第\\{0,1\\}\\)\\([0-9零一二三四五六七八九十]\\{1,4\\}\\)\\(节\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
+     ;; "^\\(第\\{0,1\\}\\)\\([0-9零一二三四五六七八九十]\\{1,4\\}\\)\\(节\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
+     (rx bol
+         (group (? "第"))
+         (* space) (group (** 1 4 (any "0-9零一二三四五六七八九十两")))
+         (* space) (group (? "节"))
+         (* space) (group (** 0 20 (not (any "。\n"))))
+         eol
+         )
      (lambda (title)
        (fc-call-mode-func "chapter-mark" nil level title)))))
 

@@ -28,16 +28,18 @@ ARGS: argument for function."
       (eval-expression it))
     (eval-expression func))))
 
-(cl-defun fc-replace-string (from to-string &key from-start)
+(cl-defun fc-replace-string (from to &key from-start)
   "String replacement.
 FROM: from-string.
-TO-STRING: to-string.
+TO: to-string.
 FROM-START: non-nil means starts from beginning."
   (when from-start
     (goto-char (point-min)))
 
   (cl-loop while (search-forward from nil t) do
-           (replace-match to-string)
+           (if (stringp to)
+               (replace-match to)
+             (fc-funcall to))
            count 1))
 
 (cl-defun fc-replace-regexp (regex to &key from-start)

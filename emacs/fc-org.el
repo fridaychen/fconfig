@@ -469,15 +469,22 @@ PRE-FORMAT: format the block content."
 (cl-defun fc--org-fix-headline-spacing ()
   "Fix headline spacing."
   (save-excursion
-    (fc-replace-regexp "\\([^\n]\\)\n\\*"
-                       "\\1\n\n*" :from-start t)
+    (fc-replace-regexp (rx (group (not "\n")) "\n" "*")
+                       ;; "\\([^\n]\\)\n\\*"
+                       "\\1\n\n*"
+                       :from-start t)
 
-    (fc-replace-regexp "^\\*\\([^\n]+\\)\n\\([^*\n]\\)"
-
+    (fc-replace-regexp (rx line-start "*" (group (+ nonl)) "\n" (group nonl))
+                       ;; "^\\*\\([^\n]+\\)\n\\([^*\n]\\)"
                        "*\\1\n\n\\2" :from-start t)
 
-    (fc-replace-regexp "^\\*\\([^\n]+\\)\n+\\([[:alpha:]]+:\\|:PROPERTIES\\|[[:space:]]*CLOSED:\\)"
-                       "*\\1\n\\2" :from-start t)))
+    (fc-replace-regexp (rx bol "*" (group (+ nonl)) (+ "\n")
+                           (group (or (seq (+ alpha) ":")
+                                      ":PROPERTIES"
+                                      (seq (* space) "CLOSED:"))))
+                       ;; "^\\*\\([^\n]+\\)\n+\\([[:alpha:]]+:\\|:PROPERTIES\\|[[:space:]]*CLOSED:\\)"
+                       "*\\1\n\\2" :from-start t)
+    ))
 
 (cl-defun fc--org-fix-math ()
   "Fix math."
@@ -758,9 +765,12 @@ LANG: language."
                                                        (read-string
                                                         "Confirm"
                                                         (fc-select "Footnote regex"
-                                                            '("\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
-                                                              "[（(〔【<\[]\\(注?[0-9]+\\)[\]>】〕)）]"
-                                                              "\\([0-9]+\\)"))))))
+                                                            (list
+                                                             "\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
+                                                             "[（(〔【<\[]\\(注?[0-9]+\\)[\]>】〕)）]"
+                                                             "\\([0-9]+\\)"
+                                                             (rx (group "[" (+ num) "]"))
+                                                             ))))))
       ("Convert from latex"		. fc--org-convert-from-latex)
       ("Convert from markdown"		. fc--org-convert-from-markdown)
       ("Convert markdown verse"		. fc--org-convert-mk-verse)

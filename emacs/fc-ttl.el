@@ -223,7 +223,7 @@
 
 (cl-defun fc--ttl-function-p (symbol)
   (let ((case-fold-search nil))
-    (eq 0 (string-match "^:?[a-z0-9_]+$" symbol))))
+    (eq 0 (string-match-p "^:?[a-z0-9_]+$" symbol))))
 
 (cl-defun fc--ttl-find-ref-in-current-buf (symbol)
   (save-excursion

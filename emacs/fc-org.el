@@ -758,19 +758,20 @@ LANG: language."
                                                        (read-string
                                                         "Confirm"
                                                         (fc-select "Footnote regex"
-                                                            '("\\[fn:: \\([^\]]+\\)\\]"
-                                                              "\\\\footnote{\\([^}]+\\)}"
-                                                              "[〔【<\[]注?\\([^\]]+\\)[\]>】〕]"))))))
+                                                            (list
+                                                             (rx "[fn:: " (group (+ (not ?\]))) "]")
+                                                             (rx "\\footnote{" (group (+ (not ?\})))"}")
+                                                             (rx "〔【<[" (? "注") (group (+ (not ?\]))) "]>】〕")))))))
       ("Convert footnote (to inline)"	. ,(fc-manual (fc--org-convert-inline-fontnote
                                                        (read-string
                                                         "Confirm"
                                                         (fc-select "Footnote regex"
                                                             (list
-                                                             "\\([①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇]\\)"
-                                                             "[（(〔【<\[]\\(注?[0-9]+\\)[\]>】〕)）]"
-                                                             "\\([0-9]+\\)"
-                                                             (rx (group "[" (+ num) "]"))
-                                                             ))))))
+                                                             (rx (group (any "①-⒇")))
+                                                             (rx (any "（(〔【<[")
+                                                                 (group (? "注") (+ num))
+                                                                 (any "]>】〕)）"))
+                                                             (rx (group "[" (+ num) "]"))))))))
       ("Convert from latex"		. fc--org-convert-from-latex)
       ("Convert from markdown"		. fc--org-convert-from-markdown)
       ("Convert markdown verse"		. fc--org-convert-mk-verse)
@@ -1036,10 +1037,10 @@ BODY: usually a pcase block."
 (defun fc--org-format-verse ()
   "Format a verse."
   (goto-char (point-min))
-  (fc-replace-regexp "^[[:space:]]*\\([^ ]\\)"
+  (fc-replace-regexp (rx bol (* space) (group (not space)))
                      "  \\1" :from-start t)
   (fc-whitespace-clean)
-  (fc-replace-regexp "^\n+"
+  (fc-replace-regexp (rx bol (>= 2 "\n"))
                      "\n"
                      :from-start t))
 

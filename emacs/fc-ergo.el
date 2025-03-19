@@ -1358,7 +1358,7 @@ STEP: pixels."
                                (format "Book: <<%s>> "
                                        (plist-get meta :title)
                                        (which-function))))
-    (cl-return-from fc--auto-bookmark))
+    (cl-return-from fc--add-bookmark))
 
   (when-let* ((root (fc-proj-root))
               (has-name (boundp 'fc-proj-name)))
@@ -1367,7 +1367,7 @@ STEP: pixels."
                                        fc-proj-name
                                        (file-relative-name buffer-file-name root)
                                        (which-function))))
-    (cl-return-from fc--auto-bookmark))
+    (cl-return-from fc--add-bookmark))
 
   (when-let* ((name (read-string "Add bookmark name"
                                  (format "Doc : %s -- %s"
@@ -1375,7 +1375,7 @@ STEP: pixels."
                                          (which-function))))
               (not-empty (not (seq-empty-p name))))
     (bookmark-set name)
-    (cl-return-from fc--auto-bookmark)))
+    (cl-return-from fc--add-bookmark)))
 
 (cl-defun fc--auto-bookmark ()
   (interactive)
@@ -1405,11 +1405,13 @@ STEP: pixels."
               (bookmark-delete bm))))
      ("l" fc--auto-bookmark)
      ("j" fc--add-bookmark)
+     ("r" bookmark-rename)
      ("u" ,(fc-manual
             (when-let* ((bm (fc--select-bookmark :prompt "Select bookmark to create or update"))
                         (confirm (fc-user-confirm
                                   (format "Update bookmark '%s'" bm))))
-              (bookmark-set bm)))))))
+              (bookmark-set bm))))))
+  "KEYS d: delete  l: auto  j: add  r: rename  u: create or update.")
 
 (defun fc-mode-func-key ()
   "Run function base on mode."

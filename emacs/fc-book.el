@@ -128,7 +128,7 @@ PAIRS: replacement list."
   (interactive)
 
   (save-excursion
-    (fc-replace-regexp "\\([^[:space:]]\\)\n\\([^\\[:space:]]\\)"
+    (fc-replace-regexp (rx bol (group (not space)) "\n" (group (not space)))
                        "\\1\\2"
                        :from-start t)))
 
@@ -137,10 +137,10 @@ PAIRS: replacement list."
   (interactive)
 
   (save-excursion
-    (fc-replace-regexp "\\([^a-zA-Z,.:*\\\\]\\) +"
+    (fc-replace-regexp (rx (group (not (any "a-zA-Z,.:*"))) (+ " "))
                        "\\1"
                        :from-start t)
-    (fc-replace-regexp "\\([a-zA-Z]\\) +\\([^a-zA-Z]\\)"
+    (fc-replace-regexp (rx (group (any "a-zA-Z")) (+ " ") (group (not (any "a-zA-Z"))))
                        "\\1\\2"
                        :from-start t)))
 
@@ -224,7 +224,7 @@ PAIRS: replacement list."
   (interactive)
 
   (save-excursion
-    (fc-replace-regexp "\\([^\n]\\)\n\\([^\n]\\)"
+    (fc-replace-regexp (rx (group nonl) "\n" (group nonl))
                        #'(lambda ()
                            (replace-match
                             (let ((a (match-string 1))
@@ -241,7 +241,7 @@ PAIRS: replacement list."
     (fc-replace-regexp "\n\n+" "\n"))
 
   (save-excursion
-    (fc-replace-regexp "\\([^\n]\\)\n\\([^\n]\\)"
+    (fc-replace-regexp (rx (group nonl) "\n" (group nonl))
                        #'(lambda ()
                            (replace-match
                             (let ((a (match-string 1))

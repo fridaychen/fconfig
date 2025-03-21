@@ -107,8 +107,16 @@ THEMES: list of themes."
          (light (fc--get-color-light color))
          (new-light (+ light delta)))
 
-    (unless (>= 1 new-light 0)
-      (error "Wrong light"))
+    (cond
+     ((> new-light 0.98)
+      (message "2222 change from %s to 0.98" new-light)
+      (setq new-light 0.98))
+
+     ((< new-light 0.02)
+      (message "2222 change from %s to 0.02" new-light)
+      (setq new-light 0.02)))
+    ;; (unless (>= 1 new-light 0)
+    ;;   (error "Wrong light"))
 
     (fc-set-face face nil
                  :foreground (fc--set-color-light
@@ -120,8 +128,17 @@ THEMES: list of themes."
          (light (fc--get-color-light color))
          (new-light (+ light delta)))
 
-    (unless (>= 1 new-light 0)
-      (error "Wrong light"))
+    (cond
+     ((> new-light 0.98)
+      (message "1111 change %s from %s to 0.98" face new-light)
+      (setq new-light 0.98))
+
+     ((< new-light 0.02)
+      (message "1111 change from %s to 0.02" new-light)
+      (setq new-light 0.02)))
+
+    ;; (unless (>= 1 new-light 0)
+    ;;   (error "Wrong light"))
 
     (fc-set-face face nil
                  :background (fc--set-color-light

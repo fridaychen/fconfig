@@ -1,14 +1,16 @@
 from bs4 import BeautifulSoup
 import wikipedia
 
+
 def soup(keyword, lang="en"):
     try:
         wikipedia.set_lang(lang)
         html_data = wikipedia.page(keyword).html()
 
         return BeautifulSoup(html_data, "html.parser")
-    except:
+    except Exception:
         return None
+
 
 def album_get_description(soup):
     div = soup.find("div", {"class": "shortdescription"})
@@ -16,6 +18,7 @@ def album_get_description(soup):
     if div is not None:
         return div.text
     return ""
+
 
 def album_get_tracks(soup):
     tracks = []
@@ -44,11 +47,13 @@ def album_get_tracks(soup):
 
     return tracks
 
+
 def album_get_year(soup):
     elt = soup.find("td", {"class": "published"})
     if elt is None:
         return ""
     return elt.text
+
 
 def album_get_genre(soup):
     elt = soup.find("td", {"class": "category hlist"})

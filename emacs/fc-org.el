@@ -731,11 +731,11 @@ LANG: language."
         (if (zerop (- (current-column) (- (match-end 0) (match-beginning 0))))
             (progn
               (unless (= (- num def-num) 1)
-                (unless (y-or-n-p (format "Continue : def-num error %d" num))
+                (unless (y-or-n-p (format "Continue : def-num error %d?" num))
                   (cl-return)))
               (setq def-num num))
           (unless (= (- num ref-num) 1)
-            (unless (y-or-n-p (format "Continue : ref-num error %d" num))
+            (unless (y-or-n-p (format "Continue : ref-num error %d?" num))
               (cl-return)))
           (setq ref-num num))))
     (message "done")))

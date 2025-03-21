@@ -20,7 +20,6 @@
 (defconst *fc--repeat-key* "t")
 (defconst *fc--repeat-orignal-func* #'fc-translate-word)
 
-(defvar *fc-theme-mode* 'dark)
 (defvar *fc--work-themes* '((dark leuven-dark)
                             (light leuven)
                             (deep-dark modus-vivendi-deuteranopia)))
@@ -985,9 +984,6 @@ KEYMAP: keymap to run."
 
      ("[" ,(fc-manual (recenter 1)))
      ("]" ,(fc-manual (recenter -1)))
-
-     ("," flycheck-previous-error)
-     ("." flycheck-next-error)
 
      (";" goto-line))
    "ergo-goto-map")

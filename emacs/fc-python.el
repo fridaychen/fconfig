@@ -12,6 +12,9 @@
            (fc-add-mode-name 'python-ts-mode "🐍")
            (setf py-comment-fill-column 79)
 
+           (setf flycheck-python-flake8-executable
+                 (expand-file-name "~/.emacs.d/site/python/bin/flake8"))
+
            (require 'python)
            (fc-add-fmt 'python-mode
                        `("black" "-t" "py313" "-l" ,(fc-string py-comment-fill-column) "-")

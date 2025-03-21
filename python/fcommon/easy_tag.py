@@ -49,7 +49,7 @@ def easytag_getarg(args, meta):
     if args.year:
         meta["%y"] = args.year
     if args.cover:
-        meta["%c"] = open(a, "rb").read()
+        meta["%c"] = open(args.cover, "rb").read()
 
 
 class EasyTag:
@@ -202,7 +202,8 @@ class EasyTag:
         return ret
 
     def set_art(self, value):
-        import base64, mutagen.flac
+        import base64
+        import mutagen.flac
 
         picture = mutagen.flac.Picture()
         picture.data = value
@@ -210,7 +211,7 @@ class EasyTag:
         if not hasattr(self.f, "mime"):
             audio = ID3(self.path)
             audio["APIC"] = APIC(
-                encoding=3, mime="image/jpeg", type=3, desc=u"Cover", data=value
+                encoding=3, mime="image/jpeg", type=3, desc="Cover", data=value
             )
             audio.save(self.path)
         elif self.f.mime[0] == "audio/flac":
@@ -238,7 +239,7 @@ class EasyTag:
             self.f[self.tag_map["%d"]] = value
 
     def parse_name(self, pattern):
-        l = re.compile("%[tabnpd]").findall(pattern)
+        l: list = re.compile("%[tabnpd]").findall(pattern)
 
         pattern = re.compile("%[tabp]").sub("(.+)", pattern)
         pattern = re.compile("%[nd]").sub("([0-9]+)", pattern)
@@ -314,7 +315,7 @@ class EasyTag:
         if not os.path.isfile(path):
             return None
 
-        if bool(re.search("\.mp3$", path, re.I)):
+        if bool(re.search("\\.mp3$", path, re.I)):
             try:
                 f = EasyID3(path)
             except mutagen.id3.ID3NoHeaderError:

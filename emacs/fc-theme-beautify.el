@@ -28,35 +28,34 @@
       'dark
     'light))
 
-(defun fc--beautify-soothe-theme ()
-  "Soothe theme.
-PERCENT: produce background color by darken this percent.
-COLOR: background color."
-  (cl-multiple-value-bind (level-1 level-2 level-3)
-      (alist-get (fc--theme-mode) *fc-soothe-light-deltas*)
+(defun fc--beautify-soothe-face (faces)
+  (cl-mapcar (lambda (level faces)
+               (fc-each faces
+                 (when (facep it)
+                   (fc--adjust-face-bg-light it level))))
+             (alist-get (fc--theme-mode) *fc-soothe-light-deltas*)
+             faces))
 
-    (fc-each '(font-lock-keyword-face
-               font-lock-function-name-face)
-      (when (facep it)
-        (fc--adjust-face-bg-light it level-1)))
+(fset 'fc--beautify-soothe-theme
+      (lambda ()
+        (fc--beautify-soothe-face
+         '((font-lock-keyword-face
+            font-lock-function-name-face)
 
-    (fc-each '(font-lock-string-face
-               font-lock-type-face
-               font-lock-constant-face
-               font-lock-property-name-face
-               font-lock-variable-name-face
+           (font-lock-string-face
+            font-lock-type-face
+            font-lock-constant-face
+            font-lock-property-name-face
+            font-lock-variable-name-face
+            font-lock-preprocessor-face
+            font-lock-function-call-face
+            font-lock-variable-use-face
+            font-lock-property-use-face
 
-               font-lock-preprocessor-face
-               font-lock-function-call-face
-               font-lock-variable-use-face
-               font-lock-property-use-face)
-      (when (facep it)
-        (fc--adjust-face-bg-light it level-2)))
+            org-link)
 
-    (fc-each '(font-lock-builtin-face
-               font-lock-doc-face)
-      (when (facep it)
-        (fc--adjust-face-bg-light it level-3)))))
+           (font-lock-builtin-face
+            font-lock-doc-face)))))
 
 (defun fc-beautify-theme-before-theme-changed ()
   (fc-set-faces '(font-lock-keyword-face

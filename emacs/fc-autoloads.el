@@ -66,6 +66,8 @@
 (autoload #'fc-program "fc-program")
 
 ;; theme
+(defvar *fc-theme-mode* 'dark)
+
 (defvar *fc-before-theme-hook* nil "Before theme hook.")
 (defvar *fc-after-theme-hook* nil "After theme hook.")
 
@@ -76,6 +78,7 @@
 (autoload #'fc--enhance-face-contrast "fc-theme-config")
 
 ;; theme beautify
+(autoload #'fc--beautify-soothe-face "fc-theme-beautify")
 (autoload #'fc-beautify-theme "fc-theme-beautify")
 (autoload #'fc-beautify-theme-before "fc-theme-beautify")
 

@@ -9,7 +9,7 @@
 (fc-load 'simple
   :local t
   :after (progn
-           (defun fc--next-error-buffer-p (buf &rest rest)
+           (defun fc--next-error-buffer-p (buf &rest _)
              (gethash (buffer-local-value 'major-mode (get-buffer buf))
                       *fc--next-error-map*))
 
@@ -66,7 +66,7 @@ PREV: previous function."
     t))
 
 (cl-defun fc-close-all-next-error-buffer ()
-  "Close all next-error buffers."
+  "Close all next error buffers."
   (fc-with-each-buffer
    (when (gethash major-mode *fc--next-error-map*)
      (kill-buffer it))))

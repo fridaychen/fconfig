@@ -14,7 +14,8 @@
      ("C-k" vertico-previous))
    "fc vertico base"))
 
-(cl-defun fc-vertico--clear ()
+(defun fc-vertico--clear ()
+  "Clear current line."
   (interactive)
 
   (when (not (zerop (current-column)))
@@ -76,6 +77,7 @@
 (defalias 'fc-find-files 'find-file)
 (defalias 'fc-M-x 'execute-extended-command)
 (defalias 'fc-outline 'consult-outline)
+(defalias 'fc-flycheck 'flycheck-list-errors)
 
 (cl-defun fc-vertico--delete-bookmark ()
   (interactive)

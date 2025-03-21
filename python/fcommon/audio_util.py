@@ -99,8 +99,8 @@ def parse_title_offset(data):
 def get_audio_streams(filename):
     return JsonComment(json).loads(
         os.popen(
-            "ffprobe -v quiet -print_format json -show_streams -select_streams a '%s'"
-            % filename
+            "ffprobe -v quiet -print_format json -show_streams "
+            "-select_streams a '%s'" % filename
         ).read()
     )["streams"]
 
@@ -113,10 +113,14 @@ def get_audio_extension_name(filename, idx=0):
 
 def extract_audio(filename, idx=0):
     new_filename = (
-        os.path.splitext(filename)[0] + "." + get_audio_extension_name(filename, idx)
+        os.path.splitext(filename)[0]
+        + "."
+        + get_audio_extension_name(filename, idx)
     )
 
     print("%s --> %s" % (filename, new_filename))
 
     if new_filename != filename:
-        os.system("ffmpeg -i '%s' -vn -acodec copy '%s'" % (filename, new_filename))
+        os.system(
+            "ffmpeg -i '%s' -vn -acodec copy '%s'" % (filename, new_filename)
+        )

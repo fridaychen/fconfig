@@ -6,7 +6,7 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defconst *fc-basic-packages* '(s dash))
+(defconst *fc-basic-packages* '(s dash xr))
 
 (cl-defun fc-require (name &optional run)
   (unless (featurep name)

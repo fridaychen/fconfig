@@ -79,7 +79,8 @@
 (defalias 'fc-outline 'consult-outline)
 (defalias 'fc-flycheck 'flycheck-list-errors)
 
-(cl-defun fc-vertico--delete-bookmark ()
+(defun fc-vertico--delete-bookmark ()
+  "Delete bookmark."
   (interactive)
 
   (when-let* ((name (seq-elt vertico--candidates
@@ -102,7 +103,8 @@
   (fc-with-keymap keymap
     (completing-read prompt collection)))
 
-(cl-defun fc-vertico-bookmark ()
+(defun fc-vertico-bookmark ()
+  "Jump and change."
   (interactive)
 
   (bookmark-maybe-load-default-file)

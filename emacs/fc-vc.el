@@ -172,12 +172,14 @@
 
   (fc-locate-file-in-path '(".git" ".svn") dir))
 
-(cl-defun fc-vc-branch ()
+(cl-defun fc-vc-branch (&key short)
   "Return current vc branch."
   (when vc-mode
     (let* ((backend (symbol-name (vc-backend (buffer-file-name))))
            (branch (substring-no-properties vc-mode (+ (length backend) 2))))
-      branch)))
+      (if (and short (string-search "/" branch))
+          (concat "/" (car (last (string-split branch "/"))))
+        branch))))
 
 (cl-defun fc-git-current-branch ()
   "Return current git branch name."

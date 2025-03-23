@@ -10,7 +10,8 @@
        :weight bold
        :overline t
        ))
-  "TTL function name face.")
+  "TTL function name face."
+  :group 'fconfig)
 
 (defvar *fc-ttl-function-name-face* '*fc-ttl-function-name-face*)
 
@@ -19,7 +20,8 @@
        :weight bold
        :overline nil
        ))
-  "TTL function exit face.")
+  "TTL function exit face."
+  :group 'fconfig)
 
 (defvar *fc-ttl-function-exit-face* '*fc-ttl-function-exit-face*)
 
@@ -79,7 +81,7 @@
     (save-excursion
       (indent-line-to col))))
 
-(cl-defun fc-ttl-indent-line ()
+(defun fc-ttl-indent-line ()
   "Indent current line."
   (interactive)
 
@@ -229,9 +231,6 @@
   (save-excursion
     (goto-char (point-min))
     (cl-loop
-     with func = (if (eq (seq-elt symbol 0) ?:)
-                     (cl-subseq symbol 0)
-                   symbol)
      with name = (format "call %s" symbol)
      while (re-search-forward (format "^ +call +%s" symbol) (point-max) t)
      collect (xref-make name

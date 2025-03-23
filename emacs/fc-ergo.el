@@ -572,7 +572,7 @@ N: number."
   (interactive "p")
 
   (if (eolp)
-      (backward-delete-char n)
+      (delete-char (* -1 n))
     (delete-char n)))
 
 (defun fc-open-my-index-org ()
@@ -1278,7 +1278,7 @@ STEP: pixels."
      ("S" ,(fc-manual (fc-assist-cmd "--pmsleep")))
      )
    "ergo-prefix-quick-map")
-  "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: select theme  w: work theme  z: suspend  S: sleep  W: deep work theme . ")
+  "KEYS c: rpn calc  d: load desktop  e: new buf with tmpl  i: vertically enlarge  j: horizontally enlarge  k: vertically reduce  l: horizontally reduce  t: select theme  w: work theme  z: suspend  S: sleep  W: deep work theme.")
 
 (defun fc-vc-portal ()
   "Run vc portal."
@@ -1351,7 +1351,7 @@ STEP: pixels."
 
   (when-let* ((meta (fc--book-p)))
     (bookmark-set (read-string "Add bookmark "
-                               (format "Book: <<%s>> "
+                               (format "Book: <<%s>> %s"
                                        (plist-get meta :title)
                                        (which-function))))
     (cl-return-from fc--add-bookmark))

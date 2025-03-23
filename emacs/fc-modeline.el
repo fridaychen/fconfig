@@ -31,11 +31,13 @@
                          "fc-pos-keymap"))
 
 (defun fc--ml-hl-bg ()
+  "Get modeline highlight background."
   (if (fc-deep-dark-theme-p)
       *fc-modeline-dark-active-hl-bg*
     *fc-modeline-active-hl-bg*))
 
 (defun fc--ml-hl-fg ()
+  "Get modeline highlight foreground."
   (if (fc-deep-dark-theme-p)
       *fc-modeline-dark-active-hl-fg*
     *fc-modeline-active-hl-fg*))
@@ -185,10 +187,13 @@
   "VC state segment."
   (when (and (fc-main-thread-p)
              vc-mode)
-    (pcase (vc-state buffer-file-name)
-      ('edited *fc--vc-modified-mark*)
-      ((or 'needs-merge 'conflict) *fc--vc-merge-mark*)
-      (_ *fc--vc-mark*))))
+    (concat
+     (pcase (vc-state buffer-file-name)
+       ('edited *fc--vc-modified-mark*)
+       ((or 'needs-merge 'conflict) *fc--vc-merge-mark*)
+       (_ *fc--vc-mark*))
+     (unless (fc--narrow-window-p)
+       (fc-vc-branch :short t)))))
 
 (defun fc--line-col-seg ()
   "Line column segment."
@@ -259,6 +264,7 @@
   (fc-visible "👩‍💼" "SIDE"))
 
 (defun fc--side-window-seg ()
+  "Side window segment."
   (when (fc-side-window-p)
     *fc--side-window-mark*))
 
@@ -286,12 +292,16 @@
 (defvar *fc-comp-exit-code* 0)
 
 (defun fc--compilation-exit (_ code msg)
+  "Compilation exit callback.
+CODE: return code
+MSG: message."
   (setq *fc-comp-exit-code* code)
   (cons msg code)
 
   (setq compilation-exit-message-function #'fc--compilation-exit))
 
 (defun fc--compilation-seg ()
+  "Compilation segment."
   (when (eq major-mode 'compilation-mode)
     (list
      (cond
@@ -320,7 +330,9 @@
    current-input-method-title
    (fc--flycheck-seg)
    (fc--compilation-seg)
-   (fc-funcall #'fc-vc-branch)
+   (when (and *fc-dev-mode* (derived-mode-p 'prog-mode))
+     (unless (fc--narrow-window-p)
+       (fc-funcall #'flycheck-mode-line-status-text)))
    " "))
 
 (defvar *fc-modeline-most-right-string* nil)

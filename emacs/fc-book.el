@@ -211,12 +211,8 @@ PAIRS: replacement list."
   (save-excursion
     (fc--remove-empty-line)
 
-    (fc-replace-regexp "^ +"
-                       "
-"
-                       :from-start t)
-
-    (fc-replace-regexp "\\([^\n]\\)\n\\([^\n]\\)"
+    (fc-replace-regexp (rx bol (+ space)) "\n" :from-start t)
+    (fc-replace-regexp (rx (group (+ nonl)) "\n" (group nonl))
                        "\\1\\2"
                        :from-start t)))
 
@@ -277,13 +273,12 @@ PAIRS: replacement list."
 
   (fc-ergo-repeat-func #'fc-book-search-verse)
 
-  (search-forward-regexp "^[^，。]\\{5,7\\}，[^，。]\\{5,7\\}。
-"))
+  (search-forward-regexp
+   (rx bol (** 5 7 (not (any "，。"))) "，" (** 5 7 (not (any "，。"))) "。" eol)))
 
 (defun fc-book-chapter-zh-to-number ()
   "Convert Chinese chapter number to arabic number."
   (fc-replace-regexp
-   ;; "第\\([零一二两三四五六七八九十百千万]+\\)\\([章节回幕]\\)"
    (rx "第"
        (group (+ (any "零一二两三四五六七八九十百千万")))
        (group (any "章节回幕")))
@@ -294,7 +289,6 @@ PAIRS: replacement list."
 
 (cl-defun fc-book-replace-zh-double-quote ()
   (save-excursion
-    ;; "\"\\([^\n\"]+\\)\""
     (fc-replace-regexp
      (rx ?\" (group
               (+
@@ -307,9 +301,8 @@ PAIRS: replacement list."
 
 (cl-defun fc-book-replace-zh-single-quote ()
   (save-excursion
-    ;; "\\([^a-zA-Z]\\)'\\([^\n]+\\)'\\([^a-zA-Z]\\)"
     (fc-replace-regexp (rx (group (not alpha))
-                           ?\' (group (+ not-newline)) ?\'
+                           ?\' (group (+ nonl)) ?\'
                            (group (not alpha)))
                        "\\1‘\\2’\\3"
                        :from-start t)))
@@ -341,7 +334,6 @@ LEVEL: chapter level."
 
   (save-excursion
     (fc--book-replace-chinese-toc-regexp
-     ;; "^ *\\([第章]\\) *\\([0-9零一二三四五六七八九十两百千]\\{1,8\\}\\) *\\([章节回幕]\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
      (rx bol
          (* " ") (group (any "第章"))
          (* " ") (group (** 1 8 (any "0-9零一二三四五六七八九十两百千")))
@@ -358,7 +350,6 @@ LEVEL: chapter level."
 
   (save-excursion
     (fc--book-replace-chinese-toc-regexp
-     ;; "^\\(第\\{0,1\\}\\)\\([0-9零一二三四五六七八九十]\\{1,4\\}\\)\\(节\\{0,1\\}\\) *\\([^。\n]\\{0,40\\}\\)$"
      (rx bol
          (group (? "第"))
          (* space) (group (** 1 4 (any "0-9零一二三四五六七八九十两")))

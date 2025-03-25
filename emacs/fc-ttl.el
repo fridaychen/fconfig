@@ -44,7 +44,8 @@
      ((looking-at "^:")
       (cl-return-from --ttl-find-previous-statement 4))
 
-     ((looking-at " *\\(if.+then$\\|else\\|for\\|while\\|until\\)")
+     ((looking-at (rx (* space) (or (seq "if" (+ any) "then" eol)
+                                    "else" "for" "while" "until")))
       (beginning-of-line-text)
       (cl-return-from --ttl-find-previous-statement 4))
 
@@ -99,10 +100,14 @@
 
     (let ((indent 0)
           (last (cond
-                 ((looking-at "\\(endif\\|else\\)")
-                  (-ttl-find-regex-table '(("if.+then$" . 0)
-                                           ("endif\\|endwhile\\|endutil\\|next" . -4))
-                                         ".*\\(if.+then$\\|endif\\|endwhile\\|endutil\\|next\\)"))
+                 ((looking-at (rx (group (or "endif" "else"))))
+                  (-ttl-find-regex-table `((,(rx "if" (+ any) "then" eol) . 0)
+                                           (,(rx (or "endif" "endwhile" "endutil" "next")) . -4))
+                                         (rx (* any) (group (or (seq "if" (+ any) "then" eol)
+                                                                "endif"
+                                                                "endwhile"
+                                                                "endutil"
+                                                                "next")))))
 
                  ((looking-at "endwhile")
                   (-ttl-find-regex-table '(("while" . 0)
@@ -211,7 +216,7 @@
 (cl-defun fc--ttl-find-def-in-proj (symbol)
   (when-let* ((buf (fc--text-retrieve :pattern (format "^:%s_ENTRY$" symbol)
                                       :file-types '(code)))
-              (regex "^\\([^:]+\\):\\([0-9]+\\):")
+              (regex (rx bol (group (+ (not ?\:))) ":" (group (+ (any "0-9")) ":")))
               (bound (point-max)))
     (with-current-buffer buf
       (cl-loop
@@ -225,7 +230,8 @@
 
 (cl-defun fc--ttl-function-p (symbol)
   (let ((case-fold-search nil))
-    (eq 0 (string-match-p "^:?[a-z0-9_]+$" symbol))))
+    (eq 0 (string-match-p (rx bol (? ?\:) (+ (any "a-z0-9_")) eol)
+                          symbol))))
 
 (cl-defun fc--ttl-find-ref-in-current-buf (symbol)
   (save-excursion
@@ -246,7 +252,7 @@
               (buf (fc--text-retrieve :pattern (format "include %s$" func)
                                       :dir (fc-proj-root)
                                       :file-types '(code)))
-              (regex "^\\([^:]+\\):\\([0-9]+\\):")
+              (regex (rx bol (group (+ (not ?\:))) ":" (group (+ (any "0-9"))) ":"))
               (bound (point-max)))
     (with-current-buffer buf
       (cl-loop

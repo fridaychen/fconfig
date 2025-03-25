@@ -26,6 +26,7 @@
 
 (cl-defun fc--proj-replace-var (proj path)
   "Replace path variables.
+PROJ: project object.
 PATH: path."
   (cond
    ((string-prefix-p "$REPO" path)
@@ -67,6 +68,7 @@ PATH: path."
 
 (cl-defmethod fc-proj--exec ((x fc-project) &rest args)
   "Run command under project.
+X: project obj.
 ARGS: command arguments."
   (fc-with-dir (fc-proj--get x :path)
     (shell-command
@@ -79,7 +81,7 @@ ARGS: command arguments."
 
 (cl-defmethod fc-proj--build ((x fc-project) target)
   "Compile project.
-PROJ-DIR: project path.
+X: project obj.
 TARGET: make target."
   (let ((old-path (getenv "PATH")))
     (fc-add-env-paths (fc-proj--get x :path))
@@ -93,6 +95,8 @@ TARGET: make target."
     (setenv "PATH" old-path)))
 
 (cl-defmethod fc-proj--update-local-vars ((x fc-project))
+  "Update local var def file.
+X: project obj."
   (let ((include (fc-proj--get x :include))
         (define (fc-proj--get x :define))
         (build-args (fc-proj--get x :build-args))
@@ -116,6 +120,7 @@ TARGET: make target."
 
       (with-current-buffer (get-buffer-create (find-file var-filename))
         (add-dir-local-variable nil 'fc-proj-name (fc-proj--get x :name))
+        (add-dir-local-variable nil 'fc-proj-main-branch (fc-proj--get x :main-branch))
         (add-dir-local-variable nil 'fc-proj-tag (fc-proj--get x :tag))
         (add-dir-local-variable nil 'fc-capture-tags (fc-proj--get x :capture-tags))
 
@@ -151,6 +156,7 @@ DIR: project path."
          (conf (fc-conf-new path)))
 
     (fc-conf-put conf (read-string "Project name : ") :name)
+    (fc-conf-put conf (read-string "Main branch name : " "master") :main-branch)
     (fc-conf-put conf nil :src)
     (fc-conf-put conf nil :src-exclude)
     (fc-conf-put conf nil :include)
@@ -246,6 +252,7 @@ DIR: project path."
      (":include"      . ,(fc-edit-property-fn :include))
      (":local"        . ,(fc-edit-property-fn :local))
      (":name"         . ,(fc-edit-property-fn :name))
+     (":main-branch"  . ,(fc-edit-property-fn :main-branch))
      (":path"         . ,(fc-edit-property-fn :path))
      (":src"          . ,(fc-edit-property-fn :src))
      (":src-exclude"  . ,(fc-edit-property-fn :src-exclude))
@@ -363,7 +370,7 @@ DIR: project path."
 
 (run-hooks '*fc-project-hook*)
 
-(defun fc-proj--compilation-done (buf msg)
+(defun fc-proj--compilation-done (_ _)
   (fc-proj-load-compilation-error))
 
 (add-to-list 'compilation-finish-functions #'fc-proj--compilation-done)

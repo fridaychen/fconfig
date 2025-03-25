@@ -192,8 +192,15 @@
        ('edited *fc--vc-modified-mark*)
        ((or 'needs-merge 'conflict) *fc--vc-merge-mark*)
        (_ *fc--vc-mark*))
+
      (unless (fc--narrow-window-p)
-       (fc-vc-branch :short t)))))
+       (when-let* ((branch (fc-vc-branch))
+                   (not-main-branch (not
+                                     (and
+                                      (boundp 'fc-proj-main-branch)
+                                      (string-equal fc-proj-main-branch branch)))))
+         (if (string-search "/" branch)
+             (concat "/" (car (last (string-split branch "/"))))))))))
 
 (defun fc--line-col-seg ()
   "Line column segment."
@@ -239,7 +246,7 @@
    "fc-flycheck-seg-keymap"))
 
 (defvar *fc--flycheck-mark*
-  (fc-visible (fc-nerd-icon ?\xf188 :inherit 'mode-line-emphasis) "🪲"))
+  (fc-visible "🪲" (fc-nerd-icon ?\xf188 :inherit 'mode-line-emphasis)))
 
 (cl-defun fc--flycheck-seg()
   "Flycheck seg."
@@ -330,9 +337,6 @@ MSG: message."
    current-input-method-title
    (fc--flycheck-seg)
    (fc--compilation-seg)
-   (when (and *fc-dev-mode* (derived-mode-p 'prog-mode))
-     (unless (fc--narrow-window-p)
-       (fc-funcall #'flycheck-mode-line-status-text)))
    " "))
 
 (defvar *fc-modeline-most-right-string* nil)

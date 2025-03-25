@@ -280,7 +280,7 @@ import numpy as np
              (org-hide-drawer-all)
              (org-hide-block-all)
              (org-block-map (lambda ()
-                              (when (looking-at-p "#\\+BEGIN_\\(EXAMPLE\\|QUOTE\\|VERSE\\)")
+                              (when (looking-at-p (rx "#+BEGIN_" (or "EXAMPLE" "QUOTE" "VERSE")))
                                 (forward-char 1)
                                 (org-cycle)))))
 
@@ -470,21 +470,17 @@ PRE-FORMAT: format the block content."
   "Fix headline spacing."
   (save-excursion
     (fc-replace-regexp (rx (group (not "\n")) "\n" "*")
-                       ;; "\\([^\n]\\)\n\\*"
                        "\\1\n\n*"
                        :from-start t)
 
     (fc-replace-regexp (rx line-start "*" (group (+ nonl)) "\n" (group nonl))
-                       ;; "^\\*\\([^\n]+\\)\n\\([^*\n]\\)"
                        "*\\1\n\n\\2" :from-start t)
 
     (fc-replace-regexp (rx bol "*" (group (+ nonl)) (+ "\n")
                            (group (or (seq (+ alpha) ":")
                                       ":PROPERTIES"
                                       (seq (* space) "CLOSED:"))))
-                       ;; "^\\*\\([^\n]+\\)\n+\\([[:alpha:]]+:\\|:PROPERTIES\\|[[:space:]]*CLOSED:\\)"
-                       "*\\1\n\\2" :from-start t)
-    ))
+                       "*\\1\n\\2" :from-start t)))
 
 (cl-defun fc--org-fix-math ()
   "Fix math."

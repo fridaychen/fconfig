@@ -200,7 +200,8 @@
                                       (boundp 'fc-proj-main-branch)
                                       (string-equal fc-proj-main-branch branch)))))
          (if (string-search "/" branch)
-             (concat "/" (car (last (string-split branch "/"))))))))))
+             (concat "/" (car (last (string-split branch "/"))))
+           branch))))))
 
 (defun fc--line-col-seg ()
   "Line column segment."

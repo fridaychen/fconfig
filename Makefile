@@ -28,6 +28,7 @@ setup-app:
 
 setup-emacs:
 	@bash/setup/setup-emacs.sh
+	@bash/setup/setup-emacs-pyenv.sh
 
 setup-go:
 	@bash/setup/setup-go.sh

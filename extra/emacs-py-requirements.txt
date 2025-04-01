@@ -1,0 +1,5 @@
+autotools-language-server
+black
+flake8
+pyproject-flake8
+python-lsp-server

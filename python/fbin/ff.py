@@ -17,12 +17,8 @@ def fuzzy_name(pattern):
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "-a", dest="path", default=[], nargs="+", help="include path"
-    )
-    parser.add_argument(
-        "-color", dest="color", action="store_true", help="colorful"
-    )
+    parser.add_argument("-a", dest="path", default=[], nargs="+", help="include path")
+    parser.add_argument("-color", dest="color", action="store_true", help="colorful")
     parser.add_argument(
         "-nocolor",
         dest="no_color",
@@ -36,9 +32,7 @@ def main():
         action="store_true",
         help="disable fuzzy match",
     )
-    parser.add_argument(
-        "-l", dest="long", action="store_true", help="long format"
-    )
+    parser.add_argument("-l", dest="long", action="store_true", help="long format")
     parser.add_argument(
         "-r",
         dest="root",
@@ -46,11 +40,12 @@ def main():
         help="set start dir to project root",
     )
     parser.add_argument(
-        "-s", dest="select", action="store_true", help="select file",
+        "-s",
+        dest="select",
+        action="store_true",
+        help="select file",
     )
-    parser.add_argument(
-        "-rp", dest="root_path", default="", help="set start dir"
-    )
+    parser.add_argument("-rp", dest="root_path", default="", help="set start dir")
     parser.add_argument(
         "-p", dest="name_pattern", default=[], nargs="+", help="name pattern"
     )
@@ -58,7 +53,10 @@ def main():
         "-x", dest="exclude_path", default=[], nargs="+", help="exclude path"
     )
     parser.add_argument(
-        "-delete", dest="delete", action="store_true", help="delete files",
+        "-delete",
+        dest="delete",
+        action="store_true",
+        help="delete files",
     )
     parser.add_argument(
         "-media",
@@ -126,15 +124,9 @@ def main():
         dest="mtime",
         help="find files that was last modified n*24 hours ago",
     )
-    parser.add_argument(
-        "-newer", dest="newer", help="find files newer than this"
-    )
-    parser.add_argument(
-        "-v", dest="verbose", action="store_true", help="verbose mode"
-    )
-    parser.add_argument(
-        "-debug", dest="debug", action="store_true", help="debug mode"
-    )
+    parser.add_argument("-newer", dest="newer", help="find files newer than this")
+    parser.add_argument("-v", dest="verbose", action="store_true", help="verbose mode")
+    parser.add_argument("-debug", dest="debug", action="store_true", help="debug mode")
 
     parser.add_argument(
         "otherthings",
@@ -208,12 +200,22 @@ def main():
 
     if args.doc_files:
         args.name_pattern.extend(
-            ["*.md", "*.org", "*.tex", "*.txt",]
+            [
+                "*.md",
+                "*.org",
+                "*.tex",
+                "*.txt",
+            ]
         )
 
     if args.html_files:
         args.name_pattern.extend(
-            ["*.htm", "*.html", "*.xhtml", "*.xml",]
+            [
+                "*.htm",
+                "*.html",
+                "*.xhtml",
+                "*.xml",
+            ]
         )
 
     if args.conf_files:
@@ -332,5 +334,7 @@ def main():
         fc.pipe([find_args, ["fzf"]])
     else:
         fc.run(
-            find, find_args, noret=True,
+            find,
+            find_args,
+            noret=True,
         )

@@ -22,6 +22,10 @@
 (setf mouse-autoselect-window nil
       make-pointer-invisible t)
 
+;; disable flymake
+(setq flymake-start-on-flymake-mode nil
+      flymake-start-on-save-buffer nil)
+
 ;; large file
 (setf large-file-warning-threshold 30000000)
 
@@ -92,6 +96,8 @@
                        #'fc--set-visual-line-mode))
 
   (when (derived-mode-p 'prog-mode)
+    (flymake-mode -1)
+
     (ligature-mode)
     (fc-delay
       (color-identifiers-mode-maybe)))

@@ -1,4 +1,5 @@
 autotools-language-server
+isort
 black
 flake8
 pyproject-flake8

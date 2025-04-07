@@ -56,7 +56,7 @@ def main():
         for f in args.otherthings:
             total_length = get_total_length(f)
 
-            if args.duration == 0:
+            if (duration := args.duration) == 0:
                 duration = total_length - args.start - args.end
 
             if args.verbose:
@@ -75,9 +75,11 @@ def main():
                     "%f" % duration,
                     "-acodec",
                     "copy",
-                    args.output_dir + "/" + os.path.basename(f)
-                    if args.output_file is None
-                    else args.output_file,
+                    (
+                        args.output_dir + "/" + os.path.basename(f)
+                        if args.output_file is None
+                        else args.output_file
+                    ),
                 ],
                 noret=False,
             )

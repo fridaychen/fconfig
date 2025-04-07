@@ -1,7 +1,7 @@
-import yt_dlp
 import os.path
 
 import fc
+import yt_dlp
 
 
 class YoutubeUtil:
@@ -10,9 +10,7 @@ class YoutubeUtil:
 
     @staticmethod
     def fetch_meta(url):
-        return yt_dlp.YoutubeDL({}).extract_info(
-            url, download=False, process=False
-        )
+        return yt_dlp.YoutubeDL({}).extract_info(url, download=False, process=False)
 
     @staticmethod
     def list_formats(meta, audio_only=False):
@@ -24,9 +22,8 @@ class YoutubeUtil:
         return formats
 
     @staticmethod
-    def download_resource(
-        url, audio_only, hook, output="~/Downloads", quiet=True
-    ):
+    def download_resource(url, audio_only, hook, output="~/Downloads", quiet=True):
+
         ydl_audio_opts = {
             "continue": True,
             "format": "bestaudio",
@@ -52,9 +49,7 @@ class YoutubeUtil:
             "quiet": quiet,
         }
 
-        with yt_dlp.YoutubeDL(
-            ydl_audio_opts if audio_only else ydl_video_opts
-        ) as ydl:
+        with yt_dlp.YoutubeDL(ydl_audio_opts if audio_only else ydl_video_opts) as ydl:
             ydl.download([url])
 
     @staticmethod

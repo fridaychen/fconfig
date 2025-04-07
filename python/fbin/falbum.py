@@ -1,14 +1,13 @@
 import argparse
 import os
-import sys
 import shutil
+import sys
 
+import fc
+import fcommon.audio_util
+import fcommon.wikipedia
 from fcommon.easy_tag import EasyTag, easytag_argparser, easytag_getarg
 from fcommon.yt_util import YoutubeUtil
-
-import fcommon.wikipedia
-import fcommon.audio_util
-import fc
 
 
 def usage():
@@ -49,9 +48,7 @@ def produce_filename_by_wikipedia(soup):
 
     tracks = []
 
-    fc.info(
-        "Found wikipedia [%s]" % fcommon.wikipedia.album_get_description(soup)
-    )
+    fc.info("Found wikipedia [%s]" % fcommon.wikipedia.album_get_description(soup))
     tracks = fcommon.wikipedia.album_get_tracks(soup)
 
     fc.info("\n== Track listing [%d] ==" % len(tracks))
@@ -62,9 +59,7 @@ def produce_filename_by_wikipedia(soup):
         sys.exit(2)
 
     if fc.ui.yesno_p("Edit"):
-        tmp_files, tracks = fc.ui.edit_obj(
-            (tmp_files, tracks), "/tmp/falbum.json"
-        )
+        tmp_files, tracks = fc.ui.edit_obj((tmp_files, tracks), "/tmp/falbum.json")
 
     new_files = []
     add_index = True
@@ -89,9 +84,7 @@ def produce_filename_by_wikipedia(soup):
 
 
 def wikipedia_post_act(meta):
-    keyword = fc.ui.confirm(
-        "Keyword", meta["%a"][0] + " " + meta["%b"] + " album"
-    )
+    keyword = fc.ui.confirm("Keyword", meta["%a"][0] + " " + meta["%b"] + " album")
     soup = fcommon.wikipedia.soup(keyword)
 
     if soup is None:

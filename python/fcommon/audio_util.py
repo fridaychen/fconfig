@@ -1,9 +1,8 @@
 import functools
-
-import os
-import fc
-
 import json
+import os
+
+import fc
 from jsoncomment import JsonComment
 
 
@@ -113,14 +112,10 @@ def get_audio_extension_name(filename, idx=0):
 
 def extract_audio(filename, idx=0):
     new_filename = (
-        os.path.splitext(filename)[0]
-        + "."
-        + get_audio_extension_name(filename, idx)
+        os.path.splitext(filename)[0] + "." + get_audio_extension_name(filename, idx)
     )
 
     print("%s --> %s" % (filename, new_filename))
 
     if new_filename != filename:
-        os.system(
-            "ffmpeg -i '%s' -vn -acodec copy '%s'" % (filename, new_filename)
-        )
+        os.system("ffmpeg -i '%s' -vn -acodec copy '%s'" % (filename, new_filename))

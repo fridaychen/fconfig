@@ -10,17 +10,18 @@
   :after (progn
            (fc-add-mode-name 'python-mode "🐍")
            (fc-add-mode-name 'python-ts-mode "🐍")
-           (setf py-comment-fill-column 79)
+           (setf py-comment-fill-column 88
+                 py-docstring-fill-column 88)
 
            (setf flycheck-python-flake8-executable
                  (expand-file-name "~/.emacs.d/site/python/bin/pflake8"))
 
            (require 'python)
            (fc-add-fmt 'python-mode
-                       `("black" "-t" "py313" "-l" ,(fc-string py-comment-fill-column) "-")
+                       '("fc-fmt-python.sh")
                        nil)
            (fc-add-fmt 'python-ts-mode
-                       `("black" "-t" "py313" "-l" ,(fc-string py-comment-fill-column) "-")
+                       '("fc-fmt-python.sh")
                        nil)))
 
 (defconst *fc-python-map*

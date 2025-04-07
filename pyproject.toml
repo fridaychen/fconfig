@@ -1,0 +1,25 @@
+[build-system]
+
+[project]
+name = "fconfig"
+dependencies = [
+             "beautifulsoup4",
+             "file-magic",
+             "fuzzywuzzy",
+             "imdbpy",
+             "jsoncomment",
+             "mutagen",
+             "nwdiag",
+             "pretty-errors",
+             "python-Levenshtein",
+             "wikipedia",
+             "yt_dlp",
+             ]
+
+[tool.black]
+line-length = 88
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203"]
+max-complexity = 10

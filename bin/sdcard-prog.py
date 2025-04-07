@@ -23,10 +23,7 @@ def sdcard_prog(filename, dev):
 
         if ext in uncompress_cmd:
             os.system(
-                (
-                    uncompress_cmd[ext]
-                    + " | sudo dd of=%s bs=1M status=progress"
-                )
+                (uncompress_cmd[ext] + " | sudo dd of=%s bs=1M status=progress")
                 % (shlex.quote(filename), dev)
             )
         else:
@@ -61,12 +58,8 @@ def main():
     parser.add_argument("-f", dest="file", help="filename")
     parser.add_argument("-d", dest="device", help="def filename")
     parser.add_argument("-s", dest="size", help="size")
-    parser.add_argument(
-        "-D", dest="dump", action="store_true", help="dump mode"
-    )
-    parser.add_argument(
-        "-v", dest="verbose", action="store_true", help="verbose mode"
-    )
+    parser.add_argument("-D", dest="dump", action="store_true", help="dump mode")
+    parser.add_argument("-v", dest="verbose", action="store_true", help="verbose mode")
 
     args = parser.parse_args()
 

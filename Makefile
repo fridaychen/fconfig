@@ -8,7 +8,7 @@ setup: init setup-app setup-env
 	@bash/setup/setup.sh
 	@bash/setup/setup-emacs.sh
 
-setup-env: setup-emacs setup-go setup-nvim  setup-python
+setup-env: setup-emacs setup-go setup-nvim setup-python
 
 clean :
 	@find . -type f \( -name "*~" -o -name "*.elc" \) -delete

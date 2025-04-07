@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
+
 import argparse
-import magic
 import os
 import os.path
 import re
@@ -9,8 +9,9 @@ import shutil
 import sqlite3
 import urllib.request
 
-from imdb import IMDb
 import fc
+import magic
+from imdb import IMDb
 
 
 def open_db():
@@ -86,7 +87,7 @@ def search_movie(keyword=None, list=False):
             f"""
             SELECT imdb_id, title, genres, director, a.cast, path
             FROM movie as a
-            WHERE {" and ".join(['info like "%' + x + '%"' for x in keyword ])}
+            WHERE {" and ".join(['info like "%' + x + '%"' for x in keyword])}
             ORDER BY a.year, a.title
             """
         )
@@ -103,7 +104,7 @@ def _show_movie(dir):
             return magic.detect_from_filename(
                 dir + "/" + filename
             ).mime_type.startswith("video")
-        except Exception as e:
+        except Exception:
             return False
 
     movie_file, _ = fc.ui.select([x for x in os.listdir(dir) if _is_video(x)])
@@ -155,10 +156,7 @@ def _list_movie(data, list=False):
             print(f"""{x[0]}│{x[5]}│{format_title(x[1], x[3], x[2])}""")
     else:
         result, _ = fc.ui.select(
-            [
-                f"""{x[0]}│{x[5]}│{format_title(x[1], x[3], x[2])}"""
-                for x in data
-            ],
+            [f"""{x[0]}│{x[5]}│{format_title(x[1], x[3], x[2])}""" for x in data],
             exact=True,
             with_nth=3,
             preview=("top", "bat --color always -l YAML -p {2}/{1}.imdb"),
@@ -221,10 +219,10 @@ def import_movie_into_db(filename):
 
         movie = {"id": id}
 
-        for l in f.readlines():
-            n = l.index(": ")
-            key = l[:n]
-            value = l[n + 2 : -1]
+        for line in f.readlines():
+            n = line.index(": ")
+            key = line[:n]
+            value = line[n + 2 : -1]
 
             if value[-1] == ".":
                 value = value[:-1]
@@ -303,9 +301,7 @@ def archive_movie(meta, args):
         "Folder name", fc.valid_filename(f"{movie['title']} ({movie['year']})")
     )
 
-    if not fc.ui.yesno_p(
-        f"""Archive movie [{"copy" if meta["copy"] else "move"}]"""
-    ):
+    if not fc.ui.yesno_p(f"""Archive movie [{"copy" if meta["copy"] else "move"}]"""):
         return
 
     movie_path = fc.get_movie_home() + "/" + folder_name
@@ -313,18 +309,12 @@ def archive_movie(meta, args):
 
     for x in args:
         if meta["copy"]:
-            shutil.copy(
-                x, movie_path + "/" + fc.valid_filename(os.path.basename(x))
-            )
+            shutil.copy(x, movie_path + "/" + fc.valid_filename(os.path.basename(x)))
         else:
-            shutil.move(
-                x, movie_path + "/" + fc.valid_filename(os.path.basename(x))
-            )
+            shutil.move(x, movie_path + "/" + fc.valid_filename(os.path.basename(x)))
 
     if "full-size cover url" in movie.keys():
-        file_name, headers = urllib.request.urlretrieve(
-            movie["full-size cover url"]
-        )
+        file_name, headers = urllib.request.urlretrieve(movie["full-size cover url"])
         shutil.move(file_name, movie_path + "/cover.jpg")
 
     with open(movie_path + "/" + movie.getID() + ".imdb", "w+") as f:
@@ -390,33 +380,19 @@ def main():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "-l", dest="list", action="store_true", help="only list files"
-    )
-    parser.add_argument(
-        "-m", dest="move", action="store_true", help="move files"
-    )
+    parser.add_argument("-l", dest="list", action="store_true", help="only list files")
+    parser.add_argument("-m", dest="move", action="store_true", help="move files")
     parser.add_argument("-p", dest="preview", help="preview archived movie")
     parser.add_argument("-s", dest="show", help="show movie")
     parser.add_argument("-t", dest="title", help="movie title")
-    parser.add_argument(
-        "-v", dest="verbose", action="store_true", help="verbose mode"
-    )
+    parser.add_argument("-v", dest="verbose", action="store_true", help="verbose mode")
     parser.add_argument("-y", dest="year", help="movie year")
     parser.add_argument("-S", dest="show_cover", help="show movie art cover")
-    parser.add_argument(
-        "-P", dest="preview_imdb", help="preview movie through IMDB"
-    )
+    parser.add_argument("-P", dest="preview_imdb", help="preview movie through IMDB")
 
-    parser.add_argument(
-        "--delete", dest="delete_movie", nargs="+", help="delete movie"
-    )
-    parser.add_argument(
-        "--export", dest="export_movie", nargs="+", help="export movie"
-    )
-    parser.add_argument(
-        "--import", dest="import_movie", nargs="+", help="import movie"
-    )
+    parser.add_argument("--delete", dest="delete_movie", nargs="+", help="delete movie")
+    parser.add_argument("--export", dest="export_movie", nargs="+", help="export movie")
+    parser.add_argument("--import", dest="import_movie", nargs="+", help="import movie")
     parser.add_argument(
         "--verify", dest="verify", action="store_true", help="verify archives"
     )
@@ -429,9 +405,7 @@ def main():
         action="store_true",
         help="search movie",
     )
-    parser.add_argument(
-        "otherthings", default=[], nargs="*", help="smart arguments"
-    )
+    parser.add_argument("otherthings", default=[], nargs="*", help="smart arguments")
 
     args = parser.parse_args()
 

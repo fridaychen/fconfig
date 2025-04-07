@@ -1,30 +1,24 @@
-import mutagen
-from mutagen.easyid3 import EasyID3
-from mutagen.id3 import ID3, APIC
 import os
 import re
 import shutil
 
 import fc
+import mutagen
+from mutagen.easyid3 import EasyID3
+from mutagen.id3 import APIC, ID3
 
 
 def easytag_argparser(parser):
     parser.add_argument(
         "-A", dest="album_artists", default=[], nargs="+", help="album_artists"
     )
-    parser.add_argument(
-        "-a", dest="artists", default=[], nargs="+", help="artists"
-    )
+    parser.add_argument("-a", dest="artists", default=[], nargs="+", help="artists")
     parser.add_argument("-b", dest="album", help="album title")
     parser.add_argument("-c", dest="cover", help="cover image")
     parser.add_argument("-d", dest="disc", help="disc number")
-    parser.add_argument(
-        "-g", dest="genres", default=[], nargs="+", help="genres"
-    )
+    parser.add_argument("-g", dest="genres", default=[], nargs="+", help="genres")
     parser.add_argument("-n", dest="number", help="number")
-    parser.add_argument(
-        "-p", dest="composers", default=[], nargs="+", help="composers"
-    )
+    parser.add_argument("-p", dest="composers", default=[], nargs="+", help="composers")
     parser.add_argument("-t", dest="title", help="title")
     parser.add_argument("-y", dest="year", help="year")
 
@@ -203,6 +197,7 @@ class EasyTag:
 
     def set_art(self, value):
         import base64
+
         import mutagen.flac
 
         picture = mutagen.flac.Picture()
@@ -218,9 +213,9 @@ class EasyTag:
             self.f.clear_pictures()
             self.f.add_picture(picture)
         else:
-            self.f["metadata_block_picture"] = base64.b64encode(
-                picture.write()
-            ).decode("ascii")
+            self.f["metadata_block_picture"] = base64.b64encode(picture.write()).decode(
+                "ascii"
+            )
 
     def set_track(self, value):
         if hasattr(self.f, "mime") and self.f.mime[0] == "audio/mp4":

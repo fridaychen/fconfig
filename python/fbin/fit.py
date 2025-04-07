@@ -20,9 +20,7 @@ def fix_filename(filename):
 def get_root():
     if not hasattr(get_root, "root"):
         get_root.root = (
-            os.popen("git rev-parse --show-toplevel 2> /dev/null")
-            .read()
-            .strip()
+            os.popen("git rev-parse --show-toplevel 2> /dev/null").read().strip()
         )
 
     return get_root.root
@@ -295,17 +293,11 @@ def portal(once=False):
         ("fit -l", "log viewer"),
         ("fit --reset", "unstage/reset file"),
         (
-            "echo 'Pushing ...';"
-            "git push;"
-            "echo Press ENTER to continus;"
-            "read",
+            "echo 'Pushing ...';" "git push;" "echo Press ENTER to continus;" "read",
             "push",
         ),
         (
-            "echo 'Pulling ...';"
-            "git pull;"
-            "echo Press ENTER to continus;"
-            "read",
+            "echo 'Pulling ...';" "git pull;" "echo Press ENTER to continus;" "read",
             "pull",
         ),
         ("fit --cancel", "cancel"),
@@ -339,38 +331,22 @@ def portal(once=False):
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "-1", dest="once", action="store_true", help="one time"
-    )
+    parser.add_argument("-1", dest="once", action="store_true", help="one time")
     parser.add_argument("-c", dest="commit", help="commit")
-    parser.add_argument(
-        "-l", dest="log", nargs="*", default=None, help="show log"
-    )
-    parser.add_argument(
-        "-p", dest="portal", action="store_true", help="portal"
-    )
-    parser.add_argument(
-        "-s", dest="status", action="store_true", help="status"
-    )
-    parser.add_argument(
-        "-v", dest="verbose", action="store_true", help="verbose mode"
-    )
+    parser.add_argument("-l", dest="log", nargs="*", default=None, help="show log")
+    parser.add_argument("-p", dest="portal", action="store_true", help="portal")
+    parser.add_argument("-s", dest="status", action="store_true", help="status")
+    parser.add_argument("-v", dest="verbose", action="store_true", help="verbose mode")
     parser.add_argument(
         "-L",
         dest="blame_line",
         nargs=1,
         help="blame line",
     )
-    parser.add_argument(
-        "-S", dest="show", action="store_true", help="show mode"
-    )
-    parser.add_argument(
-        "-debug", dest="debug", action="store_true", help="debug mode"
-    )
+    parser.add_argument("-S", dest="show", action="store_true", help="show mode")
+    parser.add_argument("-debug", dest="debug", action="store_true", help="debug mode")
 
-    parser.add_argument(
-        "--add", dest="add", action="store_true", help="stage file"
-    )
+    parser.add_argument("--add", dest="add", action="store_true", help="stage file")
     parser.add_argument(
         "--reset",
         dest="reset",
@@ -386,15 +362,11 @@ def main():
     parser.add_argument(
         "--cancel", dest="cancel", action="store_true", help="cancel commit"
     )
-    parser.add_argument(
-        "--show-change", dest="show_change", help="show change"
-    )
+    parser.add_argument("--show-change", dest="show_change", help="show change")
     parser.add_argument(
         "--squash", dest="squash", action="store_true", help="squash commits"
     )
-    parser.add_argument(
-        "otherthings", default=[], nargs="*", help="media files"
-    )
+    parser.add_argument("otherthings", default=[], nargs="*", help="media files")
 
     if not get_root() and not os.path.exists(".repo"):
         fc.err("Not in GIT repo.")
@@ -427,9 +399,7 @@ def main():
         portal(args.once)
     elif args.blame_line:
         if args.show:
-            git_show_commit_blame_with_line(
-                args.blame_line[0], args.otherthings[0]
-            )
+            git_show_commit_blame_with_line(args.blame_line[0], args.otherthings[0])
         else:
             git_blame_line(args.blame_line[0], args.otherthings[0])
     else:

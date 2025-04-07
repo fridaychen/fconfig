@@ -141,7 +141,7 @@ class ui:
 
         if preview is not None:
             hidden = True
-            if len(preview) >= 3 and preview[2] == True:
+            if len(preview) >= 3 and preview[2] is True:
                 hidden = False
 
             preview_opt = ":wrap"

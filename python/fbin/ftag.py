@@ -1,10 +1,9 @@
 import argparse
-from fcommon.easy_tag import EasyTag, easytag_argparser, easytag_getarg
-
 import os
 import sys
 import typing
 
+from fcommon.easy_tag import EasyTag, easytag_argparser, easytag_getarg
 
 verbose = False
 
@@ -42,10 +41,7 @@ def parse_tag_from_filename(mt, pattern):
 def generate_filename(mt, pattern):
     new_name = mt.format(pattern)
 
-    log(
-        "From {%s} to {%s}"
-        % (mt.path, new_name + os.path.splitext(mt.path)[1])
-    )
+    log("From {%s} to {%s}" % (mt.path, new_name + os.path.splitext(mt.path)[1]))
 
     if save_changes_p():
         log("rename ... ", end="")
@@ -75,10 +71,7 @@ def set_tag(mt, meta):
         if meta[k] is None:
             continue
 
-        log(
-            "%s : %s -> %s"
-            % (EasyTag.tag_name_map[k], P(str(mt[k])), P(str(meta[k])))
-        )
+        log("%s : %s -> %s" % (EasyTag.tag_name_map[k], P(str(mt[k])), P(str(meta[k]))))
 
         mt[k] = meta[k]
 
@@ -109,9 +102,7 @@ def main():
     )
     parser.add_argument("--cname", dest="cname", help="rename file by pattern")
     parser.add_argument("--copy", dest="copy_file", help="copy tag from file")
-    parser.add_argument(
-        "--pname", dest="pname", help="parse tag from filename"
-    )
+    parser.add_argument("--pname", dest="pname", help="parse tag from filename")
     parser.add_argument(
         "--split-artists",
         dest="split_artists",
@@ -119,9 +110,7 @@ def main():
         help="Split artists",
     )
 
-    parser.add_argument(
-        "otherthings", default=[], nargs="*", help="media files"
-    )
+    parser.add_argument("otherthings", default=[], nargs="*", help="media files")
 
     args = parser.parse_args()
 

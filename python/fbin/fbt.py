@@ -1,6 +1,7 @@
 import argparse
 import select
 import sys
+
 import bluetooth as bt
 
 
@@ -89,13 +90,9 @@ def _browse(addr):
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "-a", dest="addr", default=None, help="target bt address"
-    )
+    parser.add_argument("-a", dest="addr", default=None, help="target bt address")
     parser.add_argument("-p", dest="port", default=1, help="rfcomm port")
-    parser.add_argument(
-        "-brow", dest="browse", action="store_true", help="browse SDP"
-    )
+    parser.add_argument("-brow", dest="browse", action="store_true", help="browse SDP")
     parser.add_argument(
         "-inq", dest="inquiry", action="store_true", help="inquiry mode"
     )

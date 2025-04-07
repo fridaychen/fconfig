@@ -241,7 +241,8 @@ def _play(file, noaudio=False, novideo=False):
     args.append(file)
 
     print(
-        f"""{fc.vt.fmt("File:", bg=fc.vt.BLUE)} """ f"""{fc.vt.fmt(file, fg=fc.vt.GREEN)}"""
+        f"""{fc.vt.fmt("File:", bg=fc.vt.BLUE)} """
+        f"""{fc.vt.fmt(file, fg=fc.vt.GREEN)}"""
     )
 
     try:

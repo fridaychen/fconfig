@@ -283,22 +283,25 @@ class EasyTag:
     def archive(self, action=True):
         music_home = fc.get_music_home()
 
-        path = (
-            music_home
-            + "/"
-            + self["%g"][0]
-            + "/"
-            + self["%a"][0]
-            + "/"
-            + self["%b"][0]
+        new_dir = (
+            "/".join(
+                [
+                    music_home,
+                    self["%g"][0],
+                    self["%A"][0] if self["%A"] is not None else self["%a"][0],
+                    self["%b"][0],
+                ]
+            )
             + "/"
         )
 
-        if action:
-            os.makedirs(path, exist_ok=True)
-            shutil.move(self.path, path + os.path.basename(self.path))
+        new_path = new_dir + os.path.basename(self.path)
 
-        return path + os.path.basename(self.path)
+        if action:
+            os.makedirs(new_dir, exist_ok=True)
+            shutil.move(self.path, new_path)
+
+        return new_path
 
     def save(self):
         if self.changed:

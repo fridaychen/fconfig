@@ -149,6 +149,9 @@
                   :background "gray15")
      (fc-set-face 'vertico-current nil
                   :background "cornsilk4")
+     (fc-set-face 'hl-line nil
+                  :foreground "white"
+                  :background "#023002")
      (fc-set-face 'highlight nil
                   :background "DarkSeaGreen"))
 

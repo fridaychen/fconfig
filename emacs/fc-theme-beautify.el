@@ -74,17 +74,17 @@
                   font-lock-preprocessor-face
                   font-lock-function-call-face
                   font-lock-variable-use-face
-                  font-lock-property-use-face)
+                  font-lock-property-use-face
+
+                  highlight
+                  hl-line
+                  )
                 :foreground 'unspecified
                 :background 'unspecified
                 :box 'unspecified
                 :underline 'unspecified
                 :overline 'unspecified
                 :slant 'unspecified))
-
-(defun fc--beautify-face-hl-line ()
-  (fc-set-faces '(highlight hl-line)
-                :underline 'unspecified))
 
 (defun fc--beautify-face-type ()
   (fc-set-face 'font-lock-type-face nil :slant 'italic))
@@ -146,8 +146,7 @@
                :height (* *fc-font-height* 2)
                :foreground "red"))
 
-(defvar *fc-beautify-theme-hook* (list #'fc--beautify-face-hl-line
-                                       #'fc--beautify-face-type
+(defvar *fc-beautify-theme-hook* (list #'fc--beautify-face-type
                                        #'fc--beautify-face-func-name
                                        #'fc--beautify-face-mode-line
                                        #'fc--beautify-theme-whitespace-trailing

@@ -78,6 +78,7 @@
 
                   highlight
                   hl-line
+                  vertico-current
                   )
                 :foreground 'unspecified
                 :background 'unspecified

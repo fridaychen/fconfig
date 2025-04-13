@@ -155,8 +155,9 @@ OBJ: object"
    ((hash-table-p set)
     (gethash var set))))
 
-(cl-defmacro fc-val (s)
-  `(and (boundp (quote ,s)) ,s))
+(cl-defmacro fc-val (s &optional default)
+  `(or (and (boundp (quote ,s)) ,s)
+       ,default))
 
 (provide 'fc-lang)
 

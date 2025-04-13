@@ -196,9 +196,9 @@
      (unless (fc--narrow-window-p)
        (when-let* ((branch (fc-vc-branch))
                    (not-main-branch (not
-                                     (and
-                                      (boundp 'fc-proj-main-branch)
-                                      (string-equal fc-proj-main-branch branch)))))
+                                     (string-equal branch
+                                                   (fc-val fc-proj-main-branch
+                                                           "master")))))
          (if (string-search "/" branch)
              (concat "/" (car (last (string-split branch "/"))))
            branch))))))

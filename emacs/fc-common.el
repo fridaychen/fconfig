@@ -150,9 +150,10 @@
      (fc-set-face 'vertico-current nil
                   :background "cornsilk4")
      (fc-set-face 'hl-line nil
-                  :foreground "white"
+                  :foreground 'unspecified
                   :background "#023002")
      (fc-set-face 'highlight nil
+                  :foreground 'unspecified
                   :background "DarkSeaGreen"))
 
     ('zenburn

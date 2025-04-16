@@ -191,6 +191,7 @@ END: end of region."
                     (ExperimentalAutoDetectBinPacking . false)
                     (IndentCaseLabels . false)
                     (IndentWidth . "%d")
+                    (IndentPPDirectives . BeforeHash)
                     (SortIncludes . false)
                     (UseTab . "%s"))))
 

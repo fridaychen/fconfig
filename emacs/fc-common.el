@@ -130,7 +130,7 @@
      (fc-set-face 'org-table nil
                   :foreground "LawnGreen")
      (fc-set-face 'highlight nil
-                  :background "IndianRed4"))
+                  :background "#4b1818"))
 
     ('ef-cyprus
      (fc-set-face 'default nil
@@ -159,8 +159,11 @@
     ('zenburn
      (fc-set-face 'default nil
                   :background "#263238")
+     (fc-set-face 'hl-line nil
+                  :foreground 'unspecified
+                  :background "#4b1818")
      (fc-set-face 'vertico-current nil
-                  :background "IndianRed4"
+                  :background "#4b1818"
                   :underline nil))))
 
 ;; players

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+
 import cairocffi as cairo
 
 
@@ -62,9 +63,7 @@ def generate_book_cover(titles, subtitles, authors, output):
     cover_width = 600
     cover_height = 900
 
-    surface = cairo.ImageSurface(
-        cairo.FORMAT_ARGB32, cover_width, cover_height
-    )
+    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, cover_width, cover_height)
     context = cairo.Context(surface)
 
     with context:
@@ -102,15 +101,11 @@ def generate_book_cover(titles, subtitles, authors, output):
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "-t", default=[], nargs="+", dest="title", help="Book title"
-    )
+    parser.add_argument("-t", default=[], nargs="+", dest="title", help="Book title")
     parser.add_argument(
         "-s", default=[], nargs="+", dest="subtitle", help="Book subtitle"
     )
-    parser.add_argument(
-        "-a", default=[], nargs="+", dest="author", help="Book author"
-    )
+    parser.add_argument("-a", default=[], nargs="+", dest="author", help="Book author")
     parser.add_argument("-o", dest="output", help="Output filename")
 
     args = parser.parse_args()

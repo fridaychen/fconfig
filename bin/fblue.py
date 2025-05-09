@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-import bluetooth
-import bluetooth.ble
-
-from cmd import Cmd
 import os
 import sys
+from cmd import Cmd
 
+import bluetooth
+import bluetooth.ble
 import fc
+
 
 class FBlueToolbox(Cmd):
     intro = "\nWelcome to Bluetooth Toolbox.\n"
@@ -15,8 +15,8 @@ class FBlueToolbox(Cmd):
     devices = []
 
     def precmd(self, line):
-        if line == 'EOF':
-            return 'exit'
+        if line == "EOF":
+            return "exit"
 
         return line
 
@@ -52,15 +52,15 @@ class FBlueToolbox(Cmd):
 
         for svc in services:
             print("──────────────────────────────────")
-            print("Service Name: %s"    % svc["name"])
+            print("Service Name: %s" % svc["name"])
             print("    Host:        %s" % svc["host"])
             print("    Description: %s" % svc["description"])
             print("    Provided By: %s" % svc["provider"])
             print("    Protocol:    %s" % svc["protocol"])
             print("    channel/PSM: %s" % svc["port"])
-            print("    svc classes: %s "% svc["service-classes"])
-            print("    profiles:    %s "% svc["profiles"])
-            print("    service id:  %s "% svc["service-id"])
+            print("    svc classes: %s " % svc["service-classes"])
+            print("    profiles:    %s " % svc["profiles"])
+            print("    service id:  %s " % svc["service-id"])
             print("")
 
     def do_lescan(self, inp):
@@ -73,5 +73,6 @@ class FBlueToolbox(Cmd):
     def do_exit(self, inp):
         print("\nByebye !")
         return True
+
 
 FBlueToolbox().cmdloop()

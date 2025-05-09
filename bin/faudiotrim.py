@@ -10,9 +10,7 @@ import fc
 
 
 def get_total_length(f):
-    os.system(
-        "ffmpeg -i '%s' -hide_banner 2> /tmp/at_log_%d.log" % (f, os.getpid())
-    )
+    os.system("ffmpeg -i '%s' -hide_banner 2> /tmp/at_log_%d.log" % (f, os.getpid()))
 
     data = os.popen("grep Duration: /tmp/at_log_%d.log" % os.getpid()).read()
 
@@ -26,18 +24,12 @@ def get_total_length(f):
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "-d", dest="duration", type=float, default=0, help="duration"
-    )
+    parser.add_argument("-d", dest="duration", type=float, default=0, help="duration")
     parser.add_argument("-e", dest="end", type=float, default=0, help="end")
-    parser.add_argument(
-        "-s", dest="start", type=float, default=0, help="start"
-    )
+    parser.add_argument("-s", dest="start", type=float, default=0, help="start")
     parser.add_argument("-o", dest="output_dir", help="output directory")
     parser.add_argument("-O", dest="output_file", help="output file")
-    parser.add_argument(
-        "-v", dest="verbose", action="store_true", help="verbose mode"
-    )
+    parser.add_argument("-v", dest="verbose", action="store_true", help="verbose mode")
 
     parser.add_argument(
         "otherthings",

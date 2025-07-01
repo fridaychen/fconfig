@@ -1138,6 +1138,8 @@ KEYMAP: keymap to run."
      ("c" ,(fc-cond-key :normal 'quick-calc
                         :region (fc-manual (calc-eval (fc-current-thing)))))
      ("d" fc-dev-mode-toggle)
+     ("e" ,(fc-cond-key :normal #'rotate-windows
+                        :prefix #'rotate-windows-back))
      ("f" ,(fc-cond-key :normal 'fc-find-files
                         :proj (fc-manual (fc-proj-find-file default-directory))))
      ("h" fc-toggle-hex-mode)

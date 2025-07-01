@@ -473,6 +473,9 @@ PRE-FORMAT: format the block content."
                        "\\1\n\n*"
                        :from-start t)
 
+    (fc-replace-regexp (rx (group (not "\n")) "\n" "\n" (+ "\n") (group (not "\n")))
+                       "*\\1\n\n\\2" :from-start t)
+
     (fc-replace-regexp (rx line-start "*" (group (+ nonl)) "\n" (group nonl))
                        "*\\1\n\n\\2" :from-start t)
 

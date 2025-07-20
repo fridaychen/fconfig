@@ -69,7 +69,7 @@ function fit-switch-branch {
 }
 
 function fit-in-work-tree {
-    [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]]
+    [[ $(git rev-parse --is-inside-work-tree &> /dev/null) == "true" ]]
 }
 
 function fit-root {

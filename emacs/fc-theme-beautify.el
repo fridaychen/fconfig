@@ -52,6 +52,7 @@
             font-lock-variable-use-face
             font-lock-property-use-face
 
+            org-footnote
             org-link)
 
            (font-lock-builtin-face
@@ -89,6 +90,13 @@
 
 (defun fc--beautify-face-type ()
   (fc-set-face 'font-lock-type-face nil :slant 'italic))
+
+(defun fc--beautify-hl-line ()
+  (when (fc-get-face 'hl-line :foreground)
+    (fc-set-face 'hl-line nil
+                 :foreground 'unspecified
+                 :background (color-darken-name (fc-get-face 'default :background) -15)
+                 :inherit nil)))
 
 (defun fc--beautify-face-func-name ()
   (fc-set-face 'font-lock-function-name-face nil :overline t))
@@ -155,6 +163,7 @@
                                        #'fc--beautify-face-aw-leading
                                        #'fc--beautify-soothe-theme
                                        #'fc--beautify-enhance-contrast
+                                       #'fc--beautify-hl-line
                                        ))
 
 (defun fc-beautify-theme ()

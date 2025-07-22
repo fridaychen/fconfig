@@ -336,7 +336,7 @@ INDENT-FUNC: function for indent."
 
   (cond
    ((eql major-mode 'image-mode)
-    (call-interactively 'image-previous-file))
+    (fc-funcall 'image-previous-file))
 
    ((fc-find-viewer-window)
     (with-selected-window (fc-find-viewer-window)
@@ -356,7 +356,7 @@ INDENT-FUNC: function for indent."
 
   (cond
    ((eql major-mode 'image-mode)
-    (call-interactively 'image-next-file))
+    (fc-funcall 'image-next-file))
 
    ((fc-find-viewer-window)
     (with-selected-window (fc-find-viewer-window)
@@ -1584,9 +1584,9 @@ AUTO: auto select face."
                       :preregion #'delete-rectangle))
    ("E" fc-end-of-semantic)
    ("F" ,(fc-cond-key :normal #'fc-find-files
-                      :preregion (fc-manual (call-interactively #'iedit-rectangle-mode)
+                      :preregion (fc-manual (fc-funcall #'iedit-rectangle-mode)
                                             (fc-modal-disable))
-                      :region (fc-manual (call-interactively #'iedit-mode)
+                      :region (fc-manual (fc-funcall #'iedit-mode)
                                          (fc-modal-disable))))
    ("G" ,(fc-cond-key :normal (fc-manual (fc-text-retrieve :ignore-files *fc--ignore-files*))
                       :proj (fc-manual (fc-text-retrieve :dir (fc-proj-root) :ignore-files *fc--ignore-files*))
@@ -1628,7 +1628,7 @@ AUTO: auto select face."
    ("Y" ,(fc-cond-key :normal #'yank-rectangle
                       :region (fc-manual
                                (let ((text (fc-select "Kill ring" kill-ring)))
-                                 (call-interactively #'delete-region)
+                                 (fc-funcall #'delete-region)
                                  (insert text)))))
    ("Z" neotree-toggle)
 

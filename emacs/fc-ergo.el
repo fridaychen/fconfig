@@ -35,6 +35,12 @@
                  compilation-auto-jump-to-first-error nil
                  compilation-auto-jump-to-next t)))
 
+(fc-load 'simple
+  :local t
+  :after (progn
+           (setf shell-command-prompt-show-cwd t
+                 async-shell-command-display-buffer nil)))
+
 (defconst *fc-book-zh-single-quote*
   (fc-decorate-region
    (lambda ()
@@ -1633,6 +1639,8 @@ AUTO: auto select face."
    ("Z" neotree-toggle)
 
    ("!" ,(fc-cond-key :normal #'shell-command
+                      :proj (fc-manual (let ((default-directory (fc-proj-root)))
+                                         (fc-funcall #'shell-command)))
                       :region #'shell-command-on-region))
    ("@" ,(fc-manual (push-mark (point))))
    ("#" comment-dwim)

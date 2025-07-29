@@ -96,6 +96,7 @@
 ;; theme
 (setf *fc--work-themes* '((dark
                            (ayu-grey . ayu-theme)
+                           (doom-snazzy . doom-themes)
                            ef-melissa-dark
                            leuven-dark
                            tango-dark

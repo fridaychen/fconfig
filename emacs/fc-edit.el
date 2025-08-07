@@ -282,6 +282,14 @@
            (remove-hook 'xref-after-jump-hook #'recenter)
            (add-hook 'xref-after-jump-hook #'fc--show-recenter-block t)))
 
+(fc-load 'highlight-indent-guides
+  :after (progn
+           (setf highlight-indent-guides-method 'bitmap
+                 ighlight-indent-guides-auto-character-face-perc 60)
+
+           (add-hook 'makefile-mode-hook #'highlight-indent-guides-mode)
+           ))
+
 (provide 'fc-edit)
 
 ;; Local Variables:

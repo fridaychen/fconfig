@@ -22,7 +22,10 @@
                        nil)
            (fc-add-fmt 'python-ts-mode
                        '("fc-fmt-python.sh")
-                       nil)))
+                       nil)
+
+           (add-hook 'python-mode-hook #'highlight-indent-guides-mode)
+           (add-hook 'python-ts-mode-hook #'highlight-indent-guides-mode)))
 
 (defconst *fc-python-map*
   (fc-make-keymap

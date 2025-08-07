@@ -96,6 +96,7 @@
 ;; theme
 (setf *fc--work-themes* '((dark
                            (ayu-grey . ayu-theme)
+                           (doom-snazzy . doom-themes)
                            ef-melissa-dark
                            leuven-dark
                            tango-dark
@@ -131,6 +132,10 @@
                   :foreground "LawnGreen")
      (fc-set-face 'highlight nil
                   :background "#4b1818"))
+
+    ('doom-snazzy
+     (fc-set-face 'hi-yellow nil
+                  :foreground "black"))
 
     ('ef-cyprus
      (fc-set-face 'default nil

@@ -285,10 +285,9 @@
 (fc-load 'highlight-indent-guides
   :after (progn
            (setf highlight-indent-guides-method 'bitmap
-                 ighlight-indent-guides-auto-character-face-perc 60)
+                 highlight-indent-guides-auto-character-face-perc 60)
 
-           (add-hook 'makefile-mode-hook #'highlight-indent-guides-mode)
-           ))
+           (add-hook 'makefile-mode-hook #'highlight-indent-guides-mode)))
 
 (provide 'fc-edit)
 

@@ -98,6 +98,9 @@
                  :background (color-darken-name (fc-get-face 'default :background) -15)
                  :inherit nil)))
 
+(defun fc--beautify-line-number ()
+  (fc--adjust-face-fg-light 'line-number 0.3))
+
 (defun fc--beautify-face-func-name ()
   (fc-set-face 'font-lock-function-name-face nil :overline t))
 
@@ -164,6 +167,7 @@
                                        #'fc--beautify-soothe-theme
                                        #'fc--beautify-enhance-contrast
                                        #'fc--beautify-hl-line
+                                       #'fc--beautify-line-number
                                        ))
 
 (defun fc-beautify-theme ()

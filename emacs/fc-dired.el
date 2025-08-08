@@ -19,6 +19,7 @@
                  global-auto-revert-non-file-buffers t
                  auto-revert-verbose nil
                  dired-omit-verbose nil
+                 dired-compress-file-default-suffix ".bz2"
                  dired-listing-switches "-aBhl --group-directories-first")
 
            (when *is-mac*

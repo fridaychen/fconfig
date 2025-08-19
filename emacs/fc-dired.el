@@ -11,13 +11,15 @@
 
   :after (progn
            ;; enable omit submode
-           (add-hook 'dired-mode-hook #'dired-omit-mode)
+           (add-hook 'dired-mode-hook #'(lambda () (dired-omit-mode 1)))
 
            (setf dired-dwim-target t
                  dired-recursive-copies 'always
                  dired-recursive-deletes 'top
                  global-auto-revert-non-file-buffers t
                  auto-revert-verbose nil
+                 dired-omit-files (rx (or (and bol (+ ?\.) (+ (not ?\.)))
+                                          (and ?\~ eol)))
                  dired-omit-verbose nil
                  dired-compress-file-default-suffix ".bz2"
                  dired-listing-switches "-aBhl --group-directories-first")
@@ -62,6 +64,7 @@
            ("c" dired-do-compress)
            ("d" dired-do-delete)
            ("f" fc-basic-key)
+           ("h" dired-omit-mode)
            ("i" previous-line)
            ("k" next-line)
            ("m" fc-dired-toggle-mark)

@@ -10,7 +10,7 @@ declare -A audio_bitrate_def
 
 audio_bitrate_def["opus_music"]="128k"
 audio_bitrate_def["opus_music_hifi"]="192k"
-audio_bitrate_def["opus_speech"]="24k"
+audio_bitrate_def["opus_speech"]="32k"
 audio_bitrate_def["opus_speech_hifi"]="48k"
 
 audio_bitrate_def["m4a_music"]="128k"

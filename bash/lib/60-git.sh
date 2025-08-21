@@ -27,7 +27,7 @@ function fit-clean {
 
 function fit-current-branch {
     if $(fit-in-work-tree); then
-        git rev-parse --abbrev-ref HEAD
+        git rev-parse --abbrev-ref HEAD 2> /dev/null
     fi
 }
 
@@ -69,7 +69,7 @@ function fit-switch-branch {
 }
 
 function fit-in-work-tree {
-    [[ $(git rev-parse --is-inside-work-tree &> /dev/null) == "true" ]]
+    [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]]
 }
 
 function fit-root {

@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 case $(uname) in
     Darwin)
         alias ls='gls --color=auto'

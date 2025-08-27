@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 if [[ -d /opt/homebrew/bin ]]; then
     export PATH=/opt/homebrew/bin:$PATH
 fi

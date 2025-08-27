@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 # Play the remote audio
 # $1 : URL of the audio
 function fc-play-audio {

@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 alias gp='git pull --rebase --autostash'
 alias gq='git push'
 

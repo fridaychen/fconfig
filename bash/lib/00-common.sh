@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 function fc-include {
     for x; do
         [[ -r $x ]] && source "$x"

@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 function fargs {
     local cmd=${1}
 

@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 while getopts $ARGUMENTS OPT; do
     if [[ $OPT == "h" ]]; then
         echo -e $USAGE

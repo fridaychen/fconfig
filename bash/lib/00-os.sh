@@ -1,5 +1,3 @@
-# -*- mode: sh -*-
-
 function fc-copy {
     local src=$1
     local target=$2

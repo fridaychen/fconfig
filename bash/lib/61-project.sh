@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 function proj-build {
     local old_dir=$(pwd)
 

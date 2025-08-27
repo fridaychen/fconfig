@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 NO_CONFIRM=false
 
 function fc-waitkey {

@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 alias R='repo'
 alias RA='fj-repo-forall'
 alias RC='fj-repo-check'

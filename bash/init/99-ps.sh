@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 if [[ -z ${NODE_ICON[@]} ]]; then
     NODE_ICON=(
         ' ,___,'

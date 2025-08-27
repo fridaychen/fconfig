@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 function fpm-list {
     brew list
 }

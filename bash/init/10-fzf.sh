@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 fc-include \
     ~/.fzf.bash \
     /usr/share/fzf/completion.bash \

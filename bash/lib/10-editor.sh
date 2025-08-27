@@ -1,5 +1,3 @@
-# -*- mode: sh; sh-shell: bash; -*-
-
 function fj-active-emacs-server {
     local emacs_servers=(
         "/var/run/user/${UID}/emacs/server"

@@ -28,7 +28,6 @@
          auctex
          ayu-theme
          beacon
-         cmake-mode
          csv-mode
          color-identifiers-mode
          color-theme-sanityinc-tomorrow
@@ -43,7 +42,6 @@
          flycheck
          fireplace
          ggtags
-         go-mode
          google-this
          gruvbox-theme
          haskell-mode
@@ -65,7 +63,6 @@
          tuareg
          org
          projectile
-         python-mode
          vimrc-mode
          yasnippet
          yasnippet-snippets

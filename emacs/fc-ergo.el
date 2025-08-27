@@ -959,7 +959,7 @@ KEYMAP: keymap to run."
             (bury-buffer)
             (fc-select-buffer ""
                               (fc--buffer-pred
-                               :mode '(c-mode python-mode go-mode emacs-lisp-mode))
+                               :mode '(c-mode python-ts-mode go-mode emacs-lisp-mode))
                               :one t)))
 
      ("h" fc-goto-last-change)

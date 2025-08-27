@@ -6,25 +6,17 @@
 ;;; Code:
 (require 'cl-lib)
 
-(fc-load 'python-mode
+(fc-load 'python
   :after (progn
-           (fc-add-mode-name 'python-mode "🐍")
            (fc-add-mode-name 'python-ts-mode "🐍")
-           (setf py-comment-fill-column 88
-                 py-docstring-fill-column 88)
 
            (setf flycheck-python-flake8-executable
                  (expand-file-name "~/.emacs.d/site/python/bin/pflake8"))
 
-           (require 'python)
-           (fc-add-fmt 'python-mode
-                       '("fc-fmt-python.sh")
-                       nil)
            (fc-add-fmt 'python-ts-mode
                        '("fc-fmt-python.sh")
                        nil)
 
-           (add-hook 'python-mode-hook #'highlight-indent-guides-mode)
            (add-hook 'python-ts-mode-hook #'highlight-indent-guides-mode)))
 
 (defconst *fc-python-map*
@@ -35,7 +27,7 @@
    *fc-func-mode-map*)
   "KEYS E: org edit exit  F: format.")
 
-(cl-defun fc--python-mode-func ()
+(cl-defun fc--python-ts-mode-func ()
   (fc-modal-head-key "Python" '*fc-python-map*))
 
 (provide 'fc-python)

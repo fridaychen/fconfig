@@ -58,11 +58,9 @@
                                  (markdown-mode . fc-markdown)
                                  (ocaml-mode . fc-ocaml)
                                  (plantuml-mode . fc-plantuml)
-                                 (python-mode . fc-python)
                                  (python-ts-mode . fc-python))))
 
 (with-eval-after-load 'fc-python
-  (fc-add-tag 'python-mode *fc-tag-lsp*)
   (fc-add-tag 'python-ts-mode *fc-tag-lsp*))
 
 (with-eval-after-load 'fc-golang

@@ -26,15 +26,14 @@
   "Mode func."
   (fc-modal-head-key "Golang" '*fc-golang-map*))
 
-(fc-load 'go-mode
+(fc-load 'go-ts-mode
   :after (progn
-           (fc-add-mode-name 'go-mode "🎱")
            (fc-add-mode-name 'go-ts-mode "🎱")
 
            (cl-defun fc--go-setup ()
              (fc--lsp-enable))
 
-           (add-hook 'go-mode-hook #'fc--go-setup)
+           (add-hook 'go-ts-mode-hook #'fc--go-setup)
 
            (fc-add-fmt 'go-mode nil #'gofmt)
            (fc-add-fmt 'go-ts-mode nil #'gofmt)))

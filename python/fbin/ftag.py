@@ -109,6 +109,7 @@ def main():
         action="store_true",
         help="Split artists",
     )
+    parser.add_argument("-v", dest="verbose", action="store_true", help="verbose mode")
 
     parser.add_argument("otherthings", default=[], nargs="*", help="media files")
 
@@ -117,6 +118,9 @@ def main():
     if not args.otherthings:
         parser.print_help()
         sys.exit(1)
+
+    global verbose
+    verbose = args.verbose
 
     meta = {}
     easytag_getarg(args, meta)

@@ -20,6 +20,9 @@ audio_bitrate_def["m4a_speech_hifi"]="48k"
 
 function arg-set {
     case $1 in
+        f)
+            NO_CONFIRM=true
+            ;;
         s)
             music_mode=FALSE
             ;;
@@ -36,6 +39,7 @@ function arg-set {
 }
 
 USAGE="Usage: audio-convert.sh [OPTION] [FILE]\n\n
+  -f force
   -s speech
   -m music
   -H Hi-Fi
@@ -70,6 +74,8 @@ function mv-audio-files {
     export -f mv-one-file
     ff -audio -nc -0 | $XARGS -0 -I{} -n1 -P$(nproc) bash -c 'mv-one-file "{}"'
 }
+
+fc-user-confirm "Convert audio files to ${ab_name}?" || exit 1
 
 mv-audio-files
 

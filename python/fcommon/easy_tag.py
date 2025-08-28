@@ -255,7 +255,7 @@ class EasyTag:
         for i in re.compile("(%[tabndpy])").split(pattern):
             if i in self:
                 if i == "%n":
-                    ret += fc.first(self[i])
+                    ret += str(fc.first(self[i]))
                 elif isinstance(self[i], tuple) or isinstance(self[i], list):
                     ret += " and ".join(self[i])
                 else:

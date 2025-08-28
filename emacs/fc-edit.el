@@ -6,7 +6,8 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defvar *fc-enable-treesit* nil)
+(defvar *fc-enable-treesit* (and (fboundp #'treesit-available-p)
+                                 (treesit-available-p)))
 
 (defvar ns-command-modifier)
 (defvar *fc-dev-mode* nil)

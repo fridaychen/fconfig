@@ -76,6 +76,7 @@
                              #'fc-modal-enable))
            ("D" fc-kill-current-buffer)
            ("N" make-directory)
+           (":" fc-M-x)
            (";" fc-fast-switch-window)
            ("C-o" fc-modal-run)
            ("<tab>" ,(fc-manuals

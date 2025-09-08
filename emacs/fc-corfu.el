@@ -15,6 +15,7 @@
                  tab-always-indent 'complete
                  )
 
+           (corfu-popupinfo-mode 1)
            (global-corfu-mode 1))
   :bind '((corfu-map
            ("s-j" corfu-next)

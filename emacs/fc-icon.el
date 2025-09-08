@@ -1,5 +1,3 @@
-;;; fc-icon.el --- DESCRIPTION -*- lexical-binding: t -*-
-
 ;;; Commentary:
 ;;
 
@@ -9,6 +7,7 @@
                           '(
                             (archive-mode . "📦")
                             (awk-mode . "🌳")
+                            (bash-ts-mode . "🐚")
                             (c-mode . "🌊")
                             (c-ts-mode . "🌊")
                             (cc-mode . "🌊")
@@ -56,6 +55,7 @@
                             (sh-mode . "🐚")
                             (special-mode . "📊")
                             (text-mode . "📝")
+                            (typescript-ts-mode . "👕")
                             (fc-ttl-mode . "🖥️")
                             (makefile-gmake-mode . "🍄")
                             (messages-buffer-mode . "💬")

@@ -273,6 +273,33 @@
                          treesit-major-mode-remap-alist
                          '((python-mode . python-ts-mode))))))
 
+(fc-load 'mermaid-ts-mode
+  :enable *fc-enable-treesit*
+  :after (progn
+           (add-to-list 'treesit-language-source-alist
+                        '(mermaid . ("https://github.com/monaqa/tree-sitter-mermaid"
+                                     :branch "master")))
+           (unless (treesit-language-available-p 'mermaid)
+             (treesit-install-language-grammar 'mermaid))
+
+           (treesit-parser-create 'mermaid)
+
+           (add-to-list '*fc-org-trust-babel-modes* "mermaid-ts")
+
+           (fc-add-mode-name 'mermaid-ts-mode "🧜‍♀️")
+           (add-to-list 'auto-mode-alist '("\\.mmd" . mermaid-ts-mode))))
+
+(fc-load 'ob-mermaid
+  :enable *fc-enable-treesit*
+  :after (progn
+           (defvaralias
+             'org-babel-default-header-args:mermaid-ts
+             'org-babel-default-header-args:mermaid)
+
+           (defalias
+             #'org-babel-execute:mermaid-ts
+             #'org-babel-execute:mermaid)))
+
 (fc-load 'ebnf-mode)
 
 (cl-defun fc--show-recenter-block ()

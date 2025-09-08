@@ -118,6 +118,9 @@ def git_status():
             ],
         )
     else:
+        if fc.verbose:
+            fc.pipe([["git", "remote", "-v"], ["head", "-1"], ["awk", "{print $2}"]])
+
         fc.run("git", ["git", "rev-parse", "--show-toplevel"])
         fc.run("git", ["git", "status", "-s", "-b"])
         fc.run(

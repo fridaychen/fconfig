@@ -52,8 +52,9 @@
              (interactive)
 
              (dired-sort-other (pcase (fc-select "Sort by"
-                                          '("date" "size" "name" "folder"))
+                                          '("date" "size" "name" "number" "folder"))
                                  ("name" "-aBhl ")
+                                 ("number" "-aBhl -v")
                                  ("date" "-aBhl -t")
                                  ("size" "-aBhl -S")
                                  ("folder" "-aBhl --group-directories-first")))))

@@ -41,6 +41,7 @@
                             (java-mode . "☕")
                             (js-mode . "☕")
                             (js-json-mode . "☕️")
+                            (json-ts-mode . "☕️")
                             (latex-mode . "🏮")
                             (log-edit-mode . "🪵")
                             (log-view-mode . "🪵")

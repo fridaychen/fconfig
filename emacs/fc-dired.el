@@ -22,7 +22,7 @@
                                           (and ?\~ eol)))
                  dired-omit-verbose nil
                  dired-compress-file-default-suffix ".bz2"
-                 dired-listing-switches "-aBhl --group-directories-first")
+                 dired-listing-switches "-aBhl --group-directories-first -v")
 
            (when *is-mac*
              (setf insert-directory-program "gls"))
@@ -52,12 +52,11 @@
              (interactive)
 
              (dired-sort-other (pcase (fc-select "Sort by"
-                                          '("date" "size" "name" "number" "folder"))
-                                 ("name" "-aBhl ")
-                                 ("number" "-aBhl -v")
-                                 ("date" "-aBhl -t")
-                                 ("size" "-aBhl -S")
-                                 ("folder" "-aBhl --group-directories-first")))))
+                                          '("date" "size" "name" "number"))
+                                 ("name" "-aBhl --group-directories-first")
+                                 ("number" "-aBhl --group-directories-first -v")
+                                 ("date" "-aBhl --group-directories-first -t")
+                                 ("size" "-aBhl --group-directories-first -S")))))
 
   :bind `((dired-mode-map
            ("4" ,(fc-cond-key :normal 'fc-switch-to-buffer))

@@ -622,9 +622,14 @@ REST: text to insert."
 
 (cl-defun fc-insert-space ()
   "Insert space."
-  (when (/= (current-column) 0)
+  (cond
+   ((/= (current-column) 0)
     (end-of-line)
-    (insert "\n")))
+    (insert "\n"))
+
+   ((looking-back "[^
+]\n")
+    (insert "\n"))))
 
 (cl-defun fc-insert-space-text (after-fun &rest rest)
   "Insert text then run AFTER-FUN on the region.

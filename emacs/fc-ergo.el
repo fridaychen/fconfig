@@ -1580,7 +1580,6 @@ AUTO: auto select face."
 
    ("A" fc-begin-of-semantic)
    ("B" ,(fc-cond-key :normal (fc-head-key "Bookmark" '*ergo-bookmark-map*)))
-   ("s-b" fc-bookmark)
 
    ;; C := VC
    ("C" ,(fc-head-key "VC" '*ergo-vc-map*))
@@ -1712,6 +1711,13 @@ AUTO: auto select face."
                        :prefix #'query-replace))
    ("|" ,(fc-cond-key :normal #'make-frame
                       :prefix #'delete-frame))
+
+   ("s-b" fc-bookmark)
+   ("s-i" ,(fc-cond-key :normal 'fc-show-hide-note
+                        :region (fc-manual
+                                 (fc-insert-note
+                                  (fc-current-thing)))))
+
    ("S-<SPC>" ,(fc-cond-key :normal (fc-manual
                                      (fc-modal-head-key
                                       "Basic" '*ergo-basic-map*))

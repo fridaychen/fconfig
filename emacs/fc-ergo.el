@@ -1016,7 +1016,8 @@ KEYMAP: keymap to run."
   (fc-make-keymap
    `(
      ("SPC" fc-gtd-portal)
-     ("3" fc-org-agenda)
+     ("3" org-roam-node-find)
+     ("4" fc-org-agenda)
      ("a" org-agenda)
      ("c" org-capture)
      ("f" org-roam-node-find)

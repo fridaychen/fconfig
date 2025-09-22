@@ -31,9 +31,6 @@
          csv-mode
          color-identifiers-mode
          color-theme-sanityinc-tomorrow
-         company
-         company-posframe
-         company-quickhelp
          counsel
          ef-themes
          emacsql-sqlite-builtin

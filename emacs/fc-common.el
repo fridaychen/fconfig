@@ -100,6 +100,7 @@
                            ef-melissa-dark
                            leuven-dark
                            tango-dark
+                           (vs-dark . vs-dark-theme)
                            zenburn)
                           (light
                            leuven

@@ -24,7 +24,7 @@
 (defvar *fc-selected-window* (frame-selected-window))
 
 (defvar *fc-buffer-id-keymap* (fc-make-keymap
-                               '(([mode-line mouse-1] ivy-switch-buffer))
+                               '(([mode-line mouse-1] fc-switch-to-buffer))
                                "fc-buffer-id-keymap"))
 (defvar *fc-pos-keymap* (fc-make-keymap
                          '(([mode-line mouse-1] counsel-imenu))

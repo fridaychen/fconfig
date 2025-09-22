@@ -405,6 +405,7 @@ LEVEL: chapter level."
     output))
 
 (cl-defun fc-book-publish-epub ()
+  "Convert org to epub file."
   (let* ((file (buffer-file-name))
          (title (fc--book-title))
          (cover (or
@@ -412,10 +413,11 @@ LEVEL: chapter level."
                  (fc--book-gen-cover)))
          (epub (expand-file-name (read-file-name "Epub file" nil nil nil
                                                  (format "%s.epub" title))))
-         (gz-file (string-suffix-p ".gz" file))
+         (compress-file (or (string-suffix-p ".gz" file)
+                            (string-suffix-p ".bz2" file)))
          l)
-    (when gz-file
-      (push (format "gzip -d %s -c |"
+    (when compress-file
+      (push (format "fex.sh -c %s |"
                     (shell-quote-argument file))
             l))
 
@@ -424,7 +426,7 @@ LEVEL: chapter level."
                   (shell-quote-argument cover))
           l)
 
-    (if gz-file
+    (if compress-file
         (let ((format (string-remove-suffix "-mode" (symbol-name major-mode))))
           (push (concat "--from " format) l))
       (push (shell-quote-argument file) l))

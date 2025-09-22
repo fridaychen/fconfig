@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
 VERBOSE=:
+TO_STDOUT=""
 
 function usage {
     cat <<- EOF
 Usage:  ${0##*/} [OPTION] package-files
     Extract packages into current directory.
 
+    -c to standout
     -h usage
     -v verbose
 EOF
@@ -27,10 +29,10 @@ function extract {
 
     case ${ext,,} in
         bz2)
-            bzip2 -d "$1"
+            bzip2 -d $TO_STDOUT "$1"
             ;;
         gz)
-            gzip -d "$1"
+            gzip -d $TO_STDOUT "$1"
             ;;
         rar | zip | 7z)
             7z x "$1"
@@ -43,6 +45,9 @@ function extract {
 
 function arg-set {
     case $1 in
+        c)
+            TO_STDOUT="-c"
+            ;;
         v)
             VERBOSE='echo'
             ;;
@@ -50,9 +55,10 @@ function arg-set {
 }
 
 USAGE="Usage: fex.sh [OPTION] [FILES]\n\n
+  -c to standout
   -v verbose\n
 "
-ARGUMENTS="hv"
+ARGUMENTS="chv"
 source $FCHOME/bash/lib/argparser.sh
 
 for arg; do

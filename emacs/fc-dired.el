@@ -115,12 +115,12 @@
 
 (fc-load 'diredfl
   :idle t
-  :after (progn
-           (setq diredfl-compressed-extensions
-                 '(".tar" ".taz" ".tgz" ".tar.xz" ".tar.gz" ".tar.bz2"
-                   ".7z" ".zip"))
-
-           (diredfl-global-mode)))
+  :before
+  (setf diredfl-compressed-extensions
+        '(".tar" ".taz" ".tgz" ".tar.xz" ".tar.gz" ".tar.bz2"
+          ".7z" ".zip"))
+  :after
+  (diredfl-global-mode))
 
 (provide 'fc-dired)
 

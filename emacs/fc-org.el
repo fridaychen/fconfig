@@ -315,12 +315,14 @@ import numpy as np
                                        (fc-hs-toggle))))
                                  0.2)
 
-             (setq prettify-symbols-alist '((":PROPERTIES:" . "»")
-                                            (":LOGBOOK:" . "›")
-                                            (":END:" . "›")
-                                            ("[ ]" . ?☐)
-                                            ("[X]" . ?☑ )
-                                            ("[-]" . ?☒ )))
+             (setq prettify-symbols-alist
+                   (fc-concat '((":PROPERTIES:" . "»")
+                                (":LOGBOOK:" . "›")
+                                (":END:" . "›")
+                                ("[ ]" . ?☐)
+                                ("[X]" . ?☑)
+                                ("[-]" . ?☒))
+                              *fc-greek-prettify-symbols*))
              (prettify-symbols-mode)
 
              (fc-dwell-enable #'fc--org-dwell)

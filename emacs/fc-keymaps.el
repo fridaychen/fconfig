@@ -152,6 +152,7 @@ MODE-FUNC: mode and function definitions."
               (if lsp-semantic-tokens-mode
                   (lsp-semantic-tokens-mode -1)
                 (lsp-semantic-tokens-mode 1)))))
+     ("X" transpose-sexps)
      )
    "Basic func map"
    *fc-punctuation-map*))

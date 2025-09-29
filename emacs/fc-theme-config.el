@@ -109,11 +109,9 @@ THEMES: list of themes."
 
     (cond
      ((> new-light 0.98)
-      (message "2222 change from %s to 0.98" new-light)
       (setq new-light 0.98))
 
      ((< new-light 0.02)
-      (message "2222 change from %s to 0.02" new-light)
       (setq new-light 0.02)))
     ;; (unless (>= 1 new-light 0)
     ;;   (error "Wrong light"))

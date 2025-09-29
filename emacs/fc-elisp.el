@@ -13,7 +13,6 @@
      ("f" eval-defun)
      ("l" ,(fc-manual (when buffer-file-name
                         (load buffer-file-name))))
-     ("x" transpose-sexps)
      ("SPC" fc-elisp-portal)
      )
    "fc-emacs-lisp-map"
@@ -61,14 +60,9 @@
   :local t
 
   :after (progn
-           (cl-defun fc--format-emacs-lisp ()
-             (indent-region (point-min) (point-max))
-
-             (fc--default-fmt))
-
            (fc-unbind-keys '("C-M-i") emacs-lisp-mode-map)
 
-           (fc-add-fmt 'emacs-lisp-mode nil #'fc--format-emacs-lisp)
+           (fc-add-fmt 'emacs-lisp-mode nil #'fc--default-fmt-with-indent)
 
            (defun fc--emacs-lisp-setup ()
              (setf indent-tabs-mode nil)

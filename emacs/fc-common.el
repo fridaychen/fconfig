@@ -170,7 +170,7 @@
                   :background "#4b1818")
      (fc-set-face 'vertico-current nil
                   :background "#4b1818"
-                  :underline nil))))
+                  :underline 'unspecified))))
 
 ;; players
 (cl-defun fc-init-user-player ()

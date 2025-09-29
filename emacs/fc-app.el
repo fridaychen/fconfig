@@ -1127,6 +1127,15 @@ REST: commands."
    "font size keymap")
   "KEYS  j: down  k: up.")
 
+(defconst *fc-app-brightness-map*
+  (fc-make-keymap
+   `(
+     ("j" ,*fc-decrease-display-brightness*)
+     ("k" ,*fc-increase-display-brightness*)
+     )
+   "Brightness keymap")
+  "KEYS  j: down  k: up.")
+
 ;; snippets
 (defun fc-app-create-snippet ()
   "Create a new snippet."
@@ -1191,6 +1200,8 @@ REST: commands."
   (fc-select-func
    "UI"
    `(
+     ("brightness"   . ,(fc-head-key-repeat "Adjust brightness"
+                                            '*fc-app-brightness-map*))
      ("bg color"     . fc-select-bg-color)
      ("fg color"     . fc-select-fg-color)
      ("font"         . fc-config-font)

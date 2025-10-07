@@ -41,6 +41,9 @@
            (setf shell-command-prompt-show-cwd t
                  async-shell-command-display-buffer nil)))
 
+(fc-load 'marginalia
+  :after (marginalia-mode))
+
 (defconst *fc-book-zh-single-quote*
   (fc-decorate-region
    (lambda ()

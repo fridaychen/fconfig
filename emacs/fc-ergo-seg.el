@@ -91,11 +91,13 @@
   (fc-make-keymap
    `(
      ([mode-line mouse-1] ,(fc-manual (fc-player--play-pause *fc-player*)))
-     ([mode-line mouse-2] ,(fc-manual (fc-player--next *fc-player*)))
-     ([mode-line mouse-3] ,(fc-manual (fc-player--previous *fc-player*)))
-     ([mode-line mouse-4] ,(fc-manual (fc-player--volume-up *fc-player*)))
-     ([mode-line mouse-5] ,(fc-manual (fc-player--volume-down *fc-player*)))
-     )
+     ([mode-line mouse-3] ,(fc-manual (fc-select-func
+                                       "Player"
+                                       `(("next track"     . (lambda () (fc-player--next *fc-player*)))
+                                         ("previous track" . (lambda () (fc-player--previous *fc-player*)))
+                                         ("volume up"      . (lambda () (fc-player--volume-up *fc-player*)))
+                                         ("volume down"    . (lambda () (fc-player--volume-down *fc-player*)))
+                                         )))))
    "fc-player-keymap"))
 
 (defun fc--player-seg ()

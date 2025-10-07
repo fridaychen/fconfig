@@ -64,6 +64,7 @@
            ("c" dired-do-compress)
            ("d" dired-do-delete)
            ("f" fc-basic-key)
+           ("g" ,(fc-head-key "Goto" '*ergo-goto-map*))
            ("h" dired-omit-mode)
            ("i" previous-line)
            ("k" next-line)
@@ -76,6 +77,7 @@
                              #'fc-modal-enable))
            ("D" fc-kill-current-buffer)
            ("N" make-directory)
+           ("M" dired-mark-files-regexp)
            (":" fc-M-x)
            (";" fc-fast-switch-window)
            ("C-o" fc-modal-run)
@@ -109,7 +111,7 @@
   (fc-modal-head-key "Wdired" '*fc-wdired-map*))
 
 (fc-load 'wdired
-  :autoload t
+  :local t
   :bind '((wdired-mode-map
            ("<tab>" wdired-exit))))
 

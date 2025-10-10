@@ -9,7 +9,7 @@ function clone {
 }
 
 function update {
-    git pull
+    git pull origin $(git rev-parse --abbrev-ref HEAD)
 }
 
 function compile {

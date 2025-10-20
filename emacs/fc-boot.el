@@ -26,6 +26,8 @@
 
 (apply #'fc-install *fc-extra-packages*)
 
+(require 'fc-charmap)
+
 (fc-load 'fc-org
   :local t
   :after (progn

@@ -355,7 +355,7 @@ FILE-TYPES: fc style file types."
                      "--type-add" "gzdoc:*.{org.gz,md.gz}" "-t" "gzdoc"
                      ))
              ('conf '("-t" "cmake" "-t" "make" "-t" "config"
-                      "--type-add" "scons:[Ss][Cc]ons,[Ss][Cc]onstruct}" "-t" "scons"
+                      "--type-add" "scons:{[Ss][Cc]ons,[Ss][Cc]onstruct}" "-t" "scons"
                       "-t" "json" "-t" "yaml"
                       ))
              ('web '("-t" "html" "-t" "css" "-t" "js"

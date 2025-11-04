@@ -1783,15 +1783,13 @@ FUNC: new repeat func."
 
 (cl-defun fc-fill-region ()
   "Fill region."
-  (when *fc-ergo-prefix*
-    (setf *fc-fill-region-fmt* (read-string "New fill region format" *fc-fill-region-fmt*))
-    (cl-return-from fc-fill-region))
+  (setf *fc-fill-region-fmt* (read-string "New fill region format" *fc-fill-region-fmt*))
 
   (let* ((start (region-beginning))
          (start-line (fc-line-num (region-beginning)))
          (end-line (fc-line-num (region-end)))
          (col (current-column))
-         (line-num 1))
+         (line-num (read-number "Start number" 1)))
     (deactivate-mark)
     (goto-char start)
 

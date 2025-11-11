@@ -1167,7 +1167,8 @@ KEYMAP: keymap to run."
      ("q" ,(fc-cond-key :normal 'fc-proj-open
                         :region 'fc-proj-query-rename
                         :proj 'fc-select-proj-func))
-     ("r" fc-recover-revert-buffer)
+     ("r" ,(fc-cond-key :normal 'fc-recover-revert-buffer
+                        :region 'reverse-region))
      ("s" save-buffer)
      ("t" ,(fc-cond-key :normal 'fc-show-time
                         :region (fc-manual

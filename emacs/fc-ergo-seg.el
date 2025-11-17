@@ -30,10 +30,11 @@
 (defconst *fc-menu*
   (fc-create-pop-menu
    "Start"
-   '(
+   `(
      (fc-user-select-control-mode "Control")
      (fc-user-select-theme-mode "Theme mode")
-     (fc-user-select-project "Projects"))))
+     (fc-user-select-project "Projects")
+     (,(lambda () (fc-assist-cmd "--pmsleep")) "Suspend"))))
 
 (defvar *fc--menu-seg-format* (fc-visible "⟨%s⟩" "{%s}"))
 

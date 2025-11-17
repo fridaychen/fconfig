@@ -1190,6 +1190,7 @@ REST: commands."
      "System"
      `(("location"	  . fc-update-location)
        ("sound sink"      . fc-app-select-sound-sink)
+       ("suspend"         . ,(fc-manual (fc-assist-cmd "--pmsleep")))
        ("package"	  . list-packages)
        ("profile startup" . fc-profile-startup)
        (,server-title	  . fc-toggle-server)

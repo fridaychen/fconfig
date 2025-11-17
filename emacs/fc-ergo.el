@@ -1160,8 +1160,9 @@ KEYMAP: keymap to run."
      ("l" imenu-list-smart-toggle)
 
      ("m" fc-select-multi-buffer-func)
-     ("n" ,(fc-manual (switch-to-buffer (generate-new-buffer "Untitled"))
-                      (text-mode)))
+     ("n" ,(fc-cond-key :normal (fc-manual (switch-to-buffer (generate-new-buffer "Untitled"))
+                                           (text-mode))
+                        :region 'sort-numeric-fields))
      ("o" fc-occur-dwim)
      ("p" fc-switch-function-keys)
      ("q" ,(fc-cond-key :normal 'fc-proj-open
@@ -1169,7 +1170,8 @@ KEYMAP: keymap to run."
                         :proj 'fc-select-proj-func))
      ("r" ,(fc-cond-key :normal 'fc-recover-revert-buffer
                         :region 'reverse-region))
-     ("s" save-buffer)
+     ("s" ,(fc-cond-key :normal 'save-buffer
+                        :region 'sort-fields))
      ("t" ,(fc-cond-key :normal 'fc-show-time
                         :region (fc-manual
                                  (fc-speak (buffer-substring
@@ -1256,7 +1258,6 @@ STEP: pixels."
      ("r" ,(fc-manual (when (fc-user-confirm "Restart Emacs")
                         (fc-save-desktop)
                         (restart-emacs))))
-     ("s" ,(fc-manual (fc-assist-cmd "--pmsleep")))
      ("t" ,(fc-manual (fc-select-func
                        "Select theme style"
                        `(("dark"            . (lambda ()

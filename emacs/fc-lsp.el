@@ -56,6 +56,13 @@
                                                      :documentOnTypeFormattingProvider
                                                      :inlayHintProvider))
 
+           (fc-set-face 'eglot-semantic-function-face nil
+                        :inherit 'font-lock-function-call-face
+                        :extend t)
+           (fc-set-face 'eglot-semantic-operator-face nil
+                        :inherit 'font-lock-operator-face
+                        :extend t)
+
            (defun fc--setup-eglot ()
              )
 

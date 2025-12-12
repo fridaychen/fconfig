@@ -96,7 +96,8 @@
 ;; theme
 (setf *fc--work-themes* '((dark
                            (ayu-grey . ayu-theme)
-                           ef-melissa-dark
+                           (ef-dream . ef-themes)
+                           (ef-melissa-dark . ef-themes)
                            leuven-dark
                            tango-dark
                            (vs-dark . vs-dark-theme)

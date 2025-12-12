@@ -16,7 +16,7 @@ function fc-add-path {
 }
 
 function fc-app-exists {
-    type "$1" &>/dev/null
+    type "$1" &> /dev/null
 }
 
 function fc-find-app {
@@ -31,7 +31,7 @@ function fc-find-app {
 function fc-net-connected {
     case $(uname) in
         Darwin)
-            /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport -I | grep running >/dev/null
+            /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport -I | grep running > /dev/null
             ;;
         Linux)
             [[ $(nmcli networking conn) = "full" ]]
@@ -46,6 +46,11 @@ function fc-wait-children {
 }
 
 function fc-locate-file-in-path {
+    if [[ ! $(realpath .) ]]; then
+        echo ""
+        return
+    fi
+
     local dir="$(realpath .)"
 
     while [[ "${dir}" != "/" ]]; do

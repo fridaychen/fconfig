@@ -1,13 +1,14 @@
 # import dbus
 import functools
-from fuzzywuzzy import fuzz
 import os
 import os.path
 import re
-import sys
 import subprocess
+import sys
 
-from .flog import debug, dbg
+from fuzzywuzzy import fuzz
+
+from .flog import dbg, debug
 
 
 def static_vars(**kwargs):
@@ -46,10 +47,14 @@ def pipe(cmds, need_result=False):
     q = subprocess.Popen(cmds[0], stdout=subprocess.PIPE, close_fds=True)
 
     for i in range(1, len(cmds) - 1):
-        q = subprocess.Popen(cmds[i], stdin=q.stdout, stdout=subprocess.PIPE, close_fds=True)
+        q = subprocess.Popen(
+            cmds[i], stdin=q.stdout, stdout=subprocess.PIPE, close_fds=True
+        )
 
     if need_result:
-        q = subprocess.Popen(cmds[-1], stdin=q.stdout, stdout=subprocess.PIPE, close_fds=True)
+        q = subprocess.Popen(
+            cmds[-1], stdin=q.stdout, stdout=subprocess.PIPE, close_fds=True
+        )
         return q.communicate()[0].decode("utf-8")
     else:
         q = subprocess.Popen(cmds[-1], stdin=q.stdout, close_fds=True)

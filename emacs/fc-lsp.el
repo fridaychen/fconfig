@@ -58,10 +58,12 @@
 
            (fc-set-face 'eglot-semantic-function-face nil
                         :inherit 'font-lock-function-call-face
-                        :extend t)
+                        :extend t
+                        :overline nil)
            (fc-set-face 'eglot-semantic-operator-face nil
                         :inherit 'font-lock-operator-face
-                        :extend t)
+                        :extend t
+                        :overline nil)
 
            (defun fc--setup-eglot ()
              )

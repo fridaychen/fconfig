@@ -84,6 +84,7 @@ TRACK: current track name."
 (add-to-list 'load-path (concat *fc-home* "/emacs/player"))
 
 (require 'fc-player-quodlibet)
+(require 'fc-player-cmus)
 
 (when *is-linux*
   (setf *fc-enable-player* *fc-enable-dbus*)

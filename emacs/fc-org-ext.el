@@ -23,6 +23,14 @@
   (sit-for 1)
   (fc-quodlibet-cmd "next"))
 
+(org-link-set-parameters "cmus"
+                         :follow #'fc--music-cmus-open)
+
+(defun fc--music-cmus-open (path _)
+  (fc-cmus-cmd "-C" (concat "filter " path))
+  (sit-for 1)
+  (fc-cmus-cmd "--next"))
+
 (org-link-set-parameters "mybook"
                          :follow #'fc--mybook-open)
 

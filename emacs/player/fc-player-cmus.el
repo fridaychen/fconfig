@@ -66,6 +66,57 @@ CMDS: list of command."
   (apply #'fc-exec-command-to-string
          (cons "cmus-remote" cmds)))
 
+(defconst *fc-cmus-map* (fc-make-hash-table
+                         '(
+                           (a . "artist")
+                           (b . "album")
+                           (d . "discnumber")
+                           (g . "genre")
+                           (n . "tracknumber")
+                           (p . "composer")
+                           (t . "title")
+                           )))
+
+(defun fc-cmus-play (filter)
+  (message "cmus filter ===%s===" filter)
+  (fc-cmus-cmd "-C" (concat "filter " filter))
+  (sit-for 1)
+  (fc-cmus-cmd "--next")
+  (fc-cmus-cmd "--play"))
+
+(cl-defun fc-cmus-item-string (o &key has)
+  (cond ((stringp o)
+         (if has
+             (format "\"*%s*\"" o)
+           (format "\"%s\"" o)))
+
+        ((symbolp o)
+         (if has
+             (format "\"*%s*\"" (symbol-name o))
+           (format "\"%s\"" (symbol-name o))))
+
+        ((numberp o)
+         (number-to-string o))))
+
+(defun fc-cmus-open (path)
+  (let ((def (car (read-from-string path))))
+    (fc-cmus-play
+     (s-join " & "
+             (cl-mapcar (lambda (x)
+                          (let ((name (gethash (car x) *fc-cmus-map*)))
+                            (pcase x
+                              (`(,c ,v)
+                               (format "%s=%s" name (fc-cmus-item-string (cl-second x))))
+                              (`(,c has ,v)
+                               (format "%s=%s" name (fc-cmus-item-string (cl-third x) :has t)))
+                              (`(,c > ,v)
+                               (format "%s>%s" name (fc-cmus-item-string (cl-third x))))
+                              (`(,c >= ,v)
+                               (format "%s>=%s" name (fc-cmus-item-string (cl-third x))))
+                              (`(,c <= ,v)
+                               (format "%s<=%s" name (fc-cmus-item-string (cl-third x)))))))
+                        def)))))
+
 (provide 'fc-player-cmus)
 
 ;; Local Variables:

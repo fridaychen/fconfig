@@ -18,18 +18,16 @@
 (org-link-set-parameters "music"
                          :follow #'fc--music-open)
 
-(defun fc--music-open (path _)
+(defun fc--music-quodlibet-open (path)
   (fc-quodlibet-cmd (format "query %s" path))
   (sit-for 1)
   (fc-quodlibet-cmd "next"))
 
-(org-link-set-parameters "cmus"
-                         :follow #'fc--music-cmus-open)
+(defun fc--music-cmus-open (path)
+  (fc-cmus-open path))
 
-(defun fc--music-cmus-open (path _)
-  (fc-cmus-cmd "-C" (concat "filter " path))
-  (sit-for 1)
-  (fc-cmus-cmd "--next"))
+(defun fc--music-open (path _)
+  (fc--music-cmus-open path))
 
 (org-link-set-parameters "mybook"
                          :follow #'fc--mybook-open)

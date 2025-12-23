@@ -78,7 +78,9 @@ CMDS: list of command."
                            )))
 
 (defun fc-cmus-play (filter)
-  (message "cmus filter ===%s===" filter)
+  (when *fc-dev-mode*
+    (message "cmus filter: %s" filter))
+
   (fc-cmus-cmd "-C" (concat "filter " filter))
   (sit-for 1)
   (fc-cmus-cmd "--next")
@@ -98,24 +100,43 @@ CMDS: list of command."
         ((numberp o)
          (number-to-string o))))
 
+(defun fc-cmus-eval-expr (x)
+  (pcase x
+    (`(,c ,v)
+     (format "%s=%s"
+             (gethash c *fc-cmus-map*)
+             (fc-cmus-item-string v)))
+    (`(,c has ,v)
+     (format "%s=%s"
+             (gethash c *fc-cmus-map*)
+             (fc-cmus-item-string v :has t)))
+    ((and `(,c ,op ,v)
+          (guard (member op '(> >= < <= !=))))
+     (format "%s %s %s"
+             (gethash c *fc-cmus-map*)
+             (symbol-name op)
+             (fc-cmus-item-string v)))
+    ((and `(,n1 ,op1 n ,op2 ,n2)
+          (guard (and (member op1 '(> >= < <=))
+                      (member op2 '(> >= < <=)))))
+     (format "(%s %s %s & %s %s %s)"
+             (gethash 'n *fc-cmus-map*)
+             (pcase op1
+               ('< '>)
+               ('> '<)
+               ('<= '>=)
+               ('>= '<=))
+             n1
+             (gethash 'n *fc-cmus-map*)
+             (symbol-name op2)
+             n2
+             ))))
+
 (defun fc-cmus-open (path)
   (let ((def (car (read-from-string path))))
     (fc-cmus-play
      (s-join " & "
-             (cl-mapcar (lambda (x)
-                          (let ((name (gethash (car x) *fc-cmus-map*)))
-                            (pcase x
-                              (`(,c ,v)
-                               (format "%s=%s" name (fc-cmus-item-string (cl-second x))))
-                              (`(,c has ,v)
-                               (format "%s=%s" name (fc-cmus-item-string (cl-third x) :has t)))
-                              (`(,c > ,v)
-                               (format "%s>%s" name (fc-cmus-item-string (cl-third x))))
-                              (`(,c >= ,v)
-                               (format "%s>=%s" name (fc-cmus-item-string (cl-third x))))
-                              (`(,c <= ,v)
-                               (format "%s<=%s" name (fc-cmus-item-string (cl-third x)))))))
-                        def)))))
+             (cl-mapcar #'fc-cmus-eval-expr def)))))
 
 (provide 'fc-player-cmus)
 

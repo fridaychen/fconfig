@@ -109,6 +109,7 @@ TRACK: current track name."
 
   (defun fc-player--get-players ()
     (list
+     (fc-player-cmus :name "Cmus [app]")
      (fc-player-quodlibet :name "Quod Libet [app]")
      (fc-player-itunes :name "iTunes"))))
 

@@ -58,8 +58,8 @@
 
 (cl-defmethod fc-player--show-metadata ((x fc-player-quodlibet))
   (let* ((data (fc-exec-command-to-string
-                (oref x app)
-                "--print-playing" "<artist> \\| <album> \\| <title>")))
+                   (oref x app)
+                 "--print-playing" "<artist> \\| <album> \\| <title>")))
     (apply
      #'cl-call-next-method x
      (split-string data " | "))))
@@ -79,6 +79,57 @@ CMDS: list of command."
    (fc-text cmds :separator "\n")
    'utf-8
    *fc--quodlibet-control*))
+
+(defconst *fc-cmus-map* (fc-make-hash-table
+                         '(
+                           (a . "artist")
+                           (b . "album")
+                           (d . "disc")
+                           (g . "genre")
+                           (n . "track")
+                           (p . "composer")
+                           (t . "title")
+                           )))
+
+(defun fc-quodlibet-eval-expr (x)
+  (pcase x
+    (`(,c ,v)
+     (format "%s=/^%s$/"
+             (gethash c *fc-quodlibet-map*)
+             v))
+    (`(,c has ,v)
+     (format "%s=%s"
+             (gethash c *fc-quodlibet-map*)
+             v))
+    ((and `(,c ,op ,v)
+          (guard (member op '(> >= < <= !=))))
+     (format "%s %s %s"
+             (gethash c *fc-quodlibet-map*)
+             (symbol-name op)
+             v))
+    ((and `(,n1 ,op1 n ,op2 ,n2)
+          (guard (and (member op1 '(> >= < <=))
+                      (member op2 '(> >= < <=)))))
+     (format "(%s %s %s & %s %s %s)"
+             (gethash 'n *fc-quodlibet-map*)
+             (pcase op1
+               ('< '>)
+               ('> '<)
+               ('<= '>=)
+               ('>= '<=))
+             n1
+             (gethash 'n *fc-quodlibet-map*)
+             (symbol-name op2)
+             n2
+             ))))
+
+(defun fc-quodlibet-open (path)
+  (let ((def (car (read-from-string path))))
+    (fc-quodlibet-play
+     (concat "&("
+             (s-join ", "
+                     (cl-mapcar #'fc-quodlibet-eval-expr def))
+             ")"))))
 
 (provide 'fc-player-quodlibet)
 

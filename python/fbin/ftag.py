@@ -53,16 +53,33 @@ def split_artists(mt):
     if mt["%a"] is None:
         return
 
+    changed = False
     artists = []
+    composers = []
 
-    for x in mt["%a"]:
-        artists.extend(x.split(";"))
+    if mt["%a"]:
+        for x in mt["%a"]:
+            artists.extend(x.split(";"))
 
-    if artists != mt["%a"]:
-        mt["%a"] = artists
+        if artists != mt["%a"]:
+            log(f"split artists {mt["%a"]} to: {artists}")
 
-        log(f"split artists {mt["%a"]} to: {artists}")
+            mt["%a"] = artists
 
+            changed = True
+
+    if mt["%p"]:
+        for x in mt["%p"]:
+            composers.extend(x.split(";"))
+
+        if composers != mt["%p"]:
+            log(f"split composers {mt["%p"]} to: {composers}")
+
+            mt["%p"] = composers
+
+            changed = True
+
+    if changed:
         mt.save()
 
 

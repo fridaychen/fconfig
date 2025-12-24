@@ -37,11 +37,12 @@
   (oref x play-state))
 
 (cl-defmethod fc-player--get-volume ((x fc-player-cmus))
+  ;; (string-to-number (fc-cmus-cmd "-C" "format_print %{lvolume}")))
   (oref x volume))
 
 (cl-defmethod fc-player--set-volume ((x fc-player-cmus) vol)
   (oset x volume vol)
-  (fc-cmus-cmd "-C" "format_print %{lvolume}"))
+  (fc-cmus-cmd "-v" (concat (fc-string vol) "%")))
 
 (cl-defmethod fc-player--get-metadata ((x fc-player-cmus))
   (seq-mapn
@@ -75,6 +76,8 @@ CMDS: list of command."
                            (n . "tracknumber")
                            (p . "composer")
                            (t . "title")
+                           (y . "year")
+                           (A . "albumartist")
                            )))
 
 (defun fc-cmus-play (filter)
@@ -137,6 +140,8 @@ CMDS: list of command."
     (fc-cmus-play
      (s-join " & "
              (cl-mapcar #'fc-cmus-eval-expr def)))))
+
+(defconst *fc-player-cmus* (fc-player-cmus :name "cmus [app]"))
 
 (provide 'fc-player-cmus)
 

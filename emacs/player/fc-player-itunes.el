@@ -47,6 +47,8 @@
 (cl-defmethod fc-player--app ((x fc-player-itunes))
   (fc-exec-itune-cmd "activate"))
 
+(defconst *fc-player-itunes* (fc-player-itunes :name "iTunes"))
+
 (provide 'fc-player-itunes)
 
 ;; Local Variables:

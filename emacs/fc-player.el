@@ -93,7 +93,8 @@ TRACK: current track name."
     (require 'fc-player-mpris))
 
   (defun fc-player--get-players ()
-    (fc-concat nil
+    (fc-concat (list *fc-player-cmus*
+                     *fc-player-quodlibet*)
                (when *fc-enable-player*
                  (fc-player--get-mpris-players)))))
 
@@ -109,9 +110,9 @@ TRACK: current track name."
 
   (defun fc-player--get-players ()
     (list
-     (fc-player-cmus :name "Cmus [app]")
-     (fc-player-quodlibet :name "Quod Libet [app]")
-     (fc-player-itunes :name "iTunes"))))
+     *fc-player-cmus*
+     *fc-player-quodlibet*
+     *fc-player-itunes*)))
 
 (defun fc-player-user-select ()
   (setf *fc-player*

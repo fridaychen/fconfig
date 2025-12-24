@@ -131,6 +131,8 @@ CMDS: list of command."
                      (cl-mapcar #'fc-quodlibet-eval-expr def))
              ")"))))
 
+(defconst *fc-player-quodlibet* (fc-player-quodlibet :name "quod Libet [app]"))
+
 (provide 'fc-player-quodlibet)
 
 ;; Local Variables:

@@ -187,9 +187,7 @@
     (setf *fc-player* (fc-player-foobar :name "foobar")))
 
    (*is-mac*
-    (setf *fc-players* (list (fc-player-cmus :name "Cmus [app]")
-                             (fc-player-quodlibet :name "Quod Libet [app]"))
-          *fc-player* (car *fc-players*))))
+    (setf *fc-player* *fc-player-cmus*)))
 
   (when (fboundp #'fc-player-auto-select)
     (fc-idle-delay

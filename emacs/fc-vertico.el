@@ -60,8 +60,7 @@
 
 (fc-load 'consult
   :after (progn
-           (add-hook 'consult-after-jump-hook #'fc--show-recenter-block t)
-           (consult-preview-at-point-mode -1)))
+           (add-hook 'consult-after-jump-hook #'fc--show-recenter-block t)))
 
 (fc-load 'orderless
   :after (progn

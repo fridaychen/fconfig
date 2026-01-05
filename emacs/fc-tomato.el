@@ -104,6 +104,19 @@
           *fc--tomato-steps* (cdr *fc--tomato-steps*))
     (force-mode-line-update)))
 
+(cl-defun fc--job-timer (seconds text &optional banner)
+  (when banner
+    (fc-popup-info banner
+                   :title "Job"
+                   :timeout 2))
+
+  (fc-delay-task (lambda ()
+                   (fc-speak text)
+                   (fc-popup-info text
+                                  :title "Job"
+                                  :timeout 5))
+                 seconds))
+
 (provide 'fc-tomato)
 
 ;; Local Variables:

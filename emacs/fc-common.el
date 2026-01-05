@@ -100,6 +100,7 @@
                            (ef-melissa-dark . ef-themes)
                            leuven-dark
                            tango-dark
+                           modus-vivendi-tinted
                            (vs-dark . vs-dark-theme)
                            zenburn)
                           (light

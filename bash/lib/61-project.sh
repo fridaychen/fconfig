@@ -38,7 +38,7 @@ function proj-build {
 }
 
 function proj-root {
-    fc-locate-file-in-path ".TOP" ".top"
+    fc-locate-file-in-path ".TOP" ".top" ".cricket"
 }
 
 function proj-chtop {

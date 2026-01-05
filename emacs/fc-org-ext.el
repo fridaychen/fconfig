@@ -61,6 +61,13 @@
         (*is-mac*
          (fc-exec-command "previewtopage.sh" path arg))))
 
+(cl-defun fc--mybook-open-epub (path arg)
+  (cond (*is-linux*
+         (fc-exec-command "ebook-viewer" (format "--open-at=%s" arg) path))
+
+        (*is-mac*
+         (fc-exec-command "previewtopage.sh" path arg))))
+
 (cl-defun fc--mybook-open (link _)
   "Open file in mybook."
 
@@ -79,6 +86,10 @@
 
          ((and (equal ext "pdf") arg)
           (fc--mybook-open-pdf full-path arg)
+          (cl-return-from fc--mybook-open))
+
+         ((and (equal ext "epub") arg)
+          (fc--mybook-open-epub full-path arg)
           (cl-return-from fc--mybook-open))
 
          (t

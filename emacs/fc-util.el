@@ -205,7 +205,8 @@ BODY: body."
   `(lambda ()
      (interactive)
      (let ((_ret (progn ,@body)))
-       (message (if (and _ret (stringp _ret))
+       (message "%s"
+                (if (and _ret (stringp _ret))
                     (string-trim _ret)
                   "")))))
 

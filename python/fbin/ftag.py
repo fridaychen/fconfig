@@ -3,6 +3,7 @@ import os
 import sys
 import typing
 
+import fc
 from fcommon.easy_tag import EasyTag, easytag_argparser, easytag_getarg
 
 verbose = False
@@ -170,6 +171,9 @@ def main():
                 with open(y, "a") as f:
                     f.write("refresh\n")
                     break
+        # auto refresh cmus
+        fc.run("cmus-remote", ["-C", f"add {fc.get_music_home()}"])
+
     else:
         process(dump_info)
 

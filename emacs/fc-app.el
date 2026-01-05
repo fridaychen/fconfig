@@ -1171,6 +1171,9 @@ REST: commands."
      ("string2hex"              . fc-c-string2hex)
      ("tabify"                  . ,(fc-manual (tabify (point-min)
                                                       (point-max))))
+     ("tea steep time"          . ,(fc-manual (fc--job-timer 120
+                                                             "Tea is ready!"
+                                                             "Tea timer started!")))
      ("toggle visual line move" . ,(fc-manual (fc-toggle-var line-move-visual)))
      ("unix2dos"		. unix2dos)
      ("untabify"                . ,(fc-manual (untabify (point-min)
@@ -1318,10 +1321,32 @@ END: end of region."
   "Select sound sink."
   (let ((sink (fc-select "Select sound sink"
                   (split-string
-                   (fc-exec-command-to-string "fc-sound-sink")
+                   (shell-command-to-string "pactl list short sinks | awk '{print $2}'")
                    "\n" t))))
     (when sink
       (fc-exec-command "pactl" "set-default-sink" sink))))
+
+(defun fc-app-get-power-info ()
+  "Return plist of battery info."
+  (let* ((s (shell-command-to-string "upower -d | grep 'model:\\|percentage:' | awk '{$1=\"\"; print}'"))
+         (l (string-split s "\n"))
+         (result nil)
+         )
+    (fc-each l
+      (setq it (string-trim it))
+
+      (cond
+       ((or (null it) (string= it "")))
+
+       ((string-suffix-p "%" it)
+        (unless (string-suffix-p "%" (car result))
+          (push it result)))
+
+       (t
+        (message "push ==%s==" it)
+        (push it result))))
+
+    (reverse result)))
 
 ;; app portal
 (defun fc-app-portal ()

@@ -100,6 +100,13 @@ INFO-SEQ: list of infos."
                             collect (format "[%d] %s" j (process-name i)))
                    ", "))))
 
+(defun fc-info--battery ()
+  "Return list of battery info."
+  `(("Battery"
+     ,(string-join (cl-loop for (key value) on (fc-app-get-power-info) by #'cddr
+                            collect (format "%s=[%s]" key value))
+                   ", "))))
+
 (add-to-list '*fc-info-buffer* #'fc-info--file t)
 (add-to-list '*fc-info-buffer* #'fc-info--buffer t)
 (add-to-list '*fc-info-buffer* #'fc-info--vc t)
@@ -109,6 +116,9 @@ INFO-SEQ: list of infos."
                  #'fc-info--sys-gui
                #'fc-info--sys-txt)
              t)
+
+(when *is-linux*
+  (add-to-list '*fc-info-system* #'fc-info--battery t))
 (add-to-list '*fc-info-system* #'fc-info--process t)
 
 (provide 'fc-info)

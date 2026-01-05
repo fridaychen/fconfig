@@ -117,7 +117,7 @@ INFO-SEQ: list of infos."
                #'fc-info--sys-txt)
              t)
 
-(when *is-linux*
+(when (or *is-linux* *is-mac*)
   (add-to-list '*fc-info-system* #'fc-info--battery t))
 (add-to-list '*fc-info-system* #'fc-info--process t)
 

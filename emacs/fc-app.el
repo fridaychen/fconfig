@@ -1326,27 +1326,36 @@ END: end of region."
     (when sink
       (fc-exec-command "pactl" "set-default-sink" sink))))
 
-(defun fc-app-get-power-info ()
-  "Return plist of battery info."
-  (let* ((s (shell-command-to-string "upower -d | grep 'model:\\|percentage:' | awk '{$1=\"\"; print}'"))
-         (l (string-split s "\n"))
-         (result nil)
-         )
-    (fc-each l
-      (setq it (string-trim it))
+(when *is-linux*
+  (defun fc-app-get-power-info ()
+    "Return plist of battery info."
+    (let* ((s (shell-command-to-string "upower -d | grep 'model:\\|percentage:' | awk '{$1=\"\"; print}'"))
+           (l (string-split s "\n"))
+           (result nil)
+           )
+      (fc-each l
+        (setq it (string-trim it))
 
-      (cond
-       ((or (null it) (string= it "")))
+        (cond
+         ((or (null it) (string= it "")))
 
-       ((string-suffix-p "%" it)
-        (unless (string-suffix-p "%" (car result))
-          (push it result)))
+         ((string-suffix-p "%" it)
+          (unless (string-suffix-p "%" (car result))
+            (push it result)))
 
-       (t
-        (message "push ==%s==" it)
-        (push it result))))
+         (t
+          (message "push ==%s==" it)
+          (push it result))))
 
-    (reverse result)))
+      (reverse result))))
+
+(when *is-mac*
+  (defun fc-app-get-power-info ()
+    "Return plist of battery info."
+    (let* ((s (shell-command-to-string "pmset -g accps | sed 1,2d  | awk -F '[();-]' '{print $2, \"|\", $4}'")))
+      (cl-loop for (dev percent) on (string-split (string-trim s) (rx (or "\n" "|"))) by #'cddr
+               collect (string-trim dev)
+               collect (string-trim percent)))))
 
 ;; app portal
 (defun fc-app-portal ()

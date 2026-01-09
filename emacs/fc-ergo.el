@@ -1446,6 +1446,9 @@ STEP: pixels."
              (fboundp #'fc-player-auto-select))
     (fc-player-auto-select))
 
+  (unless *fc-player*
+    (fc-player-user-select))
+
   (if *fc-player*
       (fc-funcall fc--player-func)
     (message "Player not found")))

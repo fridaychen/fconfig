@@ -1340,11 +1340,10 @@ END: end of region."
          ((or (null it) (string= it "")))
 
          ((string-suffix-p "%" it)
-          (unless (string-suffix-p "%" (car result))
+          (unless (or (null result) (string-suffix-p "%" (car result)))
             (push it result)))
 
          (t
-          (message "push ==%s==" it)
           (push it result))))
 
       (reverse result))))

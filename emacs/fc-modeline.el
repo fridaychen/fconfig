@@ -188,6 +188,7 @@
   (when (and (fc-main-thread-p)
              vc-mode)
     (concat
+     "❰"
      (pcase (vc-state buffer-file-name)
        ('edited *fc--vc-modified-mark*)
        ((or 'needs-merge 'conflict) *fc--vc-merge-mark*)
@@ -201,7 +202,8 @@
                                                            "master")))))
          (if (string-search "/" branch)
              (concat "/" (car (last (string-split branch "/"))))
-           branch))))))
+           branch)))
+     "❱")))
 
 (defun fc--line-col-seg ()
   "Line column segment."

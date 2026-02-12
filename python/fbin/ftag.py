@@ -172,7 +172,7 @@ def main():
                     f.write("refresh\n")
                     break
         # auto refresh cmus
-        fc.run("cmus-remote", ["-C", f"add {fc.get_music_home()}"])
+        fc.run("cmus-remote", ["cmus-remote", "-C", f"add {fc.get_music_home()}"])
 
     else:
         process(dump_info)

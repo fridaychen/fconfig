@@ -3,4 +3,4 @@ isort
 black
 flake8
 pyproject-flake8
-python-lsp-server
+basedpyright

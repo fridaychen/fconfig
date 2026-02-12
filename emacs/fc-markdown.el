@@ -32,8 +32,9 @@
 
 (fc-load 'markdown-mode
   :after (progn
-           (fc-add-mode-name 'markdown-mode
-             (fc-visible (fc-nerd-icon ?\xf48a :foreground "red3") "Ⓜ️"))
+           (let ((icon (fc-visible (fc-nerd-icon ?\xf48a :foreground "red3") "Ⓜ️")))
+             (fc-add-mode-name 'markdown-mode icon)
+             (fc-add-mode-name 'markdown-ts-mode icon))
 
            (setf markdown-hr-strings
                  '("-----"))

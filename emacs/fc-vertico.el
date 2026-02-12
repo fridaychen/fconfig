@@ -71,7 +71,7 @@
 (defalias 'fc-bookmark 'fc-vertico-bookmark)
 (defalias 'fc-recentf 'recentf-open)
 (defalias 'fc-buffers-list 'consult-buffer)
-(defalias 'fc-imenu 'imenu)
+(defalias 'fc-imenu 'consult-imenu)
 (defalias 'fc-yank-pop 'yank-pop)
 (defalias 'fc-find-files 'find-file)
 (defalias 'fc-M-x 'execute-extended-command)

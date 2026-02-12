@@ -109,7 +109,8 @@ REST: include :package :local :enable :bind :before :after :autoload :run"
            (add-to-list 'package-archives
                         '("melpa" . "http://melpa.org/packages/"))
 
-           (setf package-enable-at-startup nil)
+           (setf package-enable-at-startup nil
+                 package-install-upgrade-built-in t)
            (package-initialize)
 
            (unless package-archive-contents

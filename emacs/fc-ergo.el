@@ -1156,7 +1156,12 @@ KEYMAP: keymap to run."
 
      ("i" insert-file)
      ("j" insert-char)
-     ("k" fc-flycheck)
+     ("k" ,(fc-manual
+            (cond
+             (flymake-mode
+              (fc-funcall #'fc-flymake))
+             (flycheck-mode
+              (fc-funcall #'fc-flycheck)))))
      ("l" imenu-list-smart-toggle)
 
      ("m" fc-select-multi-buffer-func)

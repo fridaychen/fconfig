@@ -77,6 +77,7 @@
 (defalias 'fc-M-x 'execute-extended-command)
 (defalias 'fc-outline 'consult-outline)
 (defalias 'fc-flycheck 'flycheck-list-errors)
+(defalias 'fc-flymake 'flymake-show-buffer-diagnostics)
 
 (defun fc-vertico--delete-bookmark ()
   "Delete bookmark."

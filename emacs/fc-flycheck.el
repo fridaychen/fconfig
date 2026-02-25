@@ -19,6 +19,15 @@
                                    #'flycheck-next-error
                                    #'flycheck-previous-error)))
 
+(fc-load 'flymake
+  :after (progn
+           (defun flymake--diagnostics-buffer-name ()
+             "*Flymake errors*")
+
+           (fc-add-next-error-mode 'flymake-diagnostics-buffer-mode
+                                   #'flymake-goto-next-error
+                                   #'flymake-goto-prev-error)))
+
 (provide 'fc-flycheck)
 
 ;; Local Variables:

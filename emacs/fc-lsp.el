@@ -60,6 +60,10 @@
                         :inherit 'font-lock-function-call-face
                         :extend t
                         :overline nil)
+           (fc-set-face 'eglot-semantic-method nil
+                        :inherit 'font-lock-function-call-face
+                        :extend t
+                        :overline nil)
            (fc-set-face 'eglot-semantic-operator nil
                         :inherit 'font-lock-operator-face
                         :extend t
@@ -68,7 +72,10 @@
                         :overline nil)
 
            (defun fc--setup-eglot ()
-             )
+             (let ((buf (current-buffer)))
+               (fc-delay
+                 (with-current-buffer buf
+                   (flymake-mode 1)))))
 
            (add-hook 'eglot-managed-mode-hook #'fc--setup-eglot)
 

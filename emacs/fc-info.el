@@ -107,9 +107,16 @@ INFO-SEQ: list of infos."
                             collect (format "%s=[%s]" key value))
                    ", "))))
 
+(defun fc-info--eglot ()
+  "Return current eglot info."
+  (when-let* ((server (eglot-current-server)))
+    `(("Eglot"
+       ,(string-join (process-command (jsonrpc--process server)) " ")))))
+
 (add-to-list '*fc-info-buffer* #'fc-info--file t)
 (add-to-list '*fc-info-buffer* #'fc-info--buffer t)
 (add-to-list '*fc-info-buffer* #'fc-info--vc t)
+(add-to-list '*fc-info-buffer* #'fc-info--eglot t)
 
 (add-to-list '*fc-info-system*
              (if *is-gui*

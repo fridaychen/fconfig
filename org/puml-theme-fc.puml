@@ -198,8 +198,13 @@ skinparam actor {
 }
 
 skinparam class {
+    arrowThickness  2
+
     BackgroundColor $BGCOLOR
     ArrowColor      $LINECOLOR
     BorderColor     $LINECOLOR
-    arrowThickness  2
+
+    BackgroundColor<<interface>> $FOCUS
+
+    BackgroundColor<<abstract>> #Implementation
 }

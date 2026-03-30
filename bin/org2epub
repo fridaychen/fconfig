@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+
+import functools
+import re
+import sys
+from pathlib import Path
+
+import fc
+
+
+def get_title(file: Path) -> str:
+    with file.open("r") as f:
+        for x in range(20):
+            line = f.readline()
+
+            m = re.search("^#\\+title: (.+)", line)
+
+            if m is not None:
+                return m.group(1).strip()
+
+    raise RuntimeError("Cannot fild title!")
+
+
+@functools.cache
+def get_cover(file: Path) -> Path:
+    title = get_title(file)
+
+    for x in ("webp", "jpg"):
+        for y in (file.cwd() / f"{title}.{x}", file.cwd() / "img" / f"{title}.{x}"):
+            print(f"test {y}")
+            if y.is_file():
+                print(f"return {y}")
+                return y
+
+    return None
+
+
+def convert_to_epub(file: Path):
+    if not file.is_file():
+        return
+
+    args = [
+        "pandoc",
+        "--to",
+        "epub3",
+        "--mathml",
+        "-o",
+        str(file.cwd() / f"{get_title(file)}.epub"),
+        "--epub-cover-image",
+        str(get_cover(file)),
+        str(file),
+    ]
+
+    fc.run("pandoc", args)
+
+
+def main():
+    for x in sys.argv[1:]:
+        convert_to_epub(Path(x))
+
+
+if __name__ == "__main__":
+    main()

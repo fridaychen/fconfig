@@ -113,4 +113,5 @@ hide empty description
 
 !procedure $init_class()
 skinparam groupInheritance 2
+hide empty members
 !endprocedure

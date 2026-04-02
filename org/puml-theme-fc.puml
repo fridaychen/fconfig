@@ -202,9 +202,11 @@ skinparam class {
 
     BackgroundColor $BGCOLOR
     ArrowColor      $LINECOLOR
-    BorderColor     $LINECOLOR
+    BorderColor     #tomato
 
     BackgroundColor<<interface>> $FOCUS
+    BorderColor<<interface>> DarkGreen
 
     BackgroundColor<<abstract>> #Implementation
+    BorderColor<<abstract>> #tomato
 }

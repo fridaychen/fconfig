@@ -57,6 +57,7 @@
                             (special-mode . "📊")
                             (text-mode . "📝")
                             (typescript-ts-mode . "👕")
+                            (toml-ts-mode . "⚙️")
                             (fc-ttl-mode . "🖥️")
                             (makefile-gmake-mode . "🍄")
                             (messages-buffer-mode . "💬")

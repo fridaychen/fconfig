@@ -11,6 +11,7 @@
   :after (progn
            (setf flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list
                  flycheck-emacs-lisp-initialize-packages 'auto
+                 flycheck-global-modes '(not python-ts-mode)
                  flycheck-mode-line-prefix "🚧"
                  flycheck-standard-error-navigation t)
            (setq-default flycheck-emacs-lisp-load-path 'inherit)

@@ -27,9 +27,8 @@ def get_cover(file: Path) -> Path:
 
     for x in ("webp", "jpg"):
         for y in (file.cwd() / f"{title}.{x}", file.cwd() / "img" / f"{title}.{x}"):
-            print(f"test {y}")
             if y.is_file():
-                print(f"return {y}")
+                print(f"\tcover: {y}")
                 return y
 
     return None
@@ -56,7 +55,9 @@ def convert_to_epub(file: Path):
 
 def main():
     for x in sys.argv[1:]:
-        convert_to_epub(Path(x))
+        if (p := Path(x)) and p.is_file() and p.suffix == ".org":
+            print(f"Convert {p} ...")
+            convert_to_epub(p)
 
 
 if __name__ == "__main__":

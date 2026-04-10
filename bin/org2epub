@@ -3,40 +3,68 @@
 import functools
 import re
 import sys
+import typing as t
 from pathlib import Path
 
 import fc
 
 
-def get_title(file: Path) -> str:
+class Metadata(t.NamedTuple):
+    title: str
+    author: str
+    date: str
+
+
+def get_metadata(file: Path) -> Metadata:
+    title: str = ""
+    author: str = ""
+    date: str = ""
+
     with file.open("r") as f:
-        for x in range(20):
+        for x in range(30):
             line = f.readline()
 
-            m = re.search("^#\\+title: (.+)", line)
-
+            m = re.search("^#\\+title: (.+)", line, re.IGNORECASE)
             if m is not None:
-                return m.group(1).strip()
+                title = m.group(1).strip()
 
-    raise RuntimeError("Cannot fild title!")
+            m = re.search("^#\\+author: (.+)", line, re.IGNORECASE)
+            if m is not None:
+                author = m.group(1).strip()
+
+            m = re.search("^#\\+date: (.+)", line, re.IGNORECASE)
+            if m is not None:
+                date = m.group(1).strip()
+
+    return Metadata(title, author, date)
 
 
 @functools.cache
 def get_cover(file: Path) -> Path:
-    title = get_title(file)
+    meta = get_metadata(file)
 
     for x in ("webp", "jpg"):
-        for y in (file.cwd() / f"{title}.{x}", file.cwd() / "img" / f"{title}.{x}"):
+        for y in (
+            file.cwd() / f"{meta.title}.{x}",
+            file.cwd() / "img" / f"{meta.title}.{x}",
+        ):
             if y.is_file():
-                print(f"\tcover: {y}")
+                print(f"{"Cover":>10}: {y}")
                 return y
 
     return None
 
 
 def convert_to_epub(file: Path):
-    if not file.is_file():
+    meta = get_metadata(file)
+
+    if meta.title == "" or meta.author == "" or meta.date == "":
+        print("\tMetadata is incorrect, ignore this.")
         return
+
+    print(
+        f"{"Title":>10}: {meta.title}\n{"Author":>10}: {meta.author}\n{"Date":>10}: {meta.date}"
+    )
 
     args = [
         "pandoc",
@@ -44,7 +72,7 @@ def convert_to_epub(file: Path):
         "epub3",
         "--mathml",
         "-o",
-        str(file.cwd() / f"{get_title(file)}.epub"),
+        str(file.cwd() / f"{get_metadata(file).title}.epub"),
         "--epub-cover-image",
         str(get_cover(file)),
         str(file),

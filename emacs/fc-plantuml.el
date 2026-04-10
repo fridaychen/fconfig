@@ -41,6 +41,7 @@
 
            (cl-defun fc--plantuml-setup ()
              (setq indent-tabs-mode nil
+                   completion-at-point-functions nil
                    plantuml-indent-level 4)
 
              (font-lock-add-keywords

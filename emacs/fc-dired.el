@@ -21,7 +21,7 @@
                  dired-omit-files (rx (or (and bol (+ ?\.) (+ (not ?\.)))
                                           (and ?\~ eol)))
                  dired-omit-verbose nil
-                 dired-compress-file-default-suffix ".bz2"
+                 dired-compress-file-default-suffix ".zst"
                  dired-listing-switches "-aBhl --group-directories-first -v")
 
            (when *is-mac*

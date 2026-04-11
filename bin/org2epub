@@ -3,6 +3,7 @@
 import functools
 import re
 import sys
+import tempfile
 import typing as t
 from pathlib import Path
 
@@ -11,12 +12,14 @@ import fc
 
 class Metadata(t.NamedTuple):
     title: str
+    subtitle: str
     author: str
     date: str
 
 
 def get_metadata(file: Path) -> Metadata:
     title: str = ""
+    subtitle: str = ""
     author: str = ""
     date: str = ""
 
@@ -26,17 +29,43 @@ def get_metadata(file: Path) -> Metadata:
 
             m = re.search("^#\\+title: (.+)", line, re.IGNORECASE)
             if m is not None:
-                title = m.group(1).strip()
+                title += m.group(1).strip()
+
+            m = re.search("^#\\+subtitle: (.+)", line, re.IGNORECASE)
+            if m is not None:
+                subtitle += m.group(1).strip()
 
             m = re.search("^#\\+author: (.+)", line, re.IGNORECASE)
             if m is not None:
-                author = m.group(1).strip()
+                author += m.group(1).strip()
 
             m = re.search("^#\\+date: (.+)", line, re.IGNORECASE)
             if m is not None:
                 date = m.group(1).strip()
 
-    return Metadata(title, author, date)
+    return Metadata(title, subtitle, author, date)
+
+
+def gen_cover(file: Path) -> Path:
+    meta = get_metadata(file)
+
+    result = Path(tempfile.gettempdir()) / (file.stem + ".png")
+
+    args = [
+        "fc-book-cover.py",
+        "-t",
+        meta.title,
+        "-s",
+        meta.subtitle,
+        "-a",
+        meta.author,
+        "-o",
+        str(result),
+    ]
+
+    fc.run("fc-book-cover.py", args)
+
+    return result
 
 
 @functools.cache
@@ -49,10 +78,9 @@ def get_cover(file: Path) -> Path:
             file.cwd() / "img" / f"{meta.title}.{x}",
         ):
             if y.is_file():
-                print(f"{"Cover":>10}: {y}")
                 return y
 
-    return None
+    return gen_cover(file)
 
 
 def convert_to_epub(file: Path):
@@ -62,8 +90,13 @@ def convert_to_epub(file: Path):
         print("\tMetadata is incorrect, ignore this.")
         return
 
+    cover = get_cover(file)
+
     print(
-        f"{"Title":>10}: {meta.title}\n{"Author":>10}: {meta.author}\n{"Date":>10}: {meta.date}"
+        f"{"Title":>10}: {meta.title}\n"
+        + f"{"Author":>10}: {meta.author}\n"
+        + f"{"Date":>10}: {meta.date}\n"
+        + f"{"Cover":>10}: {cover}"
     )
 
     args = [
@@ -72,9 +105,9 @@ def convert_to_epub(file: Path):
         "epub3",
         "--mathml",
         "-o",
-        str(file.cwd() / f"{get_metadata(file).title}.epub"),
+        str(file.cwd() / f"{meta.title}.epub"),
         "--epub-cover-image",
-        str(get_cover(file)),
+        str(cover),
         str(file),
     ]
 

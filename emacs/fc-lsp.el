@@ -71,6 +71,10 @@
            (fc-set-face 'eglot-semantic-readonly nil
                         :overline nil)
 
+           (fc-load 'eglot-booster
+             :raw "https://github.com/jdtsmith/eglot-booster.git"
+             :after (eglot-booster-mode 1))
+
            (defun fc--setup-eglot ()
              (let ((buf (current-buffer)))
                (fc-delay

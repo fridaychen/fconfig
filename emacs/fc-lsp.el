@@ -72,8 +72,12 @@
                         :overline nil)
 
            (fc-load 'eglot-booster
+             :enable (executable-find "emacs-lsp-booster")
              :raw "https://github.com/jdtsmith/eglot-booster.git"
-             :after (eglot-booster-mode 1))
+             :after (progn
+                      (setf eglot-booster-io-only t)
+
+                      (eglot-booster-mode 1)))
 
            (defun fc--setup-eglot ()
              (let ((buf (current-buffer)))

@@ -127,6 +127,8 @@
       *fc-font-mode-line-delta* 0)
 
 (defun fc--beautify-user-func ()
+  (fc-set-face 'highlight nil :underline 'unspecified)
+
   (pcase *fc-current-theme*
     ('ayu-grey
      (fc-set-face 'org-verse nil

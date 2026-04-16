@@ -146,7 +146,9 @@
                                font-lock-type-face
                                font-lock-constant-face
                                font-lock-property-name-face
-                               font-lock-variable-name-face)
+                               font-lock-variable-name-face
+
+                               highlight)
                              level-2)
 
     (fc--do-enhance-contrast '(font-lock-doc-face
@@ -180,6 +182,7 @@
   (fc-set-face 'vertico-current nil
                :foreground 'unspecified
                :background 'unspecified
+               :underline 'unspecified
                :inherit 'highlight
                :extend t)
 

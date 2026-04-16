@@ -6,10 +6,14 @@ fc-add-path ~/.local/bin/ \
     ${FCHOME}/bin \
     /usr/local/go/bin \
     ${HOME}/go/bin \
+    ~/.cargo/bin \
     /opt/homebrew/bin
 
 case $(uname) in
     Darwin)
+        export LANG="en_US.UTF-8"
+        export LC_ALL="en_US.UTF-8"
+
         fc-add-path /Applications/Emacs.app/Contents/MacOS/bin /Applications/Emacs.app/Contents/MacOS
         ;;
 

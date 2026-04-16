@@ -1351,10 +1351,11 @@ END: end of region."
 (when *is-mac*
   (defun fc-app-get-power-info ()
     "Return plist of battery info."
-    (let* ((s (shell-command-to-string "pmset -g accps | sed 1,2d  | awk -F '[();-]' '{print $2, \"|\", $4}'")))
-      (cl-loop for (dev percent) on (string-split (string-trim s) (rx (or "\n" "|"))) by #'cddr
-               collect (string-trim dev)
-               collect (string-trim percent)))))
+    (when-let* ((s (shell-command-to-string "pmset -g accps | sed 1,2d  | awk -F '[();-]' '{print $2, \"|\", $4}'")))
+      (when (not (string= s ""))
+        (cl-loop for (dev percent) on (string-split (string-trim s) (rx (or "\n" "|"))) by #'cddr
+                 collect (string-trim dev)
+                 collect (string-trim percent))))))
 
 ;; app portal
 (defun fc-app-portal ()

@@ -1150,7 +1150,7 @@ KEYMAP: keymap to run."
      ("d" fc-dev-mode-toggle)
      ("e" ,(fc-cond-key :normal #'rotate-windows
                         :prefix #'rotate-windows-back))
-     ("f" ,(fc-cond-key :normal 'fc-find-files
+     ("f" ,(fc-cond-key :normal #'fc-find-files
                         :proj (fc-manual (fc-proj-find-file default-directory))))
      ("h" fc-toggle-hex-mode)
 

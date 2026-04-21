@@ -49,7 +49,8 @@
            (message "Enabled eglot")
 
            (setf *fc-lsp-enable* nil
-                 *fc-lsp-eglot-enable* t)
+                 *fc-lsp-eglot-enable* t
+                 eglot-max-file-watches nil)
 
            (setf eglot-ignored-server-capabilities '(:documentFormattingProvider
                                                      :documentRangeFormattingProvider

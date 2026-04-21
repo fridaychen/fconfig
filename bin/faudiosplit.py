@@ -16,16 +16,13 @@ def split_media_file(filename, offset_filename, numbering):
 
 
 def usage():
-    print(
-        """%s:
+    print("""%s:
     -d duration
     -e end
     -o output directory
     -O output filename
     -s start
-"""
-        % os.path.basename(sys.argv[0])
-    )
+""" % os.path.basename(sys.argv[0]))
     sys.exit(1)
 
 

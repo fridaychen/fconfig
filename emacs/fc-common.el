@@ -158,7 +158,8 @@
                   :foreground "gray90"
                   :background "gray15")
      (fc-set-face 'vertico-current nil
-                  :background "cornsilk4")
+                  :weight 'bold
+                  :background "maroon")
      (fc-set-face 'hl-line nil
                   :foreground 'unspecified
                   :background "#023002")

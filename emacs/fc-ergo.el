@@ -952,7 +952,7 @@ KEYMAP: keymap to run."
      ("f" ,(fc-cond-key :normal (fc-manual (fc-select-buffer
                                             "Favorite buffer"
                                             (fc--buffer-pred :no-current t
-                                                             :var *fc-favorite-buffer*)))
+                                                             :var '*fc-favorite-buffer*)))
                         :prefix (fc-manual
                                  (fc-toggle-var
                                   *fc-favorite-buffer*

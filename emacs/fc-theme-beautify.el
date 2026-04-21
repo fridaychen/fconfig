@@ -148,6 +148,7 @@
                                font-lock-property-name-face
                                font-lock-variable-name-face
 
+                               vertico-current
                                highlight)
                              level-2)
 
@@ -181,10 +182,9 @@
 (defun fc-beautify-theme-before ()
   (fc-set-face 'vertico-current nil
                :foreground 'unspecified
-               :background 'unspecified
-               :underline 'unspecified
-               :inherit 'highlight
-               :extend t)
+               :background "#4b1818"
+               :inherit 'unspecified
+               :underline 'unspecified)
 
   (fc-set-faces '(hl-line
                   font-lock-keyword-face

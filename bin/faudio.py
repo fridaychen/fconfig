@@ -10,13 +10,10 @@ verbose = False
 
 
 def usage():
-    print(
-        """%s:
+    print("""%s:
     -m merge
     -o output
-    """
-        % os.path.basename(sys.argv[0])
-    )
+    """ % os.path.basename(sys.argv[0]))
     sys.exit(1)
 
 

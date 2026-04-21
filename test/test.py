@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
+import math as m
 import os
 import unittest
 
-import matplotlib.pyplot as plt
-
 import fmath.plot as fp
 import fmath.signal as fs
-
+import matplotlib.pyplot as plt
 import numpy as np
-
-import math as m
 
 
 class TestFMath(unittest.TestCase):
@@ -29,12 +26,8 @@ class TestFMath(unittest.TestCase):
         )
 
         self.assertTrue(np.array_equal(years, np.array(["2010", "2011"])))
-        self.assertTrue(
-            np.array_equal(cities, np.array(["Beijing", "Shenyang"]))
-        )
-        self.assertTrue(
-            np.array_equal(populations, np.array([[100, 102], [90, 94]]))
-        )
+        self.assertTrue(np.array_equal(cities, np.array(["Beijing", "Shenyang"])))
+        self.assertTrue(np.array_equal(populations, np.array([[100, 102], [90, 94]])))
 
     def test_get_data_2(self):
         table = [
@@ -69,9 +62,9 @@ class TestFMath(unittest.TestCase):
             [
                 [
                     lambda f: f.pie(["foo000", "bar"], [12, 34]),
-                    lambda f: f.plot(
-                        [2, 2, 3, 4], [1, 4, 2, 3], label="hello"
-                    ).axline((0.3, 0.2), slope=3),
+                    lambda f: f.plot([2, 2, 3, 4], [1, 4, 2, 3], label="hello").axline(
+                        (0.3, 0.2), slope=3
+                    ),
                 ]
             ],
             sub=(1, 2),
@@ -107,9 +100,9 @@ class TestFMath(unittest.TestCase):
                     lambda f: f.plot([1, 2, 3, 4], [1, 4, 2, 3], label="hello")
                     .plot([1, 2, 3, 4], [2, 5, 2, 1], label="world")
                     .label("[X]", "[Y]"),
-                    lambda f: f.plot(
-                        [1, 2, 3, 4], [1, 4, 2, 3], label="hello"
-                    ).plot([1, 2, 3, 4], [2, 5, 2, 1], label="world"),
+                    lambda f: f.plot([1, 2, 3, 4], [1, 4, 2, 3], label="hello").plot(
+                        [1, 2, 3, 4], [2, 5, 2, 1], label="world"
+                    ),
                 ],
                 [
                     lambda f: f.plotf(np.arange(0, 6.28, 0.1), m.cos),
@@ -141,16 +134,8 @@ class TestFMath(unittest.TestCase):
             "output/test_single_sinewave.png",
             [
                 [lambda f: f.plot(x, y1)],
-                [
-                    lambda f: f.stem(range(len(y2)), np.abs(y2)).set_xlim(
-                        590, 610
-                    )
-                ],
-                [
-                    lambda f: f.stem(range(len(y2)), np.abs(y2)).set_xlim(
-                        590, 610
-                    )
-                ],
+                [lambda f: f.stem(range(len(y2)), np.abs(y2)).set_xlim(590, 610)],
+                [lambda f: f.stem(range(len(y2)), np.abs(y2)).set_xlim(590, 610)],
                 [lambda f: f.stem(range(len(y2.real)), np.abs(y2.real))],
                 [lambda f: f.stem(range(len(y2.imag)), np.abs(y2.imag))],
             ],
@@ -169,9 +154,7 @@ class TestFMath(unittest.TestCase):
 
         fp.easy_plot(
             "output/test_single_3d.png",
-            lambda f: f.plot3d(x, y, z0, label="hello").plot3d(
-                x, y, z1, label="world"
-            ),
+            lambda f: f.plot3d(x, y, z0, label="hello").plot3d(x, y, z1, label="world"),
             title="3D",
             enable_3d=True,
         )

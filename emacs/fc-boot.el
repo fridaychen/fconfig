@@ -92,12 +92,10 @@
   :local t
   :after (fc-add-hook-func '*fc-after-theme-hook* #'fc--setup-line-spacing))
 
-(fc-ergo-load-theme)
-
-(pcase *fc-completion*
-  ('helm (fc-require 'fc-helm t))
-  ('vertico (fc-require 'fc-vertico t))
-  ('ivy (fc-require 'fc-ivy t)))
+(let ((pkg (intern (concat "fc-" (symbol-name *fc-completion*)))))
+  (fc-require pkg t)
+  (with-eval-after-load pkg
+    (fc-ergo-load-theme)))
 
 (fc-load 'ido
   :local t

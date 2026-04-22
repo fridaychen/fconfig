@@ -164,7 +164,7 @@
                   :foreground 'unspecified
                   :background "#023002")
      (fc-set-face 'highlight nil
-                  :foreground 'unspecified
+                  :foreground "black"
                   :background "DarkSeaGreen"))
 
     ('zenburn

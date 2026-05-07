@@ -31,7 +31,8 @@ function proj-build {
 
     local ret=$?
 
-    fj-done "great" "oops"
+    fj-fast-done
+    # fj-done "great" "oops"
     cd "$old_dir"
 
     return $ret

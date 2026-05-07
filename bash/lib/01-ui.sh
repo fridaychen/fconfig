@@ -58,6 +58,14 @@ function fj-done {
     fi
 }
 
+function fj-fast-done {
+    if [[ $? -eq 0 ]]; then
+        mpv --really-quiet --no-video ~/fconfig/extra/sound/excited.mp3
+    else
+        mpv --really-quiet --no-video ~/fconfig/extra/sound/worried.mp3
+    fi
+}
+
 function fc-user-select-with-select() {
     local prompt="$1 : "
     shift 1

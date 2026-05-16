@@ -51,18 +51,18 @@ function fj-speak {
 }
 
 function fj-done {
-    if [[ $? -eq 0 ]]; then
-        fj-speak ${1:-great}
+    if [[ $1 -eq 0 ]]; then
+        fj-speak ${2:-great}
     else
-        fj-speak ${2:-oops}
+        fj-speak ${3:-oops}
     fi
 }
 
 function fj-fast-done {
-    if [[ $? -eq 0 ]]; then
-        mpv --really-quiet --no-video ~/fconfig/extra/sound/excited.mp3
+    if [[ $1 -eq 0 ]]; then
+        mpv --really-quiet --no-video ${FCHOME}/extra/sound/excited.mp3
     else
-        mpv --really-quiet --no-video ~/fconfig/extra/sound/worried.mp3
+        mpv --really-quiet --no-video ${FCHOME}/extra/sound/worried.mp3
     fi
 }
 

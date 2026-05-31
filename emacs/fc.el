@@ -35,6 +35,7 @@
 (defvaralias '*has-battery* '*is-laptop*)
 
 (defvar *fc-boot* t)
+(defvar *fc-boot-delay* 0.01)
 (defvar *fc-restart* nil)
 (defvar *fc-lightweight* nil)
 (defvar *fc-enable-sound* (if *is-unix* t nil))
@@ -100,7 +101,7 @@
      (fc-require 'fc-boot))
    ;; enable server mode
    (server-mode 1))
- 0.01)
+ *fc-boot-delay*)
 
 (provide 'fc)
 

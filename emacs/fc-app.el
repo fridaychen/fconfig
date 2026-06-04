@@ -1174,6 +1174,9 @@ REST: commands."
      ("tea steep time"          . ,(fc-manual (fc--job-timer 120
                                                              "Tea is ready!"
                                                              "Tea timer started!")))
+     ("sport interval"          . ,(fc-manual (fc--job-timer 90
+                                                             "Go go go!"
+                                                             "Sport interval started")))
      ("toggle visual line move" . ,(fc-manual (fc-toggle-var line-move-visual)))
      ("unix2dos"		. unix2dos)
      ("untabify"                . ,(fc-manual (untabify (point-min)

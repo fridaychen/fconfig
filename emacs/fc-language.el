@@ -76,6 +76,43 @@ STR: chinese number string."
           (setf n 0))))
     (+ ret n)))
 
+(defconst *fc-en-number* (fc-make-hash-table
+                          `(
+                            (,(intern "zero") 0)
+                            (,(intern "one") 1)
+                            (,(intern "two") 2)
+                            (,(intern "three") 3)
+                            (,(intern "four") 4)
+                            (,(intern "five") 5)
+                            (,(intern "six") 6)
+                            (,(intern "seven") 7)
+                            (,(intern "eight") 8)
+                            (,(intern "nine") 9)
+                            (,(intern "ten") 10)
+                            (,(intern "eleven") 11)
+                            (,(intern "twelve") 12)
+                            (,(intern "thirteen") 13)
+                            (,(intern "fourteen") 14)
+                            (,(intern "fifteen") 15)
+                            (,(intern "sixteen") 16)
+                            (,(intern "seventeen") 17)
+                            (,(intern "eighteen") 18)
+                            (,(intern "nineteen") 19)
+                            (,(intern "twenty") 20)
+                            (,(intern "hundred") 100)
+                            (,(intern "thousand") 1000))))
+
+(defun simple-english-to-number (s)
+  (car (gethash (intern s) *fc-en-number* '(0))))
+
+(defun fc-en-to-number (s)
+  (let ((n (simple-english-to-number s)))
+    (if (> n 0)
+        n
+      (cl-loop with sum = 0
+               for x in (split-string s "[ -]")
+               sum (simple-english-to-number x)))))
+
 ;; detech char-script of string
 (defun fc-detect-char-script (text)
   (let ((map (make-hash-table)))

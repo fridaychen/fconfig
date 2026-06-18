@@ -276,25 +276,16 @@ PAIRS: replacement list."
   (search-forward-regexp
    (rx bol (** 5 7 (not (any "，。"))) "，" (** 5 7 (not (any "，。"))) "。" eol)))
 
-;; (rx bol
-;;     (group (any "\*#") " Chapter ")
-;;     (group (+ (any "a-zA-Z- ")))
-;;     eol)
-
 (defun fc-book-chapter-en-to-number ()
   "Convert English chapter number to arabic number."
   (fc-replace-regexp
    (rx
     (group " Chapter ")
-    (group (+ (any "a-zA-Z-")))
+    (group (+ (any "a-zA-Z- ")))
     )
    #'(lambda ()
-       (replace-match (concat "\\1 helloe" (fc-string (fc-en-to-number (downcase (match-string 2))))))
-       ;; (replace-match (concat "\\1"
-       ;;                        (number-to-string (fc-en-to-number (downcase (match-string 2))))))
-
-       (sit-for 2)
-       )))
+       (replace-match (format " Chapter %S"
+                              (fc-en-to-number (downcase (match-string 2))))))))
 
 (defun fc-book-chapter-zh-to-number ()
   "Convert Chinese chapter number to arabic number."

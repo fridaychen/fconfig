@@ -99,19 +99,28 @@ STR: chinese number string."
                             (,(intern "eighteen") 18)
                             (,(intern "nineteen") 19)
                             (,(intern "twenty") 20)
+                            (,(intern "thirty") 30)
+                            (,(intern "forty") 40)
+                            (,(intern "fifty") 50)
+                            (,(intern "sixty") 60)
+                            (,(intern "seventy") 70)
+                            (,(intern "eighty") 80)
+                            (,(intern "ninety") 90)
                             (,(intern "hundred") 100)
                             (,(intern "thousand") 1000))))
 
 (defun simple-english-to-number (s)
   (car (gethash (intern s) *fc-en-number* '(0))))
 
-(defun fc-en-to-number (s)
+(cl-defun fc-en-to-number (s)
   (let ((n (simple-english-to-number s)))
-    (if (> n 0)
-        n
-      (cl-loop with sum = 0
-               for x in (split-string s "[ -]")
-               sum (simple-english-to-number x)))))
+    (when (> n 0)
+      (cl-return-from fc-en-to-number n)))
+
+  (save-match-data
+    (cl-loop with sum = 0
+             for x in (split-string s "[ -]")
+             sum (simple-english-to-number x))))
 
 ;; detech char-script of string
 (defun fc-detect-char-script (text)

@@ -110,9 +110,13 @@ STR: chinese number string."
                             (,(intern "thousand") 1000))))
 
 (defun simple-english-to-number (s)
+  "Convert one word english number to numver.
+S: one word english numver."
   (car (gethash (intern s) *fc-en-number* '(0))))
 
 (cl-defun fc-en-to-number (s)
+  "Convert english number to number.
+S: english number."
   (let ((n (simple-english-to-number s)))
     (when (> n 0)
       (cl-return-from fc-en-to-number n)))
@@ -120,7 +124,14 @@ STR: chinese number string."
   (save-match-data
     (cl-loop with sum = 0
              for x in (split-string s "[ -]")
-             sum (simple-english-to-number x))))
+             do
+             (let ((num (simple-english-to-number x)))
+               (pcase num
+                 ((or 100 1000)
+                  (setq sum (* sum num)))
+                 (_
+                  (cl-incf sum num))))
+             finally return sum)))
 
 ;; detech char-script of string
 (defun fc-detect-char-script (text)

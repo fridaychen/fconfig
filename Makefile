@@ -26,6 +26,10 @@ init:
 setup-app:
 	@bash/setup/setup-app.sh
 
+setup-cmus:
+	@cmus-remote -C "colorscheme amazon"
+	@cmus-remote -C "set input.ffmpeg.priority=60"
+
 setup-emacs:
 	@bash/setup/setup-emacs.sh
 	@bash/setup/setup-emacs-pyenv.sh

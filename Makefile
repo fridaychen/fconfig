@@ -29,6 +29,7 @@ setup-app:
 setup-cmus:
 	@cmus-remote -C "colorscheme amazon"
 	@cmus-remote -C "set input.ffmpeg.priority=60"
+	@cmus-remote -C "set format_current=%{genre} | %{artist} | %{tracknumber}. %{title}      %{composer}"
 
 setup-emacs:
 	@bash/setup/setup-emacs.sh

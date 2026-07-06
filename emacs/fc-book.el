@@ -64,6 +64,7 @@ PAIRS: replacement list."
 (defvar *fc-book-size-thold* 32768)
 
 (defun fc--book-meta ()
+  "Get metadata of book."
   (fc-call-mode-func "book-info" nil))
 
 (defun fc--book-p ()
@@ -77,6 +78,7 @@ PAIRS: replacement list."
       meta))))
 
 (defun fc--book-title ()
+  "Get title of book."
   (if-let* ((meta (fc--book-meta)))
       (string-trim
        (string-join
@@ -163,14 +165,14 @@ PAIRS: replacement list."
   (defun fc--check-regex (regex)
     (cl-loop
      do
-     (unless (re-search-forward (car fbook-tmp-test-regex) (- (point-max) 2) t)
+     (unless (re-search-forward regex (- (point-max) 2) t)
        (cl-return nil))
 
      (unless (fc-run-command-chain fc-ignore-chain)
        (setf fc-last-overlay (make-overlay (match-beginning 0) (point)))
        (overlay-put fc-last-overlay 'face 'underline)
        (when *fc-dev-mode*
-         (message (car fbook-tmp-test-regex)))
+         (message regex))
        (cl-return t))))
 
   (defun fc-check-regex ()
@@ -217,6 +219,7 @@ PAIRS: replacement list."
                        :from-start t)))
 
 (cl-defun fc-merge-short-line ()
+  "Merge short lines into one line."
   (interactive)
 
   (save-excursion
@@ -231,6 +234,7 @@ PAIRS: replacement list."
                                 "\\1\\2")))))))
 
 (cl-defun fc-merge-all-line ()
+  "Merge all lines."
   (interactive)
 
   (save-excursion
@@ -248,6 +252,8 @@ PAIRS: replacement list."
                                 "\\1\\2")))))))
 
 (cl-defun fc-book-flat-footnote (regex)
+  "Flaten footnote of Latex.
+REGEX: Footnote regex."
   (fc-replace-regexp
    regex
    #'(lambda ()
@@ -299,6 +305,7 @@ PAIRS: replacement list."
                               "\\2")))))
 
 (cl-defun fc-book-replace-zh-double-quote ()
+  "Replace double quote with Chinese double quote."
   (save-excursion
     (fc-replace-regexp
      (rx ?\" (group
@@ -311,6 +318,7 @@ PAIRS: replacement list."
     (fc-replace-regexp "^\"" "“" :from-start t)))
 
 (cl-defun fc-book-replace-zh-single-quote ()
+  "Replace simple quote with Chinese simple quote."
   (save-excursion
     (fc-replace-regexp (rx (group (not alpha))
                            ?\' (group (+ nonl)) ?\'
@@ -321,7 +329,7 @@ PAIRS: replacement list."
 (cl-defmacro fc--book-replace-chinese-toc-regexp (regex func)
   "Rexexp replacing in TOC.
 REGEX: target regexp.
-TO-STRING: new string."
+FUNC: callback function."
   `(fc-replace-regexp ,regex
                       #'(lambda ()
                           (when (or
@@ -330,13 +338,13 @@ TO-STRING: new string."
                                  (and (fc-void-p (match-string 1))
                                       (fc-void-p (match-string 3))))
                             (replace-match
-                             (,func
-                              (concat
-                               (match-string 1)
-                               (match-string 2)
-                               (match-string 3)
-                               " "
-                               (match-string 4))))))))
+                             (funcall ,func
+                                      (concat
+                                       (match-string 1)
+                                       (match-string 2)
+                                       (match-string 3)
+                                       " "
+                                       (match-string 4))))))))
 
 (cl-defun fc-book-mark-chapter (level)
   "Find chapter and insert md commands.
@@ -366,12 +374,13 @@ LEVEL: chapter level."
          (* space) (group (** 1 4 (any "0-9零一二三四五六七八九十两")))
          (* space) (group (? "节"))
          (* space) (group (** 0 20 (not (any "。\n"))))
-         eol
-         )
+         eol)
      (lambda (title)
        (fc-call-mode-func "chapter-mark" nil level title)))))
 
 (cl-defun fc--book-cover (title)
+  "Get or generate book cover.
+TITLE: book title."
   (when-let* ((cover (or (fc-call-mode-func "book-cover" nil)
                          (fc-file-first-exists
                           (list
@@ -387,6 +396,7 @@ LEVEL: chapter level."
     (expand-file-name cover)))
 
 (cl-defun fc--book-gen-cover ()
+  "Generate book cover."
   (let* ((meta (fc--book-meta))
          (title (plist-get meta :title))
          (subtitle (plist-get meta :subtitle))

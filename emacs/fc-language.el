@@ -30,11 +30,13 @@
     (set-input-method (cl-first *fc-input-methods*))))
 
 (defun fc--disable-input-method ()
+  "Disable input method."
   (set-input-method nil))
 
 (defvar *fc--input-method-bak* nil)
 
 (defun fc--auto-toggle-input-method ()
+  "Automatically toggle input method."
   (if fc-modal-mode
       (progn
         (setf *fc--input-method-bak* current-input-method)
@@ -135,18 +137,25 @@ S: english number."
 
 ;; detech char-script of string
 (defun fc-detect-char-script (text)
+  "Detect char set.
+TEXT: target text."
   (let ((map (make-hash-table)))
     (mapc (lambda (x) (puthash (aref char-script-table x) t map))
           text)
     map))
 
 (defun fc-detect-has-wide-char (text)
+  "Detect if wide char exists.
+TEXT: target text."
   (let ((map (fc-detect-char-script text)))
     (fc-first '(han kana emoji)
       (gethash it map))))
 
-(cl-defun fc-detect-buf-has-wide-char (&optional (buf (current-buffer)) (max 512))
-  (with-current-buffer buf
+(cl-defun fc-detect-buf-has-wide-char (&optional (buffer (current-buffer)) (max 512))
+  "Detect if wide char exists in buffer.
+BUFFER: buffer.
+MAX: test limitation."
+  (with-current-buffer buffer
     (fc-detect-has-wide-char (buffer-substring 1 (min max (point-max))))))
 
 (provide 'fc-language)

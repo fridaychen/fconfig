@@ -54,6 +54,7 @@
                                  (emacs-lisp-mode . fc-elisp)
                                  (go-mode . fc-golang)
                                  (go-ts-mode . fc-golang)
+                                 (janet-ts-mode . fc-janet)
                                  (haskell-mode . fc-haskell)
                                  (latex-mode . fc-latex)
                                  (lisp-mode . fc-lisp)

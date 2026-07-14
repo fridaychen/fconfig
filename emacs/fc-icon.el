@@ -53,6 +53,7 @@
                             (org-mode . "🅾️")
                             (org-agenda-mode . "🗓️")
                             (package-menu-mode . "📦")
+                            (protobuf-mode . "🧾")
                             (sh-mode . "🐚")
                             (special-mode . "📊")
                             (text-mode . "📝")

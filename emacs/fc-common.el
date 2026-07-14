@@ -135,6 +135,10 @@
                   :foreground "beige")
      (fc-set-face 'org-table nil
                   :foreground "LawnGreen")
+     (fc-set-face 'org-footnote nil
+                  :foreground "LawnGreen")
+     (fc-set-face 'org-link nil
+                  :background "grey28")
      (fc-set-face 'highlight nil
                   :background "#4b1818"))
 
@@ -170,6 +174,8 @@
     ('zenburn
      (fc-set-face 'default nil
                   :background "#263238")
+     (fc-set-face 'region nil
+                  :background "black")
      (fc-set-face 'hl-line nil
                   :foreground 'unspecified
                   :background "#4b1818")

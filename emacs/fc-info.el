@@ -39,15 +39,15 @@ INFO-SEQ: list of infos."
 
 (cl-defun fc-info--vc ()
   "VC info."
-  `(("VC" ,(if vc-mode
-               (fc-text
-                (list
-                 (fc-vc-branch)
-                 (fc-string (when buffer-file-name
-                              (vc-state buffer-file-name))))
-                :separator ", "
-                :face 'highlight)
-             "Untracked"))))
+  (when vc-mode
+    `(("VC" ,(fc-text
+              (list
+               (fc-vc-branch)
+               (fc-string (when buffer-file-name
+                            (vc-state buffer-file-name))))
+              :separator ", "
+              :face 'highlight)
+       "Untracked"))))
 
 (defun fc-info--buffer ()
   "Create buffer info."
@@ -102,10 +102,11 @@ INFO-SEQ: list of infos."
 
 (defun fc-info--battery ()
   "Return list of battery info."
-  `(("Battery"
-     ,(string-join (cl-loop for (key value) on (fc-app-get-power-info) by #'cddr
-                            collect (format "%s=[%s]" key value))
-                   ", "))))
+  (when-let* ((power-info (fc-app-get-power-info)))
+    `(("Battery"
+       ,(string-join (cl-loop for (key value) on power-info by #'cddr
+                              collect (format "%s=[%s]" key value))
+                     ", ")))))
 
 (defun fc-info--eglot ()
   "Return current eglot info."

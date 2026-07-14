@@ -54,7 +54,9 @@
 
            (fc-vertico--posframe-theme-changed)
 
-           (setf vertico-count 20)
+           (setf vertico-count 12
+                 vertico-posframe-width 160
+                 vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center)
 
            (vertico-posframe-mode 1)))
 

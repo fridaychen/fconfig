@@ -5,9 +5,6 @@
 
 ;;; Code:
 
-(fc-load 'janet-ts-mode
-  :raw "https://github.com/sogaiu/janet-ts-mode")
-
 (fc-load 'flymake-janet
   :raw "https://github.com/torusjkl/flymake-janet")
 

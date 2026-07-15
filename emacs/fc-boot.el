@@ -38,7 +38,7 @@
            (add-hook '*fc-common-fast-act-hook* #'fc--org-toggle-special-edit)
            (fc-require 'fc-plantuml)))
 
-(fc-require 'fc-yasnippet t)
+(fc-require 'fc-yasnippet)
 (fc-require 'fc-global)
 (fc-load 'fc-lsp
   :local t
@@ -82,7 +82,7 @@
 
 (add-hook 'find-file-hook #'fc--load-mode-config)
 
-(fc-require 'fc-buffer t)
+(fc-require 'fc-buffer)
 (fc-require 'fc-control)
 (fc-load 'fc-next-error
   :local t
@@ -94,7 +94,7 @@
   :after (fc-add-hook-func '*fc-after-theme-hook* #'fc--setup-line-spacing))
 
 (let ((pkg (intern (concat "fc-" (symbol-name *fc-completion*)))))
-  (fc-require pkg t)
+  (fc-require pkg)
   (with-eval-after-load pkg
     (fc-ergo-load-theme)))
 
@@ -107,7 +107,7 @@
            ("C-j" ido-next-match)
            ("C-k" ido-prev-match))))
 
-;; (fc-require 'fc-bookmark t)
+;; (fc-require 'fc-bookmark)
 
 ;; midnight
 (fc-load 'midnight
@@ -161,7 +161,7 @@
   :after (progn
            (add-hook '*fc-after-theme-hook* #'fc--setup-eshell-after-theme-changed)))
 
-(fc-require 'fc-book t)
+(fc-require 'fc-book)
 
 (fc-load 'fc-player
   :local t
@@ -177,12 +177,12 @@
 (fc-layout-switch "a")
 
 (fc-require 'fc-vc)
-(fc-require 'fc-buffer t)
+(fc-require 'fc-buffer)
 
-(fc-require 'fc-proj t)
-(fc-require 'fc-dired t)
+(fc-require 'fc-proj)
+(fc-require 'fc-dired)
 
-(fc-require 'fc-math t)
+(fc-require 'fc-math)
 
 (fc-load 'fc-flycheck
   :local t

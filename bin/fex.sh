@@ -21,7 +21,7 @@ function extract {
     local ext=${1##*.}
 
     case ${longext,,} in
-        tar | tar.bz2 | tar.gz | tar.xz)
+        tar | tar.bz2 | tar.gz | tar.xz | tar.zst)
             tar xvf "$1"
             return
             ;;
@@ -36,6 +36,9 @@ function extract {
             ;;
         rar | zip | 7z)
             7z x "$1"
+            ;;
+        zst)
+            zstd -d "$1"
             ;;
         *)
             echo "Unknown extension: $ext"

@@ -80,7 +80,7 @@
 (fc-load 'fc-modeline
   :local t
   :after (progn
-           (add-to-list '*fc-after-theme-hook* #'fc-modeline-mode)))
+           (add-to-list '*fc-after-theme-hook* #'fc-modeline-mode t)))
 (fc-modal-enable)
 
 (add-hook '*fc-before-theme-hook* #'fc-beautify-theme-before)

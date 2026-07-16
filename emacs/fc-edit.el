@@ -282,7 +282,7 @@
   :enable *fc-enable-treesit*
   :raw "https://github.com/sogaiu/janet-ts-mode"
   :after (progn
-           (fc-add-mode-name 'janet-ts-mode "👧")
+           (fc-add-mode-name 'janet-ts-mode "👩‍🦰")
            (add-to-list 'auto-mode-alist '("\\.janet" . janet-ts-mode))))
 
 (fc-load 'ob-mermaid

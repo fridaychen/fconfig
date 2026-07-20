@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=alacritty -e cmus
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=cmus
+Comment=Start Cmus Music Player on Login

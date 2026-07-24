@@ -96,6 +96,7 @@
 ;; theme
 (setf *fc--work-themes* '((dark
                            (ayu-grey . ayu-theme)
+                           (dracula . dracula-theme)
                            (ef-dream . ef-themes)
                            (ef-melissa-dark . ef-themes)
                            leuven-dark
@@ -103,7 +104,7 @@
                            misterioso
                            modus-vivendi-tinted
                            (vs-dark . vs-dark-theme)
-                           zenburn)
+                           (zenburn . zenburn-theme))
                           (light
                            leuven
                            (gruvbox-light-soft . gruvbox-theme)

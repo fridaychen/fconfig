@@ -5,6 +5,10 @@
 
 ;;; Code:
 
+(fc-add-fmt 'janet-ts-mode
+            '("fc-fmt-janet.sh")
+            nil)
+
 (fc-load 'flymake-janet
   :raw "https://github.com/torusjkl/flymake-janet")
 

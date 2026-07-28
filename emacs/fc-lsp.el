@@ -69,6 +69,8 @@
                         :inherit 'font-lock-operator-face
                         :extend t
                         :overline nil)
+           (fc-set-face 'eglot-semantic-macro nil
+                        :overline nil)
            (fc-set-face 'eglot-semantic-readonly nil
                         :overline nil)
 

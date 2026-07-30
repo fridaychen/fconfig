@@ -6,6 +6,24 @@
 ;;; Code:
 (fc-load 'copilot
   :after (progn
+           (cl-defun fc-run-copilot (prompt)
+             (interactive "MPrompt : ")
+
+             (let ((result-buf (get-buffer-create "*fc-copilot*")))
+               (with-current-buffer result-buf
+                 (setq-local default-directory (fc-proj-root))
+
+                 (fc-async-exec-command-to-buffer
+                  (current-buffer)
+                  #'(lambda (process event)
+                      (fc-pop-buf result-buf :mode 'markdown-ts-mode :escape t))
+                  "copilot"
+                  "--no-color"
+                  "--continue"
+                  "-p"
+                  prompt
+                  "--allow-all"))))
+
            (add-hook 'prog-mode-hook #'copilot-mode)
            (setf copilot-chat-use-agent-mode t
                  copilot-chat-model "auto"
@@ -16,8 +34,8 @@
 
   :bind `((*fc-modal-keymap*
            ("s-k" ,(fc-cond-key :normal #'copilot-chat
-                                :region #'copilot-chat-send-region))))
-  )
+                                :region #'copilot-chat-send-region))
+           ("s-j" ,(fc-cond-key :normal #'fc-run-copilot)))))
 
 (setopt copilot-chat-presets
         '(("fast"  . (:model "gpt-4o" :agent-mode nil))
@@ -30,11 +48,6 @@
 
            (add-hook 'copilot-chat-mode-hook #'copilot-chat-add-workspace)
            ))
-
-;; (fc-load 'gh-copilot-chat
-;;   :raw https://github.com/chep/gh-copilot-chat.el
-;;   :after (progn
-;;            (add-hook 'copilot-chat-mode-hook #'gh-copilot-chat-add-workspace)))
 
 (provide 'fc-copilot)
 

@@ -147,6 +147,10 @@
      (fc-set-face 'hi-yellow nil
                   :foreground "black"))
 
+    ('dracula
+     (fc-set-face 'region nil
+                  :background "gray35"))
+
     ('ef-cyprus
      (fc-set-face 'default nil
                   :background "#C1E6C6"))

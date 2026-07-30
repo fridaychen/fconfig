@@ -85,6 +85,24 @@ ARGS: arguments for command."
 
       buf)))
 
+(cl-defun fc-async-exec-command-to-buffer (bufname sentinel command &rest args)
+  "Run specific command and save output to specified buffer.
+BUFNAME: buffer.
+SENTINEL: process sentinel.
+COMMAND: command to run.
+ARGS: arguments for command."
+  (let ((buf (get-buffer-create bufname)))
+    (save-window-excursion
+      (switch-to-buffer buf)
+      (read-only-mode -1)
+      (erase-buffer)
+
+      (set-process-sentinel
+       (apply #'start-process "aysnc" buf command (flatten-list args))
+       sentinel)
+
+      buf)))
+
 (cl-defmacro fc-toggle-var (symbol &key entry quit)
   "Toggle symbol.
 SYMBOL: symbol name to be toggled."

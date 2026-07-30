@@ -1,0 +1,2 @@
+- Always use `ripgrep` (`rg`) instead of standard `grep` for code search tasks.
+- Avoid searching in build output directories, dependency paths, or log files.

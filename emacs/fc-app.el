@@ -779,12 +779,12 @@ BACKWARD: search direction."
   (fc--search-set-target nil))
 
 ;; search engine
-;; (fc-load 'google-this
-;;   :autoload t
-;;   :bind '((nil
-;;            ("M-*" google-this))
-;;           (*fc-modal-keymap*
-;;            ("*" google-this))))
+(fc-load 'google-this
+  :autoload t
+  :bind `((*fc-modal-keymap*
+           ("M-*" #'google-this))
+          (*fc-modal-keymap*
+           ("*" #'google-this))))
 
 ;; current dir tree
 (fc-load 'neotree

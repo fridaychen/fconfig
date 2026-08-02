@@ -261,9 +261,13 @@ DIR: project path."
 (cl-defun fc-proj-build ()
   "Build current project."
 
-  (when-let* ((target (read-string "Build target : " (oref *fc-project* last-target))))
-    (oset *fc-project* last-target target)
-    (fc-proj--build *fc-project* target)))
+  (let ((targets (oref *fc-project* last-target)))
+    (when-let* ((target (completing-read "Build target" targets)))
+      (setq targets (remove target targets))
+      (add-to-list 'targets target)
+
+      (oset *fc-project* last-target targets)
+      (fc-proj--build *fc-project* target))))
 
 (cl-defun fc-proj-load-compilation-error ()
   (when-let* ((proj-dir (and *fc-project* (fc-proj--dir *fc-project*)))

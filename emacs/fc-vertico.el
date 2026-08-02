@@ -32,6 +32,9 @@
            (vertico-mouse-mode 1))
 
   :bind '((vertico-map
+           ("s-u" previous-history-element)
+           ("s-o" next-history-element)
+           ("s-j" vertico-next)
            ("M-d" fc-vertico--clear)
            ("s-j" vertico-next)
            ("s-k" vertico-previous)

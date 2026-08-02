@@ -10,19 +10,18 @@
              (interactive "MPrompt : ")
 
              (let ((result-buf (get-buffer-create "*fc-copilot*")))
-               (with-current-buffer result-buf
-                 (setq-local default-directory (fc-proj-root))
-
-                 (fc-async-exec-command-to-buffer
-                  (current-buffer)
-                  #'(lambda (process event)
-                      (fc-pop-buf result-buf :mode 'markdown-ts-mode :escape t))
-                  "copilot"
-                  "--no-color"
-                  "--continue"
-                  "-p"
-                  prompt
-                  "--allow-all"))))
+               (fc-async-exec-command-to-buffer
+                (current-buffer)
+                #'(lambda (process event)
+                    (fc-pop-buf result-buf :mode 'markdown-ts-mode :escape t))
+                "copilot"
+                "--no-color"
+                "--continue"
+                "--add-dir"
+                (fc-proj-root)
+                "-p"
+                prompt
+                "--allow-all-tools")))
 
            (add-hook 'prog-mode-hook #'copilot-mode)
            (setf copilot-chat-use-agent-mode t

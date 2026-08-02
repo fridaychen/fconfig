@@ -11,7 +11,8 @@
 PROMPT: user prompt.
 COLLECTION: cadidates collection.
 ALWAYS: always ask use to select.
-CONV: convert items of collection into strings."
+CONV: convert items of collection into strings.
+INIT: initial input."
   (declare (indent 2))
   (when (and (not always)
              (= (if (hash-table-p collection)

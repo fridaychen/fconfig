@@ -25,6 +25,10 @@ function proj-build {
         makepkg -si
     elif [[ -x ./build.sh ]]; then
         ./build.sh
+    elif [[ -f project.janet ]]; then
+        sudo jpm deps
+        jpm build
+        sudo jpm install
     else
         err-msg "DO NOT know how to build"
     fi

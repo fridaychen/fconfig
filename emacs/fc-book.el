@@ -326,6 +326,33 @@ REGEX: Footnote regex."
                        "\\1‘\\2’\\3"
                        :from-start t)))
 
+(defun fc--gen-dinkus (text)
+  (save-match-data
+    (cl-loop with first = t
+             with result = nil
+             with elt = nil
+             for x in (string-split text)
+             do
+             (if first
+                 (setq first nil
+                       elt (capitalize x))
+               (setq elt (downcase x)))
+
+             (setq result (cons elt result))
+
+             finally return (concat "---------\n\n"
+                                    (s-join " " (seq-reverse result))
+                                    " "))))
+
+(cl-defun fc-book-replace-dinkus ()
+  (let ((case-fold-search nil))
+    (fc-replace-regexp
+     (rx bol
+         (>= 10 (any "A-Z' ")))
+
+     #'(lambda ()
+         (replace-match (fc--gen-dinkus (match-string 0)) t)))))
+
 (cl-defmacro fc--book-replace-chinese-toc-regexp (regex func)
   "Rexexp replacing in TOC.
 REGEX: target regexp.
@@ -469,6 +496,7 @@ TITLE: book title."
     ("Book: Recheck"                      . fc-recheck-book)
     ("Book: Replace with zh double quote" . fc-book-replace-zh-double-quote)
     ("Book: Replace with zh single quote" . fc-book-replace-zh-single-quote)
+    ("Book: Replace with Dinkus"          . fc-book-replace-dinkus)
     ("Book: Remove extra space"           . fc-book-remove-extra-whitespace)
     ("Book: Search verse"                 . fc-book-search-verse)))
 

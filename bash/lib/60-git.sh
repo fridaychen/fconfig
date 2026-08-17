@@ -10,6 +10,7 @@ function gb {
 }
 
 alias fit-cancel="git reset @~"
+alias fit-unstage="git restore --stage"
 
 function fit-amend {
     if [[ $# == 0 ]]; then

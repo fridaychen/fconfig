@@ -340,18 +340,23 @@ REGEX: Footnote regex."
 
              (setq result (cons elt result))
 
-             finally return (concat "---------\n\n"
-                                    (s-join " " (seq-reverse result))
+             finally return (concat (s-join " " (seq-reverse result))
                                     " "))))
 
 (cl-defun fc-book-replace-dinkus ()
   (let ((case-fold-search nil))
     (fc-replace-regexp
      (rx bol
-         (>= 10 (any "A-Z' ")))
+         (group (0+ (any "\"“'‘")))
+         (group (>= 8 (any "A-Z' ")) (not alnum))
+         )
 
      #'(lambda ()
-         (replace-match (fc--gen-dinkus (match-string 0)) t)))))
+         (replace-match
+          (concat
+           "---------\n\n"
+           (match-string 1)
+           (fc--gen-dinkus (match-string 2))) t)))))
 
 (cl-defmacro fc--book-replace-chinese-toc-regexp (regex func)
   "Rexexp replacing in TOC.

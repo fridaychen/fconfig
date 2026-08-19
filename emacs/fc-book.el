@@ -348,8 +348,7 @@ REGEX: Footnote regex."
     (fc-replace-regexp
      (rx bol
          (group (0+ (any "\"“'‘")))
-         (group (>= 8 (any "A-Z' ")) (not alnum))
-         )
+         (group (>= 8 (any "A-Z' -,.")) (not alnum)))
 
      #'(lambda ()
          (replace-match

@@ -335,7 +335,10 @@ REGEX: Footnote regex."
              do
              (if first
                  (setq first nil
-                       elt (capitalize x))
+                       elt (seq-concatenate
+                            'string
+                            (char-to-string (upcase (seq-first x)))
+                            (downcase (seq-rest x))))
                (setq elt (downcase x)))
 
              (setq result (cons elt result))
@@ -348,7 +351,7 @@ REGEX: Footnote regex."
     (fc-replace-regexp
      (rx bol
          (group (0+ (any "\"“'‘")))
-         (group (>= 8 (any "A-Z' -,.")) (not alnum)))
+         (group (>= 8 (any "A-Z' ,.-")) (not alnum)))
 
      #'(lambda ()
          (replace-match

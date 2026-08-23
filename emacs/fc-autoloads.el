@@ -152,7 +152,7 @@
 
 ;; ttl
 (autoload #'fc-ttl-mode "fc-ttl")
-(add-to-list 'auto-mode-alist '("\\.ttl" . fc-ttl-mode))
+(add-to-list 'auto-mode-alist '("\\.ttl\\'" . fc-ttl-mode))
 
 ;; info
 (defvar *fc-info-buffer* nil)

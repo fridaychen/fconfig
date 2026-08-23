@@ -1173,7 +1173,9 @@ KEYMAP: keymap to run."
      ("q" ,(fc-cond-key :normal 'fc-proj-open
                         :region 'fc-proj-query-rename
                         :proj 'fc-select-proj-func))
-     ("r" ,(fc-cond-key :normal 'fc-recover-revert-buffer
+     ("r" ,(fc-cond-key :normal (fc-mode-key
+                                 `((compilation-mode . recompile)
+                                   (_ . fc-recover-revert-buffer)))
                         :region 'reverse-region))
      ("s" ,(fc-cond-key :normal 'save-buffer
                         :region 'sort-fields))

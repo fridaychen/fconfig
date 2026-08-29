@@ -783,6 +783,7 @@ LANG: language."
       ("Ingest"                         . ,(fc-manual (org-babel-lob-ingest buffer-file-name)))
       ("Org ctrl-c-minus"		. org-ctrl-c-minus)
       ("Org Sort"			. org-sort)
+      ("Presentation"                   . fc--presentation-start)
       ("Publish"                        . fc--org-publish)
       ("Publish to html"		. org-html-export-to-html)
       ("Publish to markdown"		. org-md-export-to-markdown)
@@ -1312,6 +1313,39 @@ LANG: language of babel."
     (org-babel-goto-named-src-block name)
     (when (looking-at-p "#\\+BEGIN_SRC")
       (org-ctrl-c-ctrl-c))))
+
+;;; Presentation in org-mode
+(defvar *fc-org-presenting* nil)
+
+(defun fc--presentation-start ()
+  (setf *fc-org-presenting* t)
+  (set-transient-map
+   (fc-make-keymap
+    '(("SPC" fc--presentation-next)
+      ("q" fc--presentation-end)))
+   t
+   #'fc--presentation-end)
+  (fc-funcall #'org-narrow-to-subtree))
+
+(cl-defun fc--presentation-next ()
+  (interactive)
+
+  (when *fc-org-presenting*
+    (when (= (line-end-position) (point-max))
+      (fc-funcall #'fc--presentation-end)
+      (cl-return-from fc--presentation-next))
+
+    (fc-funcall #'fc-narrow-widen)
+    (fc-funcall #'fc-end-of-func)
+    (fc-funcall #'org-narrow-to-subtree)))
+
+(defun fc--presentation-end ()
+  (interactive)
+
+  (when *fc-org-presenting*
+    (fc-funcall #'fc-narrow-widen)
+    (setf *fc-org-presenting* nil)
+    (message "Quit presentation.")))
 
 (cl-defun fc--org-publish (&optional (output-dir (fc--org-get-file-property "PUBLISH"))
                                      (base-dir default-directory))

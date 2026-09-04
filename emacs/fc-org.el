@@ -7,7 +7,7 @@
 (require 'cl-lib)
 
 (defvar *fc-org-latex-preview-scale* 2.2)
-(defvar *fc-org-dir* "~/org/")
+(defvar *fc-org-dir* "~/org/gtd/")
 (defconst *fc-org-capture-template*
   `(
     ("b" "Book" "book.org" "Inbox"

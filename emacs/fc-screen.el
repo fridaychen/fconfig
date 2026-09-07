@@ -117,6 +117,7 @@
 
   (delete-other-windows)
 
+  (setf display-time-24hr-format t)
   (display-time-mode)
   (fireplace)
   (garbage-collect))

@@ -7,9 +7,11 @@
 
 (setf inhibit-startup-message t)
 
-(org-mode)
+(text-mode)
+(setq-local line-spacing 0)
+(text-scale-set -5)
 
-(insert (emacs-init-time))
+(insert-file "~/.emacs.d/welcome.txt")
 
 (provide 'fc-welcome)
 

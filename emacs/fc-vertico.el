@@ -58,8 +58,12 @@
            (fc-vertico--posframe-theme-changed)
 
            (setf vertico-count 12
-                 vertico-posframe-width 160
-                 vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center)
+                 vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center
+                 posframe-text-scale-factor-function #'(lambda (x) 0)
+                 vertico-posframe-size-function #'(lambda (buf)
+                                                    (list :width (round (* 0.8 (frame-width)))
+                                                          :height (+ 2 vertico-count)))
+                 vertico-posframe-font "Sarasa Mono SC-13")
 
            (vertico-posframe-mode 1)))
 

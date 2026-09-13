@@ -14,6 +14,10 @@
      ("C-k" vertico-previous))
    "fc vertico base"))
 
+(defvar *fc-vertico-font* "Sarasa Mono SC-13")
+(defvar *fc-vertico-count* 12)
+(defvar *fc-vertico-delta-count* 2)
+
 (defun fc-vertico--clear ()
   "Clear current line."
   (interactive)
@@ -57,13 +61,13 @@
 
            (fc-vertico--posframe-theme-changed)
 
-           (setf vertico-count 12
+           (setf vertico-count *fc-vertico-count*
                  vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center
                  posframe-text-scale-factor-function #'(lambda (x) 0)
                  vertico-posframe-size-function #'(lambda (buf)
                                                     (list :width (round (* 0.8 (frame-width)))
-                                                          :height (+ 2 vertico-count)))
-                 vertico-posframe-font "Sarasa Mono SC-13")
+                                                          :height (+ *fc-vertico-delta-count* vertico-count)))
+                 vertico-posframe-font *fc-vertico-font*)
 
            (vertico-posframe-mode 1)))
 

@@ -232,6 +232,13 @@ END: end of region."
              (setq c-ts-mode-indent-offset 4
                    tab-width 4))
 
+           (eval-after-load 'semantic/symref/grep
+             '(when (boundp 'semantic-symref-filepattern-alist)
+                (add-to-list 'semantic-symref-filepattern-alist
+                             '(c-ts-mode "*.c" "*.h"))
+                (add-to-list 'semantic-symref-filepattern-alist
+                             '(c++-ts-mode "*.cpp" "*.cc" "*.cxx" "*.hpp" "*.h"))))
+
            (add-hook 'c-ts-mode-hook #'fc--c-ts-setup)
 
            (fc-add-fmt 'c-ts-mode #'fc-generate-clang-cmd nil)))

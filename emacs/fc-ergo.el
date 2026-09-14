@@ -1679,17 +1679,19 @@ AUTO: auto select face."
                                `((image-mode . image-increase-size)
                                  (_ . text-scale-increase)))
                       :prefix *fc-increase-volume*))
-   ("-" ,(fc-cond-key :normal  (fc-mode-key
-                                `((image-mode . image-decrease-size)
-                                  (_ . text-scale-decrease)))
+   ("-" ,(fc-cond-key :normal (fc-mode-key
+                               `((image-mode . image-decrease-size)
+                                 (_ . text-scale-decrease)))
                       :prefix *fc-decrease-volume*))
-   ("+" ,(fc-cond-key :normal  (fc-mode-key
-                                `((image-mode . ,(fc-manual
-                                                  (image-transform-set-scale 1)))
-                                  (_ . ,(fc-manual (text-scale-set 0)))))))
+   ("+" ,(fc-cond-key :normal (fc-mode-key
+                               `((image-mode . ,(fc-manual
+                                                 (image-transform-set-scale 1)))
+                                 (_ . ,(fc-manual (text-scale-set 0)))))))
    ("_" ,(fc-cond-key :normal #'fc-list-bookmark
                       :prefix #'fc-edit-bookmark-annotation))
-   ("." ,(fc-cond-key :normal #'fc-find-definitions
+   ("." ,(fc-cond-key :normal (fc-mode-key
+                               `((citre-mode . citre-jump)
+                                 (_ . fc-find-definitions)))
                       :region #'move-text-up))
    ("," ,(fc-cond-key :normal #'fc-find-references
                       :region #'move-text-down))

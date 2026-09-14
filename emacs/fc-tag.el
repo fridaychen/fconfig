@@ -164,6 +164,9 @@
       (cl-return-from fc-find-tag instance)))
 
   (cond
+   (tags-file-name
+    *fc-tag-xref*)
+
    ((not (boundp 'fc-proj-tag))
     *fc-tag-global*)
 

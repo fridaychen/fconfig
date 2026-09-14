@@ -122,6 +122,10 @@ X: project obj."
         (add-dir-local-variable nil 'fc-proj-name (fc-proj--get x :name))
         (add-dir-local-variable nil 'fc-proj-main-branch (fc-proj--get x :main-branch))
         (add-dir-local-variable nil 'fc-proj-tag (fc-proj--get x :tag))
+
+        (when (eq (fc-proj--get x :tag) 'etags)
+          (add-dir-local-variable nil 'tags-file-name (concat (fc-proj--dir x) "TAGS")))
+
         (add-dir-local-variable nil 'fc-capture-tags (fc-proj--get x :capture-tags))
 
         ;; company-clang

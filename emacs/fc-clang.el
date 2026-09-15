@@ -9,9 +9,10 @@
   (fc-select-func
    "C"
    `(
-     ("insert standard headers" . fc-c-insert-std-header)
-     ("insert unix headers"     . fc-c-insert-unix-header)
-     ("mark ifdef"              . mark-ifdef)
+     ("insert header file skeleton" . fc-c-insert-header-skeleton)
+     ("insert standard headers"     . fc-c-insert-std-header)
+     ("insert unix headers"         . fc-c-insert-unix-header)
+     ("mark ifdef"                  . mark-ifdef)
      )))
 
 (cl-defun fc-c-add-ifdef ()
@@ -80,6 +81,15 @@ END: end of region."
       (insert "\n"))
     (insert "  /* clang-format on */")
     (c-indent-line-or-region)))
+
+(defun fc-c-insert-header-skeleton ()
+  (interactive)
+
+  (let ((def (concat "_" (upcase (file-name-base buffer-file-name)) "_H")))
+    (insert "#ifndef " def "\n"
+            "#define " def "\n\n")
+    (save-excursion
+      (insert "\n\n#endif /* "  def " */"))))
 
 (defun fc-c-insert-std-header ()
   "Insert standard c header files."
@@ -191,7 +201,8 @@ END: end of region."
                     (ExperimentalAutoDetectBinPacking . false)
                     (IndentCaseLabels . false)
                     (IndentWidth . "%d")
-                    (IndentPPDirectives . BeforeHash)
+                    (IndentPPDirectives . AfterHash)
+                    (PPIndentWidth . 2)
                     (SortIncludes . false)
                     (UseTab . "%s"))))
 
@@ -239,8 +250,10 @@ END: end of region."
                 (add-to-list 'semantic-symref-filepattern-alist
                              '(c++-ts-mode "*.cpp" "*.cc" "*.cxx" "*.hpp" "*.h"))))
 
+           (add-hook 'c++-ts-mode-hook #'fc--c-ts-setup)
            (add-hook 'c-ts-mode-hook #'fc--c-ts-setup)
 
+           (fc-add-fmt 'c++-ts-mode #'fc-generate-clang-cmd nil)
            (fc-add-fmt 'c-ts-mode #'fc-generate-clang-cmd nil)))
 
 (provide 'fc-clang)

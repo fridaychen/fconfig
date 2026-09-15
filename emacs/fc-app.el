@@ -25,7 +25,7 @@ NAME: target buffer name."
                          (cons (file-name-base it) it)))
               (template (fc-select
                             (format "Select template for %s" name)
-                            options)))
+                          options)))
     template))
 
 (cl-defun fc-new-buffer-with-template (bufname template)
@@ -231,8 +231,8 @@ RECURSION: recursion or not.
 WORD: word boundary or not"
   (interactive (list current-prefix-arg
                      (fc-current-thing :prompt "Grep Pattern")
-                     (read-directory-name "Root : " default-directory)
-                     (read-string "File : " (fc--ergo-grep-file))
+                     (read-directory-name "Root" default-directory)
+                     (read-string "File" (fc--ergo-grep-file))
                      (fc-user-confirm "Recusion")
                      (fc-user-confirm "Word")))
 
@@ -298,9 +298,9 @@ PATTERN: target pattern."
                     (format "%s/extra/figlet/%s"
                             *fc-home*
                             (fc-select "Select font"
-                                (fc--list-file (format "%s/extra/figlet" *fc-home*)
-                                               nil
-                                               :sort t)))
+                              (fc--list-file (format "%s/extra/figlet" *fc-home*)
+                                             nil
+                                             :sort t)))
                     (read-string "Text : "))))
 
 (cl-defun fc-insert-signature ()
@@ -905,12 +905,13 @@ REST: commands."
                                (fc-proj--save *fc-project*)))
      ("clang style"       . ,(lambda ()
                                (fc-proj--set *fc-project*
-                                             (fc-select "Clang style" '("LLVM"
-                                                                        "Google"
-                                                                        "Chromium"
-                                                                        "Mozilla"
-                                                                        "WebKit"
-                                                                        "Microsoft"))
+                                             (fc-select "Clang style"
+                                               '("LLVM"
+                                                 "Google"
+                                                 "Chromium"
+                                                 "Mozilla"
+                                                 "WebKit"
+                                                 "Microsoft"))
                                              :local nil 'fc-proj-clang-style)
                                (fc-proj--save *fc-project*)))
      ("close files"       . ,(lambda ()
@@ -1033,12 +1034,12 @@ REST: commands."
   "Allow user to select theme."
   (fc-load-theme (fc-select
                      "Themes"
-                     (remove *fc-current-theme*
-                             (custom-available-themes)))))
+                   (remove *fc-current-theme*
+                           (custom-available-themes)))))
 
 (defun fc-init-dir-locals ()
   "Copy default .dir-locals.el."
-  (let ((dir (read-directory-name "Target dir : ")))
+  (let ((dir (read-directory-name "Target dir")))
     (when dir
       (fc-exec-command
        "cp"
@@ -1323,9 +1324,9 @@ END: end of region."
 (defun fc-app-select-sound-sink ()
   "Select sound sink."
   (let ((sink (fc-select "Select sound sink"
-                  (split-string
-                   (shell-command-to-string "pactl list short sinks | awk '{print $2}'")
-                   "\n" t))))
+                (split-string
+                 (shell-command-to-string "pactl list short sinks | awk '{print $2}'")
+                 "\n" t))))
     (when sink
       (fc-exec-command "pactl" "set-default-sink" sink))))
 

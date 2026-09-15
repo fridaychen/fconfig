@@ -173,10 +173,11 @@ DIR: project path."
     (fc-conf-put conf
                  (make-symbol
                   (fc-select "Select tag system"
-                      '("global"
-                        "lsp"
-                        "xref"
-                        "none")))
+                    '("etags"
+                      "global"
+                      "lsp"
+                      "xref"
+                      "none")))
                  :tag)
 
     (fc-conf-save conf)
@@ -191,7 +192,7 @@ DIR: project path."
     (unless proj-file
       (if (fc-yes-no "Project not exists, run wizard to create one")
           (fc--proj-add (fc-proj-wizard
-                         (read-directory-name "Project directory : "))))
+                         (read-directory-name "Project directory"))))
       (cl-return-from fc-proj-open))
 
     (let ((proj (fc-first *fc-projects*
@@ -227,8 +228,8 @@ DIR: project path."
 
 (cl-defun fc-proj-switch ()
   (fc--proj-set (fc-select "Projects"
-                    (fc-map *fc-projects*
-                      (cons (fc-string it) it)))))
+                  (fc-map *fc-projects*
+                    (cons (fc-string it) it)))))
 
 (cl-defun fc-proj-edit-property (proj prop)
   (let* ((vstr (read-string (format "Edit [%s] : " prop)
@@ -287,8 +288,8 @@ DIR: project path."
 (defun fc-user-select-project ()
   "Allow user to select project."
   (let ((proj (fc-select (format "Project <%s>" *fc-project-name*)
-                  (fc-map *fc-projects*
-                    (cons (fc-proj--get it :name) it)))))
+                (fc-map *fc-projects*
+                  (cons (fc-proj--get it :name) it)))))
     (when proj
       (fc--proj-set proj))))
 
@@ -306,8 +307,8 @@ DIR: project path."
               (files (fc-filter recentf-list
                        (string-prefix-p root it))))
     (find-file (fc-select "Project recentf"
-                   (fc-map files
-                     (cons (file-relative-name it root) it))))
+                 (fc-map files
+                   (cons (file-relative-name it root) it))))
     (cl-return-from fc-proj-recentf))
 
   (message "No project or recent files !!!"))

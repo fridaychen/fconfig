@@ -117,7 +117,7 @@ TRACK: current track name."
 (defun fc-player-user-select ()
   (setf *fc-player*
         (fc-select "Select player"
-            (fc-player--get-players)
+          (fc-player--get-players)
           :conv #'fc-string)))
 
 (provide 'fc-player)

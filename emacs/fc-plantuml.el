@@ -67,7 +67,8 @@
 
 (cl-defun fc--insert-component-note ()
   "Return note command."
-  (fc-select "Note type" '("top" "left" "right" "bottom")))
+  (fc-select "Note type"
+    '("top" "left" "right" "bottom")))
 
 (fc-load 'ob-async
   :after (add-hook 'ob-async-pre-execute-src-block-hook

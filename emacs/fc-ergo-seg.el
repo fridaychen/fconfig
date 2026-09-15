@@ -22,7 +22,8 @@
   (bound-and-true-p fc-proj-name))
 
 (defun fc-user-select-theme-mode ()
-  (when-let* ((mode (fc-select "Theme mode" '(dark deep-dark light))))
+  (when-let* ((mode (fc-select "Theme mode"
+                      '(dark deep-dark light))))
     (setf *fc-theme-mode* mode)
 
     (fc-ergo-load-theme)))

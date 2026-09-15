@@ -4,7 +4,7 @@
 ;;
 
 ;;; Code:
-(let ((repo (read-directory-name "Select git repository : ")))
+(let ((repo (read-directory-name "Select git repository")))
   (when (and (not (null repo))
              (file-exists-p repo)
              (file-exists-p (concat repo "/.git")))

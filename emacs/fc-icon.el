@@ -11,7 +11,7 @@
                             (c-mode . "🌊")
                             (c-ts-mode . "🌊")
                             (cc-mode . "🌊")
-                            (cc-ts-mode . "🌊")
+                            (c++-ts-mode . "🌊")
                             (cmake-ts-mode . "🍄")
 
                             (calc-mode . "🧮")

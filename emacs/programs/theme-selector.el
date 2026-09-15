@@ -5,16 +5,16 @@
 
 ;;; Code:
 (let* ((theme (fc-select "Themes"
-                         (custom-available-themes)))
+                (custom-available-themes)))
 
        (mode-theme (if *fc-enable-sml*
                        (fc-select "Mode line themes"
-                                  '(smart-mode-line-powerline
-                                    smart-mode-line-light-powerline))
+                         '(smart-mode-line-powerline
+                           smart-mode-line-light-powerline))
                      nil))
 
        (modeline-separator (fc-select "Mode separator"
-                                      '(arrow arrow-fade bar box brace butt chamfer contour curve rounded roundstub slant wave zigzag))))
+                             '(arrow arrow-fade bar box brace butt chamfer contour curve rounded roundstub slant wave zigzag))))
 
   (if (fc-void-p modeline-separator)
       (setf modeline-separator (symbol-name powerline-default-separator)))

@@ -13,7 +13,7 @@ COLLECTION: cadidates collection.
 ALWAYS: always ask use to select.
 CONV: convert items of collection into strings.
 INIT: initial input."
-  (declare (indent 2))
+  (declare (indent 1))
   (when (and (not always)
              (= (if (hash-table-p collection)
                     (hash-table-count collection)
@@ -43,7 +43,8 @@ COLLECTION: cadidates collection."
     (fc-funcall func)))
 
 (cl-defun fc-select-color (prompt &key always (colors (defined-colors)))
-  (when-let* ((color (fc-select prompt colors
+  (when-let* ((color (fc-select prompt
+                       colors
                        :always t
                        :conv (lambda (x)
                                (concat
@@ -66,7 +67,8 @@ POP: show the selected buffer side-by-side.
 ONE: only request one buffer.
 ERROR-MSG: error message."
   (when-let* ((bufs (fc--list-buffer pred :one one))
-              (buf (fc-select prompt bufs
+              (buf (fc-select prompt
+                     bufs
                      :conv (lambda (x)
                              (if relative
                                  (file-relative-name (buffer-file-name x)

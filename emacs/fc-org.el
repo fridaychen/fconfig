@@ -126,6 +126,9 @@
   (fc-set-face 'org-todo nil
                :weight 'semibold
                :inverse-video t)
+  (fc-set-face 'org-done nil
+               :weight 'semibold
+               :strike-through t)
 
   (when (and *is-gui* *fc-enable-font-to-align-table*)
     (let* ((family *fc-enable-font-to-align-table*)
@@ -607,9 +610,9 @@ LANG: language."
    "#+date: " (or date (read-string "Date : ")) "\n"
    "#+language: " (or lang
                       (fc-select "Language"
-                          `("en-US"
-                            "jp-JP"
-                            "zh-CN")))
+                        `("en-US"
+                          "jp-JP"
+                          "zh-CN")))
    "\n\n"))
 
 (cl-defun fc--org-convert-from-latex ()
@@ -763,21 +766,21 @@ LANG: language."
                                                        (read-string
                                                         "Confirm"
                                                         (fc-select "Footnote regex"
-                                                            (list
-                                                             (rx "[fn:: " (group (+ (not ?\]))) "]")
-                                                             (rx "\\footnote{" (group (+ (not ?\})))"}")
-                                                             (rx "〔【<[" (? "注") (group (+ (not ?\]))) "]>】〕")))))))
+                                                          (list
+                                                           (rx "[fn:: " (group (+ (not ?\]))) "]")
+                                                           (rx "\\footnote{" (group (+ (not ?\})))"}")
+                                                           (rx "〔【<[" (? "注") (group (+ (not ?\]))) "]>】〕")))))))
       ("Convert footnote (to inline)"	. ,(fc-manual (fc--org-convert-inline-fontnote
                                                        (read-string
                                                         "Confirm"
                                                         (fc-select "Footnote regex"
-                                                            (list
-                                                             (rx (group (any "①-⒇")))
-                                                             (rx (any "（(〔【<[")
-                                                                 (group (? "注") (+ num))
-                                                                 (any "]>】〕)）"))
-                                                             (rx (group "[" (+ num) "]"))
-                                                             (rx (group "(" (+ num) ")"))))))))
+                                                          (list
+                                                           (rx (group (any "①-⒇")))
+                                                           (rx (any "（(〔【<[")
+                                                               (group (? "注") (+ num))
+                                                               (any "]>】〕)）"))
+                                                           (rx (group "[" (+ num) "]"))
+                                                           (rx (group "(" (+ num) ")"))))))))
       ("Convert from latex"		. fc--org-convert-from-latex)
       ("Convert from markdown"		. fc--org-convert-from-markdown)
       ("Convert markdown verse"		. fc--org-convert-mk-verse)

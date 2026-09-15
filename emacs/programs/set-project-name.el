@@ -4,8 +4,8 @@
 ;;
 
 ;;; Code:
-(let* ((dir (read-directory-name "Input directory : "))
-       (name (read-string "Project name : "))
+(let* ((dir (read-directory-name "Input directory"))
+       (name (read-string "Project name"))
        (path (concat dir "/.dir-locals.el"))
        (is-exists (file-exists-p path)))
   (with-current-buffer (get-buffer-create (find-file path))

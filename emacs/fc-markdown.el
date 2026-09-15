@@ -108,9 +108,9 @@ LANG: language."
           "date: " (or date (read-string "Date : ")) "\n"
           "language: " (or lang
                            (fc-select "Language"
-                               `("en-US"
-                                 "jp-JP"
-                                 "zh-CN")))
+                             `("en-US"
+                               "jp-JP"
+                               "zh-CN")))
           "\n"
           "---\n"))
 

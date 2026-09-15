@@ -123,6 +123,10 @@
   (fc--enhance-face-contrast 'org-link 0.6)
   (fc--enhance-face-contrast 'org-todo 0.6)
 
+  (fc-set-face 'org-todo nil
+               :weight 'semibold
+               :inverse-video t)
+
   (when (and *is-gui* *fc-enable-font-to-align-table*)
     (let* ((family *fc-enable-font-to-align-table*)
            (fontset (fc-create-fontset "orgalign" family "spacing=m")))

@@ -6,8 +6,10 @@
 ;;; Code:
 (require 'cl-lib)
 
+(defvar *fc-enable-ggtags* nil)
+
 (fc-load 'ggtags
-  :autoload t
+  :enable *fc-enable-ggtags*
   :before (progn
             (autoload #'ggtags-visit-project-root "ggtags"))
 
@@ -34,6 +36,10 @@ SRC-DIRS: source code directories."
   (interactive)
 
   (ggtags-create-tags (fc-proj-root)))
+
+(fc-load 'gtags-mode
+  :after (progn
+           (add-hook 'prog-mode-hook #'gtags-mode)))
 
 (provide 'fc-global)
 

@@ -128,7 +128,9 @@
                :inverse-video t)
   (fc-set-face 'org-done nil
                :weight 'semibold
-               :strike-through t)
+               :strike-through nil)
+  (fc-set-face 'org-headline-done nil
+               :strike-through nil)
 
   (when (and *is-gui* *fc-enable-font-to-align-table*)
     (let* ((family *fc-enable-font-to-align-table*)

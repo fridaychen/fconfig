@@ -124,9 +124,11 @@
   (fc--enhance-face-contrast 'org-todo 0.6)
 
   (fc-set-face 'org-todo nil
+               :height 0.75
                :weight 'semibold
                :inverse-video t)
   (fc-set-face 'org-done nil
+               :height 0.75
                :weight 'semibold
                :strike-through nil)
   (fc-set-face 'org-headline-done nil
@@ -214,7 +216,7 @@
 (fc-load 'org
   :after (progn
            (setf org-hide-emphasis-markers t
-                 org-log-done t
+                 org-log-done nil
                  org-log-into-drawer "LOGBOOK"
                  org-export-with-sub-superscripts nil
                  org-src-ask-before-returning-to-edit-buffer nil
@@ -493,6 +495,7 @@ PRE-FORMAT: format the block content."
     (fc-replace-regexp (rx bol "*" (group (+ nonl)) (+ "\n")
                            (group (or (seq (+ alpha) ":")
                                       ":PROPERTIES"
+                                      ":LOGBOOK"
                                       (seq (* space) "CLOSED:"))))
                        "*\\1\n\\2" :from-start t)))
 

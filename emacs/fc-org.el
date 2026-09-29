@@ -312,12 +312,15 @@ import numpy as np
 
              (electric-indent-local-mode -1)
 
-             (org-superstar-mode 1)
+             (if (fc-bool (fc--org-get-file-property "MONO-FONT"))
+                 (setf org-superstar-remove-leading-stars t
+                       org-indent-mode-turns-on-hiding-stars nil
+                       org-hide-leading-stars nil)
+               (when-let* ((face *fc-reading-face*))
+                 (setf buffer-face-mode-face *fc-reading-face*)
+                 (buffer-face-mode 1)))
 
-             (when-let* ((face *fc-reading-face*)
-                         (force-mono (not (fc-bool (fc--org-get-file-property "MONO-FONT")))))
-               (setf buffer-face-mode-face *fc-reading-face*)
-               (buffer-face-mode 1))
+             (org-superstar-mode 1)
 
              (fc-idle-delay-task (lambda ()
                                    (when (and (not (fc--org-capture-p)) *fc-auto-hide*)
@@ -481,23 +484,27 @@ PRE-FORMAT: format the block content."
 
 (cl-defun fc--org-fix-headline-spacing ()
   "Fix headline spacing."
-  (save-excursion
-    (fc-replace-regexp (rx (group (not "\n")) "\n" "*")
-                       "\\1\n\n*"
-                       :from-start t)
+  (org-save-outline-visibility t
+    (save-excursion
+      (fc-replace-regexp (rx (group (not "\n")) (>= 3 "\n"))
+                         "\\1\n\n"
+                         :from-start t)
 
-    (fc-replace-regexp (rx (group (not "\n")) "\n" "\n" (+ "\n") (group (not "\n")))
-                       "*\\1\n\n\\2" :from-start t)
+      (fc-replace-regexp (rx (group (not "\n")) "\n" "\n" (+ "\n") (group (not "\n")))
+                         "*\\1\n\n\\2"
+                         :from-start t)
 
-    (fc-replace-regexp (rx line-start "*" (group (+ nonl)) "\n" (group nonl))
-                       "*\\1\n\n\\2" :from-start t)
+      (fc-replace-regexp (rx bol "*" (group (+ nonl)) "\n" (group (not (any ":\n"))))
+                         "*\\1\n\n\\2"
+                         :from-start t)
 
-    (fc-replace-regexp (rx bol "*" (group (+ nonl)) (+ "\n")
-                           (group (or (seq (+ alpha) ":")
-                                      ":PROPERTIES"
-                                      ":LOGBOOK"
-                                      (seq (* space) "CLOSED:"))))
-                       "*\\1\n\\2" :from-start t)))
+      (fc-replace-regexp (rx bol "*" (group (+ nonl)) (>= 2 "\n")
+                             (group (or (seq (+ alpha) ":")
+                                        ":PROPERTIES"
+                                        ":LOGBOOK"
+                                        (seq (* space) "CLOSED:"))))
+                         "*\\1\n\\2"
+                         :from-start t))))
 
 (cl-defun fc--org-fix-math ()
   "Fix math."

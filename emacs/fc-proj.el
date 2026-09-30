@@ -227,6 +227,10 @@ DIR: project path."
     (run-hooks '*fc-project-hook*)))
 
 (cl-defun fc-proj-switch ()
+  (when (null (cdr *fc-projects*))
+    (message "Only one project!")
+    (cl-return-from fc-proj-switch))
+
   (fc--proj-set (fc-select "Projects"
                   (fc-map *fc-projects*
                     (cons (fc-string it) it)))))

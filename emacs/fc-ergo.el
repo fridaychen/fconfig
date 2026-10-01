@@ -1046,8 +1046,11 @@ KEYMAP: keymap to run."
   (cond
    ((fc--lsp-descripbe-function))
 
+   (citre-mode
+    (citre-peek))
+
    (t
-    (describe-function))))
+    (describe-function (intern (fc-current-thing :ask nil))))))
 
 (defvar *fc-quick-attention* nil)
 
@@ -1365,7 +1368,7 @@ STEP: pixels."
 (cl-defun fc--select-bookmark (&key (prompt "Select bookmark"))
   (fc-select
       prompt
-      (mapcar #'car (bookmark-maybe-sort-alist))))
+    (mapcar #'car (bookmark-maybe-sort-alist))))
 
 (cl-defun fc--add-bookmark ()
   (interactive)
@@ -1689,9 +1692,7 @@ AUTO: auto select face."
                                  (_ . ,(fc-manual (text-scale-set 0)))))))
    ("_" ,(fc-cond-key :normal #'fc-list-bookmark
                       :prefix #'fc-edit-bookmark-annotation))
-   ("." ,(fc-cond-key :normal (fc-mode-key
-                               `((citre-mode . citre-jump)
-                                 (_ . fc-find-definitions)))
+   ("." ,(fc-cond-key :normal #'fc-find-definitions
                       :region #'move-text-up))
    ("," ,(fc-cond-key :normal #'fc-find-references
                       :region #'move-text-down))

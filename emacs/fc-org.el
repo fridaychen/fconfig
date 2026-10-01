@@ -303,10 +303,6 @@ import numpy as np
                (org-update-statistics-cookies t)))
 
            (cl-defun fc--org-setup ()
-             (when (and *is-gui*
-                        (fboundp #'pixel-scroll-precision-mode))
-               (pixel-scroll-precision-mode 1))
-
              (setf indent-tabs-mode nil
                    tab-width 8)
 

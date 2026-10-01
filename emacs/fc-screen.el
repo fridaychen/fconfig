@@ -24,6 +24,9 @@
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
 
+  (when (fboundp #'pixel-scroll-precision-mode)
+    (pixel-scroll-precision-mode 1))
+
   (setq-default indicate-buffer-boundaries 'left
                 indicate-empty-lines 1)
 

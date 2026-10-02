@@ -1044,10 +1044,7 @@ KEYMAP: keymap to run."
 (cl-defun fc-describe-function ()
   "Describe function."
   (cond
-   ((fc--lsp-descripbe-function))
-
-   (citre-mode
-    (citre-peek))
+   ((fc-tag-describe))
 
    (t
     (describe-function (intern (fc-current-thing :ask nil))))))

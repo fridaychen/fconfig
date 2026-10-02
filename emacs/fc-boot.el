@@ -51,7 +51,6 @@
                                  (c-ts-mode . fc-clang)
                                  (c++-mode . fc-clang)
                                  (emacs-lisp-mode . fc-elisp)
-                                 (go-mode . fc-golang)
                                  (go-ts-mode . fc-golang)
                                  (janet-ts-mode . fc-janet)
                                  (haskell-mode . fc-haskell)
@@ -66,7 +65,6 @@
   (fc-add-tag 'python-ts-mode *fc-tag-eglot*))
 
 (with-eval-after-load 'fc-golang
-  (fc-add-tag 'go-mode *fc-tag-eglot*)
   (fc-add-tag 'go-ts-mode *fc-tag-eglot*))
 
 (cl-defun fc--load-mode-config ()

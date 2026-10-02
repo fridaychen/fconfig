@@ -22,7 +22,7 @@
    *fc-func-mode-map*)
   "KEYS a i: add import  g i: goto imports  r: run.")
 
-(defun fc--go-mode-func ()
+(defun fc--go-ts-mode-func ()
   "Mode func."
   (fc-modal-head-key "Golang" '*fc-golang-map*))
 
@@ -35,7 +35,6 @@
 
            (add-hook 'go-ts-mode-hook #'fc--go-setup)
 
-           (fc-add-fmt 'go-mode nil #'gofmt)
            (fc-add-fmt 'go-ts-mode nil #'gofmt)))
 
 (provide 'fc-golang)

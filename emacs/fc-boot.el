@@ -39,7 +39,6 @@
            (fc-require 'fc-plantuml)))
 
 (fc-require 'fc-yasnippet)
-(fc-require 'fc-global)
 (fc-load 'fc-lsp
   :local t
   :after (when *fc-lsp-mode-enable*
@@ -64,11 +63,11 @@
                                  (python-ts-mode . fc-python))))
 
 (with-eval-after-load 'fc-python
-  (fc-add-tag 'python-ts-mode *fc-tag-lsp*))
+  (fc-add-tag 'python-ts-mode *fc-tag-eglot*))
 
 (with-eval-after-load 'fc-golang
-  (fc-add-tag 'go-mode *fc-tag-lsp*)
-  (fc-add-tag 'go-ts-mode *fc-tag-lsp*))
+  (fc-add-tag 'go-mode *fc-tag-eglot*)
+  (fc-add-tag 'go-ts-mode *fc-tag-eglot*))
 
 (cl-defun fc--load-mode-config ()
   "Load config for current mode."

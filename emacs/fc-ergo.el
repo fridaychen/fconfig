@@ -1041,6 +1041,22 @@ KEYMAP: keymap to run."
   (message "Current: %s"
            (which-function)))
 
+(cl-defun fc-describe-elisp-function ()
+  "Describe elisp function."
+  (let ((func (fc-current-thing :ask nil)))
+    (if (or (null func) (zerop (length func)))
+        (fc-funcall #'describe-function)
+      (progn
+        (describe-function (intern func))))))
+
+(cl-defun fc-describe-elisp-variable ()
+  "Describe elisp variable."
+  (let ((var (fc-current-thing :ask nil)))
+    (if (or (null var) (zerop (length var)))
+        (fc-funcall #'describe-variable)
+      (progn
+        (describe-variable (intern var))))))
+
 (cl-defun fc-describe-function ()
   "Describe function."
   (cond
@@ -1077,7 +1093,7 @@ KEYMAP: keymap to run."
      ("e" describe-function)
      ("f" ,(fc-mode-key
             `(
-              (emacs-lisp-mode . describe-function)
+              (emacs-lisp-mode . fc-describe-elisp-function)
               ((latex-mode markdown-mode org-mode) . fc-ergo-which-function)
               (_ . fc-describe-function))))
      ("h" fc-modal-input)
@@ -1090,7 +1106,7 @@ KEYMAP: keymap to run."
               (org-info))))
      ("r" ,(fc-manual (fc-pop-buf "*Help*")))
      ("s" ,(fc-manual (fc-info-show *fc-info-system*)))
-     ("v" describe-variable)
+     ("v" fc-describe-elisp-variable)
      ("y" yas-describe-tables)
      ("F" describe-face)
      ("M" describe-mode))
@@ -1171,11 +1187,11 @@ KEYMAP: keymap to run."
      ("o" fc-occur-dwim)
      ("p" fc-switch-function-keys)
      ("q" ,(fc-cond-key :normal 'fc-proj-open
-                        :region 'fc-proj-query-rename
                         :proj 'fc-select-proj-func))
      ("r" ,(fc-cond-key :normal (fc-mode-key
                                  `((compilation-mode . recompile)
                                    (_ . fc-recover-revert-buffer)))
+                        :region 'fc-proj-rename
                         :region 'reverse-region))
      ("s" ,(fc-cond-key :normal 'save-buffer
                         :region 'sort-fields))

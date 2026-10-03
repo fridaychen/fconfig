@@ -357,24 +357,13 @@ DIR: project path."
     (dired-toggle-marks)
     (fc-funcall 'dired-do-find-regexp-and-replace)))
 
-(cl-defun fc-proj-query-replace-with-ggtags ()
-  (let* ((name (fc-proj-name))
-         (from-prompt (format "Replace in {%s} from: " name))
-         (to-prompt (format "Replace in {%s} to: " name)))
-    (ggtags-query-replace
-     (read-string from-prompt (fc-current-thing :ask nil))
-     (read-string to-prompt))))
-
-(cl-defun fc-proj-query-rename ()
+(cl-defun fc-proj-rename ()
   (interactive)
 
-  (when (fc--lsp-active-p)
-    (fc--lsp-rename)
-    (cl-return-from fc-proj-query-rename))
+  (when (fc-tag-rename)
+    (cl-return-from fc-proj-rename))
 
-  (fc-funcall (pcase fc-proj-tag
-                ('global #'fc-proj-query-replace-with-ggtags)
-                (_ #'fc-proj-query-replace-with-dired))))
+  (fc-funcall #'fc-proj-query-replace-with-dired))
 
 (defvar *fc-project-hook* nil)
 (defvar *fc-project-name* "Nul")

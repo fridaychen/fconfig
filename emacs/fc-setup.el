@@ -38,7 +38,6 @@
          fantom-theme
          flycheck
          fireplace
-         ggtags
          google-this
          gruvbox-theme
          haskell-mode

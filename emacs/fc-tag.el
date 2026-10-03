@@ -68,14 +68,18 @@
   (when-let* ((tag (fc-find-tag)))
     (fc-tag--list tag)))
 
-(defun fc-tag-describe ()
+(defun fc-tag-describe-at-point ()
   (when-let* ((tag (fc-find-tag)))
-    (fc-tag--describe tag)
-    t))
+    (fc-tag--describe-at-point tag)))
 
 (defun fc-tag-info ()
   (when-let* ((tag (fc-find-tag)))
     (fc-tag--info tag)))
+
+(cl-defun fc-tag-rename ()
+  (when-let* ((tag (fc-find-tag)))
+    (cl-return-from fc-tag-rename (fc-tag--rename tag)))
+  nil)
 
 (cl-defun fc-add-tag (mode tag-instance)
   (puthash mode tag-instance *fc--tag-map*))

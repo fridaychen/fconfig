@@ -72,8 +72,6 @@ PREV: previous function."
      (kill-buffer it))))
 
 (fc-each '(compilation-mode
-           ggtags-global-mode
-           ggtags-navigation-mode
            grep-mode
            occur-mode
            xref--xref-buffer-mode)

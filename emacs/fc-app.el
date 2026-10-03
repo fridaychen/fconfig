@@ -921,7 +921,7 @@ REST: commands."
      ("load error file"   . fc-proj-load-compilation-error)
      ("open"              . fc-proj-open)
      ("property"          . fc-proj-select-property-to-edit)
-     ("rename"            . fc-proj-query-rename)
+     ("rename"            . fc-proj-rename)
      ("refresh"           . ,(lambda () (fc--run-multi-buffer
                                          (fc-proj-root)
                                          (lambda ()

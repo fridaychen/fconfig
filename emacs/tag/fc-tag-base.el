@@ -32,6 +32,12 @@
 (cl-defmethod fc-tag--info ((x fc-tag))
   (message "info is not implemented"))
 
+(cl-defmethod fc-tag--rename ((x fc-tag))
+  (message "rename is not implemented"))
+
+(cl-defmethod fc-tag--update ((x fc-tag))
+  (message "update is not implemented"))
+
 (provide 'fc-tag-base)
 
 ;; Local Variables:

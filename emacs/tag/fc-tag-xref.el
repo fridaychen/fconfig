@@ -8,7 +8,6 @@
   ())
 
 (cl-defmethod fc-tag--find-definitions ((x fc-tag-xref) id)
-  (set-text-properties 0 1 '(identifier-at-point t) id)
   (xref-find-definitions id))
 
 (cl-defmethod fc-tag--find-apropos ((x fc-tag-xref) pattern)

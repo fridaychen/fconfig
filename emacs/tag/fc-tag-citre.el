@@ -20,10 +20,12 @@
            (add-hook '*fc-ergo-restore-hook* #'citre-peek-abort)
 
            (setf citre-auto-enable-citre-mode-modes nil
-                 citre-enable-imenu-integration nil
                  citre-completion-use-cache t
                  citre-default-create-tags-file-location 'global-cache
                  citre-tags-file-global-cache-dir *fc-citre-tag-dir*)
+
+           (setq-default citre--global-dbpath *fc-citre-global-dir*
+                         citre-enable-imenu-integration nil)
 
            (fc-bind-keys `(("<mouse-4>" citre-peek-prev-line)
                            ("<mouse-5>" citre-peek-next-line)
@@ -37,7 +39,6 @@
   ())
 
 (cl-defmethod fc-tag--open-file ((x fc-tag-citre))
-  (setq-local citre--global-dbpath (expand-file-name "citre/gtags/" user-emacs-directory))
   (citre-mode 1))
 
 (cl-defmethod fc-tag--find-references ((x fc-tag-citre) id)

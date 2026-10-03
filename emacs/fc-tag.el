@@ -13,7 +13,12 @@
 (require 'fc-tag-eglot)
 (require 'fc-tag-global)
 
-(defvar *fc--tag-map* (make-hash-table))
+(defvar *fc--mode-tag-map* (make-hash-table))
+(defconst *fc--name-tag-map* (fc-make-hash-table
+                              `((citre ,*fc-tag-citre*)
+                                (eglot ,*fc-tag-eglot*)
+                                (global ,*fc-tag-global*)
+                                )))
 
 (cl-defun fc-find-definitions (&key apropos)
   (interactive)
@@ -34,15 +39,14 @@
       (fc-tag-find-references sym))))
 
 (cl-defun fc-find-tag ()
-  (when-let* ((instance (gethash major-mode *fc--tag-map*)))
+  (when-let* ((instance (gethash major-mode *fc--mode-tag-map*)))
     (cl-return-from fc-find-tag instance))
 
-  (when (boundp 'fc-proj-tag)
-    (pcase fc-proj-tag
-      ('citre *fc-tag-citre*)
-      ('eglot *fc-tag-eglot*)
-      ('global *fc-tag-global*)
-      (_ (message "Unknown tag: %s" fc-proj-tag)))))
+  (when-let ((use-tag (boundp 'fc-proj-tag))
+             (tag (gethash fc-proj-tag *fc--name-tag-map*)))
+    (cl-return-from fc-find-tag (car tag)))
+
+  (message "Unknown tag: %s" fc-proj-tag))
 
 (defun fc-tag-find-definitions (id)
   (when-let* ((tag (fc-find-tag)))
@@ -68,17 +72,21 @@
   (when-let* ((tag (fc-find-tag)))
     (fc-tag--list tag)))
 
-(defun fc-tag-describe ()
+(defun fc-tag-describe-at-point ()
   (when-let* ((tag (fc-find-tag)))
-    (fc-tag--describe tag)
-    t))
+    (fc-tag--describe-at-point tag)))
 
 (defun fc-tag-info ()
   (when-let* ((tag (fc-find-tag)))
     (fc-tag--info tag)))
 
+(cl-defun fc-tag-rename ()
+  (when-let* ((tag (fc-find-tag)))
+    (cl-return-from fc-tag-rename (fc-tag--rename tag)))
+  nil)
+
 (cl-defun fc-add-tag (mode tag-instance)
-  (puthash mode tag-instance *fc--tag-map*))
+  (puthash mode tag-instance *fc--mode-tag-map*))
 
 (fc-add-to-hook 'after-change-major-mode-hook
                 #'(lambda ()
@@ -90,7 +98,7 @@
                              (eq major-mode 'minibuffer-inactive-mode))
                       (hack-local-variables))))
 
-(puthash 'emacs-lisp-mode *fc-tag-xref* *fc--tag-map*)
+(puthash 'emacs-lisp-mode *fc-tag-xref* *fc--mode-tag-map*)
 
 (provide 'fc-tag)
 

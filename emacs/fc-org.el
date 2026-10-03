@@ -56,7 +56,7 @@
             'org-cliplink
             'valign)
 
-(fc-load 'org-superstar)
+;; (fc-load 'org-superstar)
 
 (cl-defun fc--org-clock-out ()
   "Clock out current task."
@@ -99,6 +99,7 @@
   (fc--org-get-file-property "COVER"))
 
 (cl-defun fc--org-before-theme-changed ()
+  (cl-return-from fc--org-before-theme-changed)
   (when (facep 'org-superstar-header-bullet)
     (fc-set-face 'org-superstar-header-bullet nil
                  :foreground 'unspecified)
@@ -107,6 +108,7 @@
 
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
+  (cl-return-from fc--org-theme-changed)
   (fc-set-face 'org-agenda-structure nil
                :height 1.1)
   (fc-set-face 'org-agenda-date nil
@@ -226,7 +228,7 @@
                  org-fontify-emphasized-text t
                  org-fontify-quote-and-verse-blocks t
                  org-fontify-whole-heading-line t
-                 org-superstar-headline-bullets-list '(?⏹ ?● ?○ ?▶ ?▷)
+                 ;; org-superstar-headline-bullets-list '(?⏹ ?● ?○ ?▶ ?▷)
                  org-imenu-depth 4
                  )
 
@@ -309,21 +311,23 @@ import numpy as np
              (electric-indent-local-mode -1)
 
              (if (fc-bool (fc--org-get-file-property "MONO-FONT"))
-                 (setf org-superstar-remove-leading-stars t
-                       org-indent-mode-turns-on-hiding-stars nil
-                       org-hide-leading-stars nil)
+                 (setf ;; org-superstar-remove-leading-stars t
+                  org-indent-mode-turns-on-hiding-stars nil
+                  org-hide-leading-stars nil)
                (when-let* ((face *fc-reading-face*))
                  (setf buffer-face-mode-face *fc-reading-face*)
                  (buffer-face-mode 1)))
 
-             (org-superstar-mode 1)
+             ;; (org-superstar-mode 1)
 
-             (fc-idle-delay-task (lambda ()
-                                   (when (and (not (fc--org-capture-p)) *fc-auto-hide*)
-                                     (fc--org-hide-all)
-                                     (unless (zerop (fc-line-num))
-                                       (fc-hs-toggle))))
-                                 0.2)
+             (if (fc-bool (fc--org-get-file-property "GTD"))
+                 (org-show-todo-tree 0)
+               (fc-idle-delay-task (lambda ()
+                                     (when (and (not (fc--org-capture-p)) *fc-auto-hide*)
+                                       (fc--org-hide-all)
+                                       (unless (zerop (fc-line-num))
+                                         (fc-hs-toggle))))
+                                   0.3))
 
              (setq prettify-symbols-alist
                    (fc-concat '((":PROPERTIES:" . "»")

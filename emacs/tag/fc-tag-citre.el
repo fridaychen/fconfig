@@ -46,7 +46,7 @@
    x
    (propertize id 'citre-xref-symbol-buffer (current-buffer))))
 
-(cl-defmethod fc-tag--describe ((x fc-tag-citre))
+(cl-defmethod fc-tag--describe-at-point ((x fc-tag-citre))
   (fc-funcall #'citre-peek))
 
 (cl-defmethod fc-tag--info ((x fc-tag-citre))
@@ -54,6 +54,10 @@
            (citre-backend-usable-p 'global)
            (citre-backend-usable-p 'tags)
            (citre-backend-usable-p 'eglot)))
+
+(cl-defmethod fc-tag--update ((x fc-tag-citre))
+  (citre-create-tags-file)
+  (citre-global-update-file))
 
 (defvar *fc-tag-citre* (make-instance 'fc-tag-citre))
 

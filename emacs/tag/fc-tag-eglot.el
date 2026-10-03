@@ -66,8 +66,14 @@
   (when (derived-mode-p 'prog-mode)
     (eglot-ensure)))
 
-(cl-defmethod fc-tag--describe ((x fc-tag-eglot))
+(cl-defmethod fc-tag--describe-at-point ((x fc-tag-eglot))
   (fc-funcall #'eldoc-box-help-at-point))
+
+(cl-defmethod fc-tag--info ((x fc-tag-eglot))
+  (eglot-describe-connection))
+
+(cl-defmethod fc-tag--rename ((x fc-tag-eglot))
+  (fc-funcall #'eglot-rename))
 
 (defvar *fc-tag-eglot* (make-instance 'fc-tag-eglot))
 

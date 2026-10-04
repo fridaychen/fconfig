@@ -56,7 +56,10 @@
             'org-cliplink
             'valign)
 
-;; (fc-load 'org-superstar)
+(fc-load 'org-modern
+  :after (progn
+           (global-org-modern-mode)
+           ))
 
 (cl-defun fc--org-clock-out ()
   "Clock out current task."
@@ -99,16 +102,11 @@
   (fc--org-get-file-property "COVER"))
 
 (cl-defun fc--org-before-theme-changed ()
-  (cl-return-from fc--org-before-theme-changed)
-  (when (facep 'org-superstar-header-bullet)
-    (fc-set-face 'org-superstar-header-bullet nil
-                 :foreground 'unspecified)
-    (fc-set-face 'org-superstar-leading nil
-                 :foreground 'unspecified)))
+  "Update color before theme changed."
+  )
 
 (cl-defun fc--org-theme-changed ()
   "Update color after theme changed."
-  (cl-return-from fc--org-theme-changed)
   (fc-set-face 'org-agenda-structure nil
                :height 1.1)
   (fc-set-face 'org-agenda-date nil
@@ -118,23 +116,16 @@
   (fc-set-face 'org-agenda-date-weekend nil
                :height 1.1)
 
+  (fc-set-face 'org-level-1 nil :height 1.1)
+  (fc-set-face 'org-level-2 nil :height 1.05)
+  (fc-set-face 'org-level-3 nil :height 1.01)
+
   (fc-set-face 'org-block nil
                :family (fc-get-face 'default :family))
 
   (fc--enhance-face-contrast 'org-table 0.6)
   (fc--enhance-face-contrast 'org-link 0.6)
   (fc--enhance-face-contrast 'org-todo 0.6)
-
-  (fc-set-face 'org-todo nil
-               :height 0.75
-               :weight 'semibold
-               :inverse-video t)
-  (fc-set-face 'org-done nil
-               :height 0.75
-               :weight 'semibold
-               :strike-through nil)
-  (fc-set-face 'org-headline-done nil
-               :strike-through nil)
 
   (when (and *is-gui* *fc-enable-font-to-align-table*)
     (let* ((family *fc-enable-font-to-align-table*)
@@ -149,65 +140,7 @@
       (fc-set-face 'org-table nil
                    :family family
                    :fontset fontset)))
-
-  (when-let* ((has-face (facep 'org-superstar-header-bullet))
-              (no-color (not (color-defined-p (face-attribute
-                                               'org-superstar-header-bullet
-                                               :foreground))))
-              (fg (fc-get-face 'font-lock-keyword-face
-                               :foreground)))
-    (fc-set-face 'org-superstar-header-bullet nil
-                 :foreground fg)
-    (fc-set-face 'org-superstar-leading nil
-                 :foreground fg))
-
-  (cond
-   ((fc-dark-theme-p)
-    (fc-set-face 'org-level-1 nil
-                 :overline "#efcab2"
-                 :foreground "#c7c3cb"
-                 :background "#3d2a2d")
-    (fc-set-face 'org-level-2 nil
-                 :overline "#efcab2"
-                 :foreground "#efcab2"
-                 :background "#3d2a2d"))
-
-   (t
-    (fc-set-face 'org-level-1 nil
-                 :overline "#A7A7A7"
-                 :foreground "#3C3C3C"
-                 :background "#F0F0F0")
-    (fc-set-face 'org-level-2 nil
-                 :overline "#123555"
-                 :foreground "#123555"
-                 :background "#E5F4FB")))
-
-  (fc-set-face 'org-level-1 nil :height 1.1)
-  (fc-set-face 'org-level-2 nil :height 1.05)
-  (fc-set-face 'org-level-3 nil :height 1.01)
-
-  (fc-each '(org-quote org-block)
-    (let ((default-bg (fc-get-face 'default :background))
-          (target-bg (fc-get-face it :background)))
-      (when (or
-             (equal target-bg default-bg)
-             (> (color-distance target-bg default-bg) 8000))
-        (fc-set-face it nil
-                     :background (color-darken-name
-                                  default-bg
-                                  (if (fc-dark-theme-p) -5 5))))))
-
-  (fc-set-face 'org-footnote
-               nil
-               :height (- *fc-font-height* 30))
-
-  (setf *fc-org-image-background* (if (fc-dark-theme-p)
-                                      "wheat2"
-                                    nil))
-
-  (plist-put org-format-latex-options :background "Transparent")
-  (plist-put org-format-latex-options
-             :foreground (fc-get-face 'font-lock-keyword-face :foreground)))
+  )
 
 (defun fc--org-set-visual-line-mode ()
   (fc--set-visual-line-mode)
@@ -228,14 +161,11 @@
                  org-fontify-emphasized-text t
                  org-fontify-quote-and-verse-blocks t
                  org-fontify-whole-heading-line t
-                 ;; org-superstar-headline-bullets-list '(?⏹ ?● ?○ ?▶ ?▷)
                  org-imenu-depth 4
                  )
 
            (plist-put org-format-latex-options :scale *fc-org-latex-preview-scale*)
            (plist-put org-format-latex-options :foreground (fc-get-face 'font-lock-keyword-face :foreground))
-
-           (fc--org-theme-changed)
 
            (fc-add-fmt 'org-mode nil 'fc--format-org)
 
@@ -310,18 +240,14 @@ import numpy as np
 
              (electric-indent-local-mode -1)
 
-             (if (fc-bool (fc--org-get-file-property "MONO-FONT"))
-                 (setf ;; org-superstar-remove-leading-stars t
-                  org-indent-mode-turns-on-hiding-stars nil
-                  org-hide-leading-stars nil)
+             (unless (fc-bool (fc--org-get-file-property "MONO-FONT"))
                (when-let* ((face *fc-reading-face*))
                  (setf buffer-face-mode-face *fc-reading-face*)
                  (buffer-face-mode 1)))
 
-             ;; (org-superstar-mode 1)
-
              (if (fc-bool (fc--org-get-file-property "GTD"))
-                 (org-show-todo-tree 0)
+                 (progn
+                   (org-show-todo-tree 0))
                (fc-idle-delay-task (lambda ()
                                      (when (and (not (fc--org-capture-p)) *fc-auto-hide*)
                                        (fc--org-hide-all)
@@ -332,10 +258,7 @@ import numpy as np
              (setq prettify-symbols-alist
                    (fc-concat '((":PROPERTIES:" . "»")
                                 (":LOGBOOK:" . "›")
-                                (":END:" . "›")
-                                ("[ ]" . ?☐)
-                                ("[X]" . ?☑)
-                                ("[-]" . ?☒))
+                                (":END:" . "›"))
                               *fc-greek-prettify-symbols*))
              (prettify-symbols-mode)
 

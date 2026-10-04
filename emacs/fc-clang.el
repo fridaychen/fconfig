@@ -229,6 +229,14 @@ END: end of region."
                   "file"
                 (fc--generate-clang-style))))
 
+           (cl-defun fc-generate-clang-format-file ()
+             (interactive)
+
+             (fc-with-buffer (get-buffer-create ".clang-format")
+               (insert (fc--generate-clang-style))
+               (write-file (format "%s/.clang-format" (fc-proj-root)))
+               (kill-buffer)))
+
            (fc-add-fmt 'c-mode #'fc-generate-clang-cmd nil)
            (fc-add-fmt 'c++-mode #'fc-generate-clang-cmd nil)
            (fc-add-fmt 'protobuf-mode #'fc-generate-clang-cmd nil)

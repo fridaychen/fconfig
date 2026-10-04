@@ -42,11 +42,9 @@
   (when-let* ((instance (gethash major-mode *fc--mode-tag-map*)))
     (cl-return-from fc-find-tag instance))
 
-  (when-let ((use-tag (boundp 'fc-proj-tag))
-             (tag (gethash fc-proj-tag *fc--name-tag-map*)))
-    (cl-return-from fc-find-tag (car tag)))
-
-  (message "Unknown tag: %s" fc-proj-tag))
+  (when-let* ((use-tag (boundp 'fc-proj-tag))
+              (tag (gethash fc-proj-tag *fc--name-tag-map*)))
+    (cl-return-from fc-find-tag (car tag))))
 
 (defun fc-tag-find-definitions (id)
   (when-let* ((tag (fc-find-tag)))

@@ -1,4 +1,4 @@
-;;; fc-flycheck.el --- setup flycheck -*- lexical-binding: t -*-
+;;; fc-diag.el --- setup flycheck -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;
@@ -32,10 +32,36 @@
                                    #'flymake-goto-next-error
                                    #'flymake-goto-prev-error)))
 
-(provide 'fc-flycheck)
+(cl-defun fc-diag-enable ()
+  (fc-with-each-buffer
+   :buffers (fc-list-buffer :mode '(prog-mode))
+   (if (bound-and-true-p eglot--managed-mode)
+       (flymake-mode 1)
+     (flycheck-mode 1))))
+
+(cl-defun fc-diag-disable ()
+  (fc-with-each-buffer
+   :buffers (fc-list-buffer :mode '(prog-mode))
+   (flycheck-mode -1)
+   (flymake-mode -1)))
+
+(cl-defun fc-diag-show ()
+  (interactive)
+
+  (cond
+   (flymake-mode
+    (fc-flymake))
+
+   (flycheck-mode
+    (fc-flycheck))
+
+   (t
+    ("No diadnostic method."))))
+
+(provide 'fc-diag)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:
 
-;;; fc-flycheck.el ends here
+;;; fc-diag.el ends here

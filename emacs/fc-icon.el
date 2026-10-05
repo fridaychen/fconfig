@@ -31,6 +31,7 @@
                             (eshell-mode . "🤖")
                             (flycheck-mode . "🪲")
                             (flycheck-error-list-mode . "🪲")
+                            (flymake-diagnostics-buffer-mode . "🪲")
                             (fundamental-mode . "📃")
                             (gnuplot-mode . "🧮")
                             (grep-mode . "🔎")

@@ -1,0 +1,15 @@
+-DSTM32H563xx
+-Wall
+-I/home/friday/Projects/rm-80/AZURE_RTOS/App
+-I/home/friday/Projects/rm-80/Core/Src
+-I/home/friday/Projects/rm-80/Core/Inc
+-I/home/friday/Projects/rm-80/NetXDuo/App
+-I/home/friday/Projects/rm-80/Drivers/BSP/Components/lan8742
+-I/home/friday/Projects/rm-80/Drivers/STM32H5xx_HAL_Driver/Inc
+-I/home/friday/Projects/rm-80/Drivers/CMSIS/Include
+-I/home/friday/Projects/rm-80/Drivers/CMSIS/Device/ST/STM32H5xx/Include
+-I/home/friday/Projects/rm-80/Middlewares/ST/threadx/common/inc
+-I/home/friday/Projects/rm-80/Middlewares/ST/threadx/ports/cortex_m33/ac6/inc
+-I/home/friday/Projects/rm-80/Middlewares/ST/netxduo/common/inc
+-I/home/friday/Projects/rm-80/Middlewares/ST/netxduo/common/drivers/ethernet
+-I/home/friday/Projects/rm-80/Middlewares/ST/netxduo/ports/cortex_m33/ac6/inc

@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - "-isystem"
+    - "/home/friday/Projects/MDR-Support/ballet4/work/mcu/tools/gcc12.3.rel1/linux/gcc-arm-none-eabi/arm-none-eabi/include"

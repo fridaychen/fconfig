@@ -181,14 +181,11 @@
 
 (fc-require 'fc-math)
 
-(fc-load 'fc-flycheck
+(fc-load 'fc-diag
   :local t
   :after (progn
-           (add-hook '*fc-enable-dev-hook*
-                     #'global-flycheck-mode)
-           (add-hook '*fc-disable-dev-hook*
-                     #'(lambda ()
-                         (global-flycheck-mode -1)))))
+           (add-hook '*fc-enable-dev-hook* #'fc-diag-enable)
+           (add-hook '*fc-disable-dev-hook* #'fc-diag-disable)))
 
 (fc-load 'fc-corfu
   :local t

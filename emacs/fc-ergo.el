@@ -1172,12 +1172,7 @@ KEYMAP: keymap to run."
 
      ("i" insert-file)
      ("j" insert-char)
-     ("k" ,(fc-manual
-            (cond
-             (flymake-mode
-              (fc-funcall #'fc-flymake))
-             (flycheck-mode
-              (fc-funcall #'fc-flycheck)))))
+     ("k" fc-diag-show)
      ("l" imenu-list-smart-toggle)
 
      ("m" fc-select-multi-buffer-func)
@@ -1859,6 +1854,7 @@ FUNC: new repeat func."
  #'fc-find-definitions
  #'fc-find-references
  #'fc-flycheck
+ #'fc-flymake
  #'fc-occur-dwim
  #'fc-switch-next-error-buffer
  #'imenu-list-smart-toggle

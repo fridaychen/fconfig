@@ -59,7 +59,11 @@ NO-CURRENT: not include current buffer in result."
          (or (not modified)
              (buffer-modified-p buf))
          (or (not mode)
-             (fc-member (buffer-local-value 'major-mode buf) mode))
+             (let ((mm (buffer-local-value 'major-mode buf)))
+               (or
+                (fc-member mm mode)
+                (fc-first mode
+                  (derived-mode-p mm it)))))
          (or (not var)
              (buffer-local-value var buf))
          (or (not no-current)

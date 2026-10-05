@@ -25,6 +25,9 @@
            (defun flymake--diagnostics-buffer-name ()
              "*Flymake errors*")
 
+           (setf flymake-start-on-flymake-mode t
+                 flymake-no-changes-timeout 3)
+
            (fc-add-next-error-mode 'flymake-diagnostics-buffer-mode
                                    #'flymake-goto-next-error
                                    #'flymake-goto-prev-error)))

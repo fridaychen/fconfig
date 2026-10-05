@@ -64,6 +64,8 @@
 
 (cl-defmethod fc-tag--open-file ((x fc-tag-eglot))
   (when (derived-mode-p 'prog-mode)
+    (flycheck-mode -1)
+    (flymake-mode 1)
     (eglot-ensure)))
 
 (cl-defmethod fc-tag--describe-at-point ((x fc-tag-eglot))

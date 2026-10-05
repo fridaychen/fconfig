@@ -251,24 +251,45 @@
 (defvar *fc--flycheck-mark*
   (fc-visible "🪲" (fc-nerd-icon ?\xf188 :inherit 'mode-line-emphasis)))
 
-(cl-defun fc--flycheck-seg()
-  "Flycheck seg."
+(cl-defun fc--diag-info()
+  "Get diag info (err warning) of current buffer."
+  (when (bound-and-true-p flymake-mode)
+    (let ((diags (flymake-diagnostics)))
+      (cl-return-from fc--diag-info
+        (list
+         (cl-count-if
+          (lambda (d)
+            (member (flymake-diagnostic-type d) '(error eglot-error)))
+          diags)
+         (cl-count-if
+          (lambda (d)
+            (member (flymake-diagnostic-type d) '(warning eglot-warning)))
+          diags)))))
+
   (when (bound-and-true-p flycheck-mode)
     (let* ((result (flycheck-count-errors flycheck-current-errors))
            (err (cdr (assoc 'error result)))
            (warning (cdr (assoc 'warning result))))
       (unless (or err warning)
-        (cl-return-from fc--flycheck-seg nil))
+        (cl-return-from fc--diag-info (list err warning))))))
 
-      (list
-       *fc--flycheck-mark*
-       (fc-text err
-                :face '(:foreground "red2" :weight bold)
-                :keys *fc-flycheck-seg-keymap*)
-       (when (and err warning)
-         "|")
-       (fc-text warning
-                :keys *fc-flycheck-seg-keymap*)))))
+(cl-defun fc--diag-seg()
+  "Flycheck seg."
+  (when-let* ((result (fc--diag-info))
+              (err (car result))
+              (warning (cadr result)))
+    (unless (or err warning)
+      (cl-return-from fc--diag-seg nil))
+
+    (list
+     *fc--flycheck-mark*
+     (fc-text err
+              :face '(:foreground "red2" :weight bold)
+              :keys *fc-flycheck-seg-keymap*)
+     (when (and err warning)
+       "|")
+     (fc-text warning
+              :keys *fc-flycheck-seg-keymap*))))
 
 (defvar *fc--side-window-mark*
   (fc-visible "👩‍💼" "SIDE"))
@@ -338,7 +359,7 @@ MSG: message."
    " "
    'global-mode-string
    current-input-method-title
-   (fc--flycheck-seg)
+   (fc--diag-seg)
    (fc--compilation-seg)
    " "))
 

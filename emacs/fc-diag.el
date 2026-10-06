@@ -33,6 +33,7 @@
                                    #'flymake-goto-prev-error)))
 
 (cl-defun fc-diag-enable ()
+  "Enable diag."
   (fc-with-each-buffer
    :buffers (fc-list-buffer :mode '(prog-mode))
    (if (bound-and-true-p eglot--managed-mode)
@@ -40,12 +41,14 @@
      (flycheck-mode 1))))
 
 (cl-defun fc-diag-disable ()
+  "Disable diag."
   (fc-with-each-buffer
    :buffers (fc-list-buffer :mode '(prog-mode))
    (flycheck-mode -1)
    (flymake-mode -1)))
 
 (cl-defun fc-diag-show ()
+  "Show diag buffer."
   (interactive)
 
   (cond
@@ -56,7 +59,7 @@
     (fc-flycheck))
 
    (t
-    ("No diadnostic method."))))
+    ("No diagnostic method."))))
 
 (provide 'fc-diag)
 

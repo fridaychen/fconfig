@@ -4,7 +4,13 @@
 ;;
 
 ;;; Code:
-(defvar *fc--next-error-map* (make-hash-table))
+(defvar *fc--next-error-map*
+  (fc-make-hash-table
+   '(
+     (compilation-mode #'next-error #'previous-error)
+     (grep-mode #'next-error #'previous-error)
+     (occur-mode #'next-error #'previous-error)
+     (xref--xref-buffer-mode #'next-error #'previous-error))))
 
 (fc-load 'simple
   :local t
@@ -70,12 +76,6 @@ PREV: previous function."
   (fc-with-each-buffer
    (when (gethash major-mode *fc--next-error-map*)
      (kill-buffer it))))
-
-(fc-each '(compilation-mode
-           grep-mode
-           occur-mode
-           xref--xref-buffer-mode)
-  (fc-add-next-error-mode it #'next-error #'previous-error))
 
 (provide 'fc-next-error)
 

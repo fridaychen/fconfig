@@ -148,6 +148,12 @@
                   :foreground "black"))
 
     ('dracula
+     (fc-set-face 'org-level-2 nil
+                  :foreground "wheat2")
+     (fc-set-face 'org-footnote nil
+                  :foreground "light green")
+     (fc-set-face 'org-table nil
+                  :foreground "cornsilk2")
      (fc-set-face 'region nil
                   :background "gray35"))
 

@@ -140,7 +140,14 @@
       (fc-set-face 'org-table nil
                    :family family
                    :fontset fontset)))
-  )
+
+  (setf *fc-org-image-background* (if (fc-dark-theme-p)
+                                      "wheat2"
+                                    nil))
+
+  (plist-put org-format-latex-options :background "Transparent")
+  (plist-put org-format-latex-options
+             :foreground (fc-get-face 'font-lock-keyword-face :foreground)))
 
 (defun fc--org-set-visual-line-mode ()
   (fc--set-visual-line-mode)

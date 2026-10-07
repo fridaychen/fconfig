@@ -11,7 +11,7 @@
 (setq-local line-spacing 0)
 (text-scale-set -5)
 
-(insert-file "~/.emacs.d/welcome.txt")
+(insert-file (expand-file-name "welcome.txt" user-emacs-directory))
 
 (provide 'fc-welcome)
 

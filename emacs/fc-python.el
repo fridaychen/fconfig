@@ -10,8 +10,7 @@
   :after (progn
            (fc-add-mode-name 'python-ts-mode "🐍")
 
-           (setf flycheck-python-flake8-executable
-                 (expand-file-name "~/.emacs.d/site/python/bin/pflake8"))
+           (setf flycheck-python-flake8-executable "pflake8")
 
            (fc-add-fmt 'python-ts-mode
                        '("fc-fmt-python.sh")

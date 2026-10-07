@@ -21,7 +21,7 @@ function fit-amend {
 }
 
 function fit-clean {
-    git clean -xdf
+    fc-user-confirm "Clean all unmanaged files" && git clean -xdf
 }
 
 function fit-current-branch {

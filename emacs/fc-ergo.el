@@ -648,19 +648,6 @@ N: number."
     (copy-file name new-name)
     (set-visited-file-name new-name)))
 
-(defun fc-rename-buffer-and-file ()
-  "Rename current file and buffer name."
-  (let ((name buffer-file-name)
-        (new-name (read-file-name "Move to : ")))
-
-    (when (fc-dir-exists-p new-name)
-      (setq new-name (concat new-name "/" (file-name-nondirectory name))))
-
-    (if (vc-backend name)
-        (vc-rename-file name new-name)
-      (rename-file name new-name)
-      (set-visited-file-name new-name))))
-
 (defun fc-goto-last-change ()
   (fc-first buffer-undo-list
     (when it
@@ -1170,7 +1157,7 @@ KEYMAP: keymap to run."
                         :proj (fc-manual (fc-proj-find-file default-directory))))
      ("h" fc-toggle-hex-mode)
 
-     ("i" insert-file)
+     ("i" )
      ("j" insert-char)
      ("k" fc-diag-show)
      ("l" imenu-list-smart-toggle)
@@ -1209,13 +1196,14 @@ KEYMAP: keymap to run."
      ("I" fc-insert-signature)
      ("J" )
      ("L" fc-screen-saver)
-     ("M" fc-rename-buffer-and-file)
      ("R" read-only-mode)
      ("S" save-some-buffers)
      ("T" ,(fc-manual (untabify (point-min) (point-max))))
      ("W" fc-forecast)
      ("X" fc-reading-toggle)
 
+     ("`" ,(fc-cond-key :normal #'fc-ergo-restore
+                        :region #'eglot-code-actions))
      (";" fc-open-in-system)
      (":" isearch-forward)
      ("'" ,(fc-cond-key :normal 'fc-show-hide-note
@@ -1349,7 +1337,6 @@ STEP: pixels."
      ("l" magit-log-buffer-file)
      ("p" fc-git-pull)
      ("q" fc-git-push)
-     ("r" fc-vc-rename-file)
      ("s" fc-git-add)
      ("u" vc-revert)
      ("v" magit-diff-buffer-file)

@@ -146,14 +146,6 @@
            ("[" diff-hl-previous-hunk)
            ("]" diff-hl-next-hunk))))
 
-(cl-defun fc-vc-rename-file ()
-  (interactive)
-
-  (let* ((old (file-relative-name buffer-file-name (fc-vc-root)))
-         (new (read-string "New file name : " old)))
-    (unless (equal old new)
-      (vc-rename-file old new))))
-
 (cl-defun fc-vc-refresh-repo-state (&rest _rest)
   "Refresh vc state for all files in current repo."
   (fc-with-each-buffer
@@ -191,13 +183,13 @@ REMOTE: select from local or remote branchs."
       (format "%s (current: %s)"
               (if remote "Remote branch" "Branch")
               (fc-git-current-branch))
-      (split-string
-       (with-temp-buffer
-         (shell-command (format "git branch %s | sed -e \"/^\\*/d\" | cut -b 3-"
-                                (if remote "-r" ""))
-                        (current-buffer))
-         (string-trim (buffer-string)))
-       "\n")))
+    (split-string
+     (with-temp-buffer
+       (shell-command (format "git branch %s | sed -e \"/^\\*/d\" | cut -b 3-"
+                              (if remote "-r" ""))
+                      (current-buffer))
+       (string-trim (buffer-string)))
+     "\n")))
 
 (cl-defun fc-vc-switch-branch ()
   "Switch to other branch."

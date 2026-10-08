@@ -878,6 +878,30 @@ REST: commands."
      ("revert"  . ,(fc-run-multi-buffer "revert" (fc-recover-revert-buffer)))
      ("refresh" . ,(fc-run-multi-buffer "refresh" (vc-refresh-state))))))
 
+;; file utilites
+(defun fc-rename-buffer-and-file ()
+  "Rename current file and buffer name."
+  (let ((name buffer-file-name)
+        (new-name (read-file-name "Move to : ")))
+
+    (when (fc-dir-exists-p new-name)
+      (setq new-name (concat new-name "/" (file-name-nondirectory name))))
+
+    (if (vc-backend name)
+        (vc-rename-file name new-name)
+      (rename-file name new-name)
+      (set-visited-file-name new-name))))
+
+(defun fc-select-file-func ()
+  "Select file function."
+  (interactive)
+
+  (fc-select-func
+   "File"
+   `(("insert" . insert-file)
+     ("rename" . fc-rename-buffer-and-file)
+     )))
+
 ;; git utilities
 (defun fc-select-git-func ()
   "Select git function."
@@ -1369,6 +1393,7 @@ END: end of region."
   (fc-select-func
    "App"
    `(
+     ("file"    . fc-select-file-func)
      ("git"	. fc-select-git-func)
      ("multi"	. fc-select-multi-buffer-func)
      ("project" . fc-select-proj-func)

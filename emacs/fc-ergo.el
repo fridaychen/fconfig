@@ -1047,7 +1047,7 @@ KEYMAP: keymap to run."
 (cl-defun fc-describe-function ()
   "Describe function."
   (cond
-   ((fc-tag-describe))
+   ((fc-tag-describe-at-point))
 
    (t
     (describe-function (intern (fc-current-thing :ask nil))))))

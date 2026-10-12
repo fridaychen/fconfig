@@ -14,6 +14,8 @@
      "* TODO Book <<%?>> :book:\n")
     ("j" "Journal" "journal.org" "Inbox"
      "* %^{Journal}\n  %T" :immediate-finish t)
+    ("p" "Personal" "personal.org" "Inbox"
+     "* TODO %? :personal:\n")
     ("s" "Study" "study.org" "Inbox"
      "* TODO Study %? :study:\n")
     ("t" "Todo" "remind.org" "Inbox"

@@ -79,14 +79,19 @@
 
                   highlight
                   hl-line
-                  vertico-current
                   )
                 :foreground 'unspecified
                 :background 'unspecified
                 :box 'unspecified
                 :underline 'unspecified
                 :overline 'unspecified
-                :slant 'unspecified))
+                :slant 'unspecified)
+
+  (fc-set-face 'vertico-current nil
+               :foreground 'unspecified
+               :background 'unspecified
+               :inherit 'highlight
+               :underline 'unspecified))
 
 (defun fc--beautify-face-type ()
   (fc-set-face 'font-lock-type-face nil :slant 'italic))
@@ -148,7 +153,6 @@
                                font-lock-property-name-face
                                font-lock-variable-name-face
 
-                               vertico-current
                                highlight)
                              level-2)
 
@@ -175,40 +179,12 @@
 
 (defun fc-beautify-theme ()
   "Beautify theme."
+  (fc-set-face 'vertico-current nil
+               :background (fc-get-face 'vertico-current :background))
+
   (fc-funcall #'fc--beautify-user-func)
 
   (run-hooks '*fc-beautify-theme-hook*))
-
-(defun fc-beautify-theme-before ()
-  (fc-set-face 'vertico-current nil
-               :foreground 'unspecified
-               :background "#4b1818"
-               :inherit 'unspecified
-               :underline 'unspecified)
-
-  (fc-set-faces '(hl-line
-                  font-lock-keyword-face
-                  font-lock-function-name-face
-
-                  font-lock-string-face
-                  font-lock-doc-face
-                  font-lock-type-face
-                  font-lock-constant-face
-                  font-lock-property-name-face
-                  font-lock-variable-name-face
-
-                  font-lock-builtin-face
-                  font-lock-comment-face
-                  font-lock-preprocessor-face
-                  font-lock-function-call-face
-                  font-lock-variable-use-face
-                  font-lock-property-use-face)
-                :foreground 'unspecified
-                :background 'unspecified
-                :box 'unspecified
-                :underline 'unspecified
-                :overline 'unspecified
-                :slant 'unspecified))
 
 (provide 'fc-theme-beautify)
 

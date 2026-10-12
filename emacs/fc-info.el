@@ -19,12 +19,15 @@ INFO: info obj."
 (defun fc-info-show (info-seq)
   "Show info.
 INFO-SEQ: list of infos."
-  (seq-mapcat #'identity
-              (cl-loop for x in info-seq
-                       collect (when (fboundp x)
-                                 (fc-info--convert
-                                  (funcall x))))
-              'string))
+  (let ((info (seq-mapcat #'identity
+                          (cl-loop for x in info-seq
+                                   collect (when (fboundp x)
+                                             (fc-info--convert
+                                              (funcall x))))
+                          'string)))
+    (if *is-gui*
+        (fc-popup-info info :title nil :timeout 10)
+      info)))
 
 (cl-defun fc-info--file ()
   "Create file info."

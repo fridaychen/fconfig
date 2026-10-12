@@ -80,7 +80,7 @@
 ;; theme beautify
 (autoload #'fc--beautify-soothe-face "fc-theme-beautify")
 (autoload #'fc-beautify-theme "fc-theme-beautify")
-(autoload #'fc-beautify-theme-before "fc-theme-beautify")
+(autoload #'fc-beautify-theme-before-theme-changed "fc-theme-beautify")
 
 ;; util
 (autoload #'fc-has-battery "fc-util")

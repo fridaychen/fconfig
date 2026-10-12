@@ -138,15 +138,15 @@ MENU: menu."
 (require 'notifications)
 
 (defun fc--popup-posframe (name text &rest rest)
-  (seq-let (bg fg) (if (fc-dark-theme-p)
-                       '("RoyalBlue4" "PeachPuff")
-                     '("RoyalBlue3" "LightYellow"))
+  (seq-let (bg fg bc) (if (fc-dark-theme-p)
+                          '("#C1E6C6" "black" "tomato")
+                        '("DarkGreen" "LightYellow" "YellowGreen"))
     (apply #'posframe-show name
            :string text
            :background-color bg
            :foreground-color fg
            :border-width 4
-           :border-color "navy"
+           :border-color bc
            rest)))
 
 (defun fc--popup-tip (text)
@@ -179,8 +179,10 @@ TIMEOUT: buffer show timeout in seconds."
   (if (and (<= 26 emacs-major-version)
            *is-gui*)
       (let ((frame (fc--popup-posframe "*fc-info*"
-                                       (concat "[" title "]\n\n" content)
-                                       :poshandler #'posframe-poshandler-frame-center)))
+                                       (if title
+                                           (concat "[" title "]\n\n" content)
+                                         content)
+                                       :poshandler #'posframe-poshandler-frame-bottom-center)))
         (if (eq 0 timeout)
             (read-event)
           (sit-for timeout))

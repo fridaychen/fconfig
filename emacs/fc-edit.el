@@ -145,6 +145,11 @@
 (fc-load 'eldoc-box
   :enable *fc-eldoc-enable*
   :after (progn
+           (setf (alist-get 'internal-border-width eldoc-box-frame-parameters) 2)
+
+           (fc-set-face 'eldoc-box-border nil
+                        :background "tomato"
+                        :foreground "tomato")
            (add-hook '*fc-ergo-restore-hook* #'eldoc-box-quit-frame)))
 
 (defun fc-highlight-comment-keywords ()

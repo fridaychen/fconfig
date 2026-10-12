@@ -82,7 +82,7 @@
            (add-to-list '*fc-after-theme-hook* #'fc-modeline-mode t)))
 (fc-modal-enable)
 
-(add-hook '*fc-before-theme-hook* #'fc-beautify-theme-before)
+(add-hook '*fc-before-theme-hook* #'fc-beautify-theme-before-theme-changed)
 
 (fc-add-hook-func '*fc-after-theme-hook*
   #'fc-modal-after-theme-change

@@ -1162,7 +1162,7 @@ KEYMAP: keymap to run."
      ("k" fc-diag-show)
      ("l" imenu-list-smart-toggle)
 
-     ("m" fc-select-multi-buffer-func)
+     ("m" fc-rename-buffer-and-file)
      ("n" ,(fc-cond-key :normal (fc-manual (switch-to-buffer (generate-new-buffer "Untitled"))
                                            (text-mode))
                         :region 'sort-numeric-fields))
@@ -1173,8 +1173,7 @@ KEYMAP: keymap to run."
      ("r" ,(fc-cond-key :normal (fc-mode-key
                                  `((compilation-mode . recompile)
                                    (_ . fc-recover-revert-buffer)))
-                        :region 'fc-proj-rename
-                        :region 'reverse-region))
+                        :region 'fc-proj-rename))
      ("s" ,(fc-cond-key :normal 'save-buffer
                         :region 'sort-fields))
      ("t" ,(fc-cond-key :normal 'fc-show-time
@@ -1212,7 +1211,7 @@ KEYMAP: keymap to run."
                                   (fc-current-thing)))))
      )
    "ergo-quick-map")
-  "KEYS a: align  c: calc  d: dev mode  f: find file  h: hex mode  i: insert file  j: insert char  k: flycheck  l: imenu list  m: multiple  n: new buffer  o: occur  r: recover buffer  s: save  t: time  u: (un)maximize  v: tomato  w: save as  x: reading  z: flush lines  B: none  C: copy  D: open dir  F: format  I: insert signature  L: screen saver  M: rename file  R: readonly  S: save buffers  W: forecast  X: reading.")
+  "KEYS a: align  c: calc  d: dev mode  f: find file  h: hex mode  i: insert file  j: insert char  k: flycheck  l: imenu list  m: move  n: new buffer  o: occur  r: recover buffer  s: save  t: time  u: (un)maximize  v: tomato  w: save as  x: reading  z: flush lines  B: none  C: copy  D: open dir  F: format  I: insert signature  L: screen saver  M: rename file  R: readonly  S: save buffers  W: forecast  X: reading.")
 
 (cl-defmacro fc--adjust-window-size (horizontally step)
   "Adjust window size.

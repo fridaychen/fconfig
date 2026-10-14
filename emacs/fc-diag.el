@@ -59,7 +59,7 @@
     (fc-flycheck))
 
    (t
-    ("No diagnostic method."))))
+    (message "No diagnostic method."))))
 
 (provide 'fc-diag)
 

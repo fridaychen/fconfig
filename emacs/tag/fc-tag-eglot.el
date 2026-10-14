@@ -72,7 +72,9 @@ SRC-DIRS: others source code dirs."
   "Open file.
 X: tag object."
   (when (derived-mode-p 'prog-mode)
-    (eglot-ensure)))
+    (eglot-ensure))
+
+  (cl-call-next-method x))
 
 (cl-defmethod fc-tag--describe-at-point ((x fc-tag-eglot))
   "Open describe object at point.

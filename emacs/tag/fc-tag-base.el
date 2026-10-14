@@ -29,7 +29,8 @@ ID: identifier."
 (cl-defmethod fc-tag--open-file ((x fc-tag))
   "Open file.
 X: tag object."
-  )
+  (when (and *fc-dev-mode* (eq major-mode 'emacs-lisp-mode))
+    (flycheck-mode 1)))
 
 (cl-defmethod fc-tag--open-project ((x fc-tag) proj-dir src-dirs)
   "Open project.

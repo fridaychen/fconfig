@@ -49,7 +49,7 @@ INFO-SEQ: list of infos."
                (fc-string (when buffer-file-name
                             (vc-state buffer-file-name))))
               :separator ", "
-              :face 'highlight)
+              :face `(:inverse-video t :inerit default :extend t))
        "Untracked"))))
 
 (defun fc-info--buffer ()

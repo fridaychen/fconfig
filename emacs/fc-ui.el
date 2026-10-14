@@ -43,6 +43,10 @@ COLLECTION: cadidates collection."
     (fc-funcall func)))
 
 (cl-defun fc-select-color (prompt &key always (colors (defined-colors)))
+  "Select color.
+PROMPT: user prompt.
+ALWAYS: always ask use to select.
+COLORS: candidates."
   (when-let* ((color (fc-select prompt
                        colors
                        :always t
@@ -138,6 +142,10 @@ MENU: menu."
 (require 'notifications)
 
 (defun fc--popup-posframe (name text &rest rest)
+  "Popup posframe.
+NAME: buffer-or-name.
+TEXT: buffer content.
+REST: arguments for posframe-show."
   (seq-let (bg fg bc) (if (fc-dark-theme-p)
                           '("#C1E6C6" "black" "tomato")
                         '("DarkGreen" "LightYellow" "YellowGreen"))
@@ -150,6 +158,8 @@ MENU: menu."
            rest)))
 
 (defun fc--popup-tip (text)
+  "Popup user tip.
+TEXT: tip text."
   (let ((lines (seq-count (lambda (x) (eq x ?\n)) text)))
     (unless (string-suffix-p "\n" text)
       (cl-incf lines))
@@ -168,6 +178,7 @@ TIMEOUT: buffer show timeout in seconds."
     (fc--popup-tip content)))
 
 (defun fc-popup-tip-hide ()
+  "Hide tip."
   (when *is-gui*
     (posframe-hide "*fc-tip*")))
 
@@ -207,6 +218,10 @@ OS: os level or app level."
 
 ;; Overlay
 (cl-defun fc-make-overlay (beginning end &rest properties)
+  "Make a overlay.
+BEGINNING: beginning of overlay.
+END: end of overlay.
+PROPERTIES: properties for overlay."
   (let ((x (make-overlay beginning end nil t t)))
     (fc-each properties
       (apply #'overlay-put x it))

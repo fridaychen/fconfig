@@ -18,6 +18,7 @@
 (defvar *fc-face-contrast-lower-limit* '(0.6 0.56 0.52))
 
 (cl-defun fc--theme-mode ()
+  "Get theme mode, dark or light."
   (when (or (and (eq *fc-theme-mode* 'light)
                  (not (fc-dark-theme-p)))
             (xor (eq *fc-theme-mode* 'light)
@@ -29,6 +30,8 @@
     'light))
 
 (defun fc--beautify-soothe-face (faces)
+  "Soothe face.
+FACES: faces to be soothed."
   (cl-mapcar (lambda (level faces)
                (fc-each faces
                  (when (facep it)
@@ -59,6 +62,7 @@
             font-lock-doc-face)))))
 
 (defun fc-beautify-theme-before-theme-changed ()
+  "Callback before theme change."
   (fc-set-faces '(font-lock-keyword-face
                   font-lock-function-name-face
 
@@ -94,9 +98,11 @@
                :underline 'unspecified))
 
 (defun fc--beautify-face-type ()
+  "Beautify face type."
   (fc-set-face 'font-lock-type-face nil :slant 'italic))
 
 (defun fc--beautify-hl-line ()
+  "Beautify hl-line."
   (when (fc-get-face 'hl-line :foreground)
     (fc-set-face 'hl-line nil
                  :foreground 'unspecified
@@ -104,13 +110,18 @@
                  :inherit nil)))
 
 (defun fc--beautify-line-number ()
+  "Beautify line-number."
   (fc--adjust-face-fg-light 'line-number 0.3))
 
 (defun fc--beautify-face-func-name ()
+  "Beautify function-name."
   (fc-set-face 'font-lock-function-name-face nil :overline t))
 
 (defun fc--beautify-face-mode-line ()
-  (fc-set-faces '(mode-line mode-line-active mode-line-inactive)
+  "Beautify faces for mode-line."
+  (fc-set-faces '(mode-line mode-line-active mode-line-inactive mode-line-buffer-id)
+                :overline 'unspecified
+                :underline 'unspecified
                 :box 'unspecified)
   (fc-set-face 'mode-line-inactive nil
                :foreground (if (fc-dark-face-p 'mode-line-inactive)
@@ -118,9 +129,11 @@
                              "black")))
 
 (defun fc--beautify-theme-whitespace-trailing ()
+  "Beautify whitespace trailing."
   (fc--set-face-bg-light 'whitespace-trailing 0.25))
 
 (defun fc--beautify-face-default ()
+  "Beautify default."
   (fc--set-face-bg-light 'default
                          (car (alist-get (fc--theme-mode)
                                          *fc-default-face-bg-light*)))
@@ -129,10 +142,14 @@
                                          *fc-default-face-fg-light*))))
 
 (defun fc--do-enhance-contrast (faces threshold)
+  "Enhance faces.
+FACES: target faces.
+THRESHOLD: contrast threshold."
   (fc-each faces
     (fc--enhance-face-contrast it threshold)))
 
 (defun fc--beautify-enhance-contrast ()
+  "Beautify contrast."
   (cl-multiple-value-bind (level-1 level-2 level-3)
       *fc-face-contrast-lower-limit*
 
@@ -151,16 +168,16 @@
                                font-lock-type-face
                                font-lock-constant-face
                                font-lock-property-name-face
-                               font-lock-variable-name-face
-
-                               highlight)
+                               font-lock-variable-name-face)
                              level-2)
 
     (fc--do-enhance-contrast '(font-lock-doc-face
-                               font-lock-comment-face)
+                               font-lock-comment-face
+                               highlight)
                              level-3)))
 
 (defun fc--beautify-face-aw-leading ()
+  "Beautify aw-leading."
   (fc-set-face 'aw-leading-char-face nil
                :height (* *fc-font-height* 2)
                :foreground "red"))
@@ -177,7 +194,7 @@
                                        #'fc--beautify-line-number
                                        ))
 
-(defun fc-beautify-theme ()
+(defun fc-beautify-theme-after-theme-change ()
   "Beautify theme."
   (fc-set-face 'vertico-current nil
                :background (fc-get-face 'vertico-current :background))

@@ -86,7 +86,7 @@
 
 (fc-add-hook-func '*fc-after-theme-hook*
   #'fc-modal-after-theme-change
-  #'fc-beautify-theme
+  #'fc-beautify-theme-after-theme-change
   )
 
 (cl-defun fc-after-restart ()

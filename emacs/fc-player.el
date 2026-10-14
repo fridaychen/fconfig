@@ -30,6 +30,7 @@
 
 (cl-defmethod fc-player--show-metadata ((x fc-player) artist album track)
   "Show metadata to user.
+X: fc-player object.
 ARTIST: artist name.
 ALBUM: album name.
 TRACK: current track name."
@@ -43,6 +44,8 @@ TRACK: current track name."
     (message "Current track : no information")))
 
 (cl-defmethod fc-player--volume-up ((x fc-player))
+  "Volume up.
+X: fc-player object."
   (let* ((old-vol (fc-player--get-volume x))
          (new-vol (if (< 21 old-vol 80)
                       (+ old-vol (oref x vol-big-step))
@@ -54,6 +57,8 @@ TRACK: current track name."
     (message "Volume %d -> %d" old-vol new-vol)))
 
 (cl-defmethod fc-player--volume-down ((x fc-player))
+  "Volume down.
+X: fc-player object."
   (let* ((old-vol (fc-player--get-volume x))
          (new-vol (if (< 20 old-vol 81)
                       (- old-vol (oref x vol-big-step))
@@ -65,20 +70,30 @@ TRACK: current track name."
     (message "Volume %d -> %d" old-vol new-vol)))
 
 (cl-defmethod fc-player--play-pause ((x fc-player))
+  "Play-pause.
+X: fc-player object."
   (if (fc-player--playing x)
       (fc-player--show-metadata x)
     (message "%s" (fc-player--get-play-status x))))
 
 (cl-defmethod fc-player--playing ((x fc-player))
+  "Get playing state.
+X: fc-player object."
   (eq 'Playing (fc-player--get-play-status x)))
 
 (cl-defmethod fc-player--next ((x fc-player))
+  "Next song.
+X: fc-player object."
   (fc-player--show-metadata x))
 
 (cl-defmethod fc-player--previous ((x fc-player))
+  "Previous song.
+X: fc-player object."
   (fc-player--show-metadata x))
 
 (cl-defmethod fc-player--app ((x fc-player))
+  "Start player app.
+X: fc-player object."
   (message "Not implemented yet"))
 
 (add-to-list 'load-path (concat *fc-home* "/emacs/player"))

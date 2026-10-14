@@ -1,3 +1,5 @@
+;;; fc-icon.el --- Icon definitions -*- lexical-binding: t -*-
+
 ;;; Commentary:
 ;;
 
@@ -105,6 +107,8 @@ NAME: mode name."
     (error "Unknown arg %s" mode))))
 
 (defun fc-battery-icon (percent)
+  "Get battery icon.
+PERCENT: battery percentage."
   (cond
    (*is-gui*
     (cond ((>= percent 30)

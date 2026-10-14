@@ -128,6 +128,7 @@
       *fc-font-mode-line-delta* 0)
 
 (defun fc--beautify-user-func ()
+  "User function for beautifying theme."
   (fc-set-face 'highlight nil :underline 'unspecified)
 
   (pcase *fc-current-theme*
@@ -162,6 +163,8 @@
                   :background "#C1E6C6"))
 
     ('leuven-dark
+     (fc-set-face 'org-headline-done nil
+                  :foreground "gray85")
      (fc-set-face 'hl-line nil
                   :background "gray25")
      (fc-set-face 'highlight nil
@@ -171,25 +174,13 @@
     ('tango-dark
      (fc-set-face 'mode-line nil
                   :foreground "gray90"
-                  :background "gray15")
-     (fc-set-face 'hl-line nil
-                  :foreground 'unspecified
-                  :background "#023002")
-     (fc-set-face 'highlight nil
-                  :foreground "black"
-                  :background "DarkSeaGreen"))
+                  :background "gray15"))
 
     ('zenburn
      (fc-set-face 'default nil
                   :background "#263238")
-     (fc-set-face 'region nil
-                  :background "black")
-     (fc-set-face 'hl-line nil
-                  :foreground 'unspecified
-                  :background "#4b1818")
      (fc-set-face 'vertico-current nil
-                  :background "#4b1818"
-                  :underline 'unspecified))))
+                  :background "#4b1818"))))
 
 ;; players
 (cl-defun fc-init-user-player ()

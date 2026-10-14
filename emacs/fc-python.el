@@ -27,6 +27,7 @@
   "KEYS E: org edit exit  F: format.")
 
 (cl-defun fc--python-ts-mode-func ()
+  "Python ts mode user func."
   (fc-modal-head-key "Python" '*fc-python-map*))
 
 (provide 'fc-python)

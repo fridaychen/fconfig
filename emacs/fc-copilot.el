@@ -13,7 +13,7 @@
                (fc-async-exec-command-to-buffer
                 (current-buffer)
                 #'(lambda (process event)
-                    (fc-pop-buf result-buf :mode 'markdown-ts-mode :escape t))
+                    (fc-pop-buf result-buf :mode 'markdown-mode :escape t))
                 "copilot"
                 "--no-color"
                 "--continue"

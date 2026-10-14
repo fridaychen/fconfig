@@ -1195,20 +1195,24 @@ TEMPLATES: fconfig templates."
     (eq (current-buffer) (marker-buffer marker))))
 
 (cl-defun fc-org-agenda-customize (&key project)
-  (setf *fc-agenda-list*
-        (cl-loop
-         for x in project
-         append
-         `((tags-todo ,x
-                      ((org-agenda-overriding-header ,(format "Project <<%s>>:" x)))))))
+  "Customize agenda projects"
+  (let ((all-project (fc-concat project '("book" "fconfig" "personal" "study"))))
+    (setf *fc-agenda-list*
+          (cl-loop
+           for x in all-project
+           append
+           `((tags-todo ,x
+                        ((org-agenda-overriding-header ,(format "Project <<%s>>:" x))))))))
 
   (setf org-agenda-custom-commands
-        `(("x" "Study and Book-reading"
+        `(("x" "Private Agenda"
            ((agenda "")
             (tags-todo "study"
                        ((org-agenda-overriding-header "Study:")))
             (tags-todo "book"
-                       ((org-agenda-overriding-header "Book-reading:")))))
+                       ((org-agenda-overriding-header "Book:")))
+            (tags-todo "personal"
+                       ((org-agenda-overriding-header "Personal:")))))
           ("X" "My Agenda"
            ((agenda "")
             (todo "NEXT"
@@ -1220,7 +1224,7 @@ TEMPLATES: fconfig templates."
 
   (org-agenda nil "X"))
 
-(cl-defun fc-org-study-agenda ()
+(cl-defun fc-org-private-agenda ()
   (interactive)
 
   (org-agenda nil "x"))

@@ -173,10 +173,9 @@ DIR: project path."
     (fc-conf-put conf
                  (make-symbol
                   (fc-select "Select tag system"
-                    '("etags"
+                    '("citre"
+                      "eglot"
                       "global"
-                      "lsp"
-                      "xref"
                       "none")))
                  :tag)
 

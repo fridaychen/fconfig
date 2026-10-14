@@ -1015,8 +1015,10 @@ KEYMAP: keymap to run."
      ("l" org-store-link)
      ("m" org-tags-view)
      ("t" org-todo-list)
-     ("w" ,(fc-manual (fc-select-buffer "Org roam" (fc--buffer-pred :filter #'org-roam-buffer-p))))
-     ("x" fc-org-study-agenda)
+     ("w" ,(fc-manual (fc-select-buffer
+                       "Org roam"
+                       (fc--buffer-pred :filter #'org-roam-buffer-p))))
+     ("x" fc-org-private-agenda)
      )
    "ergo-gtd-map")
   "KEYS SPC: portal  a: agenda  c: capture  f: find node  j: capture node  l: store link  m: view tag  t: todo list.")

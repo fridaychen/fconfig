@@ -137,7 +137,7 @@
 
                   (add-to-list '*fc-info-buffer* #'fc-info--eldoc t)
 
-                  (setf eldoc-idle-delay 0.2)
+                  (setf eldoc-idle-delay 0.3)
 
                   (global-eldoc-mode 1)
                   (add-hook 'prog-mode-hook #'eldoc-mode)))
@@ -147,9 +147,20 @@
   :after (progn
            (setf (alist-get 'internal-border-width eldoc-box-frame-parameters) 2)
 
-           (fc-set-face 'eldoc-box-border nil
-                        :background "tomato"
-                        :foreground "tomato")
+           (cl-defun fc--eldoc-box-theme-changed ()
+             (if (fc-dark-theme-p)
+                 (fc-set-face 'eldoc-box-body nil
+                              :background "gray25")
+               (fc-set-face 'eldoc-box-body nil
+                            :background "white"))
+
+             (fc-set-face 'eldoc-box-border nil
+                          :background "DarkRed"
+                          :foreground "white"))
+
+           (add-hook '*fc-after-theme-hook* #'fc--eldoc-box-theme-changed)
+
+           (add-hook 'prog-mode-hook #'eldoc-box-hover)
            (add-hook '*fc-ergo-restore-hook* #'eldoc-box-quit-frame)))
 
 (defun fc-highlight-comment-keywords ()

@@ -30,7 +30,7 @@
 
   (setq org-tags-column -66
         org-agenda-tags-column -66)
-  (fc-org-agenda-customize :project '("fconfig" "study" "book")))
+  (fc-org-agenda-customize :project '()))
 
 (setenv "FCHOME" "${FCHOME}")
 

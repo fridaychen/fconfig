@@ -83,6 +83,10 @@
     (cl-return-from fc-tag-rename (fc-tag--rename tag)))
   nil)
 
+(cl-defun fc-tag-call-hierarchy ()
+  (when-let* ((tag (fc-find-tag)))
+    (cl-return-from fc-tag-call-hierarchy (fc-tag--call-hierarchy tag))))
+
 (cl-defun fc-add-tag (mode tag-instance)
   (puthash mode tag-instance *fc--mode-tag-map*))
 

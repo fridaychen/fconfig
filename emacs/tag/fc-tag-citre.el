@@ -39,23 +39,34 @@
   ())
 
 (cl-defmethod fc-tag--open-file ((x fc-tag-citre))
+  "Open file.
+X: tag object."
   (citre-mode 1))
 
 (cl-defmethod fc-tag--find-references ((x fc-tag-citre) id)
+  "Find references to the identifier at point.
+X: tag object.
+ID: identifier."
   (cl-call-next-method
    x
    (propertize id 'citre-xref-symbol-buffer (current-buffer))))
 
 (cl-defmethod fc-tag--describe-at-point ((x fc-tag-citre))
+  "Open describe object at point.
+X: tag object."
   (fc-funcall #'citre-peek))
 
 (cl-defmethod fc-tag--info ((x fc-tag-citre))
+  "Open show tag info.
+X: tag object."
   (message "global: %s, tags: %s, eglot: %s"
            (citre-backend-usable-p 'global)
            (citre-backend-usable-p 'tags)
            (citre-backend-usable-p 'eglot)))
 
 (cl-defmethod fc-tag--update ((x fc-tag-citre))
+  "Update tag database.
+X: tag object."
   (citre-create-tags-file)
   (citre-global-update-file))
 

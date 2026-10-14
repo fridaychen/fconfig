@@ -927,6 +927,7 @@ REST: commands."
                                              (fc-user-confirm "Enable auto format")
                                              :local nil '*fc-format-at-save*)
                                (fc-proj--save *fc-project*)))
+     ("call hierachy"     . fc-tag-call-hierarchy)
      ("clang style"       . ,(lambda ()
                                (fc-proj--set *fc-project*
                                              (fc-select "Clang style"

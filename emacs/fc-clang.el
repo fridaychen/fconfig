@@ -16,6 +16,7 @@
      )))
 
 (cl-defun fc-c-add-ifdef ()
+  "Add #ifdef to current region."
   (interactive)
 
   (when-let* ((_ (region-active-p))
@@ -83,6 +84,7 @@ END: end of region."
     (c-indent-line-or-region)))
 
 (defun fc-c-insert-header-skeleton ()
+  "Insert header skeleton."
   (interactive)
 
   (let ((def (concat "_" (upcase (file-name-base buffer-file-name)) "_H")))

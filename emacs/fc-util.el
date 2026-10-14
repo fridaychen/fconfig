@@ -222,10 +222,10 @@ CREATE-FUNC: function to create buffer when it not exists."
 BODY: body."
   `(lambda ()
      (interactive)
-     (let ((_ret (progn ,@body)))
+     (let ((ret (progn ,@body)))
        (message "%s"
-                (if (and _ret (stringp _ret))
-                    (string-trim _ret)
+                (if (and ret (stringp ret))
+                    (string-trim ret)
                   "")))))
 
 (cl-defmacro fc-manuals (&rest rest)

@@ -15,6 +15,8 @@
                  *fc-lsp-eglot-enable* t
                  eglot-max-file-watches nil)
 
+           (fc-add-mode-name 'eglot-hierarchy-mode "🇪")
+
            (setf eglot-ignored-server-capabilities '(:documentFormattingProvider
                                                      :documentRangeFormattingProvider
                                                      :documentOnTypeFormattingProvider
@@ -60,20 +62,37 @@
   ())
 
 (cl-defmethod fc-tag--open-project ((x fc-tag-eglot) proj-dir src-dirs)
+  "Open project.
+X: tag object.
+PROJ-DIR: project root dir.
+SRC-DIRS: others source code dirs."
   )
 
 (cl-defmethod fc-tag--open-file ((x fc-tag-eglot))
+  "Open file.
+X: tag object."
   (when (derived-mode-p 'prog-mode)
     (eglot-ensure)))
 
 (cl-defmethod fc-tag--describe-at-point ((x fc-tag-eglot))
+  "Open describe object at point.
+X: tag object."
   (fc-funcall #'eldoc-box-help-at-point))
 
 (cl-defmethod fc-tag--info ((x fc-tag-eglot))
+  "Open show tag info.
+X: tag object."
   (eglot-describe-connection))
 
 (cl-defmethod fc-tag--rename ((x fc-tag-eglot))
+  "Rename object at point.
+X: tag object."
   (fc-funcall #'eglot-rename))
+
+(cl-defmethod fc-tag--call-hierarchy ((x fc-tag-eglot))
+  "Show call hierarchy of function at point.
+X: tag object."
+  (fc-funcall #'eglot-show-call-hierarchy))
 
 (defvar *fc-tag-eglot* (make-instance 'fc-tag-eglot))
 

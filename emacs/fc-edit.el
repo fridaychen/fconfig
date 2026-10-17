@@ -127,20 +127,21 @@
 
 (global-eldoc-mode -1)
 
-(fc-load 'eldoc(global-eldoc-mode 1)
-         :enable *fc-eldoc-enable*
-         :after (progn
-                  (defun fc-info--eldoc ()
-                    "Return list of eldoc info."
-                    (when eldoc-mode
-                      `(("Eldoc" ,eldoc-documentation-functions))))
+(fc-load 'eldoc
+  :enable *fc-eldoc-enable*
+  :after (progn
+           (defun fc-info--eldoc ()
+             "Return list of eldoc info."
+             (when eldoc-mode
+               `(("Eldoc" ,eldoc-documentation-functions))))
 
-                  (add-to-list '*fc-info-buffer* #'fc-info--eldoc t)
+           (with-eval-after-load 'fc-info
+             (add-to-list '*fc-info-buffer* #'fc-info--eldoc t))
 
-                  (setf eldoc-idle-delay 0.3)
+           (setf eldoc-idle-delay 0.3)
 
-                  (global-eldoc-mode 1)
-                  (add-hook 'prog-mode-hook #'eldoc-mode)))
+           (global-eldoc-mode 1)
+           (add-hook 'prog-mode-hook #'eldoc-mode)))
 
 (fc-load 'eldoc-box
   :enable *fc-eldoc-enable*

@@ -96,12 +96,12 @@ INFO-SEQ: list of infos."
 
 (defun fc-info--process ()
   "Return list of process info."
-  `(("Process"
-     ,(string-join (cl-loop for i in (and (fboundp 'process-list)
-                                          (process-list))
-                            for j from 1
-                            collect (format "[%d] %s" j (process-name i)))
-                   ", "))))
+  (cl-loop for i in (and (fboundp 'process-list)
+                         (process-list))
+           for j from 1
+           collect (list
+                    (format "Process [%d]" j)
+                    (format "%s" (process-name i)))))
 
 (defun fc-info--battery ()
   "Return list of battery info."
@@ -113,7 +113,8 @@ INFO-SEQ: list of infos."
 
 (defun fc-info--eglot ()
   "Return current eglot info."
-  (when-let* ((server (eglot-current-server)))
+  (when-let* ((is-file buffer-file-name)
+              (server (eglot-current-server)))
     `(("Eglot"
        ,(string-join (process-command (jsonrpc--process server)) " ")))))
 

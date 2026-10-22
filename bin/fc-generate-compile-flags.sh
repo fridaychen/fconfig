@@ -11,6 +11,8 @@ proj-chtop
 
 if [[ -f compile_flags.txt ]]; then
     fc-user-confirm "compile_flags.txt already exists, still continue?" || exit 0
+
+    mv compile_flags.txt compile_flags_$(date +%Y-%m-%d_%H%M%S).txt
 fi
 
 echo "Generate ..."

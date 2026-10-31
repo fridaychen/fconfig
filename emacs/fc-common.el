@@ -96,6 +96,7 @@
 ;; theme
 (setf *fc--work-themes* '((dark
                            (ayu-grey . ayu-theme)
+                           (desert . desert-theme)
                            (dracula . dracula-theme)
                            (ef-dream . ef-themes)
                            (ef-melissa-dark . ef-themes)

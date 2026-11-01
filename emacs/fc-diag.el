@@ -26,6 +26,7 @@
              "*Flymake errors*")
 
            (setf flymake-start-on-flymake-mode t
+                 flymake-inline-diagnostics 'fancy
                  flymake-no-changes-timeout 3)
 
            (fc-add-next-error-mode 'flymake-diagnostics-buffer-mode

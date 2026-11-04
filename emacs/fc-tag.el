@@ -74,6 +74,10 @@
   (when-let* ((tag (fc-find-tag)))
     (fc-tag--describe-at-point tag)))
 
+(defun fc-tag-update ()
+  (when-let* ((tag (fc-find-tag)))
+    (fc-tag--update tag)))
+
 (defun fc-tag-info ()
   (when-let* ((tag (fc-find-tag)))
     (fc-tag--info tag)))

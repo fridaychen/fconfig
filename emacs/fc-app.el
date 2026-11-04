@@ -967,6 +967,8 @@ REST: commands."
      ("update local vars" . ,(lambda ()
                                (fc-proj--update-local-vars *fc-project*)
                                (fc-proj--save *fc-project*)))
+     ("update tag"        . ,(lambda ()
+                               (fc-tag-update)))
      ("work"              . ,(lambda ()
                                (fc-proj--set *fc-project*
                                              (fc-user-confirm "Remote work")

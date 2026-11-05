@@ -125,8 +125,6 @@
 
 (global-visual-line-mode -1)
 
-(global-eldoc-mode -1)
-
 (fc-load 'eldoc
   :enable *fc-eldoc-enable*
   :after (progn
@@ -140,7 +138,7 @@
 
            (setf eldoc-idle-delay 0.3)
 
-           (global-eldoc-mode 1)
+           (global-eldoc-mode -1)
            (add-hook 'prog-mode-hook #'eldoc-mode)))
 
 (fc-load 'eldoc-box
@@ -160,8 +158,6 @@
                           :foreground "white"))
 
            (add-hook '*fc-after-theme-hook* #'fc--eldoc-box-theme-changed)
-
-           (add-hook 'prog-mode-hook #'eldoc-box-hover)
            (add-hook '*fc-ergo-restore-hook* #'eldoc-box-quit-frame)))
 
 (defun fc-highlight-comment-keywords ()

@@ -1095,7 +1095,10 @@ KEYMAP: keymap to run."
               (org-info))))
      ("r" ,(fc-manual (fc-pop-buf "*Help*")))
      ("s" ,(fc-manual (fc-info-show *fc-info-system*)))
-     ("v" fc-describe-elisp-variable)
+     ("v" ,(fc-mode-key
+            `(
+              (emacs-lisp-mode . fc-describe-elisp-variable)
+              (_ . fc-describe-function))))
      ("y" yas-describe-tables)
      ("F" describe-face)
      ("M" describe-mode))

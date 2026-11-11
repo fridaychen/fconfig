@@ -10,9 +10,9 @@
 INFO: info obj."
   (seq-mapcat (lambda (it)
                 (concat "│"
-                        (fc-text (format "%11s" (cl-first it))
+                        (fc-text (format "%14s " (cl-first it))
                                  :face 'font-lock-keyword-face)
-                        (format " : %s\n" (fc-string (cl-second it)))))
+                        (format " %s\n" (fc-string (cl-second it)))))
               info
               'string))
 
@@ -94,13 +94,24 @@ INFO-SEQ: list of infos."
       ("Loc" ,*fc-location*)
       ("Theme" ,*fc-current-theme*))))
 
+(defun eglot-process-name (name)
+  (save-match-data
+    (if (string-match "^EGLOT (\\([^/]+\\)/" name)
+        (progn
+          (format "EGLOT (%s)"
+                  (substring name
+                             (match-beginning 1)
+                             (match-end 1)
+                             )))
+      name)))
+
 (defun fc-info--process ()
   "Return list of process info."
   (cl-loop for i in (and (fboundp 'process-list)
                          (process-list))
            for j from 1
            collect (list
-                    (format "Process [%d]" j)
+                    (format "Process [%02d]" j)
                     (format "%s" (process-name i)))))
 
 (defun fc-info--battery ()

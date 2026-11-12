@@ -9,10 +9,10 @@
   "Convert info to string.
 INFO: info obj."
   (seq-mapcat (lambda (it)
-                (concat "│"
-                        (fc-text (format "%14s " (cl-first it))
-                                 :face 'font-lock-keyword-face)
-                        (format " %s\n" (fc-string (cl-second it)))))
+                (concat
+                 (fc-text (format "%14s " (cl-first it))
+                          :face 'font-lock-keyword-face)
+                 (format " %s\n" (fc-string (cl-second it)))))
               info
               'string))
 

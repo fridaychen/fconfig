@@ -476,7 +476,7 @@ TITLE: book title."
                     (shell-quote-argument file))
             l))
 
-    (push (format "pandoc --to epub3 --mathml -o %s --epub-cover-image %s"
+    (push (format "pandoc --to epub3 --math-method=mathml -o %s --epub-cover-image %s"
                   (shell-quote-argument epub)
                   (shell-quote-argument cover))
           l)

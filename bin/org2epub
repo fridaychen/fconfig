@@ -103,7 +103,7 @@ def convert_to_epub(file: Path):
         "pandoc",
         "--to",
         "epub3",
-        "--mathml",
+        "--math-method=mathml",
         "-o",
         str(file.cwd() / f"{meta.title}.epub"),
         "--epub-cover-image",

@@ -192,9 +192,10 @@
                                :inherit 'mode-line-inactive)))
 
 ;; multiple cursor
-(fc-install 'iedit)
-(autoload 'iedit-mode "iedit")
-(autoload 'iedit-rectangle-mode "iedit-rect")
+(fc-load 'iedit
+  :after (progn
+           (autoload 'iedit-mode "iedit")
+           (autoload 'iedit-rectangle-mode "iedit-rect")))
 
 (setf x-alt-keysym nil
       x-super-keysym 'super)

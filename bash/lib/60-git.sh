@@ -109,3 +109,7 @@ function fit-show {
 function fit-cherry-pick {
     git cherry-pick --strategy=recursive -X theirs $@
 }
+
+function fit-search {
+    git log --grep="$*"
+}

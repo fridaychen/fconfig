@@ -23,6 +23,7 @@
   (fc-run-hook '*fc-after-theme-hook*)
 
   (force-mode-line-update)
+  (force-window-update)
 
   (message "Load theme %s" *fc-current-theme*))
 

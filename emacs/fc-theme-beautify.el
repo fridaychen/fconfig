@@ -197,6 +197,7 @@ THRESHOLD: contrast threshold."
 (defun fc-beautify-theme-after-theme-change ()
   "Beautify theme."
   (fc-set-face 'vertico-current nil
+               :bold t
                :background (fc-get-face 'vertico-current :background))
 
   (fc-funcall #'fc--beautify-user-func)

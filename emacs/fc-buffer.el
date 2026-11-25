@@ -75,6 +75,19 @@ NO-CURRENT: not include current buffer in result."
 (cl-defmacro fc-list-buffer (&rest rest)
   `(fc--list-buffer (fc--buffer-pred ,@rest)))
 
+(cl-defmacro fc-list-visible-buffer (&rest rest)
+  `(fc--list-buffer (fc--buffer-pred ,@rest)
+                    :buffers (fc-map (window-list)
+                               (window-buffer it))))
+
+(cl-defmacro fc-each-visible-buffer (filter &rest rest)
+  (declare (indent 1))
+  `(cl-loop for it in (fc--list-buffer (apply #'fc--buffer-pred ,filter)
+                                       :buffers (fc-map (window-list)
+                                                  (window-buffer it)))
+            do (with-current-buffer it
+                 ,@rest)))
+
 ;; select buffers to show
 (defun -show-buffers (bufs)
   "Show BUFFERS.

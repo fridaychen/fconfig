@@ -26,7 +26,7 @@
              "*Flymake errors*")
 
            (setf flymake-start-on-flymake-mode t
-                 flymake-inline-diagnostics 'fancy
+                 flymake-inline-diagnostics nil
                  flymake-no-changes-timeout 3)
 
            (fc-add-next-error-mode 'flymake-diagnostics-buffer-mode
@@ -37,16 +37,23 @@
   "Enable diag."
   (fc-with-each-buffer
    :buffers (fc-list-buffer :mode '(prog-mode))
-   (if (bound-and-true-p eglot--managed-mode)
-       (flymake-mode 1)
-     (flycheck-mode 1))))
+   (flycheck-mode 1))
+
+  (setf flymake-inline-diagnostics 'fancy)
+
+  (fc-each-visible-buffer '(:mode prog-mode)
+    (revert-buffer t t))
+
+  (force-window-update))
 
 (cl-defun fc-diag-disable ()
   "Disable diag."
   (fc-with-each-buffer
    :buffers (fc-list-buffer :mode '(prog-mode))
-   (flycheck-mode -1)
-   (flymake-mode -1)))
+   (flymake-mode -1))
+
+  (setf flymake-inline-diagnostics nil)
+  (force-window-update))
 
 (cl-defun fc-diag-show ()
   "Show diag buffer."

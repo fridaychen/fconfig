@@ -17,6 +17,8 @@
 
 (defvar *fc-face-contrast-lower-limit* '(0.6 0.56 0.52))
 
+(defvar *fc-original-themes* nil)
+
 (cl-defun fc--theme-mode ()
   "Get theme mode, dark or light."
   (when (or (and (eq *fc-theme-mode* 'light)
@@ -202,7 +204,8 @@ THRESHOLD: contrast threshold."
 
   (fc-funcall #'fc--beautify-user-func)
 
-  (run-hooks '*fc-beautify-theme-hook*))
+  (unless (member *fc-current-theme* *fc-original-themes*)
+    (run-hooks '*fc-beautify-theme-hook*)))
 
 (provide 'fc-theme-beautify)
 

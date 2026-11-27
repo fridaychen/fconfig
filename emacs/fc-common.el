@@ -100,6 +100,7 @@
                            (dracula . dracula-theme)
                            (ef-dream . ef-themes)
                            (ef-melissa-dark . ef-themes)
+                           (kanagawa-wave . kanagawa-themes)
                            leuven-dark
                            tango-dark
                            misterioso
